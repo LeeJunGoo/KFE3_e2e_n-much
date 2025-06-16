@@ -11,10 +11,7 @@ const PointHistoryPage = () => {
   return (
     <section>
       <div className="relative">
-        <button
-          onClick={handleBack}
-          className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
-        >
+        <button onClick={handleBack} className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer">
           뒤로가기
         </button>
         <PageTitle>포인트 사용 내역</PageTitle>

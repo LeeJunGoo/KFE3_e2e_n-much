@@ -3,12 +3,12 @@ import {
   deleteAuction,
   getAllAuctions,
   getAuction,
-  updateAuction,
+  updateAuction
 } from '@repo/ui/utils/supabase/query/auctions';
 import { NextRequest } from 'next/server';
 
 const commonHeader = {
-  headers: { 'Content-Type': 'application/json' },
+  headers: { 'Content-Type': 'application/json' }
 };
 
 export async function GET(request: NextRequest) {
@@ -25,10 +25,7 @@ export async function GET(request: NextRequest) {
     }
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json(
-        { status: 'error', error: error.message },
-        commonHeader
-      );
+      return Response.json({ status: 'error', error: error.message }, commonHeader);
     }
   }
 }
@@ -44,7 +41,7 @@ export async function POST(request: NextRequest) {
     status,
     image_urls,
     start_time,
-    end_time,
+    end_time
   } = await request.json();
 
   try {
@@ -63,10 +60,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json(
-        { status: 'error', error: error.message },
-        commonHeader
-      );
+      return Response.json({ status: 'error', error: error.message }, commonHeader);
     }
   }
 }
@@ -79,10 +73,7 @@ export async function PATCH(request: NextRequest) {
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json(
-        { status: 'error', error: error.message },
-        commonHeader
-      );
+      return Response.json({ status: 'error', error: error.message }, commonHeader);
     }
   }
 }
@@ -95,10 +86,7 @@ export async function DELETE(request: NextRequest) {
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json(
-        { status: 'error', error: error.message },
-        commonHeader
-      );
+      return Response.json({ status: 'error', error: error.message }, commonHeader);
     }
   }
 }

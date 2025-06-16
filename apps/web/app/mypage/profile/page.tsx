@@ -14,10 +14,7 @@ const ProfileEditPage = () => {
     <>
       <section>
         <div className="relative">
-          <button
-            onClick={handleBack}
-            className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
-          >
+          <button onClick={handleBack} className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer">
             뒤로가기
           </button>
           <PageTitle>프로필 수정</PageTitle>
@@ -52,9 +49,7 @@ const ProfileEditPage = () => {
             </div>
             <div className="p-4">
               <h3 className="font-semibold">안주원제과점</h3>
-              <p className="mt-3 text-gray-400 text-sm">
-                [03712] 서울특별시 서대문구 111 (남가좌동)
-              </p>
+              <p className="mt-3 text-gray-400 text-sm">[03712] 서울특별시 서대문구 111 (남가좌동)</p>
             </div>
           </li>
         </ul>

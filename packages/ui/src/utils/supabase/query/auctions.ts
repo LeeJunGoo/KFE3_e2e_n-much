@@ -13,10 +13,7 @@ export async function getAllAuctions() {
 }
 
 export async function getAuction(auction_id: string) {
-  const { data: auction, error } = await supabase
-    .from('auctions')
-    .select('*')
-    .eq('auction_id', auction_id);
+  const { data: auction, error } = await supabase.from('auctions').select('*').eq('auction_id', auction_id);
 
   if (error) {
     throw new Error('DB: 특정 경매 불러오기 에러');
@@ -50,8 +47,8 @@ export async function addAuction(
         status,
         image_urls,
         start_time,
-        end_time,
-      },
+        end_time
+      }
     ])
     .select();
 
@@ -77,11 +74,7 @@ export async function updateAuction(auction_id: string, status: string) {
 }
 
 export async function deleteAuction(auction_id: string) {
-  const { data: auction, error } = await supabase
-    .from('auctions')
-    .delete()
-    .eq('auction_id', auction_id)
-    .select();
+  const { data: auction, error } = await supabase.from('auctions').delete().eq('auction_id', auction_id).select();
 
   if (error) {
     throw new Error('DB: 경매 삭제 에러');

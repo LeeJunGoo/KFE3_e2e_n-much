@@ -24,14 +24,11 @@ const AuctionOverviewPage = () => {
           </div>
           <div className="p-4">
             <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고
-              저쩌고
+              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고 저쩌고
             </h3>
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-500">현재 입찰가</span>
-              <span className="font-bold text-lg text-purple-500">
-                10,000 P
-              </span>
+              <span className="font-bold text-lg text-purple-500">10,000 P</span>
             </div>
             <div className="flex justify-between items-center my-1">
               <span className="text-sm text-gray-500">12명 입찰</span>
@@ -55,14 +52,11 @@ const AuctionOverviewPage = () => {
           </div>
           <div className="p-4">
             <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고
-              저쩌고
+              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고 저쩌고
             </h3>
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-500">현재 입찰가</span>
-              <span className="font-bold text-lg text-purple-500">
-                10,000 P
-              </span>
+              <span className="font-bold text-lg text-purple-500">10,000 P</span>
             </div>
             <div className="flex justify-between items-center my-1">
               <span className="text-sm text-gray-500">12명 입찰</span>
@@ -86,14 +80,11 @@ const AuctionOverviewPage = () => {
           </div>
           <div className="p-4">
             <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고
-              저쩌고
+              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고 저쩌고
             </h3>
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-500">현재 입찰가</span>
-              <span className="font-bold text-lg text-purple-500">
-                10,000 P
-              </span>
+              <span className="font-bold text-lg text-purple-500">10,000 P</span>
             </div>
             <div className="flex justify-between items-center my-1">
               <span className="text-sm text-gray-500">12명 입찰</span>
@@ -117,14 +108,11 @@ const AuctionOverviewPage = () => {
           </div>
           <div className="p-4">
             <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고
-              저쩌고
+              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고 저쩌고
             </h3>
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-500">현재 입찰가</span>
-              <span className="font-bold text-lg text-purple-500">
-                10,000 P
-              </span>
+              <span className="font-bold text-lg text-purple-500">10,000 P</span>
             </div>
             <div className="flex justify-between items-center my-1">
               <span className="text-sm text-gray-500">12명 입찰</span>
@@ -148,14 +136,11 @@ const AuctionOverviewPage = () => {
           </div>
           <div className="p-4">
             <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고
-              저쩌고
+              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고 저쩌고
             </h3>
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-500">현재 입찰가</span>
-              <span className="font-bold text-lg text-purple-500">
-                10,000 P
-              </span>
+              <span className="font-bold text-lg text-purple-500">10,000 P</span>
             </div>
             <div className="flex justify-between items-center my-1">
               <span className="text-sm text-gray-500">12명 입찰</span>
@@ -179,14 +164,11 @@ const AuctionOverviewPage = () => {
           </div>
           <div className="p-4">
             <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고
-              저쩌고
+              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고 저쩌고
             </h3>
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-500">현재 입찰가</span>
-              <span className="font-bold text-lg text-purple-500">
-                10,000 P
-              </span>
+              <span className="font-bold text-lg text-purple-500">10,000 P</span>
             </div>
             <div className="flex justify-between items-center my-1">
               <span className="text-sm text-gray-500">12명 입찰</span>
@@ -210,14 +192,11 @@ const AuctionOverviewPage = () => {
           </div>
           <div className="p-4">
             <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고
-              저쩌고
+              안주원제과점의 신메뉴 출시 기념 한정판 빵 어쩌고저쩌고 어쩌고 저쩌고
             </h3>
             <div className="flex justify-between items-center">
               <span className="text-xs text-gray-500">현재 입찰가</span>
-              <span className="font-bold text-lg text-purple-500">
-                10,000 P
-              </span>
+              <span className="font-bold text-lg text-purple-500">10,000 P</span>
             </div>
             <div className="flex justify-between items-center my-1">
               <span className="text-sm text-gray-500">12명 입찰</span>

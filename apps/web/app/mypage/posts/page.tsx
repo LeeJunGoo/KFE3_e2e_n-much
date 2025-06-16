@@ -12,10 +12,7 @@ const PostListByRolePage = () => {
   return (
     <section>
       <div className="relative">
-        <button
-          onClick={handleBack}
-          className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer"
-        >
+        <button onClick={handleBack} className="absolute left-0 top-1/2 -translate-y-1/2 cursor-pointer">
           뒤로가기
         </button>
         <PageTitle>내가 쓴 글</PageTitle>
@@ -28,9 +25,8 @@ const PostListByRolePage = () => {
           </div>
           <h3 className="font-semibold mt-2 mb-1">타이틀</h3>
           <p>
-            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
+            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이
+            들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
           </p>
           <div className="flex justify-end items-center">
             <p>좋아요: 45</p>
@@ -43,9 +39,8 @@ const PostListByRolePage = () => {
           </div>
           <h3 className="font-semibold mt-2 mb-1">타이틀</h3>
           <p>
-            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
+            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이
+            들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
           </p>
           <div className="flex justify-end items-center">
             <p>좋아요: 45</p>
@@ -58,9 +53,8 @@ const PostListByRolePage = () => {
           </div>
           <h3 className="font-semibold mt-2 mb-1">타이틀</h3>
           <p>
-            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
+            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이
+            들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
           </p>
           <div className="flex justify-end items-center">
             <p>좋아요: 45</p>
@@ -73,9 +67,8 @@ const PostListByRolePage = () => {
           </div>
           <h3 className="font-semibold mt-2 mb-1">타이틀</h3>
           <p>
-            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
+            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이
+            들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
           </p>
           <div className="flex justify-end items-center">
             <p>좋아요: 45</p>
@@ -88,9 +81,8 @@ const PostListByRolePage = () => {
           </div>
           <h3 className="font-semibold mt-2 mb-1">타이틀</h3>
           <p>
-            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
+            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이
+            들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
           </p>
           <div className="flex justify-end items-center">
             <p>좋아요: 45</p>
@@ -103,9 +95,8 @@ const PostListByRolePage = () => {
           </div>
           <h3 className="font-semibold mt-2 mb-1">타이틀</h3>
           <p>
-            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
+            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이
+            들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
           </p>
           <div className="flex justify-end items-center">
             <p>좋아요: 45</p>
@@ -118,9 +109,8 @@ const PostListByRolePage = () => {
           </div>
           <h3 className="font-semibold mt-2 mb-1">타이틀</h3>
           <p>
-            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
+            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이
+            들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
           </p>
           <div className="flex justify-end items-center">
             <p>좋아요: 45</p>
@@ -133,9 +123,8 @@ const PostListByRolePage = () => {
           </div>
           <h3 className="font-semibold mt-2 mb-1">타이틀</h3>
           <p>
-            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글
-            내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
+            글 내용이 들어갑니다. 글 내용이 들어갑니다. 글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이
+            들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.글 내용이 들어갑니다.
           </p>
           <div className="flex justify-end items-center">
             <p>좋아요: 45</p>
