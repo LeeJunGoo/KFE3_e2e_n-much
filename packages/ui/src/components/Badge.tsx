@@ -1,14 +1,14 @@
-import Image from "next/image";
-import { Button } from "./ui/button";
+import Image from 'next/image';
+import { Button } from './ui/button';
 
 export const BADGE_VARIANTS = {
   BEST: {
-    label: "인기",
-    style: "bg-red-500 text-white",
+    label: '인기',
+    style: 'bg-red-500 text-white',
   },
   URGENT: {
-    label: "마감임박",
-    style: "bg-yellow-500 text-white",
+    label: '마감임박',
+    style: 'bg-yellow-500 text-white',
   },
 } as const;
 
@@ -19,13 +19,13 @@ export interface BadgeProps {
   className?: string;
 }
 
-const Badge = ({ title, className = "" }: BadgeProps) => {
+const Badge = ({ title, className = '' }: BadgeProps) => {
   const { label, style } = BADGE_VARIANTS[title];
   return (
     <>
       <Image
         src={
-          "https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg"
+          'https://upload.wikimedia.org/wikipedia/en/8/80/Wikipedia-logo-v2.svg'
         }
         width={500}
         height={500}
