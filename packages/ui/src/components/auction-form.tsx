@@ -27,18 +27,25 @@ const formSchema = z.object({
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
-  const [mode, setMode] = useState<'register' | 'edit'>('register');
-  const [defaultValues, setDefaultValues] = useState<{ title: string; address: string; description: string }>({
-    title: '',
-    address: '',
-    description: ''
-  });
   const auctionIdParam = searchParams.get('auction_id');
+  const mode = auctionIdParam ? '등록하기' : '수정하기';
+  const [isLoading, setIsLoading] = useState(true);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      title: '',
+      address: '',
+      description: ''
+    }
+  });
 
   useEffect(() => {
     async function setFormDefaultValues(auctionId: string | null) {
       if (!auctionId) {
-        return setDefaultValues({ title: '', address: '', description: '' });
+        form.reset({ title: '', address: '', description: '' });
+        setIsLoading(false);
+        return;
       }
 
       const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
@@ -47,34 +54,26 @@ export default function AuctionForm() {
 
       if (result.status === 'success' && result.data.length !== 0) {
         const { title, address, description } = result.data[0];
-        setDefaultValues({ title, address, description });
+        form.reset({ title, address, description });
+        setIsLoading(false);
       } else {
-        setDefaultValues({ title: '', address: '', description: '' });
+        form.reset({ title: '', address: '', description: '' });
+        setIsLoading(false);
       }
-    }
-    if (!auctionIdParam) {
-      setMode('register');
-    } else {
-      setMode('edit');
     }
 
     setFormDefaultValues(auctionIdParam);
-  }, [auctionIdParam]);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues
-  });
-
-  useEffect(() => {
-    form.reset(defaultValues);
-  }, [defaultValues, form]);
+  }, [auctionIdParam, form]);
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values);
+  }
+
+  if (isLoading) {
+    return <p>Loading...</p>;
   }
 
   return (
@@ -121,7 +120,7 @@ export default function AuctionForm() {
               </FormItem>
             )}
           />
-          <Button type="submit">{mode === 'register' ? '등록하기' : '수정하기'}</Button>
+          <Button type="submit">{mode}</Button>
         </form>
       </Form>
     </>
