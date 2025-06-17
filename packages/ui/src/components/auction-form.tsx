@@ -34,10 +34,6 @@ export default function AuctionForm() {
     description: ''
   });
   const auctionIdParam = searchParams.get('auction_id');
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues
-  });
 
   useEffect(() => {
     async function setFormDefaultValues(auctionId: string | null) {
@@ -64,6 +60,11 @@ export default function AuctionForm() {
 
     setFormDefaultValues(auctionIdParam);
   }, [auctionIdParam]);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues
+  });
 
   useEffect(() => {
     form.reset(defaultValues);
