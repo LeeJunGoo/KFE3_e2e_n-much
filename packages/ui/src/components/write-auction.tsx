@@ -8,6 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from './ui/input';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import PageTitle from './typography/PageTitle';
 
 const formSchema = z.object({
   title: z
@@ -24,7 +25,7 @@ const formSchema = z.object({
   })
 });
 
-export function AuctionForm() {
+export default function AuctionForm() {
   const searchParams = useSearchParams();
   const [mode, setMode] = useState<'register' | 'edit'>('register');
   const [defaultValues, setDefaultValues] = useState<{ title: string; address: string; description: string }>({
@@ -76,49 +77,52 @@ export function AuctionForm() {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>제목</FormLabel>
-              <FormControl>
-                <Input placeholder="경매 상품의 제목을 입력하세요." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>주소</FormLabel>
-              <FormControl>
-                <Input placeholder="상품 위치 또는 주소를 입력하세요." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>상세 내용</FormLabel>
-              <FormControl>
-                <Input placeholder="상품에 대한 자세한 설명을 입력하세요." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">{mode === 'register' ? '등록하기' : '수정하기'}</Button>
-      </form>
-    </Form>
+    <>
+      <PageTitle>상품 정보</PageTitle>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>제목</FormLabel>
+                <FormControl>
+                  <Input placeholder="경매 상품의 제목을 입력하세요." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="address"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>주소</FormLabel>
+                <FormControl>
+                  <Input placeholder="상품 위치 또는 주소를 입력하세요." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>상세 내용</FormLabel>
+                <FormControl>
+                  <Input placeholder="상품에 대한 자세한 설명을 입력하세요." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit">{mode === 'register' ? '등록하기' : '수정하기'}</Button>
+        </form>
+      </Form>
+    </>
   );
 }
