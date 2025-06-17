@@ -2,6 +2,16 @@
 @import "@repo/tailwind-config";
 @import "@repo/ui/styles.css";
 
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+/* 
 :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
@@ -30,4 +40,4 @@ body {
   --blue-1000: #2a8af6;
   --purple-1000: #a853ba;
   --red-1000: #e92a67;
-}
+} */
