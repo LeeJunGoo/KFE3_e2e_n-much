@@ -26,6 +26,7 @@ const formSchema = z.object({
 
 export function AuctionForm() {
   const searchParams = useSearchParams();
+  const [mode, setMode] = useState<'register' | 'edit'>('register');
   const [defaultValues, setDefaultValues] = useState<{ title: string; address: string; description: string }>({
     title: '',
     address: '',
@@ -43,7 +44,7 @@ export function AuctionForm() {
         setDefaultValues({ title: '', address: '', description: '' });
       }
 
-      const fetchUrl = `http://localhost:3001/auctions/api?auction_id=${auctionId}`;
+      const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
       const data = await fetch(fetchUrl);
       const result = await data.json();
 
@@ -53,6 +54,11 @@ export function AuctionForm() {
       } else {
         setDefaultValues({ title: '', address: '', description: '' });
       }
+    }
+    if (!auctionIdParam) {
+      setMode('register');
+    } else {
+      setMode('edit');
     }
 
     setFormDefaultValues(auctionIdParam);
@@ -111,7 +117,7 @@ export function AuctionForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{mode === 'register' ? '등록하기' : '수정하기'}</Button>
       </form>
     </Form>
   );
