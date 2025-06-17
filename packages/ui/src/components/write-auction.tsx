@@ -3,10 +3,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
 import { Button } from './ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
 import { Input } from './ui/input';
+import { useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   title: z
@@ -24,14 +25,42 @@ const formSchema = z.object({
 });
 
 export function AuctionForm() {
+  const searchParams = useSearchParams();
+  const [defaultValues, setDefaultValues] = useState<{ title: string; address: string; description: string }>({
+    title: '',
+    address: '',
+    description: ''
+  });
+  const auctionIdParam = searchParams.get('auction_id');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: '',
-      address: '',
-      description: ''
-    }
+    defaultValues
   });
+
+  useEffect(() => {
+    async function setFormDefaultValues(auctionId: string | null) {
+      if (!auctionId) {
+        setDefaultValues({ title: '', address: '', description: '' });
+      }
+
+      const fetchUrl = `http://localhost:3001/auctions/api?auction_id=${auctionId}`;
+      const data = await fetch(fetchUrl);
+      const result = await data.json();
+
+      if (result.status === 'success' && result.data.length !== 0) {
+        const { title, address, description } = result.data[0];
+        setDefaultValues({ title, address, description });
+      } else {
+        setDefaultValues({ title: '', address: '', description: '' });
+      }
+    }
+
+    setFormDefaultValues(auctionIdParam);
+  }, [auctionIdParam]);
+
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
