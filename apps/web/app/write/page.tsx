@@ -1,3 +1,5 @@
+import { AuctionForm } from '@repo/ui/components/write-auction';
+
 export default function page() {
-  return <p>Hello World!</p>;
+  return <AuctionForm />;
 }
