@@ -31,28 +31,17 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const {
-    user_id,
-    title,
-    description,
-    starting_point,
-    current_point,
-    max_point,
-    status,
-    image_urls,
-    start_time,
-    end_time
-  } = await request.json();
+  const { user_id, title, description, address, starting_point, max_point, image_urls, start_time, end_time } =
+    await request.json();
 
   try {
     const res = await addAuction(
       user_id,
       title,
       description,
+      address,
       starting_point,
-      current_point,
       max_point,
-      status,
       image_urls,
       start_time,
       end_time

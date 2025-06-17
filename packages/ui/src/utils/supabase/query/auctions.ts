@@ -6,7 +6,6 @@ export async function getAllAuctions() {
   const { data: auctions, error } = await supabase.from('auctions').select('*');
 
   if (error) {
-    console.log(error);
     throw new Error('DB: 모든 경매 불러오기 에러');
   }
   return auctions;
@@ -28,10 +27,8 @@ export async function addAuction(
   description: string,
   address: string,
   starting_point: number,
-  current_point: number,
   max_point: number,
-  status: 'OPEN' | 'CLOSED' | 'CANCELLED',
-  image_urls: string[],
+  image_urls: string[] | null,
   start_time: string,
   end_time: string
 ) {
@@ -44,10 +41,10 @@ export async function addAuction(
         description,
         address,
         starting_point,
-        current_point,
+        current_point: starting_point,
         max_point,
-        status,
-        image_urls,
+        status: 'OPEN',
+        image_urls: image_urls,
         start_time,
         end_time
       }
