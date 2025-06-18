@@ -1,5 +1,6 @@
 import AuctionDetailCard from '@repo/ui/components/auctions/AuctionDetailCard';
-import EpilogueList from '@repo/ui/components/auctions/EpilogueList';
+import EpisodeList from '@repo/ui/components/auctions/EpisodeList';
+
 import Link from 'next/link';
 import { FaArrowLeft, FaMapMarkerAlt } from 'react-icons/fa';
 import { IoMdTime } from 'react-icons/io';
@@ -232,7 +233,7 @@ const AuctionDetailPage = () => {
               </div>
             </div>
           </div>
-          <EpilogueList mockStories={mockStories} />
+          <EpisodeList mockStories={mockStories} />
         </div>
       </main>
     </>

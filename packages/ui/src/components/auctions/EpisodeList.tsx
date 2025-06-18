@@ -10,9 +10,9 @@ import {
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
 import { useEffect, useRef, useState } from 'react';
-import EpilogueItem from './EpilogueItem';
+import EpisodeItem from './EpisodeItem';
 
-export interface EpilogueProps {
+export interface EpisodeProps {
   id: number;
   author: {
     name: string;
@@ -23,15 +23,15 @@ export interface EpilogueProps {
   content: string;
 }
 
-const EPILOGUE_PER_PAGE = 5;
+const EPISODE_PER_PAGE = 5;
 
-const EpilogueList = ({ mockStories }: { mockStories: EpilogueProps[] }) => {
+const EpisodeList = ({ mockStories }: { mockStories: EpisodeProps[] }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(mockStories.length / EPILOGUE_PER_PAGE);
+  const totalPages = Math.ceil(mockStories.length / EPISODE_PER_PAGE);
 
   // 현재 페이지에 보여줄 사연들 계산
-  const startIndex = (currentPage - 1) * EPILOGUE_PER_PAGE;
-  const endIndex = startIndex + EPILOGUE_PER_PAGE;
+  const startIndex = (currentPage - 1) * EPISODE_PER_PAGE;
+  const endIndex = startIndex + EPISODE_PER_PAGE;
   const currentStories = mockStories.slice(startIndex, endIndex);
 
   const listHeaderRef = useRef<HTMLDivElement>(null);
@@ -65,8 +65,8 @@ const EpilogueList = ({ mockStories }: { mockStories: EpilogueProps[] }) => {
           <p className="text-sm text-gray-500 mt-1">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
         </div>
         <ul className="divide-y border-t">
-          {currentStories.map((story: EpilogueProps) => (
-            <EpilogueItem key={story.id} story={story} />
+          {currentStories.map((story: EpisodeProps) => (
+            <EpisodeItem key={story.id} story={story} />
           ))}
         </ul>
         <div className="px-6 py-4 border-t">
@@ -117,4 +117,4 @@ const EpilogueList = ({ mockStories }: { mockStories: EpilogueProps[] }) => {
   );
 };
 
-export default EpilogueList;
+export default EpisodeList;
