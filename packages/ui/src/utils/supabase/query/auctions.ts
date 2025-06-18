@@ -53,6 +53,59 @@ export const getAuction = async (auction_id: string) => {
   return data;
 };
 
+// 내가 올린 경매 데이터 불러오기 (경매자)
+export const getMyCreatedAuctions = async (user_id: string) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(
+      `
+      *,
+      user:user_id (
+        user_id,
+        nickname,
+        avatar
+      )
+    `
+    )
+    .eq('user_id', user_id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    throw new Error('DB: 내가 올린 경매 불러오기 에러');
+  }
+
+  return data;
+};
+
+// 내가 입찰한 경매 데이터 불러오기 (입찰자)
+export const getMyBidAuctions = async (user_id: string) => {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select(
+      `
+      *,
+      auction:auction_id (
+        *,
+        user:user_id (
+          user_id,
+          nickname,
+          avatar
+        )
+      )
+    `
+    )
+    .eq('user_id', user_id)
+    .order('bid_time', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    throw new Error('DB: 내가 입찰한 경매 불러오기 에러');
+  }
+
+  return data;
+};
+
 export const addAuction = async (auctionData: CreateAuctionPayload) => {
   const { data, error } = await supabase.from('auctions').insert([auctionData]).select().single();
 

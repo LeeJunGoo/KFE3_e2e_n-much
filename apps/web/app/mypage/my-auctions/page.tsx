@@ -1,6 +1,15 @@
+'use client';
 import Image from 'next/image';
+import { useCreatedAuctions } from '../../../hooks/queries/useAuctions';
 
 const MyAuctionOverviewPage = () => {
+  const { data, isLoading, error } = useCreatedAuctions('9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374');
+
+  if (isLoading) return <div>로딩 중 입니다...!</div>;
+  if (error) return <div>에러 발생! {error.message}</div>;
+
+  console.log(data);
+
   return (
     <section>
       <ul className="flex justify-center items-center pb-2 text-center border-b border-gray-300">
