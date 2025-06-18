@@ -1,4 +1,4 @@
-import AuctionForm from '@repo/ui/components/auction-form';
+import AuctionForm from '@repo/ui/components/AuctionForm';
 
 export default function page() {
   return <AuctionForm />;

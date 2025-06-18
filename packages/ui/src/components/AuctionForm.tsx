@@ -2,6 +2,7 @@
 //TODO - 주소를 기본 주소와 상세 주소로 배열로 넣기
 //TODO - 경매 수정페이지에서 주소 검색 확인 과정 패스하기
 //TODO - 경매 시작일, 종료일 설정
+//TODO - 프리뷰 이미지 li key 값 index에서 수정하기
 
 'use client';
 
@@ -15,6 +16,8 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import PageTitle from './typography/PageTitle';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
+import ImageUploader from './ImageUploader';
+import Image from 'next/image';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -23,6 +26,7 @@ export default function AuctionForm() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(false);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const formSchema = z.object({
     title: z
@@ -172,9 +176,22 @@ export default function AuctionForm() {
               </FormItem>
             )}
           />
+          <ImageUploader onPreviewImages={setPreviewImages} />
           <Button type="submit">{isEditing ? '수정하기' : '등록하기'}</Button>
         </form>
       </Form>
+      <ul>
+        {previewImages &&
+          previewImages.map((previewImage, index) => {
+            if (previewImage) {
+              return (
+                <li key={index}>
+                  <Image alt={'img'} src={previewImage} width={300} height={300} />
+                </li>
+              );
+            }
+          })}
+      </ul>
     </>
   );
 }
