@@ -9,27 +9,39 @@ import { Input } from './ui/input';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import PageTitle from './typography/PageTitle';
-
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(5, {
-      message: '경매 제목은 최소 5자가 되어야 합니다.'
-    })
-    .max(50, {
-      message: '경매 제목은 최대 50자가 되어야 합니다.'
-    }),
-  address: z.string().min(5, { message: '주소는 최소 5글자가 되어야 합니다.' }),
-  description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
-    message: '상세 내용은 최대 500자가 되어야 합니다.'
-  })
-});
+import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
   const auctionIdParam = searchParams.get('auction_id');
   const mode = auctionIdParam ? '등록하기' : '수정하기';
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
+  const [confirmPostCode, setConfirmPostCode] = useState<boolean>(false);
+
+  const formSchema = z.object({
+    title: z
+      .string()
+      .min(5, {
+        message: '경매 제목은 최소 5자가 되어야 합니다.'
+      })
+      .max(50, {
+        message: '경매 제목은 최대 50자가 되어야 합니다.'
+      }),
+    address: z
+      .string()
+      .min(5, { message: '주소는 최소 5글자가 되어야 합니다.' })
+      .refine(
+        () => {
+          console.log('주소 확인 에러', confirmPostCode);
+          return confirmPostCode;
+        },
+        { message: '주소 검색을 통해 주소를 입력해야 합니다.' }
+      ),
+    description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
+      message: '상세 내용은 최대 500자가 되어야 합니다.'
+    })
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -72,6 +84,26 @@ export default function AuctionForm() {
     console.log(values);
   }
 
+  const handleComplete = (data: Address) => {
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+    console.log(fullAddress);
+    form.setValue('address', fullAddress);
+    form.trigger('address');
+    setConfirmPostCode(true);
+    setShowPostCodeSearch(false);
+  };
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -107,6 +139,16 @@ export default function AuctionForm() {
               </FormItem>
             )}
           />
+          <Button
+            type="button"
+            onClick={() => {
+              setShowPostCodeSearch((prev) => !prev);
+            }}
+            className="outline"
+          >
+            {showPostCodeSearch ? '주소 검색 닫기' : '주소 검색'}
+          </Button>
+          {showPostCodeSearch && <DaumPostcodeEmbed onComplete={handleComplete} />}
           <FormField
             control={form.control}
             name="description"
