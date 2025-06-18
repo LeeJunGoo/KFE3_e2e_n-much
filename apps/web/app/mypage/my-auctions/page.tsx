@@ -2,12 +2,20 @@
 import Image from 'next/image';
 import { useGetUser } from '../../../hooks/queries/useUsers';
 import { useGetUserEpisodes } from '../../../hooks/queries/uesEpisodes';
+import {
+  useCreatedAuctions,
+  useGetAuction,
+  useGetAuctions,
+  useGetBidAuctions
+} from '../../../hooks/queries/useAuctions';
 
 const MyAuctionOverviewPage = () => {
   const TEST_USER_ID = '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
+  const TEST_AUCTION_ID = '9e525843-9047-4f17-8dc7-368f9311bf57';
+  const TEST_CREATED_AUCTIONS = 'a85dc1ce-abbd-42e6-ae58-86bf230b99aa';
 
   //유저 정보
-  const { data } = useGetUserEpisodes(TEST_USER_ID);
+  const { data } = useGetBidAuctions(TEST_USER_ID);
 
   console.log(data);
 
