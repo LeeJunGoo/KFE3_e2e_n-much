@@ -12,7 +12,11 @@ export async function getAllAuctions() {
 }
 
 export async function getAuction(auction_id: string) {
-  const { data: auction, error } = await supabase.from('auctions').select('*').eq('auction_id', auction_id);
+  const { data: auction, error } = await supabase
+    .from('auctions')
+    .select('*')
+    .eq('auction_id', auction_id)
+    .maybeSingle();
 
   if (error) {
     throw new Error('DB: 특정 경매 불러오기 에러');
@@ -49,7 +53,8 @@ export async function addAuction(
         end_time
       }
     ])
-    .select();
+    .select()
+    .maybeSingle();
 
   if (error) {
     throw new Error('DB: 경매 추가 에러');
@@ -63,7 +68,8 @@ export async function updateAuction(auction_id: string, status: string) {
     .from('auctions')
     .update({ status })
     .eq('auction_id', auction_id)
-    .select();
+    .select()
+    .maybeSingle();
 
   if (error) {
     throw new Error('DB: 경매 수정 에러');
@@ -73,7 +79,12 @@ export async function updateAuction(auction_id: string, status: string) {
 }
 
 export async function deleteAuction(auction_id: string) {
-  const { data: auction, error } = await supabase.from('auctions').delete().eq('auction_id', auction_id).select();
+  const { data: auction, error } = await supabase
+    .from('auctions')
+    .delete()
+    .eq('auction_id', auction_id)
+    .select()
+    .maybeSingle();
 
   if (error) {
     throw new Error('DB: 경매 삭제 에러');
