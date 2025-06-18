@@ -115,3 +115,26 @@ export const getHighestBid = async (auction_id: string) => {
 
   return data;
 };
+
+//특정 유저의 episode data 가져오기
+export async function getUserEpisodes(user_id: string) {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select(
+      `
+      *,
+      auction:auction_id (
+        auction_id,
+        title
+      )
+    `
+    )
+    .eq('user_id', user_id);
+
+  if (error) {
+    console.error(error);
+    throw new Error('DB: 유저의 사연 불러오기 에러');
+  }
+
+  return data;
+}

@@ -1,12 +1,13 @@
 'use client';
 import Image from 'next/image';
-import { useCreatedAuctions } from '../../../hooks/queries/useAuctions';
+import { useGetUser } from '../../../hooks/queries/useUsers';
+import { useGetUserEpisodes } from '../../../hooks/queries/uesEpisodes';
 
 const MyAuctionOverviewPage = () => {
-  const { data, isLoading, error } = useCreatedAuctions('9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374');
+  const TEST_USER_ID = '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
 
-  if (isLoading) return <div>로딩 중 입니다...!</div>;
-  if (error) return <div>에러 발생! {error.message}</div>;
+  //유저 정보
+  const { data } = useGetUserEpisodes(TEST_USER_ID);
 
   console.log(data);
 

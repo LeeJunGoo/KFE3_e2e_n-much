@@ -4,7 +4,7 @@ import { episodeQueryKeys } from './keys/episodes';
 
 export const useGetUserEpisodes = (userId: string) => {
   return useQuery({
-    queryKey: episodeQueryKeys.detail(userId),
+    queryKey: episodeQueryKeys.user(userId),
     queryFn: () => fetchUserEpisodes(userId),
     enabled: !!userId
   });

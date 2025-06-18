@@ -3,6 +3,7 @@ import {
   deleteEpisode,
   getAllEpisodes,
   getEpisode,
+  getUserEpisodes,
   updateEpisode
 } from '@repo/ui/utils/supabase/query/episodes';
 import { NextRequest } from 'next/server';
@@ -14,16 +15,21 @@ const commonHeader = {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const episodeId = searchParams.get('episode_id');
+  const userId = searchParams.get('user_id');
 
   try {
-    if (episodeId === null) {
-      const res = await getAllEpisodes();
-
-      return Response.json({ status: 'success', data: res }, commonHeader);
-    } else {
+    if (episodeId) {
       const res = await getEpisode(episodeId);
       return Response.json({ status: 'success', data: res }, commonHeader);
     }
+
+    if (userId) {
+      const res = await getUserEpisodes(userId);
+      return Response.json({ status: 'success', data: res }, commonHeader);
+    }
+
+    const res = await getAllEpisodes();
+    return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
       return Response.json({ status: 'error', error: error.message }, commonHeader);
