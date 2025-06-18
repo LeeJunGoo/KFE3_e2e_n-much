@@ -1,8 +1,9 @@
+import TabBar from '@repo/ui/components/common/TabBar';
 import PageContainer from '@repo/ui/components/layout/PageContainer';
-import { pretendard } from './fonts';
+
 import { home } from '../app/metadata/common/home';
+import { pretendard } from './fonts';
 import QueryProvider from './providers/QueryProvider';
-import Navbar from '@repo/ui/components/navbar/navbar';
 
 import './globals.css';
 
@@ -15,7 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <QueryProvider>
           <header className="w-full bg-blue-400 h-16 px-5">헤더테스트</header>
           <PageContainer>{children}</PageContainer>
-          <Navbar />
+          <TabBar />
         </QueryProvider>
       </body>
     </html>
