@@ -12,6 +12,7 @@ export async function GET(request: NextRequest) {
   try {
     if (param === null) {
       const res = await getAllStories();
+
       return Response.json({ status: 'success', data: res }, commonHeader);
     } else {
       const res = await getStory(param);
