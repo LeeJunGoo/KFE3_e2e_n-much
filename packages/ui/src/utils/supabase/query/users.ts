@@ -1,4 +1,5 @@
 import { createClient } from '../client/client';
+import type { CreateUserPayload, UserUpdate } from '@repo/ui/types/users';
 
 const supabase = createClient();
 
@@ -12,17 +13,16 @@ export async function getAllUsers() {
 }
 
 export async function getUser(user_id: string) {
-  const { data: user, error } = await supabase.from('users').select('*').eq('user_id', user_id);
+  const { data: user, error } = await supabase.from('users').select('*').eq('user_id', user_id).maybeSingle();
 
   if (error) {
     throw new Error('DB: 특정 유저 불러오기 에러');
   }
-
   return user;
 }
 
-export async function addUser(email: string, password: string, role: 'SELLER' | 'BUYER', nickname: string) {
-  const { data: user, error } = await supabase.from('users').insert([{ email, password, role, nickname }]).select();
+export async function addUser(newUserData: CreateUserPayload) {
+  const { data: user, error } = await supabase.from('users').insert([newUserData]).select().single();
 
   if (error) {
     throw new Error('DB: 유저 추가 에러');
@@ -31,12 +31,13 @@ export async function addUser(email: string, password: string, role: 'SELLER' | 
   return user;
 }
 
-export async function updateUser(user_id: string, nickname: string, avatar: string) {
+export async function updateUser(user_id: string, updatedData: UserUpdate) {
   const { data: user, error } = await supabase
     .from('users')
-    .update({ nickname, avatar })
+    .update(updatedData)
     .eq('user_id', user_id)
-    .select();
+    .select()
+    .single();
 
   if (error) {
     console.log(error);

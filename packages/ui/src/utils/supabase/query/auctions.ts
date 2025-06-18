@@ -1,4 +1,5 @@
 import { createClient } from '../client/client';
+import type { CreateAuctionPayload } from '@repo/ui/types/auctions';
 
 const supabase = createClient();
 
@@ -13,44 +14,20 @@ export async function getAllAuctions() {
 }
 
 export async function getAuction(auction_id: string) {
-  const { data: auction, error } = await supabase.from('auctions').select('*').eq('auction_id', auction_id);
+  const { data: auction, error } = await supabase
+    .from('auctions')
+    .select('*')
+    .eq('auction_id', auction_id)
+    .maybeSingle();
 
   if (error) {
     throw new Error('DB: 특정 경매 불러오기 에러');
   }
-
   return auction;
 }
 
-export async function addAuction(
-  user_id: string,
-  title: string,
-  description: string,
-  starting_point: number,
-  current_point: number,
-  max_point: number,
-  status: 'OPEN' | 'CLOSED' | 'CANCELLED',
-  image_urls: string[],
-  start_time: string,
-  end_time: string
-) {
-  const { data: auction, error } = await supabase
-    .from('auctions')
-    .insert([
-      {
-        user_id,
-        title,
-        description,
-        starting_point,
-        current_point,
-        max_point,
-        status,
-        image_urls,
-        start_time,
-        end_time
-      }
-    ])
-    .select();
+export async function addAuction(auctionData: CreateAuctionPayload) {
+  const { data: auction, error } = await supabase.from('auctions').insert([auctionData]).select().single();
 
   if (error) {
     throw new Error('DB: 경매 추가 에러');
@@ -69,7 +46,6 @@ export async function updateAuction(auction_id: string, status: string) {
   if (error) {
     throw new Error('DB: 경매 수정 에러');
   }
-
   return user;
 }
 
@@ -79,6 +55,5 @@ export async function deleteAuction(auction_id: string) {
   if (error) {
     throw new Error('DB: 경매 삭제 에러');
   }
-
   return auction;
 }

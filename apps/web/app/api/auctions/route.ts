@@ -6,6 +6,7 @@ import {
   updateAuction
 } from '@repo/ui/utils/supabase/query/auctions';
 import { NextRequest } from 'next/server';
+import type { CreateAuctionPayload } from '@repo/ui/types/auctions/index';
 
 const commonHeader = {
   headers: { 'Content-Type': 'application/json' }
@@ -31,32 +32,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const {
-    user_id,
-    title,
-    description,
-    starting_point,
-    current_point,
-    max_point,
-    status,
-    image_urls,
-    start_time,
-    end_time
-  } = await request.json();
+  const auctionData: CreateAuctionPayload = await request.json();
 
   try {
-    const res = await addAuction(
-      user_id,
-      title,
-      description,
-      starting_point,
-      current_point,
-      max_point,
-      status,
-      image_urls,
-      start_time,
-      end_time
-    );
+    const res = await addAuction(auctionData);
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
