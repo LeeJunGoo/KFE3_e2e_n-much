@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import PageContainer from '@repo/ui/components/layout/PageContainer';
-import Navbar from '@repo/ui/components/navbar/Navbar';
+import Navbar from '@repo/ui/components/navbar/navbar';
 
 const geist = Geist({ subsets: ['latin'] });
 
