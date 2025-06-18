@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
+import { useState } from 'react';
 import { FiAward, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { IoMdTime } from 'react-icons/io';
 import { EpisodeProps } from './EpisodeList';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import { BiddingForm } from './BiddingForm';
 
 const EpisodeItem = ({ story }: { story: EpisodeProps }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -44,12 +46,22 @@ const EpisodeItem = ({ story }: { story: EpisodeProps }) => {
             <FiTrash2 />
             삭제
           </Button>
-          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 gap-1.5">
-            <FiAward />
-            입찰하기
-          </Button>
         </div>
       </div>
+      <Accordion type="single" collapsible className="w-full sm:w-auto">
+        <AccordionItem value="item-1" className="border-none">
+          {/* AccordionTrigger를 Button으로 렌더링합니다. */}
+          <AccordionTrigger asChild>
+            <Button size="sm" className="bg-purple-600 hover:bg-purple-700 gap-1.5">
+              <FiAward />
+              입찰하기
+            </Button>
+          </AccordionTrigger>
+          <AccordionContent className="pt-2">
+            <BiddingForm currentBid={850000} userPoints={10000} />
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
     </li>
   );
 };
