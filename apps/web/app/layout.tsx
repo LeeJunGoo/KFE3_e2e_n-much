@@ -1,26 +1,23 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
+import TabBar from '@repo/ui/components/common/TabBar';
 import PageContainer from '@repo/ui/components/layout/PageContainer';
-import Navbar from '@repo/ui/components/navbar/Navbar';
-import Header from '@repo/ui/components/header/Header';
 
-const geist = Geist({ subsets: ['latin'] });
+import { home } from '../app/metadata/common/home';
+import { pretendard } from './fonts';
+import QueryProvider from './providers/QueryProvider';
 
-export const metadata: Metadata = {
-  title: 'Vidding',
-  description: '경매를 통한 가치를 팔자! 경매를 통한 가치를 사자!'
-};
+import './globals.css';
+
+export const metadata = home;
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className={`flex flex-col w-full max-w-2xl m-auto shadow-2xl relative ${geist.className}`}>
-        <header className="w-full bg-blue-400 h-16 px-5">
-          <Header />
-        </header>
-        <PageContainer>{children}</PageContainer>
-        <Navbar />
+      <body className={`flex flex-col w-full max-w-2xl m-auto shadow-2xl relative ${pretendard.className}`}>
+        <QueryProvider>
+          <header className="w-full bg-blue-400 h-16 px-5">헤더테스트</header>
+          <PageContainer>{children}</PageContainer>
+          <TabBar />
+        </QueryProvider>
       </body>
     </html>
   );
