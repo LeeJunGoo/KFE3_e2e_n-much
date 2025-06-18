@@ -25,7 +25,7 @@ export async function addAuction(
   user_id: string,
   title: string,
   description: string,
-  address: string,
+  address: string[],
   starting_point: number,
   max_point: number,
   image_urls: string[] | null,

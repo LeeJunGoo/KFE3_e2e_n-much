@@ -3,7 +3,7 @@ import { createClient } from '../client/client';
 const supabase = createClient();
 
 export async function getAllStories() {
-  const { data: stories, error } = await supabase.from('stories').select('*');
+  const { data: stories, error } = await supabase.from('episodes').select('*');
 
   if (error) {
     console.log(error);
@@ -14,7 +14,7 @@ export async function getAllStories() {
 }
 
 export async function getStory(story_id: string) {
-  const { data: auction, error } = await supabase.from('stories').select('*').eq('story_id', story_id);
+  const { data: auction, error } = await supabase.from('episodes').select('*').eq('story_id', story_id);
 
   if (error) {
     throw new Error('DB: 특정 사연 불러오기 에러');
@@ -25,7 +25,7 @@ export async function getStory(story_id: string) {
 
 export async function addStory(auction_id: string, user_id: string, bid_point: number) {
   const { data: story, error } = await supabase
-    .from('stories')
+    .from('episodes')
     .insert([
       {
         auction_id,
@@ -45,7 +45,7 @@ export async function addStory(auction_id: string, user_id: string, bid_point: n
 
 export async function updateStory(story_id: string, winning_bid: boolean) {
   const { data: story, error } = await supabase
-    .from('stories')
+    .from('episodes')
     .update({ winning_bid })
     .eq('story_id', story_id)
     .select();
@@ -58,7 +58,7 @@ export async function updateStory(story_id: string, winning_bid: boolean) {
 }
 
 export async function deleteStory(story_id: string) {
-  const { data: story, error } = await supabase.from('stories').delete().eq('story_id', story_id).select();
+  const { data: story, error } = await supabase.from('episodes').delete().eq('story_id', story_id).select();
 
   if (error) {
     throw new Error('DB: 사연 삭제 에러');
