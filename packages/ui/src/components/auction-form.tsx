@@ -14,7 +14,7 @@ import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 export default function AuctionForm() {
   const searchParams = useSearchParams();
   const auctionIdParam = searchParams.get('auction_id');
-  const mode = auctionIdParam ? '등록하기' : '수정하기';
+  const isEditing: boolean = auctionIdParam ? true : false;
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(false);
@@ -168,7 +168,7 @@ export default function AuctionForm() {
               </FormItem>
             )}
           />
-          <Button type="submit">{mode}</Button>
+          <Button type="submit">{isEditing ? '수정하기' : '등록하기'}</Button>
         </form>
       </Form>
     </>
