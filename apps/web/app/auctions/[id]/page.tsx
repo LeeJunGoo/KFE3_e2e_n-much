@@ -1,5 +1,5 @@
 import AuctionDetailCard from '@repo/ui/components/auctions/AuctionDetailCard';
-import StoriesList from '@repo/ui/components/auctions/StoriesList';
+import EpilogueList from '@repo/ui/components/auctions/EpilogueList';
 import Link from 'next/link';
 import { FaArrowLeft, FaMapMarkerAlt } from 'react-icons/fa';
 import { IoMdTime } from 'react-icons/io';
@@ -71,6 +71,61 @@ const mockStories = [
     title: '라이카 M10-P 실버 판매합니다.',
     content:
       '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
+  {
+    id: 12,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
+  {
+    id: 7,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
+  {
+    id: 8,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
+  {
+    id: 9,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
+  {
+    id: 10,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
   }
 ];
 
@@ -96,7 +151,7 @@ const AuctionDetailPage = () => {
           </div>
         </div>
       </header>
-      <main className="space-y-7">
+      <main className="space-y-7 scroll-smooth">
         <div className="bg-[#F3F4F6] p-4 rounded-lg space-y-3">
           <h1 className="text-2xl font-bold">식사권 화이트롤 + 빵</h1>
           <div>
@@ -109,6 +164,7 @@ const AuctionDetailPage = () => {
           </div>
         </div>
         <div className="px-7 space-y-7">
+          {/* 이미지 슬라이드  */}
           <AuctionDetailCard />
           {/* 상품 정보 */}
           <div className="border rounded-lg divide-y">
@@ -176,7 +232,7 @@ const AuctionDetailPage = () => {
               </div>
             </div>
           </div>
-          <StoriesList mockStories={mockStories} />
+          <EpilogueList mockStories={mockStories} />
         </div>
       </main>
     </>

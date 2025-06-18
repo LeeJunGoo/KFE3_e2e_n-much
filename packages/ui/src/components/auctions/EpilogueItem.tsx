@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { FiAward, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { IoMdTime } from 'react-icons/io';
-import { StoriesProps } from './StoriesList';
+import { EpilogueProps } from './EpilogueList';
 
-const StoriesItem = ({ story }: { story: StoriesProps }) => {
+const EpilogueItem = ({ story }: { story: EpilogueProps }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
@@ -53,4 +53,4 @@ const StoriesItem = ({ story }: { story: StoriesProps }) => {
     </li>
   );
 };
-export default StoriesItem;
+export default EpilogueItem;
