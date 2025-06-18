@@ -1,36 +1,28 @@
 'use client';
-import { getAllAuctions, getAuction } from '@repo/ui/utils/supabase/query/auctions';
-import { getAllUsers, getUserAuctionCount } from '@repo/ui/utils/supabase/query/users';
-import { getHighestBid } from '@repo/ui/utils/supabase/query/episodes';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useCreatedAuctions } from '../../hooks/queries/useAuctions';
+import { useGetUserEpisodes } from '../../hooks/queries/useEpisodes';
 
 const AuctionsPage = () => {
   const router = useRouter();
+  /** 테스트 tanstack query */
+  const TEST_USER_ID = '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
+  const TEST_CREATED_AUCTIONS = 'a85dc1ce-abbd-42e6-ae58-86bf230b99aa';
 
-  //경매 정보 가져오기 테스트
-  // useEffect(() => {
-  //   console.log('🚀 경매정보 리스트 가져오기 - 테스트 시작!');
-  //   getAllAuctions();
-  // }, []);
+  //경매자가 올린 데이터 리스트 불러오기
+  const { data } = useCreatedAuctions(TEST_CREATED_AUCTIONS);
+  console.log(data);
 
-  //해당 경매 페이지의 최고 입찰자
-  useEffect(() => {
-    console.log('🚀 최고 입찰자 가져오기 - 테스트 시작!');
-    getHighestBid('9e525843-9047-4f17-8dc7-368f9311bf57');
-  }, []);
+  //총 경매수, 현재 진행중인 경매 count - supabase 함수 이름 : getUserAuctionCount
+  // 현재 route(확인해봐야함), fetch(확인해봐야함), tanstack query(안했으니 추가해야함) 체크
 
-  //경매 정보 (특정한명)
-  // useEffect(() => {
-  //   console.log('🚀 경매 한명 가져오기 - 테스트 시작!');
-  //   getAuction('41e19b8d-bb97-465c-a98a-1b9a2d4310a5');
-  // }, []);
+  //최고 입찰자 - supabase 함수 이름 : getHighestBid
+  // 현재 route(확인해봐야함), fetch(확인해봐야함), tanstack query(안했으니 추가해야함) 체크
 
-  //경매자 총 경매수 count, 현재 진행중인 경매 count
-  // useEffect(() => {
-  //   console.log('🚀 경매자 이준구 가져오기 - 테스트 시작!');
-  //   getUserAuctionCount('a85dc1ce-abbd-42e6-ae58-86bf230b99aa');
-  // }, []);
+  //사연 리스트 - supabase 함수 이름 : getAllEpisodes -> fetch 함수명 fetchAllEpisode(여기까지 구현해둠), tanstack query 안함
+  //아래 코드 참고해서 tanstack query 만 구현하시면 됩니다.
+  const { data: episodes } = useGetUserEpisodes(TEST_USER_ID);
+  console.log(episodes);
 
   const goToAuctionDetail = () => {
     router.push(`/auctions/1`);

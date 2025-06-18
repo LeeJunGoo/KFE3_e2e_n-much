@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useGetUser } from '../../../hooks/queries/useUsers';
-import { useGetUserEpisodes } from '../../../hooks/queries/uesEpisodes';
+import { useGetUserEpisodes } from '../../../hooks/queries/useEpisodes';
 import {
   useCreatedAuctions,
   useGetAuction,

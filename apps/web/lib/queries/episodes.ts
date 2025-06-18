@@ -1,3 +1,4 @@
+//전체 사연 리스트 불러오기
 export const fetchAllEpisode = async () => {
   const res = await fetch(`/api/episodes`);
   const json = await res.json();
