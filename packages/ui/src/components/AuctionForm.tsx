@@ -103,7 +103,6 @@ export default function AuctionForm() {
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
-    console.log(fullAddress);
     form.setValue('address', fullAddress);
     form.trigger('address');
     setConfirmPostCode(true);
