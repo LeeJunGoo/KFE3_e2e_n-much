@@ -1,6 +1,6 @@
 import { FaChartBar, FaHome, FaSearch, FaUser } from 'react-icons/fa';
 
-export default function Navbar() {
+export default function TabBar() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 max-w-2xl bg-amber-300 m-auto h-16">
       <ul className="h-full flex items-center justify-between">

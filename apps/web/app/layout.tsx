@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import PageContainer from '@repo/ui/components/layout/PageContainer';
-import Navbar from '@repo/ui/components/navbar/navbar';
+import TabBar from '@repo/ui/components/common/TabBar';
 
 const geist = Geist({ subsets: ['latin'] });
 
@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`flex flex-col w-full max-w-2xl m-auto shadow-2xl relative ${geist.className}`}>
         <header className="w-full bg-blue-400 h-16 px-5">헤더테스트</header>
         <PageContainer>{children}</PageContainer>
-        <Navbar />
+        <TabBar />
       </body>
     </html>
   );
