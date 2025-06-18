@@ -1,5 +1,6 @@
 import { addUser, deleteUser, getAllUsers, getUser, updateUser } from '@repo/ui/utils/supabase/query/users';
 import { NextRequest } from 'next/server';
+import type { CreateUserPayload } from '@repo/ui/types/users/index';
 
 const commonHeader = {
   headers: { 'Content-Type': 'application/json' }
@@ -25,10 +26,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { email, password, role, nickname } = await request.json();
+  const userData: CreateUserPayload = await request.json();
 
   try {
-    const res = await addUser(email, password, role, nickname);
+    const res = await addUser(userData);
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
@@ -41,7 +42,7 @@ export async function PATCH(request: NextRequest) {
   const { user_id, nickname, avatar } = await request.json();
 
   try {
-    const res = await updateUser(user_id, nickname, avatar);
+    const res = await updateUser(user_id, { nickname, avatar });
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
