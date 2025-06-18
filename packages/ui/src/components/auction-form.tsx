@@ -77,6 +77,12 @@ export default function AuctionForm() {
     setFormDefaultValues(auctionIdParam);
   }, [auctionIdParam, form]);
 
+  useEffect(() => {
+    if (confirmPostCode) {
+      form.trigger('address');
+    }
+  }, [confirmPostCode, form]);
+
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
