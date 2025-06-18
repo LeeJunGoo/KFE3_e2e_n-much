@@ -1,3 +1,8 @@
+//TODO - 모달 창 ui 깨지는 거 물어보기
+//TODO - 주소를 기본 주소와 상세 주소로 배열로 넣기
+//TODO - 경매 수정페이지에서 주소 검색 확인 과정 패스하기
+//TODO - 경매 시작일, 종료일 설정
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
