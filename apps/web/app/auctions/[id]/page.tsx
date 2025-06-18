@@ -1,29 +1,80 @@
-'use client';
-
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
+import AuctionDetailCard from '@repo/ui/components/auctions/AuctionDetailCard';
+import StoriesList from '@repo/ui/components/auctions/StoriesList';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
 import { FaArrowLeft, FaMapMarkerAlt } from 'react-icons/fa';
 import { IoMdTime } from 'react-icons/io';
 
-const page = () => {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
+const mockStories = [
+  {
+    id: 1,
+    author: {
+      name: '김하은',
+      avatarUrl: 'https://i.pravatar.cc/40?u=haein_kim'
+    },
+    timestamp: new Date('2025-06-18T01:15:00Z').toISOString(), // 가장 최근 글
+    title: '결혼식 스냅용 필름카메라 찾아요',
+    content:
+      '안녕하세요. 10월에 있을 제 결혼식에서 서브 스냅으로 사용할 필름카메라를 구하고 있습니다. Contax T3나 Leica Minilux Zoom 같은 작고 예쁜 자동 카메라였으면 좋겠습니다. 전문가가 아니어도 쉽게 다룰 수 있고, 결과물이 따뜻한 색감으로 나오는 모델을 선호해요. 케이스와 스트랩이 포함된 좋은 상태의 제품을 양도받고 싶습니다.'
+  },
+  {
+    id: 2,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
 
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
+  {
+    id: 3,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
+  {
+    id: 4,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
+  {
+    id: 5,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  },
+  {
+    id: 6,
+    author: {
+      name: '박서준',
+      avatarUrl: 'https://i.pravatar.cc/40?u=seojun_park'
+    },
+    timestamp: new Date('2025-06-17T22:30:00Z').toISOString(),
+    title: '라이카 M10-P 실버 판매합니다.',
+    content:
+      '소중하게 사용하던 라이카 M10-P 실버 색상 판매합니다. 2023년에 반도카메라에서 정식으로 구매했으며, 보증기간은 만료되었습니다. 사용감이 거의 없는 민트급 상태를 유지하고 있으며, 항상 제습함에 보관했습니다. 셔터 카운트는 약 3,000컷 정도입니다. 정품 배터리 2개와 충전기, 박스를 포함한 풀박스 구성입니다. 직거래는 서울 강남역에서 가능합니다.'
+  }
+];
 
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    api.on('select', () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
-
+const AuctionDetailPage = () => {
   return (
     <>
       <header className="mb-10">
@@ -58,19 +109,7 @@ const page = () => {
           </div>
         </div>
         <div className="px-7 space-y-7">
-          <div className="relative rounded-lg overflow-hidden">
-            <Carousel setApi={setApi}>
-              <CarouselContent>
-                <CarouselItem className="bg-amber-300 w-full h-[300px]"></CarouselItem>
-                <CarouselItem className="bg-amber-300 w-full h-[300px]"></CarouselItem>
-                <CarouselItem className="bg-amber-300 w-full h-[300px]"></CarouselItem>
-              </CarouselContent>
-            </Carousel>
-            {/* 2. 카운트 표시를 위한 div 추가 및 스타일링 */}
-            <p className="absolute bottom-5 right-5 rounded-full bg-gray-900/70 px-3 py-1 text-sm text-white">
-              {current} / {count}
-            </p>
-          </div>
+          <AuctionDetailCard />
           {/* 상품 정보 */}
           <div className="border rounded-lg divide-y">
             <div className="px-6 py-4">
@@ -137,32 +176,11 @@ const page = () => {
               </div>
             </div>
           </div>
-          {/* 사연 */}
-          <div className="divide-y">
-            <div className="px-6 py-4">
-              <h2 className="text-lg font-bold space-x-0.5">
-                <span>사연</span>
-                <span>(4)</span>
-              </h2>
-            </div>
-            <div className="px-6 py-4 bg-amber-100">
-              <div className="flex gap-3 items-center">
-                <div className="w-[30px] h-[30px] bg-blue-400/30 border-gray-200 object-cover rounded-full" />
-                <div>
-                  <p className="font-semibold">이지현</p>
-                  <p className="flex items-center">
-                    <IoMdTime />
-                    <time className="text-sm">6월 14일 오후 03:10</time>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <StoriesList mockStories={mockStories} />
         </div>
       </main>
-      경매 상품 상세 page
     </>
   );
 };
 
-export default page;
+export default AuctionDetailPage;
