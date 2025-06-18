@@ -86,3 +86,32 @@ export async function deleteEpisode(episode_id: string) {
 
   return data;
 }
+
+// 특정 경매의 최고 입찰자와 입찰가 가져오기
+export const getHighestBid = async (auction_id: string) => {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select(
+      `
+      *,
+      user:user_id (
+        user_id,
+        nickname,
+        avatar
+      )
+    `
+    )
+    .eq('auction_id', auction_id)
+    .order('bid_point', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    throw new Error('DB: 최고 입찰자 불러오기 에러');
+  }
+
+  console.log('최고 입찰자:', data?.user?.nickname);
+  console.log('최고 입찰가:', data?.bid_point);
+
+  return data;
+};

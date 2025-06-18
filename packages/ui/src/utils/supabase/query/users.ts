@@ -58,3 +58,27 @@ export const updateUser = async (user_id: string, updatedData: UserUpdate) => {
 
   return data;
 };
+
+//경매자 총 경매수 count, 현재 진행중인 경매 count
+export const getUserAuctionCount = async (user_id: string) => {
+  const { count: totalCount } = await supabase
+    .from('auctions')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user_id);
+
+  const { count: activeCount } = await supabase
+    .from('auctions')
+    .select('*', { count: 'exact', head: true })
+    .eq('user_id', user_id)
+    .eq('status', 'OPEN');
+
+  console.log('경매 통계:', {
+    총경매수: totalCount,
+    진행중경매: activeCount
+  });
+
+  return {
+    totalAuctions: totalCount || 0,
+    activeAuctions: activeCount || 0
+  };
+};
