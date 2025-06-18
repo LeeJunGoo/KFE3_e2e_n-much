@@ -5,6 +5,7 @@ export default function ImageUploader({ onPreviewImages }: { onPreviewImages: Di
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       console.log(acceptedFiles);
+      onPreviewImages([]);
 
       acceptedFiles.forEach((file) => {
         const reader = new FileReader();

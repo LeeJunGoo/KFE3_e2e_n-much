@@ -84,7 +84,8 @@ export default function AuctionForm() {
       const result = await data.json();
 
       if (result.status === 'success' && result.data.length !== 0) {
-        const { title, address, description } = result.data[0];
+        const { title, address, description, image_urls } = result.data[0];
+        setPreviewImages([...image_urls]);
         form.reset({ title, address: address[0], detailAddress: address[1], description });
         setIsLoading(false);
       } else {
