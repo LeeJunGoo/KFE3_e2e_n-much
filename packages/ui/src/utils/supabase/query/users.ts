@@ -4,11 +4,28 @@ import type { CreateUserPayload, UserUpdate } from '@repo/ui/types/users';
 const supabase = createClient();
 
 export const getAllUsers = async () => {
-  const { data, error } = await supabase.from('users').select('*');
+  const { data, error } = await supabase.from('users').select(`
+    *,
+    auctions (
+      auction_id,
+      title
+    ),
+    episodes (
+      episode_id,
+      title,
+      bid_point
+    )
+  `);
 
   if (error) {
     throw new Error('DB: 모든 유저 불러오기 에러');
   }
+
+  console.log('전체 데이터:', data);
+  console.log('첫 번째 유저:', data?.[0]);
+  console.log('첫 번째 유저의 경매:', data?.[0]?.auctions);
+  console.log('첫 번째 유저의 에피소드:', data?.[0]?.episodes);
+
   return data;
 };
 

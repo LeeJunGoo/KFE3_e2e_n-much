@@ -42,6 +42,12 @@ const MyPage = () => {
       <nav className="mt-11">
         <ul className="rounded-2xl border bg-amber-100">
           <li className="border-b border-b-gray-300">
+            <Link href="/mypage/my-auctions" className="flex justify-between w-full p-4">
+              <p>내 경매 현황</p>
+              <p>아이콘</p>
+            </Link>
+          </li>
+          <li className="border-b border-b-gray-300">
             <Link href="/mypage/points" className="flex justify-between w-full p-4">
               <p>포인트 사용 내역</p>
               <p>아이콘</p>

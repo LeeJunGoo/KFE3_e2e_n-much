@@ -4,17 +4,37 @@ import type { CreateAuctionPayload } from '@repo/ui/types/auctions';
 const supabase = createClient();
 
 export const getAllAuctions = async () => {
-  const { data, error } = await supabase.from('auctions').select('*');
+  const { data, error } = await supabase.from('auctions').select(`
+      *,
+      user:user_id (
+        user_id,
+        nickname,
+        avatar
+      )
+    `);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error('DB: 모든 경매 불러오기 에러');
   }
   return data;
 };
 
 export const getAuction = async (auction_id: string) => {
-  const { data, error } = await supabase.from('auctions').select('*').eq('auction_id', auction_id).maybeSingle();
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(
+      `
+      *,
+      user:user_id (
+        user_id,
+        nickname,
+        avatar
+      )
+    `
+    )
+    .eq('auction_id', auction_id)
+    .maybeSingle();
 
   if (error) {
     throw new Error('DB: 특정 경매 불러오기 에러');
