@@ -2,6 +2,8 @@ import PageContainer from '@repo/ui/components/layout/PageContainer';
 import { pretendard } from './fonts';
 import { home } from '../app/metadata/common/home';
 import QueryProvider from './providers/QueryProvider';
+import Navbar from '@repo/ui/components/navbar/navbar';
+
 import './globals.css';
 
 export const metadata = home;
