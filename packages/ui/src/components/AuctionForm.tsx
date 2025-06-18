@@ -1,8 +1,16 @@
-//TODO - 모달 창 ui 깨지는 거 물어보기
+//TODO - 모달 창 ui 깨지는 거 물어보기 => 리팩토링할 때 답변(박서영)
+//TODO - 시간이 남거나 리팩토링할 때, tanstack query 도입
+
 //TODO - 주소를 기본 주소와 상세 주소로 배열로 넣기
+//TODO - 경매 페이지에 기본 주소와 상세 주소 필드 넣기
 //TODO - 경매 수정페이지에서 주소 검색 확인 과정 패스하기
-//TODO - 경매 시작일, 종료일 설정
-//TODO - 프리뷰 이미지 li key 값 index에서 수정하기
+//TODO - 경매 시작일, 종료일 설정 (shadcn 사용)
+//TODO - 프리뷰 이미지 li key 값 index에서 다른 값으로 수정하기
+//TODO - 수정 페이지에서 이미지 불러와서 프리뷰로 보여주기
+//TODO - 경매 시작일, 종료일 설정하기
+//TODO - 라우트 핸들러 maybeSingle로 수정 (fetch 관련 함수도 수정)
+//TODO - supabase 버켓 설정해서 이미지 업로드 다운로드가지 테스트
+//TODO - ui 수정
 
 'use client';
 
@@ -47,6 +55,7 @@ export default function AuctionForm() {
         },
         { message: '주소 검색을 통해 주소를 입력해야 합니다.' }
       ),
+    detailAddress: z.string().min(5, { message: '상세 주소는 최소 5글자가 되어야 합니다.' }),
     description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
       message: '상세 내용은 최대 500자가 되어야 합니다.'
     })
@@ -57,6 +66,7 @@ export default function AuctionForm() {
     defaultValues: {
       title: '',
       address: '',
+      detailAddress: '',
       description: ''
     }
   });
@@ -64,7 +74,7 @@ export default function AuctionForm() {
   useEffect(() => {
     async function setFormDefaultValues(auctionId: string | null) {
       if (!auctionId) {
-        form.reset({ title: '', address: '', description: '' });
+        form.reset({ title: '', address: '', detailAddress: '', description: '' });
         setIsLoading(false);
         return;
       }
@@ -75,7 +85,7 @@ export default function AuctionForm() {
 
       if (result.status === 'success' && result.data.length !== 0) {
         const { title, address, description } = result.data[0];
-        form.reset({ title, address, description });
+        form.reset({ title, address: address[0], detailAddress: address[1], description });
         setIsLoading(false);
       } else {
         form.reset({ title: '', address: '', description: '' });
@@ -148,6 +158,19 @@ export default function AuctionForm() {
                 <FormLabel>주소</FormLabel>
                 <FormControl>
                   <Input placeholder="상품 위치 또는 주소를 입력하세요." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="detailAddress"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>상세 주소</FormLabel>
+                <FormControl>
+                  <Input placeholder="상품의 상세 위치 또는 상세 주소를 입력하세요." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
