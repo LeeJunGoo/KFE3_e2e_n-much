@@ -1,8 +1,6 @@
 //TODO - 모달 창 ui 깨지는 거 물어보기 => 리팩토링할 때 답변(박서영)
 //TODO - 시간이 남거나 리팩토링할 때, tanstack query 도입
 
-//TODO - 경매 시작일, 종료일 설정 (shadcn 사용)
-//TODO - 경매 시작일, 종료일 설정하기
 //TODO - 라우트 핸들러 maybeSingle로 수정 (fetch 관련 함수도 수정)
 //TODO - supabase 버켓 설정해서 이미지 업로드 다운로드가지 테스트
 //TODO - ui 수정
@@ -125,8 +123,6 @@ export default function AuctionForm() {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values);
   }
 
