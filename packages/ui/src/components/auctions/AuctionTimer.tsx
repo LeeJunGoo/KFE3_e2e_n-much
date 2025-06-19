@@ -1,15 +1,12 @@
 'use client';
 
 import { useCountdown } from '@repo/ui/hooks/useCountDown';
+import { AuctionRow } from '@repo/ui/types/auctions';
 
-// 예시: 이 컴포넌트는 props로 시작 시간과 종료 시간을 받습니다.
-interface AuctionTimerProps {
-  startTime: string;
-  endTime: string;
-}
+type AuctionTimeProps = Pick<AuctionRow, 'start_time' | 'end_time'>;
 
-const AuctionTimer = ({ startTime, endTime }: AuctionTimerProps) => {
-  const { remainingTime, status } = useCountdown(startTime, endTime);
+const AuctionTimer = ({ start_time, end_time }: AuctionTimeProps) => {
+  const { remainingTime, status } = useCountdown(start_time, end_time);
 
   // status 값에 따라 동적으로 텍스트 색상을 결정하는 함수
   const getStatusClasses = () => {

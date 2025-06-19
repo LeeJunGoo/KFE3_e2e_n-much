@@ -22,7 +22,8 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
     throw new Error(`영화 정보를 불러오지 못했습니다.: ${res?.statusText}`);
   }
   const auctionInfo: AuctionInfoType = await res.json();
-  const { title, current_point, start_time, end_time } = auctionInfo.data;
+
+  const { title, current_point, start_time, end_time, image_urls, description, address } = auctionInfo.data;
 
   return (
     <>
@@ -53,12 +54,12 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             <p className="text-[#8E74F2] text-lg font-semibold">{current_point}&nbsp;P</p>
           </div>
           <div>
-            <AuctionTimer startTime={start_time} endTime={end_time} />
+            <AuctionTimer start_time={start_time} end_time={end_time} />
           </div>
         </div>
         <div className="px-7 space-y-7">
           {/* 이미지 슬라이드  */}
-          <AuctionDetailCard />
+          <AuctionDetailCard image_urls={image_urls} />
           {/* 상품 정보 */}
           <div className="border rounded-lg divide-y">
             <div className="px-6 py-4">
@@ -66,11 +67,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             </div>
 
             <div className="px-6 py-4 leading-relaxed text-gray-600">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum et dolores asperiores qui obcaecati
-                natus earum reprehenderit libero, dolorem, animi minima at consectetur velit placeat repellendus illo
-                eaque, eveniet architecto?
-              </p>
+              <p>{description}</p>
             </div>
           </div>
           {/* 업체 정보 */}
@@ -85,7 +82,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                   <p className="font-semibold">풍년제과</p>
                   <p className="flex items-center">
                     <FaMapMarkerAlt />
-                    <span className="text-sm">서울 특별시 강남구 서초구 123-12</span>
+                    <span className="text-sm">{address}</span>
                   </p>
                 </div>
               </div>
