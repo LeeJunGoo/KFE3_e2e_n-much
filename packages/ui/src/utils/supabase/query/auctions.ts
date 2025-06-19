@@ -3,57 +3,133 @@ import type { CreateAuctionPayload } from '@repo/ui/types/auctions';
 
 const supabase = createClient();
 
-export async function getAllAuctions() {
-  const { data: auctions, error } = await supabase.from('auctions').select('*');
+export const getAllAuctions = async () => {
+  const { data, error } = await supabase.from('auctions').select(`
+      *,
+      user:user_id (
+        user_id,
+        nickname,
+        avatar
+      )
+    `);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error('DB: 모든 경매 불러오기 에러');
   }
-  return auctions;
-}
 
-export async function getAuction(auction_id: string) {
-  const { data: auction, error } = await supabase
+  console.log('전체 경매 데이터:', data);
+  console.log('첫 번째 경매:', data?.[0]);
+  console.log('첫 번째 경매의 유저 정보:', data?.[0]?.user);
+  console.log('경매 개수:', data?.length);
+
+  return data;
+};
+
+export const getAuction = async (auction_id: string) => {
+  const { data, error } = await supabase
     .from('auctions')
-    .select('*')
+    .select(
+      `
+      *,
+      user:user_id (
+        user_id,
+        nickname,
+        avatar
+      )
+    `
+    )
     .eq('auction_id', auction_id)
     .maybeSingle();
 
   if (error) {
     throw new Error('DB: 특정 경매 불러오기 에러');
   }
-  return auction;
-}
 
-export async function addAuction(auctionData: CreateAuctionPayload) {
-  const { data: auction, error } = await supabase.from('auctions').insert([auctionData]).select().single();
+  console.log('특정 경매 데이터:', data);
+  console.log('경매 제목:', data?.title);
+  console.log('경매 등록자 정보:', data?.user);
+  console.log('경매 등록자 닉네임:', data?.user?.nickname);
+  return data;
+};
+
+// 내가 올린 경매 데이터 불러오기 (경매자)
+export const getMyCreatedAuctions = async (user_id: string) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(
+      `
+      *,
+      user:user_id (
+        user_id,
+        nickname,
+        avatar
+      )
+    `
+    )
+    .eq('user_id', user_id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    throw new Error('DB: 내가 올린 경매 불러오기 에러');
+  }
+
+  return data;
+};
+
+// 내가 입찰한 경매 데이터 불러오기 (입찰자)
+export const getMyBidAuctions = async (user_id: string) => {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select(
+      `
+      *,
+      auction:auction_id (
+        *,
+        user:user_id (
+          user_id,
+          nickname,
+          avatar
+        )
+      )
+    `
+    )
+    .eq('user_id', user_id)
+    .order('bid_time', { ascending: false });
+
+  if (error) {
+    console.error(error);
+    throw new Error('DB: 내가 입찰한 경매 불러오기 에러');
+  }
+
+  return data;
+};
+
+export const addAuction = async (auctionData: CreateAuctionPayload) => {
+  const { data, error } = await supabase.from('auctions').insert([auctionData]).select().single();
 
   if (error) {
     throw new Error('DB: 경매 추가 에러');
   }
 
-  return auction;
-}
+  return data;
+};
 
-export async function updateAuction(auction_id: string, status: string) {
-  const { data: user, error } = await supabase
-    .from('auctions')
-    .update({ status })
-    .eq('auction_id', auction_id)
-    .select();
+export const updateAuction = async (auction_id: string, status: string) => {
+  const { data, error } = await supabase.from('auctions').update({ status }).eq('auction_id', auction_id).select();
 
   if (error) {
     throw new Error('DB: 경매 수정 에러');
   }
-  return user;
-}
+  return data;
+};
 
-export async function deleteAuction(auction_id: string) {
-  const { data: auction, error } = await supabase.from('auctions').delete().eq('auction_id', auction_id).select();
+export const deleteAuction = async (auction_id: string) => {
+  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auction_id).select();
 
   if (error) {
     throw new Error('DB: 경매 삭제 에러');
   }
-  return auction;
-}
+  return data;
+};
