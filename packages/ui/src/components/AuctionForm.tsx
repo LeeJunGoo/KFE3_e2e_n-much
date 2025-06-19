@@ -59,7 +59,9 @@ export default function AuctionForm() {
       ),
     detailAddress: z.string().min(5, { message: '상세 주소는 최소 5글자가 되어야 합니다.' }),
     startDay: z.date({ message: '경매 시작일을 입력해야 합니다.' }),
+    startTime: z.string().min(8, { message: '경매 시작 시간을 입력해야 합니다.' }),
     endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }),
+    endTime: z.string().min(8, { message: '경매 종료 시간을 입력해야 합니다.' }),
     description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
       message: '상세 내용은 최대 500자가 되어야 합니다.'
     })
@@ -70,6 +72,8 @@ export default function AuctionForm() {
     defaultValues: {
       title: '',
       address: '',
+      startTime: '',
+      endTime: '',
       detailAddress: '',
       description: ''
     }
@@ -78,7 +82,7 @@ export default function AuctionForm() {
   useEffect(() => {
     async function setFormDefaultValues(auctionId: string | null) {
       if (!auctionId) {
-        form.reset({ title: '', address: '', detailAddress: '', description: '' });
+        form.reset({ title: '', address: '', detailAddress: '', startTime: '', endTime: '', description: '' });
         setIsLoading(false);
         return;
       }
@@ -96,14 +100,16 @@ export default function AuctionForm() {
           address: address[0],
           detailAddress: address[1],
           startDay: new Date(start_time),
+          startTime: start_time.split('T')[1].substr(0, 8),
           endDay: new Date(end_time),
+          endTime: end_time.split('T')[1].substr(0, 8),
           description
         });
         setConfirmPostCode(true);
 
         setIsLoading(false);
       } else {
-        form.reset({ title: '', address: '', description: '' });
+        form.reset({ title: '', address: '', startTime: '', endTime: '', description: '' });
         setIsLoading(false);
       }
     }
@@ -235,6 +241,19 @@ export default function AuctionForm() {
           />
           <FormField
             control={form.control}
+            name="startTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>경매 시작 시간</FormLabel>
+                <FormControl>
+                  <Input className="w-1/2" type="time" step="1" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
             name="endDay"
             render={({ field }) => (
               <FormItem className="flex flex-col">
@@ -261,6 +280,19 @@ export default function AuctionForm() {
                     />
                   </PopoverContent>
                 </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="endTime"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>경매 종료 시간</FormLabel>
+                <FormControl>
+                  <Input className="w-1/2" type="time" step="1" {...field} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
