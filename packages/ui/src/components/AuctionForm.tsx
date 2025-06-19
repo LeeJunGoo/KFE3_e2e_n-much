@@ -103,8 +103,8 @@ export default function AuctionForm() {
           title,
           address: address[0],
           detailAddress: address[1],
-          startDay: start_time,
-          endDay: end_time,
+          startDay: new Date(start_time),
+          endDay: new Date(end_time),
           description
         });
         setConfirmPostCode(true);
