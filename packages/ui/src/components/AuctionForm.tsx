@@ -1,10 +1,9 @@
 //TODO - 모달 창 ui 깨지는 거 물어보기 => 리팩토링할 때 답변(박서영)
 //TODO - 시간이 남거나 리팩토링할 때, tanstack query 도입
 
-//TODO - 경매 수정페이지에서 주소 검색 확인 과정 패스하기
 //TODO - 경매 시작일, 종료일 설정 (shadcn 사용)
-//TODO - 프리뷰 이미지 li key 값 index에서 다른 값으로 수정하기
 //TODO - 경매 시작일, 종료일 설정하기
+//TODO - 프리뷰 이미지 li key 값 index에서 다른 값으로 수정하기
 //TODO - 라우트 핸들러 maybeSingle로 수정 (fetch 관련 함수도 수정)
 //TODO - supabase 버켓 설정해서 이미지 업로드 다운로드가지 테스트
 //TODO - ui 수정
