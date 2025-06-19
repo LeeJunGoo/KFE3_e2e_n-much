@@ -3,7 +3,6 @@
 
 //TODO - 경매 시작일, 종료일 설정 (shadcn 사용)
 //TODO - 경매 시작일, 종료일 설정하기
-//TODO - 프리뷰 이미지 li key 값 index에서 다른 값으로 수정하기
 //TODO - 라우트 핸들러 maybeSingle로 수정 (fetch 관련 함수도 수정)
 //TODO - supabase 버켓 설정해서 이미지 업로드 다운로드가지 테스트
 //TODO - ui 수정
