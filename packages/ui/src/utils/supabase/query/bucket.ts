@@ -4,11 +4,12 @@ import { v4 as uuidv4 } from 'uuid';
 
 const supabase = createClient();
 
-export async function uploadImage(ImageData: string) {
+export async function uploadImage(imageData: string) {
+  const base64 = imageData.split(',')[1];
   const { data, error } = await supabase.storage
     .from('vidding')
-    .upload(`auctions_images/${uuidv4()}.png`, decode(ImageData), {
-      contentType: 'image/png'
+    .upload(`auctions_images/${uuidv4()}.png`, decode(base64!), {
+      contentType: 'imagepng'
     });
 
   if (error) {
