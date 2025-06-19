@@ -25,7 +25,7 @@ const AuctionsPage = () => {
   console.log(episodes);
 
   const goToAuctionDetail = () => {
-    router.push(`/auctions/1`);
+    router.push('/auctions/9e525843-9047-4f17-8dc7-368f9311bf57');
   };
 
   return (

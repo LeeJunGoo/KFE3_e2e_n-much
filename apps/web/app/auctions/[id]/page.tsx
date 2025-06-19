@@ -6,8 +6,24 @@ import { IoMdTime } from 'react-icons/io';
 
 //mock data 현재 constants에 넣어둠, 나중에 확인하고 지워야함
 import { mockStories } from '../../../constants/auctions/index';
+import { notFound } from 'next/navigation';
+import { AuctionRow } from '@repo/ui/types/auctions/index';
+import AuctionTimer from '@repo/ui/components/auctions/AuctionTimer';
 
-const AuctionDetailPage = () => {
+type AuctionInfoType = { status: string; data: AuctionRow };
+
+const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+  const { id: auctionId } = await params;
+
+  const res = await fetch(`http://localhost:3001/api/auctions?auction_id=${auctionId}`);
+
+  if (!res.ok) {
+    if (res.status === 404) return notFound();
+    throw new Error(`영화 정보를 불러오지 못했습니다.: ${res?.statusText}`);
+  }
+  const auctionInfo: AuctionInfoType = await res.json();
+  const { title, current_point, start_time, end_time } = auctionInfo.data;
+
   return (
     <>
       <header className="mb-10">
@@ -31,14 +47,13 @@ const AuctionDetailPage = () => {
       </header>
       <main className="space-y-7 scroll-smooth">
         <div className="bg-[#F3F4F6] p-4 rounded-lg space-y-3">
-          <h1 className="text-2xl font-bold">식사권 화이트롤 + 빵</h1>
+          <h1 className="text-2xl font-bold">{title}</h1>
           <div>
             <p className="text-gray-400 text-sm">현재&nbsp;입찰가</p>
-            <p className="text-[#8E74F2] text-lg font-semibold">850,000&nbsp;P</p>
+            <p className="text-[#8E74F2] text-lg font-semibold">{current_point}&nbsp;P</p>
           </div>
           <div>
-            <p className="text-sm">남은 시간</p>
-            <time className="text-lg font-semibold text-[#D84A5F]">2일&nbsp;23시간&nbsp;59분 남음</time>
+            <AuctionTimer startTime={start_time} endTime={end_time} />
           </div>
         </div>
         <div className="px-7 space-y-7">
