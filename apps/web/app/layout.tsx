@@ -6,6 +6,7 @@ import { pretendard } from './fonts';
 import QueryProvider from './providers/QueryProvider';
 
 import './globals.css';
+import Header from '@repo/ui/components/common/Header';
 
 export const metadata = home;
 
@@ -14,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="ko">
       <body className={`flex flex-col w-full max-w-2xl m-auto shadow-2xl relative ${pretendard.className}`}>
         <QueryProvider>
-          <header className="w-full bg-blue-400 h-16 px-5">헤더테스트</header>
+          <Header />
           <PageContainer>{children}</PageContainer>
           <TabBar />
         </QueryProvider>
