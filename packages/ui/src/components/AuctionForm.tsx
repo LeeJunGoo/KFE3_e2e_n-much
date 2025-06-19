@@ -26,6 +26,7 @@ import { CalendarIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Calendar } from './ui/calendar';
 import { ko } from 'date-fns/locale';
+import { uploadImage } from '../utils/supabase/query/bucket';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -122,7 +123,12 @@ export default function AuctionForm() {
   }, [confirmPostCode, form]);
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      previewImages.forEach(async (prevImage) => await uploadImage(prevImage));
+    } catch (error) {
+      console.log(error);
+    }
     console.log(values);
   }
 
