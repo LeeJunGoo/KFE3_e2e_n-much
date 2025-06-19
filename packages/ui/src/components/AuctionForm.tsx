@@ -36,6 +36,8 @@ export default function AuctionForm() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(false);
+  const [confirmStartDay, setConfirmStartDay] = useState<boolean>(false);
+  const [confirmEndDay, setConfirmEndDay] = useState<boolean>(false);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const formSchema = z.object({
@@ -58,8 +60,14 @@ export default function AuctionForm() {
         { message: '주소 검색을 통해 주소를 입력해야 합니다.' }
       ),
     detailAddress: z.string().min(5, { message: '상세 주소는 최소 5글자가 되어야 합니다.' }),
-    startDay: z.date({ message: '경매 시작일을 입력해야 합니다.' }),
-    endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }),
+    startDay: z.date({ message: '경매 시작일을 입력해야 합니다.' }).refine(() => {
+      console.log('경매 시작일 에러', confirmStartDay);
+      return confirmStartDay;
+    }),
+    endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }).refine(() => {
+      console.log('경매 종료일 에러', confirmEndDay);
+      return confirmEndDay;
+    }),
     description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
       message: '상세 내용은 최대 500자가 되어야 합니다.'
     })
@@ -100,6 +108,8 @@ export default function AuctionForm() {
           description
         });
         setConfirmPostCode(true);
+        setConfirmStartDay(true);
+        setConfirmEndDay(true);
         setIsLoading(false);
       } else {
         form.reset({ title: '', address: '', description: '' });
@@ -222,7 +232,10 @@ export default function AuctionForm() {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(e) => {
+                        setConfirmStartDay(true);
+                        return field.onChange(e);
+                      }}
                       disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
                       captionLayout="dropdown"
                     />
@@ -254,7 +267,10 @@ export default function AuctionForm() {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={(e) => {
+                        setConfirmEndDay(true);
+                        return field.onChange(e);
+                      }}
                       disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
                       captionLayout="dropdown"
                     />
