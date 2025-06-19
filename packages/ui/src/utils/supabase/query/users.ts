@@ -1,5 +1,5 @@
 import { createClient } from '../client/client';
-import type { CreateUserPayload, UserUpdate } from '@repo/ui/types/users';
+import type { CreateUserPayload, UserUpdate, UserInsert } from '@repo/ui/types/users';
 
 const supabase = createClient();
 
@@ -44,6 +44,15 @@ export async function updateUser(user_id: string, updatedData: UserUpdate) {
     throw new Error('DB: 유저 수정 에러');
   }
 
+  return user;
+}
+
+export async function upsertUser(userData: UserInsert) {
+  const { data: user, error } = await supabase.from('users').upsert([userData]).select().single();
+
+  if (error) {
+    throw new Error('DB: 유저 추가/수정 에러');
+  }
   return user;
 }
 
