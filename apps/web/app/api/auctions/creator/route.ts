@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ message: 'user_id가 필요합니다.' }, { status: 500, statusText: '서버 에러 발생' });
+      return NextResponse.json({ message: error.message }, { status: 500, statusText: '서버 에러 발생' });
     }
   }
 }

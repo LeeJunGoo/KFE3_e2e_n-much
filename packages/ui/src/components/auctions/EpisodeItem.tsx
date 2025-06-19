@@ -7,10 +7,12 @@ import { IoMdTime } from 'react-icons/io';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { BiddingForm } from './BiddingForm';
 import { EpisodeProps } from './EpisodeList';
+import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
 
-const EpisodeItem = ({ story }: { story: EpisodeProps }) => {
+const EpisodeItem = ({ episode }: { episode: EpisodeProps }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isBiddingOpen, setIsBiddingOpen] = useState(false);
+  const episodeTime = formatToKoreanDateTime(episode.timestamp);
 
   return (
     <li className="px-6 py-5 list-none">
@@ -18,18 +20,18 @@ const EpisodeItem = ({ story }: { story: EpisodeProps }) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div>
-            <p className="font-semibold text-gray-800">{story.author.name}</p>
+            <p className="font-semibold text-gray-800">{episode.author.name}</p>
             <div className="flex items-center gap-1 text-xs text-gray-500">
               <IoMdTime />
-              <time>{story.timestamp}</time>
+              <time>{episodeTime}</time>
             </div>
           </div>
         </div>
       </div>
       {/* 사연 제목 및 내용 */}
       <div className="mt-4">
-        <h3 className="text-lg font-bold text-gray-900">{story.title}</h3>
-        <p className="mt-2 text-gray-700 leading-relaxed whitespace-pre-wrap">{isExpanded && story.content}</p>
+        <h3 className="text-lg font-bold text-gray-900">{episode.title}</h3>
+        <p className="mt-2 text-gray-700 leading-relaxed whitespace-pre-wrap">{isExpanded && episode.content}</p>
       </div>
       {/* 더보기 및 기능 버튼 */}
       <Collapsible open={isBiddingOpen} defaultOpen={false} onOpenChange={setIsBiddingOpen} className="mt-4">

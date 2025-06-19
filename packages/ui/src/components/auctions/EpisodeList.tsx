@@ -64,8 +64,8 @@ const EpisodeList = ({ mockStories }: { mockStories: EpisodeProps[] }) => {
           <p className="text-sm text-gray-500 mt-1">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
         </div>
         <ul className="divide-y border-t">
-          {currentStories.map((story: EpisodeProps) => (
-            <EpisodeItem key={story.id} story={story} />
+          {currentStories.map((episode: EpisodeProps) => (
+            <EpisodeItem key={episode.id} episode={episode} />
           ))}
         </ul>
         <div className="px-6 py-4 border-t">
