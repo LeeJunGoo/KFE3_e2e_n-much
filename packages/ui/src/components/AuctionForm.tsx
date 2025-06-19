@@ -22,6 +22,12 @@ import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
+import { cn } from '../lib/utils';
+import { format } from 'date-fns';
+import { CalendarIcon } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Calendar } from './ui/calendar';
+import { ko } from 'date-fns/locale';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -52,6 +58,8 @@ export default function AuctionForm() {
         { message: '주소 검색을 통해 주소를 입력해야 합니다.' }
       ),
     detailAddress: z.string().min(5, { message: '상세 주소는 최소 5글자가 되어야 합니다.' }),
+    startDay: z.date({ message: '경매 시작일을 입력해야 합니다.' }),
+    endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }),
     description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
       message: '상세 내용은 최대 500자가 되어야 합니다.'
     })
@@ -80,9 +88,17 @@ export default function AuctionForm() {
       const result = await data.json();
 
       if (result.status === 'success' && result.data) {
-        const { title, address, description, image_urls } = result.data;
+        const { title, address, start_time, end_time, description, image_urls } = result.data;
+        console.log('startDay', start_time, 'endDay', end_time);
         setPreviewImages([...image_urls]);
-        form.reset({ title, address: address[0], detailAddress: address[1], description });
+        form.reset({
+          title,
+          address: address[0],
+          detailAddress: address[1],
+          startDay: start_time,
+          endDay: end_time,
+          description
+        });
         setConfirmPostCode(true);
         setIsLoading(false);
       } else {
@@ -184,6 +200,70 @@ export default function AuctionForm() {
             {showPostCodeSearch ? '주소 검색 닫기' : '주소 검색'}
           </Button>
           {showPostCodeSearch && <DaumPostcodeEmbed onComplete={handleComplete} />}
+          <FormField
+            control={form.control}
+            name="startDay"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>경매 시작일</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={'outline'}
+                        className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                      >
+                        {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                      captionLayout="dropdown"
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="endDay"
+            render={({ field }) => (
+              <FormItem className="flex flex-col">
+                <FormLabel>경매 종료일</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={'outline'}
+                        className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                      >
+                        {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                      captionLayout="dropdown"
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="description"
