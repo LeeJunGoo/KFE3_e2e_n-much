@@ -1,8 +1,6 @@
 //TODO - 모달 창 ui 깨지는 거 물어보기 => 리팩토링할 때 답변(박서영)
 //TODO - 시간이 남거나 리팩토링할 때, tanstack query 도입
 
-//TODO - 라우트 핸들러 maybeSingle로 수정 (fetch 관련 함수도 수정)
-//TODO - supabase 버켓 설정해서 이미지 업로드 다운로드가지 테스트
 //TODO - ui 수정
 
 'use client';
@@ -10,23 +8,23 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Button } from './ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form';
-import { Input } from './ui/input';
+import { Button } from '../ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
+import { Input } from '../ui/input';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import PageTitle from './typography/PageTitle';
+import PageTitle from '../typography/PageTitle';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 import { format } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { Calendar } from './ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Calendar } from '../ui/calendar';
 import { ko } from 'date-fns/locale';
-import { uploadImage } from '../utils/supabase/query/bucket';
+import { uploadImage } from '../../utils/supabase/query/bucket';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -124,22 +122,17 @@ export default function AuctionForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    let imageUrls: string[] = [];
+    const imageUrls: string[] = [];
     const { title, address, detailAddress, startDay, startTime, endDay, endTime, description } = values;
     try {
       previewImages.forEach(async (prevImage) => {
         const data = await uploadImage(prevImage);
-        imageUrls = [
-          ...imageUrls,
-          'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/' + data.fullPath
-        ];
-
-        console.log('이미지', prevImage);
+        imageUrls.push('https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/' + data.fullPath);
       });
     } catch (error) {
       console.log(error);
     }
-
+    console.log('imageUrls', imageUrls);
     const fetchUrl = `http://localhost:3001/api/auctions`;
     const data = await fetch(fetchUrl, {
       method: 'POST',
@@ -151,7 +144,8 @@ export default function AuctionForm() {
         end_time: endDay.toISOString().split('T')[0] + 'T' + endTime,
         description,
         starting_point: 0,
-        max_point: 0
+        max_point: 0,
+        image_urls: imageUrls
       })
     });
     const result = await data.json();

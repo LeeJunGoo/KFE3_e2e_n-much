@@ -9,7 +9,7 @@ export async function uploadImage(imageData: string) {
   const { data, error } = await supabase.storage
     .from('vidding')
     .upload(`auctions_images/${uuidv4()}.png`, decode(base64!), {
-      contentType: 'imagepng'
+      contentType: 'image/png'
     });
 
   if (error) {

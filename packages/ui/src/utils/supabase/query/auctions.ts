@@ -36,6 +36,7 @@ export async function addAuction(
   start_time: string,
   end_time: string
 ) {
+  console.log('쿼리', image_urls);
   const { data: auction, error } = await supabase
     .from('auctions')
     .insert([
@@ -48,7 +49,7 @@ export async function addAuction(
         current_point: starting_point,
         max_point,
         status: 'OPEN',
-        image_urls: image_urls,
+        image_urls,
         start_time,
         end_time
       }
