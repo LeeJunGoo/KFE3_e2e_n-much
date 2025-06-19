@@ -3,7 +3,6 @@
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -92,13 +91,13 @@ const EpisodeList = ({ mockStories }: { mockStories: EpisodeProps[] }) => {
                       e.preventDefault();
                       handlePageChange(i + 1);
                     }}
-                    aria-disabled={currentPage === 1}
+                    aria-disabled={currentPage === i + 1}
                   >
                     {i + 1}
                   </PaginationLink>
                 </PaginationItem>
               ))}
-              <PaginationEllipsis />
+              {/* <PaginationEllipsis /> */}
               <PaginationItem>
                 <PaginationNext
                   href="#"

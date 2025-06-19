@@ -7,12 +7,6 @@ import { IoMdTime } from 'react-icons/io';
 //mock data 현재 constants에 넣어둠, 나중에 확인하고 지워야함
 import { mockStories } from '../../../constants/auctions/index';
 
-
-
-
-
-
-
 const AuctionDetailPage = () => {
   return (
     <>

@@ -45,7 +45,6 @@ export const BiddingForm = ({ currentBid, userPoints }: { currentBid: any; userP
             onChange={(e) => setBidAmount(e.target.value)}
             className="pr-8" // 오른쪽 'P' 글자를 위한 패딩
           />
-          <span className="absolute inset-y-0 right-3 flex items-center text-sm text-gray-500">P</span>
         </div>
       </div>
 
