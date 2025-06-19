@@ -84,6 +84,7 @@ export default function AuctionForm() {
         const { title, address, description, image_urls } = result.data;
         setPreviewImages([...image_urls]);
         form.reset({ title, address: address[0], detailAddress: address[1], description });
+        setConfirmPostCode(true);
         setIsLoading(false);
       } else {
         form.reset({ title: '', address: '', description: '' });
