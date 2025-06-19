@@ -22,6 +22,7 @@ import PageTitle from './typography/PageTitle';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -203,10 +204,10 @@ export default function AuctionForm() {
       </Form>
       <ul>
         {previewImages &&
-          previewImages.map((previewImage, index) => {
+          previewImages.map((previewImage) => {
             if (previewImage) {
               return (
-                <li key={index}>
+                <li key={uuidv4()}>
                   <Image alt={'img'} src={previewImage} width={300} height={300} />
                 </li>
               );
