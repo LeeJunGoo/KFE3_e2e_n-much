@@ -61,16 +61,25 @@ export const updateUser = async (user_id: string, updatedData: UserUpdate) => {
 
 //경매자 총 경매수 count, 현재 진행중인 경매 count
 export const getUserAuctionCount = async (user_id: string) => {
-  const { count: totalCount } = await supabase
+  const { count: totalCount, error: totalError } = await supabase
     .from('auctions')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', user_id);
 
-  const { count: activeCount } = await supabase
+  const { count: activeCount, error: activeError } = await supabase
     .from('auctions')
     .select('*', { count: 'exact', head: true })
     .eq('user_id', user_id)
     .eq('status', 'OPEN');
+
+  if (totalError) {
+    console.log('totalError:', totalError);
+    throw new Error('DB: 경매자의 총 경매 수를 불러오는 과정에서 Error 발생');
+  }
+  if (activeError) {
+    console.log('activeError:', activeError);
+    throw new Error('DB: 경매자의 현재 진행중인 경매 수를 불러오는 과정에서 Error 발생');
+  }
 
   console.log('경매 통계:', {
     총경매수: totalCount,

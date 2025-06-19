@@ -19,11 +19,16 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
   if (!res.ok) {
     if (res.status === 404) return notFound();
-    throw new Error(`영화 정보를 불러오지 못했습니다.: ${res?.statusText}`);
+    throw new Error(`경매 상품에대한 정보를 불러오지 못했습니다.: ${res.status}`);
   }
+
   const auctionInfo: AuctionInfoType = await res.json();
 
-  const { title, current_point, start_time, end_time, image_urls, description, address } = auctionInfo.data;
+  const { title, current_point, start_time, end_time, image_urls, description, address, user_id } = auctionInfo.data;
+
+  const response = await fetch(`http://localhost:3001/api/auctions/creator?user_id=${user_id}`);
+
+  const { totalAuctions, activeAuctions } = await response.json();
 
   return (
     <>
@@ -89,12 +94,12 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
               <div className="space-y-2">
                 <p className="flex justify-between text-gray-500 text-sm">
                   <span>총 경매 수</span>
-                  <span> 42건</span>
+                  <span>{totalAuctions}</span>
                 </p>
 
                 <p className="flex justify-between text-gray-500 text-sm">
                   <span>현재 진행중인 경매</span>
-                  <span> 2건</span>
+                  <span>{activeAuctions}</span>
                 </p>
               </div>
             </div>
