@@ -57,6 +57,7 @@ export async function addAuction(
     .maybeSingle();
 
   if (error) {
+    console.log('경매', error);
     throw new Error('DB: 경매 추가 에러');
   }
 

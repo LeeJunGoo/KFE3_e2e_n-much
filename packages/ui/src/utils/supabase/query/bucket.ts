@@ -8,7 +8,7 @@ export async function uploadImage(ImageData: string) {
   const { data, error } = await supabase.storage
     .from('vidding')
     .upload(`auctions_images/${uuidv4()}.png`, decode(ImageData), {
-      contentType: 'image'
+      contentType: 'image/png'
     });
 
   if (error) {

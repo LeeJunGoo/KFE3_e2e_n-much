@@ -124,12 +124,40 @@ export default function AuctionForm() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    let imageUrls: string[] = [];
+    const { title, address, detailAddress, startDay, startTime, endDay, endTime, description } = values;
     try {
-      previewImages.forEach(async (prevImage) => await uploadImage(prevImage));
+      previewImages.forEach(async (prevImage) => {
+        const data = await uploadImage(prevImage);
+        imageUrls = [
+          ...imageUrls,
+          'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/' + data.fullPath
+        ];
+
+        console.log('이미지', prevImage);
+      });
     } catch (error) {
       console.log(error);
     }
+
+    const fetchUrl = `http://localhost:3001/api/auctions`;
+    const data = await fetch(fetchUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        user_id: '35a67768-f866-4cc3-aa19-746d714a3a25',
+        title,
+        address: [address, detailAddress],
+        start_time: startDay.toISOString().split('T')[0] + 'T' + startTime,
+        end_time: endDay.toISOString().split('T')[0] + 'T' + endTime,
+        description,
+        starting_point: 0,
+        max_point: 0
+      })
+    });
+    const result = await data.json();
+
     console.log(values);
+    console.log('결과', result);
   }
 
   const handleComplete = (data: Address) => {
