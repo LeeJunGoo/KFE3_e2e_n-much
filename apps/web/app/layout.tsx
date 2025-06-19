@@ -1,10 +1,8 @@
-import TabBar from '@repo/ui/components/common/TabBar';
+import QueryProvider from '../providers/QueryProvider';
 import PageContainer from '@repo/ui/components/layout/PageContainer';
-
-import { home } from '../app/metadata/common/home';
-import { pretendard } from './fonts';
-import QueryProvider from './providers/QueryProvider';
-
+import { home } from '../metadata/common/home';
+import { pretendard } from '../fonts';
+import TabBar from '@repo/ui/components/common/TabBar';
 import './globals.css';
 
 export const metadata = home;

@@ -1,4 +1,4 @@
-import type { Database } from '../supabase';
+import { Database } from '../supabase';
 
 //supabase type
 export type EpisodeRow = Database['public']['Tables']['episodes']['Row'];

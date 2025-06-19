@@ -1,4 +1,11 @@
-import { addStory, deleteStory, getAllStories, getStory, updateStory } from '@repo/ui/utils/supabase/query/stories';
+import {
+  addEpisode,
+  deleteEpisode,
+  getAllEpisodes,
+  getEpisode,
+  getUserEpisodes,
+  updateEpisode
+} from '@repo/ui/utils/supabase/query/episodes';
 import { NextRequest } from 'next/server';
 
 const commonHeader = {
@@ -7,17 +14,22 @@ const commonHeader = {
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const param = searchParams.get('story_id');
+  const episodeId = searchParams.get('episode_id');
+  const userId = searchParams.get('user_id');
 
   try {
-    if (param === null) {
-      const res = await getAllStories();
-
-      return Response.json({ status: 'success', data: res }, commonHeader);
-    } else {
-      const res = await getStory(param);
+    if (episodeId) {
+      const res = await getEpisode(episodeId);
       return Response.json({ status: 'success', data: res }, commonHeader);
     }
+
+    if (userId) {
+      const res = await getUserEpisodes(userId);
+      return Response.json({ status: 'success', data: res }, commonHeader);
+    }
+
+    const res = await getAllEpisodes();
+    return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
       return Response.json({ status: 'error', error: error.message }, commonHeader);
@@ -29,7 +41,7 @@ export async function POST(request: NextRequest) {
   const { auction_id, user_id, bid_point } = await request.json();
 
   try {
-    const res = await addStory(auction_id, user_id, bid_point);
+    const res = await addEpisode(auction_id, user_id, bid_point);
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
@@ -42,7 +54,7 @@ export async function PATCH(request: NextRequest) {
   const { story_id, winning_bid } = await request.json();
 
   try {
-    const res = await updateStory(story_id, winning_bid);
+    const res = await updateEpisode(story_id, winning_bid);
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
@@ -55,7 +67,7 @@ export async function DELETE(request: NextRequest) {
   const { story_id } = await request.json();
 
   try {
-    const res = await deleteStory(story_id);
+    const res = await deleteEpisode(story_id);
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
