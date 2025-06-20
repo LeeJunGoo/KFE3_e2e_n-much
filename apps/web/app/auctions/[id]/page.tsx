@@ -10,6 +10,7 @@ import { AuctionRow } from '@repo/ui/types/auctions/index';
 import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
+import EditDeleteActions from '@repo/ui/components/auctions/EditDeleteActions';
 
 type AuctionInfoType = { status: string; data: AuctionRow };
 
@@ -60,14 +61,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             <FaArrowLeft />
             <span>경매 목록으로 돌아가기</span>
           </Link>
-          <div className="space-x-2">
-            <button className="bg-[#F4F4F7] px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors">
-              수정
-            </button>
-            <button className="bg-[#F4F4F7] px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors">
-              삭제
-            </button>
-          </div>
+          <EditDeleteActions auction_id={auctionId} />
         </div>
       </header>
       <main className="space-y-7 scroll-smooth">
