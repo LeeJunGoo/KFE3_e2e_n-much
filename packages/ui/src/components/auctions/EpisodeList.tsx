@@ -8,39 +8,74 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
+import { EpisodeRow } from '@repo/ui/types/episodes';
 import { useEffect, useRef, useState } from 'react';
 import EpisodeItem from './EpisodeItem';
+import { notFound } from 'next/navigation';
 
-export interface EpisodeProps {
-  id: number;
-  author: {
-    name: string;
-    avatarUrl: string;
+type EpisodeItemProps = EpisodeRow & {
+  user: {
+    user_id: string;
+    nickname: string;
+    avatar: string | null;
   };
-  timestamp: string;
-  title: string;
-  content: string;
-}
+};
+type EpisodesListType = {
+  status: string;
+  data: {
+    episode: EpisodeItemProps[];
+    count: number;
+  };
+};
 
-const EPISODE_PER_PAGE = 5;
+const EPISODES_PER_PAGE = 5;
 
-const EpisodeList = ({ mockStories }: { mockStories: EpisodeProps[] }) => {
+const StoriesList = ({ auction_id }: { auction_id: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(mockStories.length / EPISODE_PER_PAGE);
-
-  // 현재 페이지에 보여줄 사연들 계산
-  const startIndex = (currentPage - 1) * EPISODE_PER_PAGE;
-  const endIndex = startIndex + EPISODE_PER_PAGE;
-  const currentStories = mockStories.slice(startIndex, endIndex);
+  const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
+  const [episodesCount, setEpisodesCount] = useState(0);
 
   const listHeaderRef = useRef<HTMLDivElement>(null);
   const isInitialRender = useRef(true);
+
+  const totalPages = Math.ceil(episodesCount / EPISODES_PER_PAGE);
+
+  // 현재 페이지에 보여줄 사연들 계산
+  const startIndex = (currentPage - 1) * EPISODES_PER_PAGE;
+  const endIndex = startIndex + EPISODES_PER_PAGE;
+  const currentEpisodes = episodes.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
   };
+  useEffect(() => {
+    if (!auction_id) return;
+
+    const fetchEpisodes = async () => {
+      try {
+        const res = await fetch(`http://localhost:3001/api/episodes?auction_id=${auction_id}`);
+
+        if (!res.ok) {
+          if (res.status === 404) return notFound;
+          throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${res.statusText}`);
+        }
+
+        const data: EpisodesListType = await res.json();
+        setEpisodes(data.data.episode);
+        setEpisodesCount(data.data.count);
+      } catch (error) {
+        if (error instanceof Error) {
+          setEpisodes([]);
+
+          throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${error.message}`);
+        }
+      }
+    };
+
+    fetchEpisodes();
+  }, [currentPage, auction_id]);
 
   useEffect(() => {
     if (isInitialRender.current) {
@@ -55,65 +90,64 @@ const EpisodeList = ({ mockStories }: { mockStories: EpisodeProps[] }) => {
 
   return (
     <>
-      <div className="border rounded-lg">
-        <div className="px-6 py-4" ref={listHeaderRef}>
-          <h2 className="text-xl font-bold">
-            <span>사연</span>
-            <span className="ml-1 text-blue-600">({mockStories.length})</span>
-          </h2>
-          <p className="text-sm text-gray-500 mt-1">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
-        </div>
-        <ul className="divide-y border-t">
-          {currentStories.map((episode: EpisodeProps) => (
-            <EpisodeItem key={episode.id} episode={episode} />
-          ))}
-        </ul>
-        <div className="px-6 py-4 border-t">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
+      {/* 사연 */}
+      <div className="px-6 py-4" ref={listHeaderRef}>
+        <h2 className="text-xl font-bold">
+          <span>사연</span>
+          <span className="ml-1 text-blue-600">({episodesCount})</span>
+        </h2>
+        <p className="text-sm text-gray-500 mt-1">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
+      </div>
+      {/* 사연 목록 */}
+      <ul className="divide-y border-t">
+        {currentEpisodes.map((episode: EpisodeItemProps) => (
+          <EpisodeItem key={episode.episode_id} episode={episode} />
+        ))}
+      </ul>
+      <div className="px-6 py-4 border-t">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePageChange(currentPage - 1);
+                }}
+                aria-disabled={currentPage === 1}
+              />
+            </PaginationItem>
+            {/* 페이지 번호 동적 생성 */}
+            {Array.from({ length: totalPages }, (_, i) => (
+              <PaginationItem key={i + 1}>
+                <PaginationLink
                   href="#"
+                  isActive={currentPage === i + 1}
                   onClick={(e) => {
                     e.preventDefault();
-                    handlePageChange(currentPage - 1);
+                    handlePageChange(i + 1);
                   }}
-                  aria-disabled={currentPage === 1}
-                />
+                >
+                  {i + 1}
+                </PaginationLink>
               </PaginationItem>
-              {/* 페이지 번호 동적 생성 */}
-              {Array.from({ length: totalPages }, (_, i) => (
-                <PaginationItem key={i + 1}>
-                  <PaginationLink
-                    href="#"
-                    isActive={currentPage === i + 1}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(i + 1);
-                    }}
-                    aria-disabled={currentPage === 1}
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-              {/* <PaginationEllipsis /> */}
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handlePageChange(currentPage + 1);
-                  }}
-                  aria-disabled={currentPage === totalPages}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handlePageChange(currentPage + 1);
+                }}
+                aria-disabled={currentPage === totalPages}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </>
   );
 };
 
-export default EpisodeList;
+export default StoriesList;

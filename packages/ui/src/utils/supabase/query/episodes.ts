@@ -2,6 +2,35 @@ import { createClient } from '../client/client';
 
 const supabase = createClient();
 
+export const getEpisodesByAuctionId = async (auctionId: string) => {
+  const {
+    data: episode,
+    error,
+    count
+  } = await supabase
+    .from('episodes')
+    .select(
+      `
+      *,
+      user:user_id (
+        user_id,
+        nickname,
+        avatar
+      )
+    `,
+      { count: 'exact' }
+    )
+    .eq('auction_id', auctionId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.log(error);
+    throw new Error('DB: 경매 물품에 대한 사연 정보 불러오기 에러');
+  }
+
+  return { episode, count };
+};
+
 export const getAllEpisodes = async () => {
   const { data, error } = await supabase.from('episodes').select(`
       *,

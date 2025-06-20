@@ -3,6 +3,7 @@ import {
   deleteEpisode,
   getAllEpisodes,
   getEpisode,
+  getEpisodesByAuctionId,
   getUserEpisodes,
   updateEpisode
 } from '@repo/ui/utils/supabase/query/episodes';
@@ -16,6 +17,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const episodeId = searchParams.get('episode_id');
   const userId = searchParams.get('user_id');
+  const auction_id = searchParams.get('auction_id');
 
   try {
     if (episodeId) {
@@ -25,6 +27,11 @@ export async function GET(request: NextRequest) {
 
     if (userId) {
       const res = await getUserEpisodes(userId);
+      return Response.json({ status: 'success', data: res }, commonHeader);
+    }
+
+    if (auction_id) {
+      const res = await getEpisodesByAuctionId(auction_id);
       return Response.json({ status: 'success', data: res }, commonHeader);
     }
 

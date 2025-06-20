@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true
   },
   images: {
-    domains: ['api.dicebear.com']
+    domains: ['api.dicebear.com', 'k.kakaocdn.net']
   }
 };
 

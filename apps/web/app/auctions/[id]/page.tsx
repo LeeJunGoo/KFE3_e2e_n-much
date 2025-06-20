@@ -9,7 +9,7 @@ import AuctionTimer from '@repo/ui/components/auctions/AuctionTimer';
 import { AuctionRow } from '@repo/ui/types/auctions/index';
 import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
 import { notFound } from 'next/navigation';
-import { mockStories } from '../../../constants/auctions/index';
+import Image from 'next/image';
 
 type AuctionInfoType = { status: string; data: AuctionRow };
 
@@ -37,8 +37,6 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   }
 
   const { totalAuctions, activeAuctions } = await res_2.json();
-
-  //NOTE - 경매자의 정보
 
   //NOTE - 최고 입찰자의 정보
   const res_3 = await fetch(`http://localhost:3001/api/auctions/highest-bid?auction_Id=${auctionId}`);
@@ -134,9 +132,14 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
               <div className="px-6 py-4 space-y-5">
                 <div className="flex justify-between items-center">
                   <div className="flex gap-3">
-                    <div className="w-[50px] h-[50px] bg-blue-400/30 border-gray-200 object-cover rounded-full hover:scale-105 transition-transform duration-300">
-                      {highestBidUser.user.avatar}
-                    </div>
+                    <Image
+                      src={highestBidUser.user.avatar}
+                      alt="아바타입니다."
+                      width={50}
+                      height={50}
+                      className=" bg-blue-400/30 border-gray-200 object-cover rounded-full hover:scale-105 transition-transform duration-300"
+                    ></Image>
+                    {/* </div> */}
                     <div className="space-y-1">
                       <p className="font-semibold">{highestBidUser.user.nickname}</p>
                       <p className="flex items-center">
@@ -145,7 +148,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                       </p>
                     </div>
                   </div>
-                  <div className="text-[#8E74F2]">
+                  <div className="font-semibold text-[#8E74F2]">
                     <p>{highestBidUser.bid_point}&nbsp;P</p>
                   </div>
                 </div>
@@ -160,7 +163,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
               </div>
             )}
           </div>
-          <EpisodeList mockStories={mockStories} />
+          <EpisodeList auction_id={auctionId} />
         </div>
       </main>
     </>
