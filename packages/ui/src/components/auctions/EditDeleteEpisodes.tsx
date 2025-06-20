@@ -1,11 +1,9 @@
+import { EpisodeRow } from '@repo/ui/types/episodes';
+import { notFound } from 'next/navigation';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { Button } from '../ui/button';
-import { EpisodeRow } from '@repo/ui/types/episodes';
-import { notFound, useRouter } from 'next/navigation';
 
 const EditDeleteEpisodes = ({ episode_id }: { episode_id: EpisodeRow['episode_id'] }) => {
-  const router = useRouter();
-
   const handleDelete = async () => {
     const confirmed = window.confirm('정말 이 경매를 삭제하시겠습니까?');
 
@@ -43,7 +41,7 @@ const EditDeleteEpisodes = ({ episode_id }: { episode_id: EpisodeRow['episode_id
   };
   return (
     <>
-      <Button variant="secondary" size="sm" className="gap-1.5">
+      <Button variant="default" size="sm" className="gap-1.5">
         <FiEdit />
         수정
       </Button>

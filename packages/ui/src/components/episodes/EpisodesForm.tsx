@@ -38,6 +38,7 @@ const EpisodesForm = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) 
       const data = await res.json();
 
       if (data.status === 'success') {
+        alert('사연을 등록하였습니다.');
         router.push(`/auctions/${auction_id}`);
       }
     } catch (error) {
@@ -45,8 +46,6 @@ const EpisodesForm = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) 
         throw new Error('사연을 등록하지 못하였습니다.' + error.message);
       }
     }
-
-    alert('사연 등록 처리!');
   };
   return (
     <form onSubmit={handleSubmit} className="mt-3 border-2 rounded-lg p-4">
@@ -68,7 +67,6 @@ const EpisodesForm = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) 
           placeholder="경매 상품의 제목을 입력하세요"
           required
         />
-
         {/* 상세 내용 */}
         <div>
           <label htmlFor="description" className="text-sm text-gray-500">

@@ -32,7 +32,7 @@ type EpisodesListType = {
 
 const EPISODES_PER_PAGE = 5;
 
-const StoriesList = ({ auction_id }: { auction_id: string }) => {
+const StoriesList = ({ userInfo, auction_id }: { userInfo: any; auction_id: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
   const [episodesCount, setEpisodesCount] = useState(1);
@@ -98,9 +98,16 @@ const StoriesList = ({ auction_id }: { auction_id: string }) => {
           <span>사연</span>
           <span className="ml-1 text-blue-600">({episodesCount})</span>
         </h2>
+
         <p className="text-sm text-gray-500 mt-1">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
-        <Link href={`/episode?auction_id=${auction_id}`}>사연 등록</Link>
+        <Link
+          href={`/episode?auction_id=${auction_id}`}
+          className="bg-amber-300 border rounded-sm mt-5 inline-block p-1"
+        >
+          사연 등록
+        </Link>
       </div>
+
       {/* 사연 목록 */}
       {episodesCount === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 px-6 py-10 text-center bg-slate-50 rounded-b-lg">
@@ -113,7 +120,7 @@ const StoriesList = ({ auction_id }: { auction_id: string }) => {
       ) : (
         <ul className="divide-y border-t">
           {currentEpisodes.map((episode: EpisodeItemProps) => (
-            <EpisodeItem key={episode.episode_id} episode={episode} />
+            <EpisodeItem key={episode.episode_id} episode={episode} userInfo={userInfo} />
           ))}
         </ul>
       )}

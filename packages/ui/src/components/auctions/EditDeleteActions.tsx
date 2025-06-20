@@ -2,6 +2,7 @@
 
 import { AuctionRow } from '@repo/ui/types/auctions';
 import { notFound, useRouter } from 'next/navigation';
+import { Button } from '../ui/button';
 
 const EditDeleteActions = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) => {
   const router = useRouter();
@@ -39,15 +40,19 @@ const EditDeleteActions = ({ auction_id }: { auction_id: AuctionRow['auction_id'
 
   return (
     <div className="space-x-2">
-      <button className="bg-[#F4F4F7] px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors">
+      <Button
+        variant="secondary"
+        className="px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors"
+      >
         수정
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="destructive"
         onClick={handleAuctionDelete}
-        className="bg-[#F4F4F7] px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors"
+        className=" px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors"
       >
         삭제
-      </button>
+      </Button>
     </div>
   );
 };

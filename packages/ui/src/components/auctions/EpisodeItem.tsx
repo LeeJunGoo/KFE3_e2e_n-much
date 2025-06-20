@@ -10,7 +10,7 @@ import { BiddingForm } from './BiddingForm';
 import EditDeleteEpisodes from './EditDeleteEpisodes';
 import { EpisodeItemProps } from './EpisodeList';
 
-const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
+const EpisodeItem = ({ userInfo, episode }: { userInfo: any; episode: EpisodeItemProps }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isBiddingOpen, setIsBiddingOpen] = useState(false);
   const episodeTime = formatToKoreanDateTime(episode.created_at);
@@ -42,7 +42,7 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
           {/* 오른쪽 버튼 그룹 */}
           <div className="flex items-center gap-2">
             {/* 에피소드 수정 및 삭제 버튼 */}
-            <EditDeleteEpisodes episode_id={episode.episode_id} />
+            {userInfo?.id === episode.user_id && <EditDeleteEpisodes episode_id={episode.episode_id} />}
             <CollapsibleTrigger asChild>
               <Button size="sm" className="bg-[#8E74F9] hover:bg-[#3f3562] gap-1.5">
                 <FiAward />
@@ -53,7 +53,12 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
         </div>
         {/* 4. 펼쳐질 콘텐츠 영역 - 버튼 그룹과 완전히 분리되어 있습니다. */}
         <CollapsibleContent className="mt-2 CollapsibleContent w-full space-y-4 rounded-lg bg-[#F4F4F7] p-4">
-          <BiddingForm currentBid={episode.bid_point} userPoints={1000000} />
+          <BiddingForm
+            auction_id={episode.auction_id}
+            user_id={episode.user_id}
+            currentBid={episode.bid_point}
+            userPoints={1000000}
+          />
         </CollapsibleContent>
       </Collapsible>
     </li>

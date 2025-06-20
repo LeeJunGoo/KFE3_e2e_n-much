@@ -21,11 +21,6 @@ export const getAllUsers = async () => {
     throw new Error('DB: 모든 유저 불러오기 에러');
   }
 
-  // console.log('전체 데이터:', data);
-  // console.log('첫 번째 유저:', data?.[0]);
-  // console.log('첫 번째 유저의 경매:', data?.[0]?.auctions);
-  // console.log('첫 번째 유저의 에피소드:', data?.[0]?.episodes);
-
   return data;
 };
 

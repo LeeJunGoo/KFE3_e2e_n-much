@@ -4,18 +4,22 @@ import Link from 'next/link';
 import { FaArrowLeft, FaMapMarkerAlt, FaRegCommentDots } from 'react-icons/fa';
 import { IoMdTime } from 'react-icons/io';
 
-//mock data 현재 constants에 넣어둠, 나중에 확인하고 지워야함
 import AuctionTimer from '@repo/ui/components/auctions/AuctionTimer';
 import { AuctionRow } from '@repo/ui/types/auctions/index';
 import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import EditDeleteActions from '@repo/ui/components/auctions/EditDeleteActions';
+import { formatNumber } from '@repo/ui/utils/formatNumber';
+import { getAuthInfo } from '@repo/ui/utils/supabase/auth';
 
 type AuctionInfoType = { status: string; data: AuctionRow };
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
+
+  //NOTE - 로그인 정보
+  const userInfo = await getAuthInfo();
 
   //NOTE - 경매 상품에 대한 정보
   const res_1 = await fetch(`http://localhost:3001/api/auctions?auction_id=${auctionId}`);
@@ -62,7 +66,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             <span>경매 목록으로 돌아가기</span>
           </Link>
           {/* //NOTE - 경매 상품 수정 및 삭제 버튼 */}
-          <EditDeleteActions auction_id={auctionId} />
+          {userInfo?.id === user_id && <EditDeleteActions auction_id={auctionId} />}
         </div>
       </header>
       <main className="space-y-7 scroll-smooth">
@@ -144,7 +148,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                     </div>
                   </div>
                   <div className="font-semibold text-[#8E74F2]">
-                    <p>{highestBidUser.bid_point}&nbsp;P</p>
+                    <p>{formatNumber(highestBidUser.bid_point)}&nbsp;P</p>
                   </div>
                 </div>
               </div>
@@ -158,7 +162,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
               </div>
             )}
           </div>
-          <EpisodeList auction_id={auctionId} />
+          <EpisodeList userInfo={userInfo} auction_id={auctionId} />
         </div>
       </main>
     </>

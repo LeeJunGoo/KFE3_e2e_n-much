@@ -1,25 +1,64 @@
 import { formatNumber } from '@repo/ui/utils/formatNumber';
+import { notFound } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 
-export const BiddingForm = ({ currentBid, userPoints }: { currentBid: number; userPoints: number }) => {
-  const [bidAmount, setBidAmount] = useState('');
-
-  const handleBidSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+export const BiddingForm = ({
+  auction_id,
+  user_id,
+  currentBid,
+  userPoints
+}: {
+  auction_id: string;
+  user_id: string;
+  currentBid: number;
+  userPoints: number;
+}) => {
+  const [bidPoint, setBidPoint] = useState('');
+  const handleBidSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // bidAmount가 userPoints보다 낮은지 등 유효성 검사
-    if (Number(bidAmount) > userPoints) {
-      alert(`현재 보유중인 포인트는 ${userPoints} 입니다.`);
-      return;
-    }
 
-    alert(`${formatNumber(Number(bidAmount))}P 입찰을 시도합니다.`);
+    try {
+      // bidAmount가 userPoints보다 낮은지 등 유효성 검사
+      if (Number(bidPoint) > userPoints) {
+        alert(`현재 보유중인 포인트는 ${userPoints} 입니다.`);
+        return;
+      }
+
+      alert(`${formatNumber(Number(bidPoint))}P 입찰을 시도합니다.`);
+
+      const res = await fetch('http://localhost:3001/api/episodes', {
+        headers: { 'Content-Type': 'application/json' },
+        method: 'POST',
+        body: JSON.stringify({
+          auction_id,
+          user_id,
+          bid_point: bidPoint
+        })
+      });
+
+      if (!res.ok) {
+        if (res.status === 404) return notFound;
+        throw new Error('입찰하는 과정에서 네트워크 통신 에러가 발생했습니다.' + res.status);
+      }
+
+      const data = await res.json();
+
+      if (data.status === 'success') {
+        alert('입찰을 성공하셨습니다.');
+        window.location.reload();
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error('DB 에러 발생' + error.message);
+      }
+    }
   };
 
   const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const numericValue = value.replace(/\D/g, '');
-    setBidAmount(numericValue);
+    setBidPoint(numericValue);
   };
 
   return (
@@ -28,12 +67,12 @@ export const BiddingForm = ({ currentBid, userPoints }: { currentBid: number; us
 
       <div className="space-y-2 text-sm">
         <div className="flex justify-between">
-          <span className="text-gray-600">현재 입찰가</span>
-          <span className="font-semibold text-[#8E74F2]">{formatNumber(currentBid)}P</span>
+          <span className="text-gray-600">현재 사연 입찰가</span>
+          <span className=" font-semibold text-[#8E74F2]">{formatNumber(currentBid)}&nbsp;P</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-gray-600">보유 포인트</span>
-          <span className="font-semibold">{formatNumber(userPoints)}P</span>
+          <span className="text-gray-600">내보유 포인트</span>
+          <span className="font-semibold">{formatNumber(userPoints)}&nbsp;P</span>
         </div>
       </div>
 
@@ -46,7 +85,7 @@ export const BiddingForm = ({ currentBid, userPoints }: { currentBid: number; us
             id="bid-amount"
             type="text"
             placeholder="5,000"
-            value={bidAmount}
+            value={bidPoint}
             onChange={handleAmountChange}
             required
             className="w-full pr-8"
