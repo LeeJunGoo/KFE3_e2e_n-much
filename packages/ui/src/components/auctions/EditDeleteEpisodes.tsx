@@ -1,9 +1,23 @@
+'use client';
+
 import { EpisodeRow } from '@repo/ui/types/episodes';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import { Button } from '../ui/button';
 
-const EditDeleteEpisodes = ({ episode_id }: { episode_id: EpisodeRow['episode_id'] }) => {
+const EditDeleteEpisodes = ({
+  auction_id,
+  episode_id
+}: {
+  auction_id: EpisodeRow['auction_id'];
+  episode_id: EpisodeRow['episode_id'];
+}) => {
+  const router = useRouter();
+
+  const handleEdit = () => {
+    router.push(`/episode/${auction_id}/${episode_id}`);
+  };
+
   const handleDelete = async () => {
     const confirmed = window.confirm('정말 이 경매를 삭제하시겠습니까?');
 
@@ -41,7 +55,7 @@ const EditDeleteEpisodes = ({ episode_id }: { episode_id: EpisodeRow['episode_id
   };
   return (
     <>
-      <Button variant="default" size="sm" className="gap-1.5">
+      <Button onClick={handleEdit} variant="default" size="sm" className="gap-1.5">
         <FiEdit />
         수정
       </Button>

@@ -2,32 +2,42 @@
 
 import { Button } from '@repo/ui/components/ui/button';
 import { AuctionRow } from '@repo/ui/types/auctions';
+import { EpisodeItemProps } from '@repo/ui/types/episodes';
+
 import { notFound, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
-const EpisodesForm = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) => {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+const EpisodesForm = ({
+  initialData,
+  auction_id
+}: {
+  initialData: EpisodeItemProps;
+  auction_id: AuctionRow['auction_id'];
+}) => {
+  const [title, setTitle] = useState(initialData?.title || '');
+  const [content, setContent] = useState(initialData?.description || '');
   const router = useRouter();
 
-  const handleReset = () => {
-    setTitle('');
-    setContent('');
-  };
+  const url = initialData ? 'http://localhost:3001/api/episodes/update' : 'http://localhost:3001/api/episodes/register';
+  const userId = initialData ? initialData.user_id : '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
+  const method = initialData ? 'PATCH' : 'POST';
+
+  const bidPoint = initialData ? initialData.bid_point : 0;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:3001/api/episodes/register', {
+      const res = await fetch(url, {
         headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
+        method: method,
         body: JSON.stringify({
+          episode_id: initialData.episode_id,
           auction_id,
-          user_id: '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374',
+          user_id: userId,
           title: title,
           description: content,
-          bid_point: 0
+          bid_point: bidPoint
         })
       });
 
@@ -36,9 +46,11 @@ const EpisodesForm = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) 
         throw new Error('사연을 등록하는 과정에서 네트워크 에러가 발생했습니다.' + res.statusText);
       }
       const data = await res.json();
+      console.log('🚀 ~ handleSubmit ~ data:', data);
 
       if (data.status === 'success') {
-        alert('사연을 등록하였습니다.');
+        const alertContent = initialData ? '사연을 수정하였습니다.' : '사연을 등록하였습니다.';
+        alert(alertContent);
         router.push(`/auctions/${auction_id}`);
       }
     } catch (error) {
@@ -47,13 +59,21 @@ const EpisodesForm = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) 
       }
     }
   };
+
+  const handleReset = () => {
+    setTitle(initialData?.title || '');
+    setContent(initialData?.description || '');
+  };
+
   return (
     <form onSubmit={handleSubmit} className="mt-3 border-2 rounded-lg p-4">
       {/* 제목 */}
       <div className="space-y-4">
         <div>
           <h3 className="text-2xl font-bold">사연 등록</h3>
-          <span className="text-sm text-[#C6C7D1]">경매에 참여할 사연을 입력해주세요</span>
+          <span className="text-sm text-[#C6C7D1]">
+            {initialData ? '사연의 내용을 수정해주세요.' : ' 경매에 참여할 사연을 입력해주세요'}
+          </span>
         </div>
         <label htmlFor="title" className="text-sm text-gray-500">
           제목
@@ -96,7 +116,7 @@ const EpisodesForm = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) 
               type="submit"
               className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              사연 등록
+              {initialData ? '수정 완료' : '사연 등록'}
             </Button>
           </div>
         </div>

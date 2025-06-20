@@ -8,7 +8,7 @@ const EditDeleteActions = ({ auction_id }: { auction_id: AuctionRow['auction_id'
   const router = useRouter();
 
   const handleAuctionDelete = async () => {
-    const confirmed = window.confirm('정말 이 경매를 삭제하시겠습니까?');
+    const confirmed = window.confirm('정말 이 사연를 삭제하시겠습니까?');
 
     if (!confirmed) {
       return;

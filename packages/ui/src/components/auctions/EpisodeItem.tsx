@@ -8,9 +8,9 @@ import { IoMdTime } from 'react-icons/io';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { BiddingForm } from './BiddingForm';
 import EditDeleteEpisodes from './EditDeleteEpisodes';
-import { EpisodeItemProps } from './EpisodeList';
+import { EpisodeItemProps } from '@repo/ui/types/episodes';
 
-const EpisodeItem = ({ userInfo, episode }: { userInfo: any; episode: EpisodeItemProps }) => {
+const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isBiddingOpen, setIsBiddingOpen] = useState(false);
   const episodeTime = formatToKoreanDateTime(episode.created_at);
@@ -42,7 +42,9 @@ const EpisodeItem = ({ userInfo, episode }: { userInfo: any; episode: EpisodeIte
           {/* 오른쪽 버튼 그룹 */}
           <div className="flex items-center gap-2">
             {/* 에피소드 수정 및 삭제 버튼 */}
-            {userInfo?.id === episode.user_id && <EditDeleteEpisodes episode_id={episode.episode_id} />}
+
+            <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />
+
             <CollapsibleTrigger asChild>
               <Button size="sm" className="bg-[#8E74F9] hover:bg-[#3f3562] gap-1.5">
                 <FiAward />

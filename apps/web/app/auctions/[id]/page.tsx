@@ -11,7 +11,6 @@ import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import EditDeleteActions from '@repo/ui/components/auctions/EditDeleteActions';
 import { formatNumber } from '@repo/ui/utils/formatNumber';
-import { getAuthInfo } from '@repo/ui/utils/supabase/auth';
 
 type AuctionInfoType = { status: string; data: AuctionRow };
 
@@ -19,7 +18,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   const { id: auctionId } = await params;
 
   //NOTE - 로그인 정보
-  const userInfo = await getAuthInfo();
+  // const userInfo = await getAuthInfo();
 
   //NOTE - 경매 상품에 대한 정보
   const res_1 = await fetch(`http://localhost:3001/api/auctions?auction_id=${auctionId}`);
@@ -66,7 +65,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             <span>경매 목록으로 돌아가기</span>
           </Link>
           {/* //NOTE - 경매 상품 수정 및 삭제 버튼 */}
-          {userInfo?.id === user_id && <EditDeleteActions auction_id={auctionId} />}
+          <EditDeleteActions auction_id={auctionId} />
         </div>
       </header>
       <main className="space-y-7 scroll-smooth">
@@ -138,7 +137,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                       height={50}
                       className=" bg-blue-400/30 border-gray-200 object-cover rounded-full hover:scale-105 transition-transform duration-300"
                     ></Image>
-                    {/* </div> */}
+
                     <div className="space-y-1">
                       <p className="font-semibold">{highestBidUser.user.nickname}</p>
                       <p className="flex items-center">
@@ -162,7 +161,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
               </div>
             )}
           </div>
-          <EpisodeList userInfo={userInfo} auction_id={auctionId} />
+          <EpisodeList auction_id={auctionId} />
         </div>
       </main>
     </>
