@@ -13,8 +13,9 @@ import { useEffect, useRef, useState } from 'react';
 import EpisodeItem from './EpisodeItem';
 import { notFound } from 'next/navigation';
 import { FaRegCommentDots } from 'react-icons/fa';
+import Link from 'next/link';
 
-type EpisodeItemProps = EpisodeRow & {
+export type EpisodeItemProps = EpisodeRow & {
   user: {
     user_id: string;
     nickname: string;
@@ -98,6 +99,7 @@ const StoriesList = ({ auction_id }: { auction_id: string }) => {
           <span className="ml-1 text-blue-600">({episodesCount})</span>
         </h2>
         <p className="text-sm text-gray-500 mt-1">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
+        <Link href={`/episode?auction_id=${auction_id}`}>사연 등록</Link>
       </div>
       {/* 사연 목록 */}
       {episodesCount === 0 ? (

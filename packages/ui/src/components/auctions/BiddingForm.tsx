@@ -5,7 +5,8 @@ import { Button } from '../ui/button';
 export const BiddingForm = ({ currentBid, userPoints }: { currentBid: number; userPoints: number }) => {
   const [bidAmount, setBidAmount] = useState('');
 
-  const handleBidSubmit = () => {
+  const handleBidSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     // bidAmount가 userPoints보다 낮은지 등 유효성 검사
     if (Number(bidAmount) > userPoints) {
       alert(`현재 보유중인 포인트는 ${userPoints} 입니다.`);

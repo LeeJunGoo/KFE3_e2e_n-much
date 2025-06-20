@@ -1,15 +1,15 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
-import { useEffect, useRef, useState } from 'react';
+import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
+import { useState } from 'react';
 import { FiAward, FiEdit, FiTrash2 } from 'react-icons/fi';
 import { IoMdTime } from 'react-icons/io';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { BiddingForm } from './BiddingForm';
-import { EpisodeProps } from './EpisodeList';
-import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
+import { EpisodeItemProps } from './EpisodeList';
 
-const EpisodeItem = ({ episode }: { episode: EpisodeProps }) => {
+const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isBiddingOpen, setIsBiddingOpen] = useState(false);
   const episodeTime = formatToKoreanDateTime(episode.created_at);

@@ -139,8 +139,8 @@ export const getHighestBid = async (auction_id: string) => {
     throw new Error('DB: 최고 입찰자 불러오기 에러');
   }
 
-  console.log('최고 입찰자:', data?.user?.nickname);
-  console.log('최고 입찰가:', data?.bid_point);
+  // console.log('최고 입찰자:', data?.user?.nickname);
+  // console.log('최고 입찰가:', data?.bid_point);
 
   return data;
 };
@@ -167,3 +167,32 @@ export async function getUserEpisodes(user_id: string) {
 
   return data;
 }
+
+// 사연 등록하기
+export const postEpisode = async (
+  auction_id: string,
+  user_id: string,
+  title: string,
+  description: string,
+  bid_point: number
+) => {
+  const { data, error } = await supabase
+    .from('episodes')
+    .insert([
+      {
+        auction_id,
+        user_id,
+        title,
+        description,
+        bid_point
+      }
+    ])
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+  return data;
+};

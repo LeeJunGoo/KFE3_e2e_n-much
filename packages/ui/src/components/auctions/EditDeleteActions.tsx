@@ -1,10 +1,18 @@
 'use client';
 
 import { AuctionRow } from '@repo/ui/types/auctions';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 
 const EditDeleteActions = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) => {
+  const router = useRouter();
+
   const handleAuctionDelete = async () => {
+    const confirmed = window.confirm('정말 이 경매를 삭제하시겠습니까?');
+
+    if (!confirmed) {
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:3001/api/auctions`, {
         method: 'DELETE',
@@ -20,7 +28,8 @@ const EditDeleteActions = ({ auction_id }: { auction_id: AuctionRow['auction_id'
         if (res.status === 404) return notFound(); // 함수 호출로 수정
         throw new Error(`경매 상품을 삭제하지 못했습니다.: ${res.status}`);
       }
-      const result = await res.json();
+
+      router.push('/');
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`경매 상품을 삭제하지 못했습니다.: ${error.message}`);

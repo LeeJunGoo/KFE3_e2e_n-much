@@ -11,18 +11,10 @@ const AuctionsPage = () => {
 
   //경매자가 올린 데이터 리스트 불러오기
   const { data } = useCreatedAuctions(TEST_CREATED_AUCTIONS);
-  console.log(data);
+  // console.log(data);
 
-  //총 경매수, 현재 진행중인 경매 count - supabase 함수 이름 : getUserAuctionCount
-  // 현재 route(확인해봐야함), fetch(확인해봐야함), tanstack query(안했으니 추가해야함) 체크
-
-  //최고 입찰자 - supabase 함수 이름 : getHighestBid
-  // 현재 route(확인해봐야함), fetch(확인해봐야함), tanstack query(안했으니 추가해야함) 체크
-
-  //사연 리스트 - supabase 함수 이름 : getAllEpisodes -> fetch 함수명 fetchAllEpisode(여기까지 구현해둠), tanstack query 안함
-  //아래 코드 참고해서 tanstack query 만 구현하시면 됩니다.
   const { data: episodes } = useGetUserEpisodes(TEST_USER_ID);
-  console.log(episodes);
+  // console.log(episodes);
 
   const goToAuctionDetail = () => {
     router.push('/auctions/9e525843-9047-4f17-8dc7-368f9311bf57');

@@ -17,8 +17,6 @@ const MyAuctionOverviewPage = () => {
   //유저 정보
   const { data } = useGetBidAuctions(TEST_USER_ID);
 
-  console.log(data);
-
   return (
     <section>
       <ul className="flex justify-center items-center pb-2 text-center border-b border-gray-300">

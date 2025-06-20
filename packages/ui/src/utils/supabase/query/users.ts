@@ -21,10 +21,10 @@ export const getAllUsers = async () => {
     throw new Error('DB: 모든 유저 불러오기 에러');
   }
 
-  console.log('전체 데이터:', data);
-  console.log('첫 번째 유저:', data?.[0]);
-  console.log('첫 번째 유저의 경매:', data?.[0]?.auctions);
-  console.log('첫 번째 유저의 에피소드:', data?.[0]?.episodes);
+  // console.log('전체 데이터:', data);
+  // console.log('첫 번째 유저:', data?.[0]);
+  // console.log('첫 번째 유저의 경매:', data?.[0]?.auctions);
+  // console.log('첫 번째 유저의 에피소드:', data?.[0]?.episodes);
 
   return data;
 };
@@ -81,10 +81,10 @@ export const getUserAuctionCount = async (user_id: string) => {
     throw new Error('DB: 경매자의 현재 진행중인 경매 수를 불러오는 과정에서 Error 발생');
   }
 
-  console.log('경매 통계:', {
-    총경매수: totalCount,
-    진행중경매: activeCount
-  });
+  // console.log('경매 통계:', {
+  //   총경매수: totalCount,
+  //   진행중경매: activeCount
+  // });
 
   return {
     totalAuctions: totalCount || 0,

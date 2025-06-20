@@ -61,6 +61,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             <FaArrowLeft />
             <span>경매 목록으로 돌아가기</span>
           </Link>
+          {/* //NOTE - 경매 상품 수정 및 삭제 버튼 */}
           <EditDeleteActions auction_id={auctionId} />
         </div>
       </header>
