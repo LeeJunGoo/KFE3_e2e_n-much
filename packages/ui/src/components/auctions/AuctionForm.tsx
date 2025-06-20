@@ -61,7 +61,9 @@ export default function AuctionForm() {
     endTime: z.string().min(8, { message: '경매 종료 시간을 입력해야 합니다.' }),
     description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
       message: '상세 내용은 최대 500자가 되어야 합니다.'
-    })
+    }),
+    startingPoint: z.string().refine((value) => Number(value) > 0, { message: '최소 포인트는 0보다 커야합니다.' }),
+    maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -72,14 +74,25 @@ export default function AuctionForm() {
       startTime: '',
       endTime: '',
       detailAddress: '',
-      description: ''
+      description: '',
+      startingPoint: '0',
+      maxPoint: '0'
     }
   });
 
   useEffect(() => {
     async function setFormDefaultValues(auctionId: string | null) {
       if (!auctionId) {
-        form.reset({ title: '', address: '', detailAddress: '', startTime: '', endTime: '', description: '' });
+        form.reset({
+          title: '',
+          address: '',
+          detailAddress: '',
+          startTime: '',
+          endTime: '',
+          description: '',
+          startingPoint: '0',
+          maxPoint: '0'
+        });
         setIsLoading(false);
         return;
       }
@@ -89,7 +102,8 @@ export default function AuctionForm() {
       const result = await data.json();
 
       if (result.status === 'success' && result.data) {
-        const { title, address, start_time, end_time, description, image_urls } = result.data;
+        const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } =
+          result.data;
         console.log('startDay', start_time, 'endDay', end_time);
         setPreviewImages([...image_urls]);
         form.reset({
@@ -100,13 +114,23 @@ export default function AuctionForm() {
           startTime: start_time.split('T')[1].substr(0, 8),
           endDay: new Date(end_time),
           endTime: end_time.split('T')[1].substr(0, 8),
-          description
+          description,
+          startingPoint: starting_point,
+          maxPoint: max_point
         });
         setConfirmPostCode(true);
 
         setIsLoading(false);
       } else {
-        form.reset({ title: '', address: '', startTime: '', endTime: '', description: '' });
+        form.reset({
+          title: '',
+          address: '',
+          startTime: '',
+          endTime: '',
+          description: '',
+          startingPoint: '0',
+          maxPoint: '0'
+        });
         setIsLoading(false);
       }
     }
@@ -123,7 +147,18 @@ export default function AuctionForm() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const imageUrls: string[] = [];
-    const { title, address, detailAddress, startDay, startTime, endDay, endTime, description } = values;
+    const {
+      title,
+      address,
+      detailAddress,
+      startDay,
+      startTime,
+      endDay,
+      endTime,
+      description,
+      startingPoint,
+      maxPoint
+    } = values;
     try {
       previewImages.forEach(async (prevImage) => {
         const data = await uploadImage(prevImage);
@@ -143,8 +178,8 @@ export default function AuctionForm() {
         start_time: startDay.toISOString().split('T')[0] + 'T' + startTime,
         end_time: endDay.toISOString().split('T')[0] + 'T' + endTime,
         description,
-        starting_point: 0,
-        max_point: 0,
+        starting_point: startingPoint,
+        max_point: maxPoint,
         image_urls: imageUrls
       })
     });
@@ -329,6 +364,32 @@ export default function AuctionForm() {
                 <FormLabel>상세 내용</FormLabel>
                 <FormControl>
                   <Input placeholder="상품에 대한 자세한 설명을 입력하세요." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="startingPoint"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>경매 시작 포인트</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="경매의 시작 포인트를 입력하세요." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="maxPoint"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>경매 상한 포인트</FormLabel>
+                <FormControl>
+                  <Input type="number" placeholder="경매의 상한 포인트를 입력하세요." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
