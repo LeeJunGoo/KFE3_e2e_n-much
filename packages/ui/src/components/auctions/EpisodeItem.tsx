@@ -3,10 +3,11 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
 import { useState } from 'react';
-import { FiAward, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiAward } from 'react-icons/fi';
 import { IoMdTime } from 'react-icons/io';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
 import { BiddingForm } from './BiddingForm';
+import EditDeleteEpisodes from './EditDeleteEpisodes';
 import { EpisodeItemProps } from './EpisodeList';
 
 const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
@@ -40,15 +41,8 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
 
           {/* 오른쪽 버튼 그룹 */}
           <div className="flex items-center gap-2">
-            <Button variant="secondary" size="sm" className="gap-1.5">
-              <FiEdit />
-              수정
-            </Button>
-            <Button variant="destructive" size="sm" className="gap-1.5">
-              <FiTrash2 />
-              삭제
-            </Button>
-
+            {/* 에피소드 수정 및 삭제 버튼 */}
+            <EditDeleteEpisodes episode_id={episode.episode_id} />
             <CollapsibleTrigger asChild>
               <Button size="sm" className="bg-[#8E74F9] hover:bg-[#3f3562] gap-1.5">
                 <FiAward />

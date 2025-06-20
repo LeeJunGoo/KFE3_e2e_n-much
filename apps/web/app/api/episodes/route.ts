@@ -71,10 +71,10 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const { story_id } = await request.json();
+  const { episode_id } = await request.json();
 
   try {
-    const res = await deleteEpisode(story_id);
+    const res = await deleteEpisode(episode_id);
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
