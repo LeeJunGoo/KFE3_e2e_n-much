@@ -26,6 +26,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Calendar } from '../ui/calendar';
 import { ko } from 'date-fns/locale';
 import { uploadImage } from '../../utils/supabase/query/bucket';
+import { TZDate } from 'react-day-picker';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -102,14 +103,23 @@ export default function AuctionForm() {
         const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } =
           result.data;
 
+        const startDay = new TZDate(start_time, 'Asia/Seoul');
+        const startTime = format(startDay, 'HH:mm:ss');
+        const endDay = new TZDate(end_time, 'Asia/Seoul');
+        const endTime = format(endDay, 'HH:mm:ss');
+
         form.reset({
           title,
           address: address[0],
           detailAddress: address[1],
-          startDay: new Date(start_time),
-          startTime: start_time.split('T')[1].substr(0, 8),
-          endDay: new Date(end_time),
-          endTime: end_time.split('T')[1].substr(0, 8),
+          // startDay: new Date(start_time),
+          startDay,
+          // startTime: start_time.split('T')[1].substr(0, 8),
+          startTime,
+          // endDay: new Date(end_time),
+          endDay,
+          // endTime: end_time.split('T')[1].substr(0, 8),
+          endTime,
           description,
           startingPoint: starting_point,
           maxPoint: max_point
