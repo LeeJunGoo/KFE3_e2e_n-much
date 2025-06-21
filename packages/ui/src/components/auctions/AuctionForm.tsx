@@ -36,7 +36,7 @@ export default function AuctionForm() {
   const [isLoading, setIsLoading] = useState<boolean>(isEditing);
 
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
-  const [confirmPostCode, setConfirmPostCode] = useState<boolean>(false);
+  const [confirmPostCode, setConfirmPostCode] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
@@ -112,20 +112,15 @@ export default function AuctionForm() {
           title,
           address: address[0],
           detailAddress: address[1],
-          // startDay: new Date(start_time),
           startDay,
-          // startTime: start_time.split('T')[1].substr(0, 8),
           startTime,
-          // endDay: new Date(end_time),
           endDay,
-          // endTime: end_time.split('T')[1].substr(0, 8),
           endTime,
           description,
           startingPoint: starting_point,
           maxPoint: max_point
         });
 
-        setConfirmPostCode(true);
         setPreviewImages([...image_urls]);
         setIsLoading(false);
       } else {
