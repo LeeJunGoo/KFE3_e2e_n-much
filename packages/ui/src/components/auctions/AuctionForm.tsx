@@ -47,13 +47,7 @@ export default function AuctionForm() {
     address: z
       .string()
       .min(5, { message: '주소는 최소 5글자가 되어야 합니다.' })
-      .refine(
-        () => {
-          console.log('주소 확인 에러', confirmPostCode);
-          return confirmPostCode;
-        },
-        { message: '주소 검색을 통해 주소를 입력해야 합니다.' }
-      ),
+      .refine(() => confirmPostCode, { message: '주소 검색을 통해 주소를 입력해야 합니다.' }),
     detailAddress: z.string().min(5, { message: '상세 주소는 최소 5글자가 되어야 합니다.' }),
     startDay: z.date({ message: '경매 시작일을 입력해야 합니다.' }),
     startTime: z.string().min(8, { message: '경매 시작 시간을 입력해야 합니다.' }),
