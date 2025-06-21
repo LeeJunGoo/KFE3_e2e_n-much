@@ -13,7 +13,7 @@ import { Button } from '../ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import PageTitle from '../typography/PageTitle';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
@@ -64,16 +64,19 @@ export default function AuctionForm() {
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
   });
 
-  const formDefaultValues = {
-    title: '',
-    address: '',
-    startTime: '',
-    endTime: '',
-    detailAddress: '',
-    description: '',
-    startingPoint: '0',
-    maxPoint: '0'
-  };
+  const formDefaultValues = useMemo(
+    () => ({
+      title: '',
+      address: '',
+      startTime: '',
+      endTime: '',
+      detailAddress: '',
+      description: '',
+      startingPoint: '0',
+      maxPoint: '0'
+    }),
+    []
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
