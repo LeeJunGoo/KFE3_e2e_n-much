@@ -20,7 +20,7 @@ import ImageUploader from './ImageUploader';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 import { cn } from '../../lib/utils';
-import { format } from 'date-fns';
+import { addDays, addHours, format, subDays } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Calendar } from '../ui/calendar';
@@ -65,19 +65,27 @@ export default function AuctionForm() {
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
   });
 
-  const formDefaultValues = useMemo(
-    () => ({
+  const formDefaultValues = useMemo(() => {
+    const today = new Date();
+    const startDay = new TZDate(today, 'Asia/Seoul');
+    const endDay = addHours(startDay, 25);
+
+    const startTime = format(startDay, 'HH:mm:ss');
+    const endTime = format(endDay, 'HH:mm:ss');
+
+    return {
       title: '',
       address: '',
-      startTime: '',
-      endTime: '',
+      startDay,
+      startTime,
+      endDay,
+      endTime,
       detailAddress: '',
       description: '',
       startingPoint: '0',
       maxPoint: '0'
-    }),
-    []
-  );
+    };
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -282,7 +290,11 @@ export default function AuctionForm() {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                      disabled={(date) => {
+                        const originDate = new TZDate(new Date(), 'Asia/Seoul');
+                        const todayDate = subDays(originDate, 1);
+                        return date <= todayDate || date < form.getValues('endDay');
+                      }}
                       captionLayout="dropdown"
                     />
                   </PopoverContent>
@@ -327,7 +339,11 @@ export default function AuctionForm() {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
+                      disabled={(date) => {
+                        const originDate = new TZDate(new Date(), 'Asia/Seoul');
+                        const todayDate = subDays(originDate, 1);
+                        return date <= todayDate;
+                      }}
                       captionLayout="dropdown"
                     />
                   </PopoverContent>
