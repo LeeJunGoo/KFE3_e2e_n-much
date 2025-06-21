@@ -2,6 +2,7 @@
 //TODO - 시간이 남거나 리팩토링할 때, tanstack query 도입
 
 //TODO - 폼 유효성 검사 상의
+//TODO - 날짜, 시간 유효성 검사 고려 (경매 최소 기간 상의)
 //TODO - ui 수정
 
 'use client';
@@ -20,7 +21,7 @@ import ImageUploader from './ImageUploader';
 import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 import { cn } from '../../lib/utils';
-import { addDays, addHours, format, subDays } from 'date-fns';
+import { addHours, compareAsc, format, subDays } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Calendar } from '../ui/calendar';
@@ -113,6 +114,7 @@ export default function AuctionForm() {
 
         const startDay = new TZDate(start_time, 'Asia/Seoul');
         const startTime = format(startDay, 'HH:mm:ss');
+
         const endDay = new TZDate(end_time, 'Asia/Seoul');
         const endTime = format(endDay, 'HH:mm:ss');
 
@@ -291,9 +293,12 @@ export default function AuctionForm() {
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => {
-                        const originDate = new TZDate(new Date(), 'Asia/Seoul');
-                        const todayDate = subDays(originDate, 1);
-                        return date <= todayDate || date < form.getValues('endDay');
+                        const todayDate = subDays(new TZDate(new Date(), 'Asia/Seoul'), 1);
+                        const endDate = new TZDate(form.getValues('endDay'), 'Asia/Seoul');
+                        const compareTodayDate = compareAsc(date, todayDate);
+                        const compareEndDate = compareAsc(date, endDate);
+
+                        return compareTodayDate === -1 || compareEndDate === 1;
                       }}
                       captionLayout="dropdown"
                     />
@@ -340,9 +345,10 @@ export default function AuctionForm() {
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => {
-                        const originDate = new TZDate(new Date(), 'Asia/Seoul');
-                        const todayDate = subDays(originDate, 1);
-                        return date <= todayDate;
+                        const startDate = new TZDate(form.getValues('startDay'), 'Asia/Seoul');
+                        const compareEndDate = compareAsc(date, startDate);
+
+                        return compareEndDate === -1;
                       }}
                       captionLayout="dropdown"
                     />
