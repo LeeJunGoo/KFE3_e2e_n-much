@@ -8,16 +8,16 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
-import { EpisodeItemProps, EpisodesListType } from '@repo/ui/types/episodes';
 import { useEffect, useRef, useState } from 'react';
 import EpisodeItem from './EpisodeItem';
 import { notFound } from 'next/navigation';
 import { FaRegCommentDots } from 'react-icons/fa';
 import Link from 'next/link';
+import { EpisodeItemProps, EpisodesListType } from 'types/episodes';
 
 const EPISODES_PER_PAGE = 5;
 
-const StoriesList = ({ auction_id }: { auction_id: string }) => {
+const EpisodeList = ({ auction_id }: { auction_id: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
   const [episodesCount, setEpisodesCount] = useState(1);
@@ -153,4 +153,4 @@ const StoriesList = ({ auction_id }: { auction_id: string }) => {
   );
 };
 
-export default StoriesList;
+export default EpisodeList;

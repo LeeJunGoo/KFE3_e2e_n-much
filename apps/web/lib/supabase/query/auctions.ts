@@ -1,5 +1,5 @@
+import { CreateAuctionPayload } from 'types/auctions';
 import { createClient } from '../client/client';
-import type { CreateAuctionPayload } from '@repo/ui/types/auctions';
 
 const supabase = createClient();
 
@@ -17,11 +17,6 @@ export const getAllAuctions = async () => {
     console.error(error);
     throw new Error('DB: 모든 경매 불러오기 에러');
   }
-
-  // console.log('전체 경매 데이터:', data);
-  // console.log('첫 번째 경매:', data?.[0]);
-  // console.log('첫 번째 경매의 유저 정보:', data?.[0]?.user);
-  // console.log('경매 개수:', data?.length);
 
   return data;
 };
@@ -46,10 +41,6 @@ export const getAuction = async (auction_id: string) => {
     throw new Error('DB: 특정 경매 불러오기 에러');
   }
 
-  // console.log('특정 경매 데이터:', data);
-  // console.log('경매 제목:', data?.title);
-  // console.log('경매 등록자 정보:', data?.user);
-  // console.log('경매 등록자 닉네임:', data?.user?.nickname);
   return data;
 };
 

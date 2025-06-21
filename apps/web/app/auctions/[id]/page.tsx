@@ -1,16 +1,17 @@
-import AuctionDetailCard from '@repo/ui/components/auctions/AuctionDetailCard';
-import EpisodeList from '@repo/ui/components/auctions/EpisodeList';
 import Link from 'next/link';
 import { FaArrowLeft, FaMapMarkerAlt, FaRegCommentDots } from 'react-icons/fa';
 import { IoMdTime } from 'react-icons/io';
 
-import AuctionTimer from '@repo/ui/components/auctions/AuctionTimer';
 import { AuctionRow } from '../../../types/auctions/index';
-import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
+
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import EditDeleteActions from '@repo/ui/components/auctions/EditDeleteActions';
-import { formatNumber } from '@repo/ui/utils/formatNumber';
+import { formatToKoreanDateTime } from 'utils/formatToKoreanDateTime';
+import EditDeleteActions from 'components/auctions/detail/EditDeleteActions';
+import AuctionTimer from 'components/auctions/detail/AuctionTimer';
+import AuctionDetailCard from 'components/auctions/detail/AuctionDetailCard';
+import { formatNumber } from 'utils/formatNumber';
+import EpisodeList from 'components/auctions/detail/EpisodeList';
 
 type AuctionInfoType = { status: string; data: AuctionRow };
 

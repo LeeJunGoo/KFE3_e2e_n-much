@@ -1,5 +1,6 @@
-"use client";
-import PageTitle from '@repo/ui/components/typography/PageTitle';
+'use client';
+
+import PageTitle from 'components/common/PageTitle';
 
 export default function SignupPage() {
   const handleSocialSignup = (provider: string) => {
@@ -10,8 +11,8 @@ export default function SignupPage() {
     <>
       <PageTitle>회원가입</PageTitle>
       <div className="flex flex-col">
-        <button onClick={() => handleSocialSignup("google")}>Google로 회원가입</button>
-        <button onClick={() => handleSocialSignup("kakao")}>Kakao로 회원가입</button>
+        <button onClick={() => handleSocialSignup('google')}>Google로 회원가입</button>
+        <button onClick={() => handleSocialSignup('kakao')}>Kakao로 회원가입</button>
       </div>
     </>
   );

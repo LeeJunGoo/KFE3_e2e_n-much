@@ -1,14 +1,16 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
-import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
+
 import { useState } from 'react';
 import { FiAward } from 'react-icons/fi';
 import { IoMdTime } from 'react-icons/io';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '../ui/collapsible';
+
 import { BiddingForm } from './BiddingForm';
 import EditDeleteEpisodes from './EditDeleteEpisodes';
-import { EpisodeItemProps } from '@repo/ui/types/episodes';
+import { EpisodeItemProps } from 'types/episodes';
+import { formatToKoreanDateTime } from 'utils/formatToKoreanDateTime';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@repo/ui/components/ui/collapsible';
 
 const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
   const [isExpanded, setIsExpanded] = useState(false);

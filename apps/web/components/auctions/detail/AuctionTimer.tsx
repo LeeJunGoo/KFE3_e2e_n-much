@@ -1,7 +1,7 @@
 'use client';
 
-import { useCountdown } from '@repo/ui/hooks/useCountDown';
-import { AuctionRow } from '@repo/ui/types/auctions';
+import { useCountdown } from 'hooks/useCountDown';
+import { AuctionRow } from 'types/auctions';
 
 type AuctionTimeProps = Pick<AuctionRow, 'start_time' | 'end_time'>;
 

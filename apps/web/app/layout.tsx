@@ -2,8 +2,9 @@ import QueryProvider from '../providers/QueryProvider';
 import PageContainer from '../components/layout/PageContainer';
 import { home } from '../metadata/common/home';
 import { pretendard } from '../fonts';
-import TabBar from '../components/common/TabBar';
+
 import './globals.css';
+import TabBar from '../components/common/TabBar';
 
 export const metadata = home;
 
@@ -14,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <QueryProvider>
           {/* <header className="w-full bg-blue-400 h-16 px-5">헤더테스트</header> */}
           <PageContainer>{children}</PageContainer>
-          {/* <TabBar /> */}
+          <TabBar />
         </QueryProvider>
       </body>
     </html>

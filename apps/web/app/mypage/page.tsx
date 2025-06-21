@@ -1,4 +1,4 @@
-import PageTitle from '@repo/ui/components/typography/PageTitle';
+import PageTitle from 'components/common/PageTitle';
 import Image from 'next/image';
 import Link from 'next/link';
 

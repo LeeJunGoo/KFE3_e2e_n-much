@@ -6,7 +6,6 @@ export type AuctionInsert = Database['public']['Tables']['auctions']['Insert'];
 export type AuctionUpdate = Database['public']['Tables']['auctions']['Update'];
 export type AuctionStatus = AuctionInsert['status'];
 
-
 export type CreateAuctionPayload = Pick<
   AuctionInsert,
   | 'user_id'

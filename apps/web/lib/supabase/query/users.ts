@@ -1,16 +1,17 @@
+import { CreateUserPayload, EpisodeWithDetails, UserUpdate } from 'types/users';
 import { createClient } from '../client/client';
-import type { CreateUserPayload, UserUpdate } from '@repo/ui/types/users';
 
 const supabase = createClient();
 
-export const getAllUsers = async () => {
+//FIXME - 수정 필요
+export const getAllUsers = async (): Promise<EpisodeWithDetails[]> => {
   const { data, error } = await supabase.from('users').select(`
     *,
-    auctions (
+    auctions:auctions (
       auction_id,
       title
     ),
-    episodes (
+    episodes:episodes (
       episode_id,
       title,
       bid_point
@@ -18,10 +19,10 @@ export const getAllUsers = async () => {
   `);
 
   if (error) {
+    console.error('Supabase error:', error);
     throw new Error('DB: 모든 유저 불러오기 에러');
   }
-
-  return data;
+  return data || [];
 };
 
 export const getUser = async (user_id: string) => {
@@ -75,11 +76,6 @@ export const getUserAuctionCount = async (user_id: string) => {
     console.log('activeError:', activeError);
     throw new Error('DB: 경매자의 현재 진행중인 경매 수를 불러오는 과정에서 Error 발생');
   }
-
-  // console.log('경매 통계:', {
-  //   총경매수: totalCount,
-  //   진행중경매: activeCount
-  // });
 
   return {
     totalAuctions: totalCount || 0,

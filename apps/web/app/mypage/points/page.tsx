@@ -1,5 +1,6 @@
 'use client';
-import PageTitle from '@repo/ui/components/typography/PageTitle';
+
+import PageTitle from 'components/common/PageTitle';
 import { useRouter } from 'next/navigation';
 
 const PointHistoryPage = () => {
