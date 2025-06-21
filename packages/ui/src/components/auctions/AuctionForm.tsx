@@ -39,7 +39,7 @@ export default function AuctionForm() {
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(isEditing);
 
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [previewImages, setPreviewImages] = useState<{ id: string; data: string }[]>([]);
 
   const formSchema = z.object({
     title: z
@@ -164,7 +164,7 @@ export default function AuctionForm() {
     } = values;
     try {
       previewImages.forEach(async (prevImage) => {
-        const data = await uploadImage(prevImage);
+        const data = await uploadImage(prevImage.data);
         imageUrls.push('https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/' + data.fullPath);
       });
     } catch (error) {
@@ -419,8 +419,14 @@ export default function AuctionForm() {
           previewImages.map((previewImage) => {
             if (previewImage) {
               return (
-                <li key={uuidv4()}>
-                  <Image alt={'img'} src={previewImage} width={300} height={300} />
+                <li key={previewImage.id} className="relative">
+                  <button
+                    onClick={() => setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id))}
+                    className="absolute top-1 left-72 bg-amber-500"
+                  >
+                    엑스
+                  </button>
+                  <Image alt={'img'} src={previewImage.data} width={300} height={300} />
                 </li>
               );
             }

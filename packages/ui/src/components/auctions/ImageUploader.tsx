@@ -1,7 +1,12 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { v4 as uuidv4 } from 'uuid';
 
-export default function ImageUploader({ onPreviewImages }: { onPreviewImages: Dispatch<SetStateAction<string[]>> }) {
+export default function ImageUploader({
+  onPreviewImages
+}: {
+  onPreviewImages: Dispatch<SetStateAction<{ id: string; data: string }[]>>;
+}) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       console.log(acceptedFiles);
@@ -11,7 +16,7 @@ export default function ImageUploader({ onPreviewImages }: { onPreviewImages: Di
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-          onPreviewImages((prev) => [...prev, reader.result as string]);
+          onPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string }]);
         };
       });
     },
