@@ -36,7 +36,7 @@ export type Database = {
     Tables: {
       auctions: {
         Row: {
-          address: string
+          address: string[]
           auction_id: string
           created_at: string
           current_point: number
@@ -53,7 +53,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          address?: string
+          address: string[]
           auction_id?: string
           created_at?: string
           current_point: number
@@ -70,7 +70,7 @@ export type Database = {
           user_id: string
         }
         Update: {
-          address?: string
+          address?: string[]
           auction_id?: string
           created_at?: string
           current_point?: number

@@ -6,7 +6,7 @@ import {
   getEpisodesByAuctionId,
   getUserEpisodes,
   updateEpisode
-} from '@repo/ui/utils/supabase/query/episodes';
+} from '../../../lib/supabase/query/episodes';
 import { NextRequest } from 'next/server';
 
 const commonHeader = {

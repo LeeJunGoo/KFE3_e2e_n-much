@@ -1,6 +1,6 @@
-import { addUser, getAllUsers, getUser, updateUser } from '@repo/ui/utils/supabase/query/users';
+import { addUser, getAllUsers, getUser, updateUser } from '../../../lib/supabase/query/users';
 import { NextRequest } from 'next/server';
-import type { CreateUserPayload } from '@repo/ui/types/users/index';
+import type { CreateUserPayload } from '../../../types/users/index';
 
 const commonHeader = {
   headers: { 'Content-Type': 'application/json' }

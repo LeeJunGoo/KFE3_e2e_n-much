@@ -1,4 +1,4 @@
-import { patchEpisode } from '@repo/ui/utils/supabase/query/episodes';
+import { patchEpisode } from '../../../../lib/supabase/query/episodes';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function PATCH(request: NextRequest) {

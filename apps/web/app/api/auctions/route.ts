@@ -6,9 +6,9 @@ import {
   updateAuction,
   getMyCreatedAuctions,
   getMyBidAuctions
-} from '@repo/ui/utils/supabase/query/auctions';
+} from '../../../lib/supabase/query/auctions';
 import { NextRequest } from 'next/server';
-import type { CreateAuctionPayload } from '@repo/ui/types/auctions/index';
+import type { CreateAuctionPayload } from '../../../types/auctions/index';
 
 const commonHeader = {
   headers: { 'Content-Type': 'application/json' }

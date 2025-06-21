@@ -5,7 +5,7 @@ import { FaArrowLeft, FaMapMarkerAlt, FaRegCommentDots } from 'react-icons/fa';
 import { IoMdTime } from 'react-icons/io';
 
 import AuctionTimer from '@repo/ui/components/auctions/AuctionTimer';
-import { AuctionRow } from '@repo/ui/types/auctions/index';
+import { AuctionRow } from '../../../types/auctions/index';
 import { formatToKoreanDateTime } from '@repo/ui/utils/formatToKoreanDateTime';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';

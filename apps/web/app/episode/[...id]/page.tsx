@@ -1,5 +1,5 @@
-import EpisodesForm from '@repo/ui/components/episodes/EpisodesForm';
-import { EpisodesListType } from '@repo/ui/types/episodes/index';
+import EpisodesForm from '../../../components/episodes/EpisodesForm';
+import { EpisodesListType } from '../../../types/episodes/index';
 import { notFound } from 'next/navigation';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {

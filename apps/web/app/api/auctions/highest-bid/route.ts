@@ -1,4 +1,4 @@
-import { getHighestBid } from '@repo/ui/utils/supabase/query/episodes';
+import { getHighestBid } from '../../../../lib/supabase/query/episodes';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {

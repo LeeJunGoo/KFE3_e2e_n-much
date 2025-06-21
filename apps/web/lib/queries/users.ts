@@ -1,4 +1,4 @@
-import type { MyPageUserInfo } from '@repo/ui/types/mypage/index';
+import type { MyPageUserInfo } from '../../types/mypage/index';
 
 // 현재 유저 정보 불러오기
 export const fetchCurrentUser = async (user_id: string): Promise<MyPageUserInfo> => {

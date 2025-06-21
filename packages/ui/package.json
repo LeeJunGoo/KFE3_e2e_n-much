@@ -19,8 +19,7 @@
     "check-types": "tsc --noEmit",
     "dev:styles": "tailwindcss -i ./src/css/global.css -o ./dist/index.css --watch",
     "dev:components": "tsc --watch",
-    "lint": "eslint src --max-warnings 0",
-    "supabase:types": "supabase gen types typescript --linked --schema public > src/types/supabase.ts"
+    "lint": "eslint src --max-warnings 0"
   },
   "peerDependencies": {
     "react": "^19"
@@ -32,7 +31,6 @@
     "@tailwindcss/cli": "^4.1.5",
     "@types/react": "^19.1.0",
     "eslint": "^9.28.0",
-    "supabase": "^2.26.9",
     "tailwindcss": "^4.1.5",
     "typescript": "5.8.2"
   },
@@ -41,15 +39,12 @@
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-collapsible": "^1.1.11",
     "@radix-ui/react-slot": "^1.2.3",
-    "@supabase/ssr": "^0.6.1",
-    "@supabase/supabase-js": "^2.50.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.514.0",
     "next": "^15.3.3",
     "react-dom": "^19.1.0",
-    "react-icons": "^5.5.0",
     "tailwind-merge": "^3.3.1",
     "tw-animate-css": "^1.3.4"
   }
