@@ -30,10 +30,13 @@ import { uploadImage } from '../../utils/supabase/query/bucket';
 export default function AuctionForm() {
   const searchParams = useSearchParams();
   const auctionIdParam = searchParams.get('auction_id');
+
   const isEditing: boolean = auctionIdParam ? true : false;
   const [isLoading, setIsLoading] = useState<boolean>(isEditing);
+
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(false);
+
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const formSchema = z.object({
@@ -61,18 +64,20 @@ export default function AuctionForm() {
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
   });
 
+  const formDefaultValues = {
+    title: '',
+    address: '',
+    startTime: '',
+    endTime: '',
+    detailAddress: '',
+    description: '',
+    startingPoint: '0',
+    maxPoint: '0'
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: '',
-      address: '',
-      startTime: '',
-      endTime: '',
-      detailAddress: '',
-      description: '',
-      startingPoint: '0',
-      maxPoint: '0'
-    }
+    defaultValues: formDefaultValues
   });
 
   async function getAuction(auctionId: string | null) {
@@ -93,8 +98,7 @@ export default function AuctionForm() {
       if (result.status === 'success' && result.data) {
         const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } =
           result.data;
-        console.log('startDay', start_time, 'endDay', end_time);
-        setPreviewImages([...image_urls]);
+
         form.reset({
           title,
           address: address[0],
@@ -107,25 +111,18 @@ export default function AuctionForm() {
           startingPoint: starting_point,
           maxPoint: max_point
         });
-        setConfirmPostCode(true);
 
+        setConfirmPostCode(true);
+        setPreviewImages([...image_urls]);
         setIsLoading(false);
       } else {
-        form.reset({
-          title: '',
-          address: '',
-          startTime: '',
-          endTime: '',
-          description: '',
-          startingPoint: '0',
-          maxPoint: '0'
-        });
+        form.reset(formDefaultValues);
         setIsLoading(false);
       }
     }
 
     setFormDefaultValues(auctionIdParam);
-  }, [auctionIdParam, form]);
+  }, [auctionIdParam, form, formDefaultValues, isEditing]);
 
   useEffect(() => {
     if (confirmPostCode) {
