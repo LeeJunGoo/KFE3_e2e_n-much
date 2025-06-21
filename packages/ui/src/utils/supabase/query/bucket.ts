@@ -6,9 +6,13 @@ const supabase = createClient();
 
 export async function uploadImage(imageData: string) {
   const base64 = imageData.split(',')[1];
+  if (!base64) {
+    throw new Error('이미지할 이미지를 잘못 선택하였습니다.');
+  }
+
   const { data, error } = await supabase.storage
     .from('vidding')
-    .upload(`auctions_images/${uuidv4()}.png`, decode(base64!), {
+    .upload(`auctions_images/${uuidv4()}.png`, decode(base64), {
       contentType: 'image/png'
     });
 

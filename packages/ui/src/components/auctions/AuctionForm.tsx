@@ -19,7 +19,6 @@ import PageTitle from '../typography/PageTitle';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
-import { v4 as uuidv4 } from 'uuid';
 import { cn } from '../../lib/utils';
 import { addHours, compareAsc, format, subDays } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
