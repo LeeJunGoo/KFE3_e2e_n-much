@@ -1,6 +1,7 @@
 //TODO - 모달 창 ui 깨지는 거 물어보기 => 리팩토링할 때 답변(박서영)
 //TODO - 시간이 남거나 리팩토링할 때, tanstack query 도입
 
+//TODO - 폼 유효성 검사 상의
 //TODO - ui 수정
 
 'use client';
@@ -30,7 +31,7 @@ export default function AuctionForm() {
   const searchParams = useSearchParams();
   const auctionIdParam = searchParams.get('auction_id');
   const isEditing: boolean = auctionIdParam ? true : false;
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(isEditing);
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(false);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
@@ -76,8 +77,8 @@ export default function AuctionForm() {
 
   useEffect(() => {
     async function setFormDefaultValues(auctionId: string | null) {
-      if (!auctionId) {
-        return setIsLoading(false);
+      if (!isEditing) {
+        return;
       }
 
       const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
