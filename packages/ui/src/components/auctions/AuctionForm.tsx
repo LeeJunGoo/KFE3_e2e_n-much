@@ -75,15 +75,20 @@ export default function AuctionForm() {
     }
   });
 
+  async function getAuction(auctionId: string | null) {
+    const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
+    const data = await fetch(fetchUrl);
+    const result = await data.json();
+    return result;
+  }
+
   useEffect(() => {
     async function setFormDefaultValues(auctionId: string | null) {
       if (!isEditing) {
         return;
       }
 
-      const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
-      const data = await fetch(fetchUrl);
-      const result = await data.json();
+      const result = await getAuction(auctionId);
 
       if (result.status === 'success' && result.data) {
         const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } =
