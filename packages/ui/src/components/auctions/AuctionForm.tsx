@@ -138,7 +138,6 @@ export default function AuctionForm() {
     }
   }, [confirmPostCode, form]);
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const imageUrls: string[] = [];
     const {
@@ -183,7 +182,7 @@ export default function AuctionForm() {
     console.log('결과', result);
   }
 
-  const handleComplete = (data: Address) => {
+  const handlePostCodeSearch = (data: Address) => {
     let fullAddress = data.address;
     let extraAddress = '';
 
@@ -259,7 +258,7 @@ export default function AuctionForm() {
           >
             {showPostCodeSearch ? '주소 검색 닫기' : '주소 검색'}
           </Button>
-          {showPostCodeSearch && <DaumPostcodeEmbed onComplete={handleComplete} />}
+          {showPostCodeSearch && <DaumPostcodeEmbed onComplete={handlePostCodeSearch} />}
           <FormField
             control={form.control}
             name="startDay"
