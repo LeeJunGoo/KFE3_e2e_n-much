@@ -77,18 +77,7 @@ export default function AuctionForm() {
   useEffect(() => {
     async function setFormDefaultValues(auctionId: string | null) {
       if (!auctionId) {
-        form.reset({
-          title: '',
-          address: '',
-          detailAddress: '',
-          startTime: '',
-          endTime: '',
-          description: '',
-          startingPoint: '0',
-          maxPoint: '0'
-        });
-        setIsLoading(false);
-        return;
+        return setIsLoading(false);
       }
 
       const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
