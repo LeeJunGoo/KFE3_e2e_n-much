@@ -1,6 +1,7 @@
+import React from 'react';
 import { FaBell } from 'react-icons/fa';
 
-export default function Header() {
+const Header = () => {
   return (
     <header className="w-full bg-blue-400 h-16 px-5">
       <ul className="h-full flex items-center justify-between text-white ">
@@ -11,4 +12,6 @@ export default function Header() {
       </ul>
     </header>
   );
-}
+};
+
+export default Header;
