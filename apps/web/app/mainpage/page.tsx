@@ -1,4 +1,4 @@
-import AuctionCard from './cardList/autionCard';
+import AuctionCard from './cardList/auctionCard';
 
 export default function Home() {
   return (
