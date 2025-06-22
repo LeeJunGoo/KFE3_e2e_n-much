@@ -1,1 +1,1 @@
-//auction types
+//NOTE - 경매 맟 경매 등록 페이지 타입 지정
