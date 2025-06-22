@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true
   },
   images: {
-    domains: ['api.dicebear.com', 'i.namu.wiki']
+    domains: ['api.dicebear.com', 'i.namu.wiki', 'psszbhuartnhkzomgxmq.supabase.co']
   }
 };
 

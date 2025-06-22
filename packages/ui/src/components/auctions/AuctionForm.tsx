@@ -3,6 +3,7 @@
 
 //TODO - 폼 유효성 검사 상의
 //TODO - 날짜, 시간 유효성 검사 고려 (경매 최소 기간 상의)
+//TODO - 경매 등록 후, 상세 페이지로 이동
 //TODO - ui 수정
 
 'use client';
@@ -27,6 +28,7 @@ import { Calendar } from '../ui/calendar';
 import { ko } from 'date-fns/locale';
 import { uploadImage } from '../../utils/supabase/query/bucket';
 import { TZDate } from 'react-day-picker';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -130,7 +132,7 @@ export default function AuctionForm() {
           maxPoint: max_point
         });
 
-        setPreviewImages([...image_urls]);
+        setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image })));
         setIsLoading(false);
       } else {
         form.reset(formDefaultValues);
@@ -148,7 +150,7 @@ export default function AuctionForm() {
   }, [confirmPostCode, form]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const imageUrls: string[] = [];
+    let imageUrls: string[] = [];
     const {
       title,
       address,
@@ -162,10 +164,12 @@ export default function AuctionForm() {
       maxPoint
     } = values;
     try {
-      previewImages.forEach(async (prevImage) => {
+      const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
         const data = await uploadImage(prevImage.data);
-        imageUrls.push('https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/' + data.fullPath);
+        return 'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/' + data.fullPath;
       });
+
+      imageUrls = await Promise.all(imageUploadPromise);
     } catch (error) {
       console.log(error);
     }
@@ -416,19 +420,17 @@ export default function AuctionForm() {
       <ul>
         {previewImages &&
           previewImages.map((previewImage) => {
-            if (previewImage) {
-              return (
-                <li key={previewImage.id} className="relative">
-                  <Button
-                    onClick={() => setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id))}
-                    className="absolute top-1 left-72"
-                  >
-                    X
-                  </Button>
-                  <Image alt={'img'} src={previewImage.data} width={300} height={300} />
-                </li>
-              );
-            }
+            return (
+              <li key={previewImage.id} className="relative">
+                <Button
+                  onClick={() => setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id))}
+                  className="absolute top-1 left-72"
+                >
+                  X
+                </Button>
+                <Image alt={'img'} src={previewImage.data} width={300} height={300} />
+              </li>
+            );
           })}
       </ul>
     </>
