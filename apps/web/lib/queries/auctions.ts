@@ -1,4 +1,4 @@
-import type { MyCreatedAuctions, MyBidAuctions } from '@repo/ui/types/mypage/index';
+import type { MyCreatedAuctions, MyBidAuctions } from '../../types/mypage/index';
 
 // 전체 경매 데이터 불러오기
 export const fetchAllAuctions = async () => {
