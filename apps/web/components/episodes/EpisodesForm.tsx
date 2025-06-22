@@ -5,25 +5,24 @@ import { AuctionRow } from 'lib/supabase/type';
 
 import { notFound, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-
-import { EpisodeItemProps } from 'types/episodes';
+import { EpisodeReturnDataType } from 'types/episodes';
 
 const EpisodesForm = ({
   initialData,
   auction_id
 }: {
-  initialData: EpisodeItemProps;
+  initialData: EpisodeReturnDataType | null;
   auction_id: AuctionRow['auction_id'];
 }) => {
-  const [title, setTitle] = useState(initialData?.title || '');
-  const [content, setContent] = useState(initialData?.description || '');
+  const [title, setTitle] = useState(initialData?.data.title || '');
+  const [content, setContent] = useState(initialData?.data.description || '');
   const router = useRouter();
 
   const url = initialData ? 'http://localhost:3001/api/episodes/update' : 'http://localhost:3001/api/episodes/register';
-  const userId = initialData ? initialData.user_id : '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
+  const userId = initialData ? initialData?.data.user_id : '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
   const method = initialData ? 'PATCH' : 'POST';
 
-  const bidPoint = initialData ? initialData.bid_point : 0;
+  const bidPoint = initialData ? initialData?.data.bid_point : 0;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +32,7 @@ const EpisodesForm = ({
         headers: { 'Content-Type': 'application/json' },
         method: method,
         body: JSON.stringify({
-          episode_id: initialData.episode_id,
+          episode_id: initialData?.data.episode_id,
           auction_id,
           user_id: userId,
           title: title,
@@ -62,8 +61,8 @@ const EpisodesForm = ({
   };
 
   const handleReset = () => {
-    setTitle(initialData?.title || '');
-    setContent(initialData?.description || '');
+    setTitle(initialData?.data.title || '');
+    setContent(initialData?.data.description || '');
   };
 
   return (

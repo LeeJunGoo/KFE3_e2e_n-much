@@ -4,9 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function PATCH(request: NextRequest) {
   const { episode_id, title, description } = await request.json();
 
-  console.log('🚀 ~ PATCH ~ description:', description);
-  console.log('🚀 ~ PATCH ~ title:', title);
-  console.log('🚀 ~ PATCH ~ episode_id:', episode_id);
   if (!episode_id || !title || !description) {
     return Response.json({ status: 'error', error: 'id, title, description 값이 존재하지 않습니다.' });
   }

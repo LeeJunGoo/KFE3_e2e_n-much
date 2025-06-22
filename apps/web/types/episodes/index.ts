@@ -15,3 +15,8 @@ export type EpisodesListType = {
     count: number;
   };
 };
+
+export type EpisodeReturnDataType = {
+  status: string;
+  data: EpisodeRow;
+};

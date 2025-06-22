@@ -1,3 +1,4 @@
+import { EpisodeRow } from 'lib/supabase/type';
 import {
   addEpisode,
   deleteEpisode,

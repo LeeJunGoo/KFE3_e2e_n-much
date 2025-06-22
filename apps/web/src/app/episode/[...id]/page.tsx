@@ -1,10 +1,11 @@
-import EpisodesForm from '../../../../components/episodes/EpisodesForm';
-import { EpisodesListType } from '../../../../types/episodes/index';
+import EpisodesForm from 'components/episodes/EpisodesForm';
 import { notFound } from 'next/navigation';
+import { EpisodeReturnDataType } from 'types/episodes';
+// import EpisodesForm from '../../../../components/episodes/EpisodesForm';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auction_id, episode_id] = (await params).id;
-  let initialData: EpisodesListType | null = null;
+  let initialData: EpisodeReturnDataType | null = null;
 
   if (episode_id) {
     try {
@@ -25,7 +26,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
 
   return (
     <main>
-      <EpisodesForm auction_id={auction_id!} initialData={initialData?.data} />
+      <EpisodesForm auction_id={auction_id!} initialData={initialData} />
     </main>
   );
 };
