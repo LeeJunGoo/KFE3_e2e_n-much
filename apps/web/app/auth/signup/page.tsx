@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { AuthCard } from '@repo/ui/components/AuthCard';
+import { AuthCard } from '../../../../../packages/ui/dist/components/auth/AuthCard';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { storeUserInfo, socialSignup } from '../SupabaseService';
+import { storeUserInfo, socialSignup } from '../utils/SupabaseService';
 
 type Role = 'BUYER' | 'SELLER';
 type Provider = 'google' | 'kakao';
@@ -31,5 +31,5 @@ export default function SignupPage() {
     }
   }, [router, searchParams, role]);
 
-  return <AuthCard title="회원가입" role={role} setRole={setRole} handleSocialSignup={handleSocialSignup} />;
+  return <AuthCard title="회원가입" setRole={setRole} handleSocialSignup={handleSocialSignup} />;
 }
