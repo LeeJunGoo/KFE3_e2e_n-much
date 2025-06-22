@@ -1,8 +1,8 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
+import { AuctionRow } from 'lib/supabase/type';
 import { notFound, useRouter } from 'next/navigation';
-import { AuctionRow } from 'types/auctions';
 
 const EditDeleteActions = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) => {
   const router = useRouter();

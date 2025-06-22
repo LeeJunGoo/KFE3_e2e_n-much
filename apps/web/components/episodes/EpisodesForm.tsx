@@ -1,10 +1,11 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
+import { AuctionRow } from 'lib/supabase/type';
 
 import { notFound, useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { AuctionRow } from 'types/auctions';
+
 import { EpisodeItemProps } from 'types/episodes';
 
 const EpisodesForm = ({

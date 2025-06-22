@@ -30,7 +30,7 @@ export type Database = {
     Tables: {
       auctions: {
         Row: {
-          address: string;
+          address: string[];
           auction_id: string;
           created_at: string;
           current_point: number;
@@ -47,7 +47,7 @@ export type Database = {
           user_id: string;
         };
         Insert: {
-          address?: string;
+          address: string[];
           auction_id?: string;
           created_at?: string;
           current_point: number;
@@ -64,7 +64,7 @@ export type Database = {
           user_id: string;
         };
         Update: {
-          address?: string;
+          address?: string[];
           auction_id?: string;
           created_at?: string;
           current_point?: number;
@@ -80,17 +80,25 @@ export type Database = {
           updated_at?: string | null;
           user_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'fk_auctions_user';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['user_id'];
+          }
+        ];
       };
-      stories: {
+      episodes: {
         Row: {
           auction_id: string;
           bid_point: number;
           bid_time: string;
           created_at: string;
           description: string;
+          episode_id: string;
           likes: string[] | null;
-          story_id: string;
           title: string;
           updated_at: string | null;
           user_id: string;
@@ -102,8 +110,8 @@ export type Database = {
           bid_time?: string;
           created_at?: string;
           description?: string;
+          episode_id?: string;
           likes?: string[] | null;
-          story_id?: string;
           title?: string;
           updated_at?: string | null;
           user_id: string;
@@ -115,14 +123,29 @@ export type Database = {
           bid_time?: string;
           created_at?: string;
           description?: string;
+          episode_id?: string;
           likes?: string[] | null;
-          story_id?: string;
           title?: string;
           updated_at?: string | null;
           user_id?: string;
           winning_bid?: boolean;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: 'fk_episodes_auction';
+            columns: ['auction_id'];
+            isOneToOne: false;
+            referencedRelation: 'auctions';
+            referencedColumns: ['auction_id'];
+          },
+          {
+            foreignKeyName: 'fk_episodes_user';
+            columns: ['user_id'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['user_id'];
+          }
+        ];
       };
       users: {
         Row: {

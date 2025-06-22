@@ -1,9 +1,10 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
+import { EpisodeRow } from 'lib/supabase/type';
+
 import { notFound, useRouter } from 'next/navigation';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
-import { EpisodeRow } from 'types/episodes';
 
 const EditDeleteEpisodes = ({
   auction_id,

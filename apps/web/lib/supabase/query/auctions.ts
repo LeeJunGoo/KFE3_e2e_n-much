@@ -1,5 +1,5 @@
-import { CreateAuctionPayload } from 'types/auctions';
 import { createClient } from '../client/client';
+import { AuctionInsert } from '../type';
 
 const supabase = createClient();
 
@@ -97,7 +97,7 @@ export const getMyBidAuctions = async (user_id: string) => {
   return data;
 };
 
-export const addAuction = async (auctionData: CreateAuctionPayload) => {
+export const addAuction = async (auctionData: AuctionInsert) => {
   const { data, error } = await supabase.from('auctions').insert([auctionData]).select().single();
 
   if (error) {

@@ -1,10 +1,10 @@
-import { CreateUserPayload, EpisodeWithDetails, UserUpdate } from 'types/users';
+import { CreateUserPayload } from 'types/mypage';
 import { createClient } from '../client/client';
+import { UserUpdate } from '../type';
 
 const supabase = createClient();
 
-//FIXME - 수정 필요
-export const getAllUsers = async (): Promise<EpisodeWithDetails[]> => {
+export const getAllUsers = async () => {
   const { data, error } = await supabase.from('users').select(`
     *,
     auctions:auctions (

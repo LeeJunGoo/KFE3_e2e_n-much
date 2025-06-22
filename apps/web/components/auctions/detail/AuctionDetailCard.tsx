@@ -1,10 +1,10 @@
 'use client';
 
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
+import { AuctionRow } from 'lib/supabase/type';
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { AuctionRow } from 'types/auctions';
 
 type AuctionDetailCardProps = Pick<AuctionRow, 'image_urls'>;
 

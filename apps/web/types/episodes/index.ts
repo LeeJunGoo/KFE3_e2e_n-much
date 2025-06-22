@@ -1,10 +1,6 @@
-import { Database } from '../supabase';
+import { EpisodeRow } from 'lib/supabase/type';
 
-//supabase type
-export type EpisodeRow = Database['public']['Tables']['episodes']['Row'];
-export type EpisodeInsert = Database['public']['Tables']['episodes']['Insert'];
-export type EpisodeUpdate = Database['public']['Tables']['episodes']['Update'];
-
+//NOTE - 경매 사연, 등록, 수정 타입 지정
 export type EpisodeItemProps = EpisodeRow & {
   user: {
     user_id: string;
