@@ -419,12 +419,12 @@ export default function AuctionForm() {
             if (previewImage) {
               return (
                 <li key={previewImage.id} className="relative">
-                  <button
+                  <Button
                     onClick={() => setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id))}
-                    className="absolute top-1 left-72 bg-amber-500"
+                    className="absolute top-1 left-72"
                   >
-                    엑스
-                  </button>
+                    X
+                  </Button>
                   <Image alt={'img'} src={previewImage.data} width={300} height={300} />
                 </li>
               );
