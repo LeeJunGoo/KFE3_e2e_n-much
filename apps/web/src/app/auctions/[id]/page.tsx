@@ -30,10 +30,10 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
   const auctionInfo: AuctionInfoType = await res_1.json();
 
-  const { title, current_point, start_time, end_time, image_urls, description, address, user_id } = auctionInfo.data;
+  const { title, current_point, start_time, end_time, image_urls, description, address, seller_id } = auctionInfo.data;
 
   //NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수
-  const res_2 = await fetch(`http://localhost:3001/api/auctions/creator?user_id=${user_id}`);
+  const res_2 = await fetch(`http://localhost:3001/api/auctions/creator?seller_id=${seller_id}`);
 
   if (!res_2.ok) {
     if (res_2.status === 404) return notFound();

@@ -59,7 +59,7 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
         <CollapsibleContent className="mt-2 CollapsibleContent w-full space-y-4 rounded-lg bg-[#F4F4F7] p-4">
           <BiddingForm
             auction_id={episode.auction_id}
-            user_id={episode.user_id}
+            buyer_id={episode.buyer_id}
             currentBid={episode.bid_point}
             userPoints={1000000}
           />
