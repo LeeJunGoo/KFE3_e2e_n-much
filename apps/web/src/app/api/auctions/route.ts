@@ -1,4 +1,4 @@
-import { AuctionInsert } from 'lib/supabase/type';
+import { AuctionInsert } from 'src/lib/supabase/type';
 import {
   addAuction,
   deleteAuction,
@@ -7,7 +7,7 @@ import {
   updateAuction,
   getMyCreatedAuctions,
   getMyBidAuctions
-} from '../../../../lib/supabase/query/auctions';
+} from '../../../lib/supabase/query/auctions';
 import { NextRequest } from 'next/server';
 
 const commonHeader = {

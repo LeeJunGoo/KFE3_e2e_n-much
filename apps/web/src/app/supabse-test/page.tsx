@@ -1,6 +1,6 @@
 'use client';
 
-import { createClient } from '../../../lib/supabase/client/client';
+import { createClient } from '../../lib/supabase/client/client';
 import { useEffect } from 'react';
 
 export default function Page() {

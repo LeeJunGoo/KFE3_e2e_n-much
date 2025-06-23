@@ -1,6 +1,6 @@
-import EpisodesForm from 'components/episodes/EpisodesForm';
+import EpisodesForm from 'src/components/episodes/EpisodesForm';
 import { notFound } from 'next/navigation';
-import { EpisodeReturnDataType } from 'types/episodes';
+import { EpisodeReturnDataType } from 'src/types/episodes';
 // import EpisodesForm from '../../../../components/episodes/EpisodesForm';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {

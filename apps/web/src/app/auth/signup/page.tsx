@@ -1,6 +1,6 @@
 'use client';
 
-import PageTitle from 'components/common/PageTitle';
+import PageTitle from 'src/components/common/PageTitle';
 
 export default function SignupPage() {
   const handleSocialSignup = (provider: string) => {

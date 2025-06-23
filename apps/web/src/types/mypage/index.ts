@@ -1,4 +1,4 @@
-import { AuctionRow, EpisodeRow, UserInsert, UserRow } from 'lib/supabase/type';
+import { AuctionRow, EpisodeRow, UserInsert, UserRow } from 'src/lib/supabase/type';
 
 export type MyPageUserInfo = UserRow;
 export type MyCreatedAuctions = AuctionRow[];
