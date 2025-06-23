@@ -1,5 +1,5 @@
-import { getHighestBid } from '../../../../lib/supabase/query/episodes';
 import { NextRequest, NextResponse } from 'next/server';
+import { getHighestBid } from 'src/lib/supabase/query/episodes';
 
 export async function GET(request: NextRequest) {
   const searchParams = await request.nextUrl.searchParams;

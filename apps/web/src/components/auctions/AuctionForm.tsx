@@ -11,16 +11,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
-
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
-
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
-
 import { addHours, compareAsc, format, subDays } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
@@ -30,9 +26,9 @@ import { TZDate } from 'react-day-picker';
 import { v4 as uuidv4 } from 'uuid';
 import { Input } from '@repo/ui/components/ui/input';
 import { Button } from '@repo/ui/components/ui/button';
-import PageTitle from 'components/common/PageTitle';
 import { cn } from '@repo/ui/lib/utils';
-import { uploadImage } from 'lib/supabase/query/bucket';
+import { uploadImage } from 'src/lib/supabase/query/bucket';
+import PageTitle from '../common/PageTitle';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
