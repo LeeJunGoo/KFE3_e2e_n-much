@@ -1,4 +1,4 @@
-import { CreateUserPayload } from 'types/mypage';
+import { CreateUserPayload } from 'src/types/mypage';
 import { createClient } from '../client/client';
 import { UserUpdate } from '../type';
 

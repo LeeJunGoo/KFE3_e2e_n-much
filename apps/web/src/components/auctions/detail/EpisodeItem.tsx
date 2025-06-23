@@ -8,8 +8,8 @@ import { IoMdTime } from 'react-icons/io';
 
 import { BiddingForm } from './BiddingForm';
 import EditDeleteEpisodes from './EditDeleteEpisodes';
-import { EpisodeItemProps } from 'types/episodes';
-import { formatToKoreanDateTime } from 'utils/formatToKoreanDateTime';
+import { EpisodeItemProps } from 'src/types/episodes';
+import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@repo/ui/components/ui/collapsible';
 
 const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {

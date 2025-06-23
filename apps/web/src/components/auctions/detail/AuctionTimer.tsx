@@ -1,7 +1,7 @@
 'use client';
 
-import { useCountdown } from 'hooks/useCountDown';
-import { AuctionRow } from 'lib/supabase/type';
+import { useCountdown } from 'src/hooks/useCountDown';
+import { AuctionRow } from 'src/lib/supabase/type';
 
 type AuctionTimeProps = Pick<AuctionRow, 'start_time' | 'end_time'>;
 

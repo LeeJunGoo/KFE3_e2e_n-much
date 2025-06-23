@@ -1,4 +1,4 @@
-import { patchEpisode, postEpisode } from '../../../../../lib/supabase/query/episodes';
+import { patchEpisode, postEpisode } from '../../../../lib/supabase/query/episodes';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {

@@ -4,13 +4,13 @@ import { IoMdTime } from 'react-icons/io';
 
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { formatToKoreanDateTime } from 'utils/formatToKoreanDateTime';
-import EditDeleteActions from 'components/auctions/detail/EditDeleteActions';
-import AuctionTimer from 'components/auctions/detail/AuctionTimer';
-import AuctionDetailCard from 'components/auctions/detail/AuctionDetailCard';
-import { formatNumber } from 'utils/formatNumber';
-import EpisodeList from 'components/auctions/detail/EpisodeList';
-import { AuctionRow } from 'lib/supabase/type';
+import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
+import EditDeleteActions from 'src/components/auctions/detail/EditDeleteActions';
+import AuctionTimer from 'src/components/auctions/detail/AuctionTimer';
+import AuctionDetailCard from 'src/components/auctions/detail/AuctionDetailCard';
+import { formatNumber } from 'src/utils/formatNumber';
+import EpisodeList from 'src/components/auctions/detail/EpisodeList';
+import { AuctionRow } from 'src/lib/supabase/type';
 
 type AuctionInfoType = { status: string; data: AuctionRow };
 

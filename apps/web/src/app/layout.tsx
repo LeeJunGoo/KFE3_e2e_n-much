@@ -1,11 +1,11 @@
-import QueryProvider from '../../providers/QueryProvider';
-import PageContainer from '../../components/layout/PageContainer';
-import { home } from '../../metadata/common/home';
-import { pretendard } from '../../fonts';
+import QueryProvider from '../providers/QueryProvider';
+import PageContainer from '../components/layout/PageContainer';
+import { home } from '../metadata/common/home';
 
 import './globals.css';
-import TabBar from '../../components/common/TabBar';
-import Header from 'components/layout/Header';
+import TabBar from '../components/common/TabBar';
+import Header from 'src/components/layout/Header';
+import { pretendard } from 'assets/fonts';
 
 export const metadata = home;
 
