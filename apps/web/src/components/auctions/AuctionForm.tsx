@@ -29,6 +29,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { cn } from '@repo/ui/lib/utils';
 import { uploadImage } from 'src/lib/supabase/query/bucket';
 import PageTitle from '../common/PageTitle';
+import { Textarea } from '@repo/ui/components/ui/textarea';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -285,14 +286,14 @@ export default function AuctionForm() {
             control={form.control}
             name="startDay"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col w-1/2">
                 <FormLabel>경매 시작일&#42;</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
                         variant={'outline'}
-                        className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                        className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                       >
                         {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -337,14 +338,14 @@ export default function AuctionForm() {
             control={form.control}
             name="endDay"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="flex flex-col w-1/2">
                 <FormLabel>경매 종료일&#42;</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
                         variant={'outline'}
-                        className={cn('w-[240px] pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                        className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                       >
                         {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
@@ -390,7 +391,7 @@ export default function AuctionForm() {
               <FormItem>
                 <FormLabel>상세 내용&#42;</FormLabel>
                 <FormControl>
-                  <Input placeholder="상품에 대한 자세한 설명을 입력하세요." {...field} />
+                  <Textarea rows={5} placeholder="상품에 대한 자세한 설명을 입력하세요." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
