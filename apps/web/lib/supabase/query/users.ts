@@ -1,6 +1,6 @@
 import { CreateUserPayload } from 'types/mypage';
 import { createClient } from '../client/client';
-import { UserUpdate } from '../type';
+import { UserUpdate, UserInsert } from '../type';
 
 const supabase = createClient();
 
@@ -54,6 +54,15 @@ export const updateUser = async (user_id: string, updatedData: UserUpdate) => {
 
   return data;
 };
+
+export async function upsertUser(userData: UserInsert) {
+  const { data: user, error } = await supabase.from('users').upsert([userData]).select().single();
+
+  if (error) {
+    throw new Error('DB: 유저 추가/수정 에러');
+  }
+  return user;
+}
 
 //경매자 총 경매수 count, 현재 진행중인 경매 count
 export const getUserAuctionCount = async (user_id: string) => {

@@ -1,8 +1,8 @@
-import { Tabs, TabsList, TabsTrigger } from '../ui/tabs';
-import { Card, CardContent } from '../ui/card';
-import { Button } from '../ui/button';
-// import Logo from '../../assets/google_logo.png';
+// import Logo from 'assets/google_logo.png';
 // import Image from 'next/image';
+import { Button } from '@repo/ui/components/ui/button';
+import { Card, CardContent } from '@repo/ui/components/ui/card';
+import { Tabs, TabsList, TabsTrigger } from '@repo/ui/components/ui/tabs';
 
 interface AuthCardProps {
   title: string;

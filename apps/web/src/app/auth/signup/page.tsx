@@ -1,9 +1,9 @@
 'use client';
 import { useEffect } from 'react';
-// import { AuthCard } from '../../../../../packages/ui/dist/components/auth/AuthCard';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { socialSignup, storeUserInfo } from 'lib/supabase/query/auth';
+import { AuthCard } from 'components/auth/AuthCard';
 
 type Role = 'BUYER' | 'SELLER';
 type Provider = 'google' | 'kakao';
@@ -34,5 +34,5 @@ export default function SignupPage() {
     }
   }, [router, searchParams]);
 
-  // return <AuthCard title="회원가입" onTab1={handleTab1} onTab2={handleTab2} onSocialSignup={handleSocialSignup} />;
+  return <AuthCard title="회원가입" onTab1={handleTab1} onTab2={handleTab2} onSocialSignup={handleSocialSignup} />;
 }
