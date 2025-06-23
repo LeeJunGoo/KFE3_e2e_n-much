@@ -19,8 +19,14 @@ export const storeUserInfo = async (role: Role) => {
   let roleToSave: Role = role;
 
   // 현재 유저가 DB에 있는지 체크
-  const { data: dbUser } = await supabase.from('users').select('role').eq('user_id', user.id).single();
-
+  const { data: dbUser, error: dbUserError } = await supabase
+    .from('users')
+    .select('role')
+    .eq('user_id', user.id)
+    .single();
+  if (dbUserError) {
+    console.error('DB에서 유저의 role 조회 에러:', dbUserError.message);
+  }
   // 저장된 유저의 role 값으로 덮어쓰기
   if (dbUser && dbUser.role !== role) {
     roleToSave = dbUser.role as Role;
