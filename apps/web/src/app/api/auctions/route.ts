@@ -50,28 +50,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-<<<<<<<< HEAD:apps/web/app/api/auctions/route.ts
-  const { user_id, title, description, address, starting_point, max_point, image_urls, start_time, end_time } =
-    await request.json();
-  console.log('라우터', image_urls);
-  try {
-    const res = await addAuction(
-      user_id,
-      title,
-      description,
-      address,
-      starting_point,
-      max_point,
-      image_urls,
-      start_time,
-      end_time
-    );
-========
   const auctionData: AuctionInsert = await request.json();
 
   try {
     const res = await addAuction(auctionData);
->>>>>>>> 7b83b594b171a8a45586128ad3310c0847c4cd11:apps/web/src/app/api/auctions/route.ts
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
