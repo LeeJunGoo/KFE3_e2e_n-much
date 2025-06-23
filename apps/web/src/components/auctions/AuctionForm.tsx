@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
@@ -68,7 +68,7 @@ export default function AuctionForm() {
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
   });
 
-  const formDefaultValues = useMemo(() => {
+  const formDefaultValues = useCallback(() => {
     const today = new Date();
     const startDay = new TZDate(today, 'Asia/Seoul');
     const endDay = addHours(startDay, 25);
@@ -92,7 +92,7 @@ export default function AuctionForm() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: formDefaultValues
+    defaultValues: formDefaultValues()
   });
 
   async function getAuction(auctionId: string | null) {
@@ -422,8 +422,22 @@ export default function AuctionForm() {
               </FormItem>
             )}
           />
+          <FormLabel>상품 이미지</FormLabel>
           <ImageUploader onPreviewImages={setPreviewImages} />
-          <Button type="submit">{isEditing ? '수정하기' : '등록하기'}</Button>
+          <Button
+            variant="outline"
+            type="reset"
+            onClick={() => {
+              form.reset(formDefaultValues());
+              setPreviewImages([]);
+            }}
+            className="w-1/2"
+          >
+            초기화
+          </Button>
+          <Button type="submit" className="w-1/2">
+            {isEditing ? '수정하기' : '등록하기'}
+          </Button>
         </form>
       </Form>
       <ul>
