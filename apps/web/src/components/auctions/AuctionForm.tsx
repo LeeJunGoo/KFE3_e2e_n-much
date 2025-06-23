@@ -229,7 +229,7 @@ export default function AuctionForm() {
 
   return (
     <>
-      <PageTitle>{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
+      <PageTitle className="text-left pb-10">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -237,7 +237,7 @@ export default function AuctionForm() {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>제목</FormLabel>
+                <FormLabel>제목&#42;</FormLabel>
                 <FormControl>
                   <Input placeholder="경매 상품의 제목을 입력하세요." {...field} />
                 </FormControl>
@@ -250,7 +250,7 @@ export default function AuctionForm() {
             name="address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>주소</FormLabel>
+                <FormLabel>주소&#42;</FormLabel>
                 <FormControl>
                   <Input placeholder="상품 위치 또는 주소를 입력하세요." disabled={true} {...field} />
                 </FormControl>
@@ -286,7 +286,7 @@ export default function AuctionForm() {
             name="startDay"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>경매 시작일</FormLabel>
+                <FormLabel>경매 시작일&#42;</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -325,7 +325,7 @@ export default function AuctionForm() {
             name="startTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>경매 시작 시간</FormLabel>
+                <FormLabel>경매 시작 시간&#42;</FormLabel>
                 <FormControl>
                   <Input className="w-1/2" type="time" step="1" {...field} />
                 </FormControl>
@@ -338,7 +338,7 @@ export default function AuctionForm() {
             name="endDay"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel>경매 종료일</FormLabel>
+                <FormLabel>경매 종료일&#42;</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -375,7 +375,7 @@ export default function AuctionForm() {
             name="endTime"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>경매 종료 시간</FormLabel>
+                <FormLabel>경매 종료 시간&#42;</FormLabel>
                 <FormControl>
                   <Input className="w-1/2" type="time" step="1" {...field} />
                 </FormControl>
@@ -388,7 +388,7 @@ export default function AuctionForm() {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>상세 내용</FormLabel>
+                <FormLabel>상세 내용&#42;</FormLabel>
                 <FormControl>
                   <Input placeholder="상품에 대한 자세한 설명을 입력하세요." {...field} />
                 </FormControl>
@@ -401,7 +401,7 @@ export default function AuctionForm() {
             name="startingPoint"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>경매 시작 포인트</FormLabel>
+                <FormLabel>경매 시작 포인트&#42;</FormLabel>
                 <FormControl>
                   <Input type="number" placeholder="경매의 시작 포인트를 입력하세요." {...field} />
                 </FormControl>
@@ -414,7 +414,7 @@ export default function AuctionForm() {
             name="maxPoint"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>경매 상한 포인트</FormLabel>
+                <FormLabel>경매 상한 포인트&#42;</FormLabel>
                 <FormControl>
                   <Input type="number" placeholder="경매의 상한 포인트를 입력하세요." {...field} />
                 </FormControl>
