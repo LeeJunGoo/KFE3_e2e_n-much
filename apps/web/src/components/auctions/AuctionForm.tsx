@@ -12,7 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
@@ -41,6 +41,7 @@ export default function AuctionForm() {
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string }[]>([]);
+  const router = useRouter();
 
   const formSchema = z.object({
     title: z
@@ -176,25 +177,31 @@ export default function AuctionForm() {
       console.log(error);
     }
     console.log('imageUrls', imageUrls);
+    const auctionId = uuidv4();
     const fetchUrl = `http://localhost:3001/api/auctions`;
     const data = await fetch(fetchUrl, {
       method: 'POST',
       body: JSON.stringify({
-        user_id: '35a67768-f866-4cc3-aa19-746d714a3a25',
+        auction_id: auctionId,
+        seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2',
         title,
         address: [address, detailAddress],
         start_time: startDay.toISOString().split('T')[0] + 'T' + startTime,
         end_time: endDay.toISOString().split('T')[0] + 'T' + endTime,
         description,
         starting_point: startingPoint,
+        current_point: startingPoint,
         max_point: maxPoint,
-        image_urls: imageUrls
+        image_urls: imageUrls,
+        status: 'OPEN'
       })
     });
     const result = await data.json();
 
     console.log(values);
     console.log('결과', result);
+    console.log('옥션아이디', auctionId);
+    router.push(`http://localhost:3001/auctions/${auctionId}`);
   }
 
   const handlePostCodeSearch = (data: Address) => {
