@@ -131,8 +131,10 @@ export default function AuctionForm() {
           startingPoint: starting_point,
           maxPoint: max_point
         });
+        if (image_urls) {
+          setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image })));
+        }
 
-        setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image })));
         setIsLoading(false);
       } else {
         form.reset(formDefaultValues);
