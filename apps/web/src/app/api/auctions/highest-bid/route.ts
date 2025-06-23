@@ -2,8 +2,8 @@ import { getHighestBid } from '../../../../lib/supabase/query/episodes';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const searchParams = await request.nextUrl.searchParams;
-  const auctionId = searchParams.get('auction_Id');
+  const searchParams = request.nextUrl.searchParams;
+  const auctionId = searchParams.get('auction_id');
 
   if (!auctionId)
     return NextResponse.json(

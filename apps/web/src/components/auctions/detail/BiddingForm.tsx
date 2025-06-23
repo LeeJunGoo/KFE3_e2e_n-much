@@ -5,12 +5,12 @@ import { formatNumber } from 'src/utils/formatNumber';
 
 export const BiddingForm = ({
   auction_id,
-  user_id,
+  buyer_id,
   currentBid,
   userPoints
 }: {
   auction_id: string;
-  user_id: string;
+  buyer_id: string;
   currentBid: number;
   userPoints: number;
 }) => {
@@ -32,7 +32,7 @@ export const BiddingForm = ({
         method: 'POST',
         body: JSON.stringify({
           auction_id,
-          user_id,
+          buyer_id,
           bid_point: bidPoint
         })
       });
