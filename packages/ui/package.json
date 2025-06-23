@@ -5,7 +5,8 @@
     "**/*.css"
   ],
   "files": [
-    "dist"
+    "dist",
+    ""
   ],
   "exports": {
     "./styles.css": "./dist/index.css",
@@ -18,7 +19,8 @@
     "check-types": "tsc --noEmit",
     "dev:styles": "tailwindcss -i ./src/css/global.css -o ./dist/index.css --watch",
     "dev:components": "tsc --watch",
-    "lint": "eslint src --max-warnings 0"
+    "lint": "eslint src --max-warnings 0",
+    "clean": "rm -rf dist"
   },
   "peerDependencies": {
     "react": "^19"
@@ -34,16 +36,15 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.1.1",
-    "@radix-ui/react-label": "^2.1.7",
-    "@radix-ui/react-popover": "^1.1.14",
+    "@radix-ui/react-accordion": "^1.2.11",
+    "@radix-ui/react-alert-dialog": "^1.1.14",
+    "@radix-ui/react-collapsible": "^1.1.11",
     "@radix-ui/react-slot": "^1.2.3",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.50.0",
-    "base64-arraybuffer": "^1.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "date-fns": "^4.1.0",
+    "embla-carousel-react": "^8.6.0",
     "lucide-react": "^0.514.0",
     "next": "^15.3.3",
     "react-daum-postcode": "^3.2.0",
