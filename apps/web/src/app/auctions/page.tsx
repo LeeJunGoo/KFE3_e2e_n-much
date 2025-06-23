@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useCreatedAuctions } from '../../../hooks/queries/useAuctions';
-import { useGetUserEpisodes } from '../../../hooks/queries/useEpisodes';
+import { useCreatedAuctions } from '../../hooks/queries/useAuctions';
+import { useGetUserEpisodes } from '../../hooks/queries/useEpisodes';
 
 const AuctionsPage = () => {
   const router = useRouter();

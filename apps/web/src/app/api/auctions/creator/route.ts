@@ -1,4 +1,4 @@
-import { getUserAuctionCount } from '../../../../../lib/supabase/query/users';
+import { getUserAuctionCount } from '../../../../lib/supabase/query/users';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {

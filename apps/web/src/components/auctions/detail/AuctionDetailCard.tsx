@@ -1,7 +1,7 @@
 'use client';
 
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
-import { AuctionRow } from 'lib/supabase/type';
+import { AuctionRow } from 'src/lib/supabase/type';
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
