@@ -13,7 +13,7 @@ import EpisodeItem from './EpisodeItem';
 import { notFound } from 'next/navigation';
 import { FaRegCommentDots } from 'react-icons/fa';
 import Link from 'next/link';
-import { EpisodeItemProps, EpisodesListType } from 'types/episodes';
+import { EpisodeItemProps, EpisodesListType } from 'src/types/episodes';
 
 const EPISODES_PER_PAGE = 5;
 

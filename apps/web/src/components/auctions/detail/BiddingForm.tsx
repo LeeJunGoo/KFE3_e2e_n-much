@@ -1,7 +1,7 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { notFound } from 'next/navigation';
 import { useState } from 'react';
-import { formatNumber } from 'utils/formatNumber';
+import { formatNumber } from 'src/utils/formatNumber';
 
 export const BiddingForm = ({
   auction_id,

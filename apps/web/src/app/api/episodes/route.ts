@@ -1,4 +1,4 @@
-import { EpisodeRow } from 'lib/supabase/type';
+import { EpisodeRow } from 'src/lib/supabase/type';
 import {
   addEpisode,
   deleteEpisode,
@@ -7,7 +7,7 @@ import {
   getEpisodesByAuctionId,
   getUserEpisodes,
   updateEpisode
-} from '../../../../lib/supabase/query/episodes';
+} from '../../../lib/supabase/query/episodes';
 import { NextRequest } from 'next/server';
 
 const commonHeader = {

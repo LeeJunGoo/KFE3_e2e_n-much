@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
-import { AuctionRow } from 'lib/supabase/type';
+import { AuctionRow } from 'src/lib/supabase/type';
 import { notFound, useRouter } from 'next/navigation';
 
 const EditDeleteActions = ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) => {

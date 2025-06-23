@@ -1,4 +1,4 @@
-import PageTitle from 'components/common/PageTitle';
+import PageTitle from 'src/components/common/PageTitle';
 import Image from 'next/image';
 import Link from 'next/link';
 
