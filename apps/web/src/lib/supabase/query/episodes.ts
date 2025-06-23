@@ -12,8 +12,8 @@ export const getEpisodesByAuctionId = async (auctionId: string) => {
     .select(
       `
       *,
-      user:user_id (
-        user_id,
+      buyer:buyer_id (
+        buyer_id,
         nickname,
         avatar
       )
@@ -34,8 +34,8 @@ export const getEpisodesByAuctionId = async (auctionId: string) => {
 export const getAllEpisodes = async () => {
   const { data, error } = await supabase.from('episodes').select(`
       *,
-      user:user_id (
-        user_id,
+      buyer:buyer_id (
+        buyer_id,
         nickname,
         avatar
       ),
@@ -58,8 +58,8 @@ export async function getEpisode(episode_id: string) {
     .select(
       `
       *,
-      user:user_id (
-        user_id,
+      buyer:buyer_id (
+        buyer_id,
         nickname,
         avatar
       )
@@ -75,13 +75,13 @@ export async function getEpisode(episode_id: string) {
   return data;
 }
 
-export async function addEpisode(auction_id: string, user_id: string, bid_point: number) {
+export async function addEpisode(auction_id: string, buyer_id: string, bid_point: number) {
   const { data, error } = await supabase
     .from('episodes')
     .insert([
       {
         auction_id,
-        user_id,
+        buyer_id,
         bid_point
       }
     ])
@@ -123,8 +123,8 @@ export const getHighestBid = async (auction_id: string) => {
     .select(
       `
       *,
-      user:user_id (
-        user_id,
+      buyerId:buyer_id (
+        buyer_id,
         nickname,
         avatar
       )
@@ -136,6 +136,7 @@ export const getHighestBid = async (auction_id: string) => {
     .maybeSingle();
 
   if (error) {
+    console.log(error);
     throw new Error('DB: 최고 입찰자 불러오기 에러');
   }
 
@@ -143,7 +144,7 @@ export const getHighestBid = async (auction_id: string) => {
 };
 
 //특정 유저의 episode data 가져오기
-export async function getUserEpisodes(user_id: string) {
+export async function getUserEpisodes(buyer_id: string) {
   const { data, error } = await supabase
     .from('episodes')
     .select(
@@ -155,7 +156,7 @@ export async function getUserEpisodes(user_id: string) {
       )
     `
     )
-    .eq('user_id', user_id);
+    .eq('buyer_id', buyer_id);
 
   if (error) {
     console.error(error);
@@ -168,7 +169,7 @@ export async function getUserEpisodes(user_id: string) {
 // 사연 등록하기
 export const postEpisode = async (
   auction_id: string,
-  user_id: string,
+  buyer_id: string,
   title: string,
   description: string,
   bid_point: number
@@ -178,7 +179,7 @@ export const postEpisode = async (
     .insert([
       {
         auction_id,
-        user_id,
+        buyer_id,
         title,
         description,
         bid_point
