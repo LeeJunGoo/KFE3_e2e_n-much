@@ -4,15 +4,14 @@ import { Button } from '../ui/button';
 // import Logo from '../../assets/google_logo.png';
 // import Image from 'next/image';
 
-type Role = 'BUYER' | 'SELLER';
-
 interface AuthCardProps {
   title: string;
-  setRole: React.Dispatch<React.SetStateAction<Role>>;
-  handleSocialSignup: (provider: 'google' | 'kakao') => void;
+  onTab1: () => void;
+  onTab2: () => void;
+  onSocialSignup: (provider: 'google' | 'kakao') => void;
 }
 
-export function AuthCard({ title, setRole, handleSocialSignup }: AuthCardProps) {
+export function AuthCard({ title, onTab1, onTab2, onSocialSignup }: AuthCardProps) {
   return (
     <div className="flex justify-center items-center">
       {/* <Image src={Logo} alt="Logo" /> */}
@@ -22,14 +21,14 @@ export function AuthCard({ title, setRole, handleSocialSignup }: AuthCardProps) 
             <TabsTrigger
               className="rounded-none p-0 h-full data-[state=active]:bg-[#8E74F9] data-[state=active]:text-white data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:bg-gray-200"
               value="buyer"
-              onClick={() => setRole('BUYER')}
+              onClick={onTab1}
             >
               입찰 참여자
             </TabsTrigger>
             <TabsTrigger
               className="rounded-none p-0 h-full data-[state=active]:bg-[#8E74F9] data-[state=active]:text-white data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:bg-gray-200"
               value="seller"
-              onClick={() => setRole('SELLER')}
+              onClick={onTab2}
             >
               경매 진행자
             </TabsTrigger>
@@ -44,14 +43,14 @@ export function AuthCard({ title, setRole, handleSocialSignup }: AuthCardProps) 
             <Button
               variant="default"
               className="w-full bg-white text-gray-700 border border-gray-300  hover:bg-gray-50"
-              onClick={() => handleSocialSignup('google')}
+              onClick={() => onSocialSignup('google')}
             >
               Google로 회원가입
             </Button>
             <Button
               variant="default"
               className="w-full bg-[#FEE500] text-[#3A1D1D] border-none hover:bg-[#F6DC00]"
-              onClick={() => handleSocialSignup('kakao')}
+              onClick={() => onSocialSignup('kakao')}
             >
               Kakao로 회원가입
             </Button>

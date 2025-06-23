@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { AuthCard } from '../../../../../packages/ui/dist/components/auth/AuthCard';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -12,24 +12,27 @@ export default function SignupPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const [role, setRole] = useState<Role>('BUYER');
+  const handleTab1 = () => {
+    localStorage.setItem('role', 'BUYER');
+  };
+
+  const handleTab2 = () => {
+    localStorage.setItem('role', 'SELLER');
+  };
 
   const handleSocialSignup = async (provider: Provider) => {
     await socialSignup(provider, 'http://localhost:3001/auth/signup');
   };
 
   useEffect(() => {
-    console.log('role: ', role);
-  }, [role]);
-
-  useEffect(() => {
     if (searchParams.get('code')) {
-      storeUserInfo(role).then(() => {
+      const savedRole = localStorage.getItem('role') as Role;
+      storeUserInfo(savedRole).then(() => {
         // 회원정보 upsert가 끝나면 홈으로 이동, code 쿼리도 같이 정리!
         router.replace('/');
       });
     }
-  }, [router, searchParams, role]);
+  }, [router, searchParams]);
 
-  return <AuthCard title="회원가입" setRole={setRole} handleSocialSignup={handleSocialSignup} />;
+  return <AuthCard title="회원가입" onTab1={handleTab1} onTab2={handleTab2} onSocialSignup={handleSocialSignup} />;
 }
