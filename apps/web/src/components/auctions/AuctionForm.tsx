@@ -229,7 +229,7 @@ export default function AuctionForm() {
 
   return (
     <>
-      <PageTitle>상품 정보</PageTitle>
+      <PageTitle>{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -252,7 +252,7 @@ export default function AuctionForm() {
               <FormItem>
                 <FormLabel>주소</FormLabel>
                 <FormControl>
-                  <Input placeholder="상품 위치 또는 주소를 입력하세요." {...field} />
+                  <Input placeholder="상품 위치 또는 주소를 입력하세요." disabled={true} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
