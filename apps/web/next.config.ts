@@ -8,9 +8,14 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true
   },
   images: {
-    domains: ['api.dicebear.com', 'i.namu.wiki', 'psszbhuartnhkzomgxmq.supabase.co']
+    remotePatterns: [
+      { protocol: 'https', hostname: 'api.dicebear.com' },
+      { protocol: 'https', hostname: 'i.namu.wiki' },
+      { protocol: 'https', hostname: 'psszbhuartnhkzomgxmq.supabase.co' }
+    ]
   }
 };
 
 export default nextConfig;
 //FIXME - i.namu.wiki 삭제하기 (테스트용)
+//FIXME - domains는 15버전으로 수정하기
