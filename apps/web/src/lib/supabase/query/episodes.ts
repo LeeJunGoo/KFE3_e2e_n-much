@@ -122,12 +122,14 @@ export const getHighestBid = async (auction_id: string) => {
     .from('episodes')
     .select(
       `
+      
       *,
       buyerId:buyer_id (
         buyer_id,
         nickname,
         avatar
       )
+    
     `
     )
     .eq('auction_id', auction_id)
