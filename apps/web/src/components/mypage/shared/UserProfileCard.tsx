@@ -1,3 +1,4 @@
+import { ROLE_LABEL } from 'src/constants/mypage';
 import RoleBadge from './RoleBadge';
 
 const UserProfileCard = () => {
@@ -7,7 +8,7 @@ const UserProfileCard = () => {
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
             <h2 className="text-xl font-bold">안주원</h2>
-            <RoleBadge role="입찰 참여자" />
+            <RoleBadge role={ROLE_LABEL.BIDDER} />
           </div>
           <p className="text-sm text-(--color-warm-gray)">anjuwon@email.com</p>
           {/* 경매자 */}

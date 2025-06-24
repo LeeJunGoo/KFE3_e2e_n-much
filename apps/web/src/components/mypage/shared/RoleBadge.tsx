@@ -1,7 +1,10 @@
 import { Badge } from '@repo/ui/components/ui/badge';
+import { ROLE_LABEL } from 'src/constants/mypage';
+
+type RoleBadgeType = (typeof ROLE_LABEL)[keyof typeof ROLE_LABEL];
 
 type RoleBadgeProps = {
-  role: '입찰 참여자' | '경매 진행자';
+  role: RoleBadgeType;
 };
 
 const RoleBadge = ({ role }: RoleBadgeProps) => {
