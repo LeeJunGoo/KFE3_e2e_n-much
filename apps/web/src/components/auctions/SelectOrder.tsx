@@ -8,20 +8,18 @@ import {
   SelectValue
 } from '@repo/ui/components/ui/select';
 
-export default function SelectDemo() {
+export default function SelectOrder() {
   return (
     <Select>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select a fruit" />
+        <SelectValue placeholder="정렬 순서 선택" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel>Fruits</SelectLabel>
-          <SelectItem value="apple">Apple</SelectItem>
-          <SelectItem value="banana">Banana</SelectItem>
-          <SelectItem value="blueberry">Blueberry</SelectItem>
-          <SelectItem value="grapes">Grapes</SelectItem>
-          <SelectItem value="pineapple">Pineapple</SelectItem>
+          <SelectLabel>정렬 순서</SelectLabel>
+          <SelectItem value="apple">마감 임박순</SelectItem>
+          <SelectItem value="banana">인기순</SelectItem>
+          <SelectItem value="blueberry">최신순</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
