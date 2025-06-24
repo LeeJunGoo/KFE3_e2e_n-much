@@ -1,10 +1,10 @@
-import { NextRequest } from 'next/server';
-// import { addUser } from 'src/lib/supabase/query/users';
+// import { NextRequest } from 'next/server';
+// import { addUser, getAllUsers, getUser, updateUser } from 'src/lib/supabase/query/users';
 // import { CreateUserPayload } from 'src/types/mypage';
 
-const commonHeader = {
-  headers: { 'Content-Type': 'application/json' }
-};
+// const commonHeader = {
+//   headers: { 'Content-Type': 'application/json' }
+// };
 
 // export async function GET(request: NextRequest) {
 //   const searchParams = request.nextUrl.searchParams;
@@ -30,6 +30,19 @@ const commonHeader = {
 
 //   try {
 //     const res = await addUser(userData);
+//     return Response.json({ status: 'success', data: res }, commonHeader);
+//   } catch (error) {
+//     if (error instanceof Error) {
+//       return Response.json({ status: 'error', error: error.message }, commonHeader);
+//     }
+//   }
+// }
+
+// export async function PATCH(request: NextRequest) {
+//   const { user_id, nickname, avatar } = await request.json();
+
+//   try {
+//     const res = await updateUser(user_id, { nickname, avatar });
 //     return Response.json({ status: 'success', data: res }, commonHeader);
 //   } catch (error) {
 //     if (error instanceof Error) {

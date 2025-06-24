@@ -1,7 +1,6 @@
-// import EpisodesForm from 'src/components/episodes/EpisodesForm';
-// import { notFound } from 'next/navigation';
-// import { EpisodeReturnDataType } from 'src/types/episodes';
-// import EpisodesForm from '../../../../components/episodes/EpisodesForm';
+import EpisodesForm from 'src/components/episodes/EpisodesForm';
+import { notFound } from 'next/navigation';
+import { EpisodeReturnDataType } from 'src/types/episodes';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   // const [auction_id, episode_id] = (await params).id;

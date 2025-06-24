@@ -45,7 +45,7 @@ export const getAuction = async (auction_id: string) => {
 };
 
 // 내가 올린 경매 데이터 불러오기 (경매자)
-export const getMyCreatedAuctions = async (user_id: string) => {
+export const getMyCreatedAuctions = async (seller_id: string) => {
   const { data, error } = await supabase
     .from('auctions')
     .select(
@@ -58,7 +58,7 @@ export const getMyCreatedAuctions = async (user_id: string) => {
       )
     `
     )
-    .eq('user_id', user_id)
+    .eq('seller_id', seller_id)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -70,7 +70,7 @@ export const getMyCreatedAuctions = async (user_id: string) => {
 };
 
 // 내가 입찰한 경매 데이터 불러오기 (입찰자)
-export const getMyBidAuctions = async (user_id: string) => {
+export const getMyBidAuctions = async (buyer_id: string) => {
   const { data, error } = await supabase
     .from('episodes')
     .select(
@@ -86,7 +86,7 @@ export const getMyBidAuctions = async (user_id: string) => {
       )
     `
     )
-    .eq('user_id', user_id)
+    .eq('buyer_id', buyer_id)
     .order('bid_time', { ascending: false });
 
   if (error) {

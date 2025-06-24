@@ -124,7 +124,7 @@ export const getHighestBid = async (auction_id: string) => {
       `
       
       *,
-      seller:buyer_id (
+      buyerId:buyer_id (
         buyer_id,
         nickname,
         avatar
@@ -138,6 +138,7 @@ export const getHighestBid = async (auction_id: string) => {
     .maybeSingle();
 
   if (error) {
+    console.log(error);
     throw new Error('DB: 최고 입찰자 불러오기 에러');
   }
 
@@ -145,7 +146,7 @@ export const getHighestBid = async (auction_id: string) => {
 };
 
 //특정 유저의 episode data 가져오기
-export async function getUserEpisodes(user_id: string) {
+export async function getUserEpisodes(buyer_id: string) {
   const { data, error } = await supabase
     .from('episodes')
     .select(
@@ -157,7 +158,7 @@ export async function getUserEpisodes(user_id: string) {
       )
     `
     )
-    .eq('user_id', user_id);
+    .eq('buyer_id', buyer_id);
 
   if (error) {
     console.error(error);

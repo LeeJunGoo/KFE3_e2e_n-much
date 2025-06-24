@@ -63,16 +63,16 @@ export async function upsertSeller(userData: SellerInsert) {
 }
 
 //경매자 총 경매수 count, 현재 진행중인 경매 count
-export const getUserAuctionCount = async (user_id: string) => {
+export const getUserAuctionCount = async (sellerId: string) => {
   const { count: totalCount, error: totalError } = await supabase
     .from('auctions')
     .select('*', { count: 'exact', head: true })
-    .eq('user_id', user_id);
+    .eq('seller_id', sellerId);
 
   const { count: activeCount, error: activeError } = await supabase
     .from('auctions')
     .select('*', { count: 'exact', head: true })
-    .eq('user_id', user_id)
+    .eq('seller_id', sellerId)
     .eq('status', 'OPEN');
 
   if (totalError) {
