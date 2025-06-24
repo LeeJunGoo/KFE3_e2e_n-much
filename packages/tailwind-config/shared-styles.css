@@ -36,8 +36,15 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* colors */
+  --color-primary: #A3BCE5;
+  --color-secondary: #EEF2FB;
+  --color-accent: #5B80C2;
+  --color-background: #F4F4F7;
+  --color-warm-gray: #B8B8B8;
   --color-light-gray: #C6C7D1;
   --color-red: #D84A5F;
+  --color-green: #65BA84;
+  --color-text-base: #1F1F25;
 
   /* border-radius */
   --border-radius: 8px;

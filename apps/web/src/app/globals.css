@@ -13,3 +13,6 @@ button {
   cursor: pointer;
 }
 
+body {
+  color: var(--color-text-base);
+}
