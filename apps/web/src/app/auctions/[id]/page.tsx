@@ -2,17 +2,15 @@ import Link from 'next/link';
 import { FaArrowLeft, FaMapMarkerAlt, FaRegCommentDots } from 'react-icons/fa';
 import { IoMdTime } from 'react-icons/io';
 
-import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
-import EditDeleteActions from 'src/components/auctions/detail/EditDeleteActions';
-import AuctionTimer from 'src/components/auctions/detail/AuctionTimer';
+import { notFound } from 'next/navigation';
 import AuctionDetailCard from 'src/components/auctions/detail/AuctionDetailCard';
-import { formatNumber } from 'src/utils/formatNumber';
+import AuctionTimer from 'src/components/auctions/detail/AuctionTimer';
+import EditDeleteActions from 'src/components/auctions/detail/EditDeleteActions';
 import EpisodeList from 'src/components/auctions/detail/EpisodeList';
-import { AuctionRow } from 'src/lib/supabase/type';
-
-type AuctionInfoType = { status: string; data: AuctionRow };
+import { fetchAuctionById } from 'src/lib/queries/auctions';
+import { formatNumber } from 'src/utils/formatNumber';
+import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
@@ -20,17 +18,9 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   //NOTE - 로그인 정보
   // const userInfo = await getAuthInfo();
 
-  //NOTE - 경매 상품에 대한 정보
-  const res_1 = await fetch(`http://localhost:3001/api/auctions?auction_id=${auctionId}`);
+  const auctionInfo = await fetchAuctionById(auctionId);
 
-  if (!res_1.ok) {
-    if (res_1.status === 404) return notFound();
-    throw new Error(`경매 상품에 대한 정보를 불러오지 못했습니다.: ${res_1.statusText}`);
-  }
-
-  const auctionInfo: AuctionInfoType = await res_1.json();
-
-  const { title, current_point, start_time, end_time, image_urls, description, address, seller_id } = auctionInfo.data;
+  const { title, current_point, start_time, end_time, image_urls, description, seller_id, address } = auctionInfo;
 
   //NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수
   const res_2 = await fetch(`http://localhost:3001/api/auctions/creator?seller_id=${seller_id}`);
@@ -43,7 +33,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   const { totalAuctions, activeAuctions } = await res_2.json();
 
   //NOTE - 최고 입찰자의 정보
-  const res_3 = await fetch(`http://localhost:3001/api/auctions/highest-bid?auction_Id=${auctionId}`);
+  const res_3 = await fetch(`http://localhost:3001/api/auctions/highest-bid?auction_id=${auctionId}`);
 
   if (!res_3.ok) {
     if (res_3.status === 404) return notFound();

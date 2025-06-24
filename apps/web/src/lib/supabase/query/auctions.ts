@@ -14,8 +14,8 @@ export const getAllAuctions = async () => {
     `);
 
   if (error) {
-    console.error(error);
-    throw new Error('DB: 모든 경매 불러오기 에러');
+    console.error('🚀 ~ getAllAuctions:', error.message);
+    throw new Error('DB : 모든 경매 불러오기 에러');
   }
 
   return data;
@@ -38,7 +38,8 @@ export const getAuction = async (auction_id: string) => {
     .maybeSingle();
 
   if (error) {
-    throw new Error('DB: 특정 경매 불러오기 에러');
+    console.error('🚀 ~ getAuction:', error.message);
+    throw new Error('DB: 특정 경매 정보 불러오기 에러');
   }
 
   return data;

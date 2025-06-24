@@ -5,11 +5,9 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const auctionId = searchParams.get('auction_id');
 
-  if (!auctionId)
-    return NextResponse.json(
-      { message: 'auction_id가 필요합니다.' },
-      { status: 400, statusText: 'searchParams undefined' }
-    );
+  if (!auctionId) {
+    return NextResponse.json({ status: 400, statusText: 'auction_id가 필요합니다.' });
+  }
 
   try {
     const highestBidData = await getHighestBid(auctionId);
