@@ -3,33 +3,6 @@ import AuctionCard from 'src/components/common/AuctionCard';
 
 const data = [
   {
-    auction_id: 'e8583b1b-988e-4713-b849-44f49fb3b610',
-    seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2',
-    title: '첫 경매 타이틀',
-    description: '첫 경매 설명',
-    starting_point: 0,
-    current_point: 0,
-    max_point: 500,
-    status: 'OPEN',
-    image_urls: [
-      'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/0936617f-36f4-48f4-b6c4-e837d1c6cd62.png',
-      'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/156cbf81-0e50-4a5d-bcd2-666af1410b3c.png',
-      'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/2d23eca8-118b-42b2-a0e8-094f94e74dc8.png',
-      'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/5abdd146-a98c-48d1-9046-013a0836b90d.png'
-    ],
-    start_time: '2025-06-24T11:14:49+00:00',
-    end_time: '2025-06-25T11:14:53+00:00',
-    favorites: null,
-    created_at: '2025-06-23T11:16:09.582441+00:00',
-    updated_at: null,
-    address: [],
-    seller: {
-      avatar: null,
-      nickname: 'seller_nick',
-      seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2'
-    }
-  },
-  {
     auction_id: '5d7c686c-1d3d-41c4-8a7f-21977163a51c',
     seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2',
     title: 'aaaaaaaaaaaaaaaaaaaaaaaaaa',
@@ -131,6 +104,33 @@ const data = [
     created_at: '2025-06-23T12:06:52.797079+00:00',
     updated_at: null,
     address: ['서울 강남구 가로수길 5 (신사동)', 'ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ'],
+    seller: {
+      avatar: null,
+      nickname: 'seller_nick',
+      seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2'
+    }
+  },
+  {
+    auction_id: 'e8583b1b-988e-4713-b849-44f49fb3b610',
+    seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2',
+    title: '첫 경매 타이틀',
+    description: '첫 경매 설명',
+    starting_point: 0,
+    current_point: 0,
+    max_point: 500,
+    status: 'OPEN',
+    image_urls: [
+      'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/0936617f-36f4-48f4-b6c4-e837d1c6cd62.png',
+      'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/156cbf81-0e50-4a5d-bcd2-666af1410b3c.png',
+      'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/2d23eca8-118b-42b2-a0e8-094f94e74dc8.png',
+      'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/5abdd146-a98c-48d1-9046-013a0836b90d.png'
+    ],
+    start_time: '2025-06-24T11:14:49+00:00',
+    end_time: '2025-06-25T11:14:53+00:00',
+    favorites: null,
+    created_at: '2025-06-23T11:16:09.582441+00:00',
+    updated_at: null,
+    address: ['서울 강남구 가로수길 5 (신사동)', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaa'],
     seller: {
       avatar: null,
       nickname: 'seller_nick',

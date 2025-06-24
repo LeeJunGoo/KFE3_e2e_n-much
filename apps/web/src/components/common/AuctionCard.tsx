@@ -37,7 +37,7 @@ export default function AuctionCard({
       {/* 본문 */}
       <div className="p-4">
         {/* <h2 className="text-md font-semibold">아이폰 14 Pro 256GB</h2> */}
-        <h2 className="text-md font-semibold">{title}</h2>
+        <h2 className="text-md overflow-hidden font-semibold text-ellipsis">{title}</h2>
 
         <div className="mt-1 flex items-center text-sm text-gray-500">
           <FaMapMarkerAlt className="mr-1 h-4 w-4" />
