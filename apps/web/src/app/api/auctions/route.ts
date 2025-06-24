@@ -1,4 +1,4 @@
-import { AuctionInsert } from 'lib/supabase/type';
+import { AuctionInsert } from 'src/lib/supabase/type';
 import {
   addAuction,
   deleteAuction,
@@ -7,7 +7,7 @@ import {
   updateAuction,
   getMyCreatedAuctions,
   getMyBidAuctions
-} from '../../../../lib/supabase/query/auctions';
+} from '../../../lib/supabase/query/auctions';
 import { NextRequest } from 'next/server';
 
 const commonHeader = {
@@ -17,8 +17,8 @@ const commonHeader = {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const auctionId = searchParams.get('auction_id');
-  const creatorId = searchParams.get('creator_id');
-  const bidderId = searchParams.get('bidder_id');
+  const sellerId = searchParams.get('seller_id');
+  const buyerId = searchParams.get('buyer_id');
 
   try {
     // 특정 경매 조회
@@ -28,14 +28,14 @@ export async function GET(request: NextRequest) {
     }
 
     // 내가 올린 경매 조회 (경매자)
-    if (creatorId) {
-      const res = await getMyCreatedAuctions(creatorId);
+    if (sellerId) {
+      const res = await getMyCreatedAuctions(sellerId);
       return Response.json({ status: 'success', data: res }, commonHeader);
     }
 
     // 내가 입찰한 경매 조회 (입찰자)
-    if (bidderId) {
-      const res = await getMyBidAuctions(bidderId);
+    if (buyerId) {
+      const res = await getMyBidAuctions(buyerId);
       return Response.json({ status: 'success', data: res }, commonHeader);
     }
 

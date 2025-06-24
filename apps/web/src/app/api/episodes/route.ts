@@ -1,4 +1,4 @@
-import { EpisodeRow } from 'lib/supabase/type';
+import { NextRequest } from 'next/server';
 import {
   addEpisode,
   deleteEpisode,
@@ -7,8 +7,7 @@ import {
   getEpisodesByAuctionId,
   getUserEpisodes,
   updateEpisode
-} from '../../../../lib/supabase/query/episodes';
-import { NextRequest } from 'next/server';
+} from '../../../lib/supabase/query/episodes';
 
 const commonHeader = {
   headers: { 'Content-Type': 'application/json' }
@@ -17,7 +16,7 @@ const commonHeader = {
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const episodeId = searchParams.get('episode_id');
-  const userId = searchParams.get('user_id');
+  const buyerId = searchParams.get('buyer_id');
   const auction_id = searchParams.get('auction_id');
 
   try {
@@ -26,8 +25,8 @@ export async function GET(request: NextRequest) {
       return Response.json({ status: 'success', data: res }, commonHeader);
     }
 
-    if (userId) {
-      const res = await getUserEpisodes(userId);
+    if (buyerId) {
+      const res = await getUserEpisodes(buyerId);
       return Response.json({ status: 'success', data: res }, commonHeader);
     }
 
@@ -46,10 +45,10 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  const { auction_id, user_id, bid_point } = await request.json();
+  const { auction_id, buyer_id, bid_point } = await request.json();
 
   try {
-    const res = await addEpisode(auction_id, user_id, bid_point);
+    const res = await addEpisode(auction_id, buyer_id, bid_point);
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
@@ -59,10 +58,10 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const { story_id, winning_bid } = await request.json();
+  const { episode_id, winning_bid } = await request.json();
 
   try {
-    const res = await updateEpisode(story_id, winning_bid);
+    const res = await updateEpisode(episode_id, winning_bid);
     return Response.json({ status: 'success', data: res }, commonHeader);
   } catch (error) {
     if (error instanceof Error) {
