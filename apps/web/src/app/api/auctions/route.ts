@@ -4,8 +4,7 @@ import {
   addAuction,
   deleteAuction,
   getAllAuctions,
-  getAuctionWithSellerInfo,
-  updateAuction
+  getAuctionWithSellerInfo
 } from '../../../lib/supabase/query/auctions';
 
 export async function GET(request: NextRequest) {

@@ -1,12 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { useGetUserEpisodes } from '../../../hooks/queries/useEpisodes';
-import {
-  useCreatedAuctions,
-  useGetAuction,
-  useGetAuctions,
-  useGetBidAuctions
-} from '../../../hooks/queries/useAuctions';
+import { useGetBidAuctions } from '../../../hooks/queries/useAuctions';
 
 const MyAuctionOverviewPage = () => {
   const TEST_USER_ID = '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
