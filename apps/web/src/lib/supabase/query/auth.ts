@@ -52,7 +52,6 @@ export const storeUserInfo = async (role: Role) => {
     let userData: BuyerInsert | SellerInsert | undefined;
 
     if (role === 'BUYER') {
-      console.log('buyer signup...');
       userData = await upsertBuyer({
         avatar: user.user_metadata?.avatar_url ?? null,
         buyer_id: user.id,
@@ -65,7 +64,6 @@ export const storeUserInfo = async (role: Role) => {
         updated_at: user.updated_at ?? new Date().toISOString()
       });
     } else if (role === 'SELLER') {
-      console.log('seller signup...');
       userData = await upsertSeller({
         avatar: user.user_metadata?.avatar_url ?? null,
         seller_id: user.id,
