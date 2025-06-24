@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { FiAward } from 'react-icons/fi';
 import { IoMdTime } from 'react-icons/io';
 
-import { BiddingForm } from './BiddingForm';
+// import { BiddingForm } from './BiddingForm';
 import EditDeleteEpisodes from './EditDeleteEpisodes';
 import { EpisodeItemProps } from 'src/types/episodes';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
@@ -57,12 +57,12 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
         </div>
         {/* 4. 펼쳐질 콘텐츠 영역 - 버튼 그룹과 완전히 분리되어 있습니다. */}
         <CollapsibleContent className="mt-2 CollapsibleContent w-full space-y-4 rounded-lg bg-[#F4F4F7] p-4">
-          <BiddingForm
+          {/* <BiddingForm
             auction_id={episode.auction_id}
-            user_id={episode.user_id}
+            buyer_id={episode.buyer_id}
             currentBid={episode.bid_point}
             userPoints={1000000}
-          />
+          /> */}
         </CollapsibleContent>
       </Collapsible>
     </li>

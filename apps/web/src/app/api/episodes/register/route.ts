@@ -1,11 +1,11 @@
-import { patchEpisode, postEpisode } from '../../../../lib/supabase/query/episodes';
 import { NextRequest, NextResponse } from 'next/server';
+import { postEpisode } from '../../../../lib/supabase/query/episodes';
 
 export async function POST(request: NextRequest) {
-  const { auction_id, user_id, title, description, bid_point } = await request.json();
+  const { auction_id, buyer_id, title, description, bid_point } = await request.json();
 
   try {
-    const res = await postEpisode(auction_id, user_id, title, description, bid_point);
+    const res = await postEpisode(auction_id, buyer_id, title, description, bid_point);
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
