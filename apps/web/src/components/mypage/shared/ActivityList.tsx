@@ -1,5 +1,7 @@
 import { FaGavel } from 'react-icons/fa6';
 import { FaCoins } from 'react-icons/fa6';
+import StatusBadge from './StatusBadge';
+import { BID_STATUS_LABEL } from 'src/constants/mypage';
 
 const ActivityList = () => {
   return (
@@ -16,9 +18,7 @@ const ActivityList = () => {
               <time className="text-xs text-(--color-warm-gray)">2025년 6월 23일</time>
             </div>
           </div>
-          <span className="rounded-md border border-transparent bg-(--color-accent) px-2.5 py-0.5 text-xs font-semibold text-white">
-            진행중
-          </span>
+          <StatusBadge status={BID_STATUS_LABEL.ENDED} />
         </li>
         <li className="mb-3 flex items-center justify-between border-b pb-4 last:mb-0 last:border-b-0 last:pb-0">
           <div className="flex items-center gap-2">
@@ -30,9 +30,19 @@ const ActivityList = () => {
               <time className="text-xs text-(--color-warm-gray)">2025년 6월 23일</time>
             </div>
           </div>
-          <span className="rounded-md border border-transparent bg-(--color-green) px-2.5 py-0.5 text-xs font-semibold text-white">
-            낙찰 예정
-          </span>
+          <StatusBadge status={BID_STATUS_LABEL.EXPECTED} />
+        </li>
+        <li className="mb-3 flex items-center justify-between border-b pb-4 last:mb-0 last:border-b-0 last:pb-0">
+          <div className="flex items-center gap-2">
+            <div className="flex size-8 items-center justify-center rounded-full bg-(--color-secondary)">
+              <FaGavel className="size-3 text-(--color-accent)" />
+            </div>
+            <div className="flex flex-col">
+              <h4 className="text-sm font-medium">빈티지 카메라 경매</h4>
+              <time className="text-xs text-(--color-warm-gray)">2025년 6월 23일</time>
+            </div>
+          </div>
+          <StatusBadge status={BID_STATUS_LABEL.PROGRESS} />
         </li>
         <li className="mb-3 flex items-center justify-between border-b pb-4 last:mb-0 last:border-b-0 last:pb-0">
           <div className="flex items-center gap-2">
