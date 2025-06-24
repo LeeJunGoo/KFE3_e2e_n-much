@@ -141,6 +141,16 @@ const data = [
 
 export default function Home() {
   const resultCount = 5;
+  const sample = data[1];
+
+  console.log('status', sample?.status);
+  console.log('imageSrc', sample?.image_urls[0]);
+  console.log('title', sample?.title);
+  console.log('currentPoint', sample?.current_point);
+  console.log('address', sample?.address[0]);
+  console.log('buyerCount', '따로 가져오기');
+  console.log('remainTime', sample?.end_time);
+
   return (
     <main className="relative z-0 min-h-screen">
       <div className="mb-4 flex flex-row justify-between overflow-hidden">
@@ -149,18 +159,29 @@ export default function Home() {
       </div>
 
       <ul className="flex flex-row flex-wrap justify-between gap-4 align-middle">
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
-        <AuctionCard />
+        {data.map((auction) => {
+          const {
+            auction_id: auctionId,
+            status,
+            image_urls: imageSrc,
+            title,
+            current_point: currentPoint,
+            address,
+            end_time: remainTime
+          } = auction;
+          return (
+            <AuctionCard
+              key={auctionId}
+              status={status}
+              imageSrc={imageSrc[0]!}
+              title={title}
+              currentPoint={currentPoint}
+              address={address[0]!}
+              remainTime={remainTime}
+              buyerCount={5}
+            />
+          );
+        })}
       </ul>
     </main>
   );
