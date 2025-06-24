@@ -3,7 +3,7 @@ import AuctionForm from 'src/components/auctions/AuctionForm';
 
 export default function Page() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<p>Loading...(useSearchParams)</p>}>
       <AuctionForm />
     </Suspense>
   );
