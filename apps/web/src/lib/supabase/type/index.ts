@@ -12,7 +12,13 @@ export type EpisodeInsert = Database['public']['Tables']['episodes']['Insert']; 
 export type EpisodeUpdate = Database['public']['Tables']['episodes']['Update']; // 데이터 수정(PATCH)
 
 //NOTE - supabase User type
-export type UserRow = Database['public']['Tables']['users']['Row']; // 데이터 조회(GET)
-export type UserInsert = Database['public']['Tables']['users']['Insert']; // 데이터 추가(POST)
-export type UserUpdate = Database['public']['Tables']['users']['Update']; // 데이터 수정(PATCH)
-export type UserRole = UserInsert['role'];
+// export type UserRow = Database['public']['Tables']['users']['Row']; // 데이터 조회(GET)
+// export type UserInsert = Database['public']['Tables']['users']['Insert']; // 데이터 추가(POST)
+// export type UserUpdate = Database['public']['Tables']['users']['Update']; // 데이터 수정(PATCH)
+// export type UserRole = UserInsert['role'];
+
+//NOTE - supabase Buyer type
+export type BuyerInsert = Database['public']['Tables']['buyers']['Insert']; // 데이터 추가(POST)
+
+//NOTE - supabase Seller type
+export type SellerInsert = Database['public']['Tables']['sellers']['Insert']; // 데이터 추가(POST)
