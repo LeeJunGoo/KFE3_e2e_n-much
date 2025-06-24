@@ -12,8 +12,8 @@ export const getEpisodesByAuctionId = async (auctionId: string) => {
     .select(
       `
       *,
-      user:user_id (
-        user_id,
+      buyer:buyer_id (
+        buyer_id,
         nickname,
         avatar
       )
@@ -34,8 +34,8 @@ export const getEpisodesByAuctionId = async (auctionId: string) => {
 export const getAllEpisodes = async () => {
   const { data, error } = await supabase.from('episodes').select(`
       *,
-      user:user_id (
-        user_id,
+      buyer:buyer_id (
+        buyer_id,
         nickname,
         avatar
       ),
@@ -58,8 +58,8 @@ export async function getEpisode(episode_id: string) {
     .select(
       `
       *,
-      user:user_id (
-        user_id,
+      buyer:buyer_id (
+        buyer_id,
         nickname,
         avatar
       )
@@ -75,13 +75,13 @@ export async function getEpisode(episode_id: string) {
   return data;
 }
 
-export async function addEpisode(auction_id: string, user_id: string, bid_point: number) {
+export async function addEpisode(auction_id: string, buyer_id: string, bid_point: number) {
   const { data, error } = await supabase
     .from('episodes')
     .insert([
       {
         auction_id,
-        user_id,
+        buyer_id,
         bid_point
       }
     ])
@@ -122,12 +122,14 @@ export const getHighestBid = async (auction_id: string) => {
     .from('episodes')
     .select(
       `
+      
       *,
-      user:user_id (
-        user_id,
+      seller:buyer_id (
+        buyer_id,
         nickname,
         avatar
       )
+    
     `
     )
     .eq('auction_id', auction_id)
@@ -168,7 +170,7 @@ export async function getUserEpisodes(user_id: string) {
 // 사연 등록하기
 export const postEpisode = async (
   auction_id: string,
-  user_id: string,
+  buyer_id: string,
   title: string,
   description: string,
   bid_point: number
@@ -178,7 +180,7 @@ export const postEpisode = async (
     .insert([
       {
         auction_id,
-        user_id,
+        buyer_id,
         title,
         description,
         bid_point

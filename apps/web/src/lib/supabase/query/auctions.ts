@@ -6,8 +6,8 @@ const supabase = createClient();
 export const getAllAuctions = async () => {
   const { data, error } = await supabase.from('auctions').select(`
       *,
-      user:user_id (
-        user_id,
+      seller:seller_id (
+        seller_id,
         nickname,
         avatar
       )
@@ -27,8 +27,8 @@ export const getAuction = async (auction_id: string) => {
     .select(
       `
       *,
-      user:user_id (
-        user_id,
+      seller:seller_id (
+        seller_id,
         nickname,
         avatar
       )
@@ -51,8 +51,8 @@ export const getMyCreatedAuctions = async (user_id: string) => {
     .select(
       `
       *,
-      user:user_id (
-        user_id,
+      seller:seller_id (
+        seller_id,
         nickname,
         avatar
       )
@@ -78,8 +78,8 @@ export const getMyBidAuctions = async (user_id: string) => {
       *,
       auction:auction_id (
         *,
-        user:user_id (
-          user_id,
+        seller:seller_id (
+          seller_id,
           nickname,
           avatar
         )

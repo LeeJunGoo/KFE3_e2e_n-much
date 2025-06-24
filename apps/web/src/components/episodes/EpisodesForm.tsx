@@ -19,7 +19,7 @@ const EpisodesForm = ({
   const router = useRouter();
 
   const url = initialData ? 'http://localhost:3001/api/episodes/update' : 'http://localhost:3001/api/episodes/register';
-  const userId = initialData ? initialData?.data.user_id : '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
+  const userId = '9c3f2e9c-dcc3-4c3f-8d42-1f7dfcc44374';
   const method = initialData ? 'PATCH' : 'POST';
 
   const bidPoint = initialData ? initialData?.data.bid_point : 0;
