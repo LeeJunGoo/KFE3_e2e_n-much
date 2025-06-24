@@ -42,7 +42,7 @@ export default function AuctionCard({
         <div className="mt-1 flex items-center text-sm text-gray-500">
           <FaMapMarkerAlt className="mr-1 h-4 w-4" />
           {/* 부산시 해운대구 */}
-          {address}
+          <p className="w-full overflow-hidden text-nowrap text-ellipsis">{address}</p>
         </div>
 
         <div className="mt-2 text-sm text-gray-600">현재가</div>
