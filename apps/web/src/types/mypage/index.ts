@@ -1,9 +1,10 @@
-import { AuctionRow, EpisodeRow, UserInsert, UserRow } from 'src/lib/supabase/type';
+import { AuctionRow, BuyerInsert, EpisodeRow, SellerInsert } from 'src/lib/supabase/type';
 
-export type MyPageUserInfo = UserRow;
+// export type MyPageUserInfo = UserRow;
 export type MyCreatedAuctions = AuctionRow[];
 export type MyBidAuctions = (EpisodeRow & {
   auction: AuctionRow;
 })[];
 
-export type CreateUserPayload = Pick<UserInsert, 'email' | 'password' | 'role' | 'nickname'>;
+export type CreateBuyerPayload = Pick<BuyerInsert, 'email' | 'nickname'>;
+export type CreateSellerPayload = Pick<SellerInsert, 'email' | 'nickname'>;
