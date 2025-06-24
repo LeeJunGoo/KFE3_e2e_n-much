@@ -28,10 +28,10 @@ export default function AuctionCard({
       <div className="relative flex h-48 items-center justify-center bg-gray-100">
         <div className="absolute top-3 right-3">
           {/* <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">진행중</span> */}
-          <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">{status}</span>
+          <span className="relative z-50 rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">{status}</span>
         </div>
         {/* <span className="text-gray-400">이미지 영역</span> */}
-        <Image src={imageSrc} alt={'경매 이미지'} fill={true} className="object-cover" />
+        <Image src={imageSrc} alt={'경매 이미지'} fill={true} className="z-10 object-cover" />
       </div>
 
       {/* 본문 */}

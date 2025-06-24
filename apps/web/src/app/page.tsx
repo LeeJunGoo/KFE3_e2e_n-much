@@ -152,13 +152,13 @@ export default function Home() {
   console.log('remainTime', sample?.end_time);
 
   return (
-    <main className="relative z-0 min-h-screen">
-      <div className="mb-4 flex flex-row justify-between overflow-hidden">
+    <>
+      <div className="mb-4 flex w-full justify-between">
         <p>총 {resultCount}개의 경매가 있습니다.</p>
         <SelectOrder />
       </div>
-
-      <ul className="flex flex-row flex-wrap justify-between gap-4 align-middle">
+      {/* <ul className="flex flex-wrap justify-center"> */}
+      <ul className="grid grid-cols-3 gap-5">
         {data.map((auction) => {
           const {
             auction_id: auctionId,
@@ -183,6 +183,6 @@ export default function Home() {
           );
         })}
       </ul>
-    </main>
+    </>
   );
 }
