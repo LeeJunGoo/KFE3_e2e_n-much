@@ -48,10 +48,10 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
           <h1 className="text-2xl font-bold">{title}</h1>
           <div>
             <p className="text-gray-400 text-sm">현재&nbsp;입찰가</p>
-            <p className="text-[#8E74F2] text-lg font-semibold">{current_point}&nbsp;P</p>
+            <p className="text-[#8E74F2] text-lg font-semibold">{formatNumber(current_point)}&nbsp;P</p>
           </div>
           <div>
-            <AuctionTimer start_time={start_time} end_time={end_time} />
+            <AuctionTimer highestBuyer={highestBuyer} start_time={start_time} end_time={end_time} />
           </div>
         </div>
         <div className="px-7 space-y-7">
@@ -143,6 +143,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
               </div>
             )}
           </div>
+
           <EpisodeList auction_id={auctionId} />
         </div>
       </main>

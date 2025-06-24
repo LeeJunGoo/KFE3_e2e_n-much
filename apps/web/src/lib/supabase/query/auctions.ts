@@ -1,5 +1,5 @@
 import { createClient } from '../client/client';
-import { AuctionInsert } from '../type';
+import { AuctionInsert, AuctionUpdate } from '../type';
 
 const supabase = createClient();
 
@@ -16,6 +16,16 @@ export const getAllAuctions = async () => {
   if (error) {
     console.error('🚀 ~ getAllAuctions:', error.message);
     throw new Error('DB : 모든 경매 불러오기 에러');
+  }
+
+  return data;
+};
+
+export const getAuction = async (auction_id: string) => {
+  const { data, error } = await supabase.from('auctions').select(`*`).eq('auction_id', auction_id).maybeSingle();
+
+  if (error) {
+    throw new Error('DB: 특정 경매 불러오기 에러');
   }
 
   return data;
@@ -44,6 +54,15 @@ export const getAuctionWithSellerInfo = async (auction_id: string) => {
 
   return data;
 };
+
+// 내가 보유한 포인트 불러오기
+// export const getUserPoint() => async = (user_id) => {
+//   const {data,error} = await supabase.from("buyers").select(
+//     '*',
+
+//   )
+
+// }
 
 // 내가 올린 경매 데이터 불러오기 (경매자)
 export const getMyCreatedAuctions = async (seller_id: string) => {
@@ -108,8 +127,12 @@ export const addAuction = async (auctionData: AuctionInsert) => {
   return data;
 };
 
-export const updateAuction = async (auction_id: string, status: string) => {
-  const { data, error } = await supabase.from('auctions').update({ status }).eq('auction_id', auction_id).select();
+export const updateAuction = async (auction_id: string, editData: AuctionUpdate) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .update({ ...editData })
+    .eq('auction_id', auction_id)
+    .select();
 
   if (error) {
     throw new Error('DB: 경매 수정 에러');

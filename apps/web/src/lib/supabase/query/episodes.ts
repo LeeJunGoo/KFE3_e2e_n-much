@@ -24,7 +24,7 @@ export const getEpisodesByAuctionId = async (auctionId: string) => {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error('DB: 경매 물품에 대한 사연 정보 불러오기 에러');
   }
 
@@ -52,21 +52,9 @@ export const getAllEpisodes = async () => {
   return data;
 };
 
+//NOTE - 특정 에피소드 정보 가져오기
 export async function getEpisode(episode_id: string) {
-  const { data, error } = await supabase
-    .from('episodes')
-    .select(
-      `
-      *,
-      buyer:buyer_id (
-        buyer_id,
-        nickname,
-        avatar
-      )
-    `
-    )
-    .eq('episode_id', episode_id)
-    .maybeSingle();
+  const { data, error } = await supabase.from('episodes').select(`*`).eq('episode_id', episode_id).maybeSingle();
 
   if (error) {
     throw new Error('DB: 특정 사연 불러오기 에러');
@@ -75,29 +63,30 @@ export async function getEpisode(episode_id: string) {
   return data;
 }
 
-export async function addEpisode(auction_id: string, buyer_id: string, bid_point: number) {
+//NOTE - 특정 에피소드 입찰하기
+export async function updateEpisodeBidPoint(episode_id: string, bid_point: number) {
   const { data, error } = await supabase
     .from('episodes')
-    .insert([
-      {
-        auction_id,
-        buyer_id,
-        bid_point
-      }
-    ])
+    .update({ bid_point })
+    .eq('episode_id', episode_id)
     .select()
     .single();
 
   if (error) {
     console.log(error);
-    throw new Error('DB: 사연 추가 에러');
+    throw new Error('DB: 입찰하기 에러');
   }
 
   return data;
 }
 
-export async function updateEpisode(episode_id: string, winning_bid: boolean) {
-  const { data, error } = await supabase.from('episodes').update({ winning_bid }).eq('episode_id', episode_id).select();
+export async function selectWinningEpisode(episode_id: string, winning_bid: boolean) {
+  const { data, error } = await supabase
+    .from('episodes')
+    .update({ winning_bid })
+    .eq('episode_id', episode_id)
+    .select()
+    .single();
 
   if (error) {
     throw new Error('DB: 사연 수정 에러');
@@ -116,8 +105,8 @@ export async function deleteEpisode(episode_id: string) {
   return data;
 }
 
-//특정 유저의 episode data 가져오기
-export async function getUserEpisodes(buyer_id: string) {
+// 특정 유저의 episode data 가져오기
+export async function getBuyerEpisodes(buyer_id: string) {
   const { data, error } = await supabase
     .from('episodes')
     .select(
@@ -139,14 +128,8 @@ export async function getUserEpisodes(buyer_id: string) {
   return data;
 }
 
-// 사연 등록하기
-export const postEpisode = async (
-  auction_id: string,
-  buyer_id: string,
-  title: string,
-  description: string,
-  bid_point: number
-) => {
+//NOTE -  사연 등록하기
+export const createEpisode = async (auction_id: string, buyer_id: string, title: string, description: string) => {
   const { data, error } = await supabase
     .from('episodes')
     .insert([
@@ -154,8 +137,7 @@ export const postEpisode = async (
         auction_id,
         buyer_id,
         title,
-        description,
-        bid_point
+        description
       }
     ])
     .select()
@@ -168,8 +150,8 @@ export const postEpisode = async (
   return data;
 };
 
-//사연 수정하기
-export async function patchEpisode(episode_id: string, title: string, description: string) {
+//NOTE - 사연 수정하기
+export async function updateEpisode(episode_id: string, title: string, description: string) {
   const { data, error } = await supabase
     .from('episodes')
     .update({ title, description })

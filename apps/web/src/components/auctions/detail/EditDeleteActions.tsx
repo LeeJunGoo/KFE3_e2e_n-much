@@ -1,8 +1,9 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { fetchDeleteAuction } from 'src/lib/queries/auctions';
 import { AuctionRow } from 'src/lib/supabase/type';
-import { notFound, useRouter } from 'next/navigation';
 
 const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const router = useRouter();
@@ -15,25 +16,13 @@ const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] 
     }
 
     try {
-      const res = await fetch(`http://localhost:3001/api/auctions`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          auction_id: auctionId
-        })
-      });
-
-      if (!res.ok) {
-        if (res.status === 404) return notFound(); // 함수 호출로 수정
-        throw new Error(`경매 상품을 삭제하지 못했습니다.: ${res.status}`);
+      const result = await fetchDeleteAuction(auctionId);
+      if (result === 'success') {
+        router.push('/');
       }
-
-      router.push('/');
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(`경매 상품을 삭제하지 못했습니다.: ${error.message}`);
+        throw new Error(error.message);
       }
     }
   };
@@ -43,6 +32,7 @@ const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] 
       <Button
         variant="secondary"
         className="px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors"
+        onClick={() => router.push(`/auctions/write?auction_id=${auctionId}`)}
       >
         수정
       </Button>

@@ -9,17 +9,17 @@ type ParamsType = {
 export async function GET(request: NextRequest, { params }: ParamsType) {
   const { id } = await params;
   const searchParams = request.nextUrl.searchParams;
-  const isType = searchParams.get('type');
+  const type = searchParams.get('type');
   let res;
 
   try {
-    if (isType === 'auction') {
+    if (type === 'auction') {
       res = await getAuctionWithSellerInfo(id);
     }
-    if (isType === 'seller') {
+    if (type === 'seller') {
       res = await getSellerAuctionCount(id);
     }
-    if (isType === 'buyer') {
+    if (type === 'buyer') {
       res = await getHighestBidder(id);
     }
 

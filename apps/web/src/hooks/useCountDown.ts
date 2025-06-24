@@ -19,7 +19,11 @@ export const useCountdown = (startTime: string, endTime: string): CountdownState
   // 남은 시간을 계산하고 상태를 결정하는 함수
   const getCountdownState = (): CountdownState => {
     const startDate = new Date(startTime);
-    const endDate = new Date(endTime);
+    // const endDate = new Date(endTime);
+
+    //NOTE - 테스트용
+    const now = new Date();
+    const endDate = new Date(now.getTime() + 60_000); // 60,000ms = 1분
 
     // 상태 1: 시작 전
     if (now < startDate) {
@@ -30,7 +34,7 @@ export const useCountdown = (startTime: string, endTime: string): CountdownState
     }
 
     // 상태 2: 종료됨
-    if (now >= endDate) {
+    if (now <= endDate) {
       return {
         remainingTime: '종료됨',
         status: 'ended'

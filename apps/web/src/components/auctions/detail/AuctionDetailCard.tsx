@@ -46,7 +46,7 @@ const AuctionDetailCard = ({ image_urls }: AuctionDetailCardProps) => {
                   src={url}
                   alt={`경매 상품 이미지 ${index + 1}`}
                   fill
-                  className="object-fit"
+                  className="object-contain"
                   sizes="(max-width: 768px) 100vw, 50vw"
                   priority
                 />
