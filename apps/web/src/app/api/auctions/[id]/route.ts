@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuction, getMyBidAuctions, getMyCreatedAuctions } from 'src/lib/supabase/query/auctions';
+import { getAuctionWithSellerInfo, getSellerAuctionCount } from 'src/lib/supabase/query/auctions';
+import { getHighestBidder } from 'src/lib/supabase/query/episodes';
 
 type ParamsType = {
   params: Promise<{ id: string }>;
@@ -13,13 +14,13 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
   try {
     if (isType === 'auction') {
-      res = await getAuction(id);
+      res = await getAuctionWithSellerInfo(id);
     }
     if (isType === 'seller') {
-      res = await getMyCreatedAuctions(id);
+      res = await getSellerAuctionCount(id);
     }
     if (isType === 'buyer') {
-      res = await getMyBidAuctions(id);
+      res = await getHighestBidder(id);
     }
 
     return NextResponse.json({ status: 'success', data: res });

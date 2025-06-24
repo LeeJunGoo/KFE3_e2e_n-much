@@ -1,47 +1,32 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { FaArrowLeft, FaMapMarkerAlt, FaRegCommentDots } from 'react-icons/fa';
 import { IoMdTime } from 'react-icons/io';
-
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
 import AuctionDetailCard from 'src/components/auctions/detail/AuctionDetailCard';
 import AuctionTimer from 'src/components/auctions/detail/AuctionTimer';
 import EditDeleteActions from 'src/components/auctions/detail/EditDeleteActions';
 import EpisodeList from 'src/components/auctions/detail/EpisodeList';
-import { fetchAuctionById } from 'src/lib/queries/auctions';
+import { fetchAuctionWithSellerInfo, fetchHighestBidder, fetchSellerAuctionCount } from 'src/lib/queries/auctions';
 import { formatNumber } from 'src/utils/formatNumber';
-import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
+import BuyerTestImage from 'assets/images/test.png';
+import { getAuthInfo } from 'src/lib/supabase/query/auth';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
 
-  //NOTE - 로그인 정보
-  // const userInfo = await getAuthInfo();
+  // NOTE - 로그인 정보
+  const userInfo = await getAuthInfo();
 
-  const auctionInfo = await fetchAuctionById(auctionId);
+  const [auctionInfo, highestBuyer] = await Promise.all([
+    fetchAuctionWithSellerInfo(auctionId), // NOTE - 경매 상품 및 경매 업체 정보
+    fetchHighestBidder(auctionId) //NOTE - 최고 입찰자의 정보
+  ]);
 
-  const { title, current_point, start_time, end_time, image_urls, description, seller_id, address } = auctionInfo;
+  const { title, current_point, start_time, end_time, image_urls, description, seller_id, address, seller } =
+    auctionInfo;
 
-  //NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수
-  const res_2 = await fetch(`http://localhost:3001/api/auctions/creator?seller_id=${seller_id}`);
-
-  if (!res_2.ok) {
-    if (res_2.status === 404) return notFound();
-    throw new Error(`경매 상품에 대한 정보를 불러오지 못했습니다.: ${res_2.statusText}`);
-  }
-
-  const { totalAuctions, activeAuctions } = await res_2.json();
-
-  //NOTE - 최고 입찰자의 정보
-  const res_3 = await fetch(`http://localhost:3001/api/auctions/highest-bid?auction_id=${auctionId}`);
-
-  if (!res_3.ok) {
-    if (res_3.status === 404) return notFound();
-    throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${res_3.statusText}`);
-  }
-
-  const highestBidUser = await res_3.json();
-  const highestTime = formatToKoreanDateTime(highestBidUser?.bid_time);
+  // NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수
+  const { totalAuctions, activeAuctions } = await fetchSellerAuctionCount(seller_id);
 
   return (
     <>
@@ -54,8 +39,8 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             <FaArrowLeft />
             <span>경매 목록으로 돌아가기</span>
           </Link>
-          {/* //NOTE - 경매 상품 수정 및 삭제 버튼 */}
-          <EditDeleteActions auction_id={auctionId} />
+          {/* 경매 상품 수정 및 삭제 버튼  */}
+          {userInfo?.id === seller_id && <EditDeleteActions auctionId={auctionId} />}
         </div>
       </header>
       <main className="space-y-7 scroll-smooth">
@@ -90,9 +75,15 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             </div>
             <div className="px-6 py-4 space-y-5">
               <div className="flex gap-3">
-                <div className="w-[50px] h-[50px] bg-blue-400/30 border-gray-200 object-cover rounded-full hover:scale-105 transition-transform duration-300" />
+                <Image
+                  src={seller.avatar || BuyerTestImage}
+                  alt="아바타입니다."
+                  width={50}
+                  height={50}
+                  className=" bg-blue-400/30 border-gray-200 object-cover rounded-full hover:scale-105 transition-transform duration-300"
+                ></Image>
                 <div className="space-y-1">
-                  <p className="font-semibold">업체이름(?)</p>
+                  <p className="font-semibold">업체이름: {seller.nickname}</p>
                   <p className="flex items-center">
                     <FaMapMarkerAlt />
                     <span className="text-sm">{address}</span>
@@ -117,12 +108,12 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             <div className="px-6 py-4">
               <h2 className="text-lg font-bold">최고 입찰가</h2>
             </div>
-            {highestBidUser ? (
+            {highestBuyer ? (
               <div className="px-6 py-4 space-y-5">
                 <div className="flex justify-between items-center">
                   <div className="flex gap-3">
                     <Image
-                      src={highestBidUser.user.avatar}
+                      src={highestBuyer.buyer.avatar || BuyerTestImage}
                       alt="아바타입니다."
                       width={50}
                       height={50}
@@ -130,15 +121,15 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                     ></Image>
 
                     <div className="space-y-1">
-                      <p className="font-semibold">{highestBidUser.user.nickname}</p>
+                      <p className="font-semibold">{highestBuyer.buyer.nickname}</p>
                       <p className="flex items-center">
                         <IoMdTime />
-                        <time className="text-sm">{highestTime}</time>
+                        <time className="text-sm">{highestBuyer.created_at}</time>
                       </p>
                     </div>
                   </div>
                   <div className="font-semibold text-[#8E74F2]">
-                    <p>{formatNumber(highestBidUser.bid_point)}&nbsp;P</p>
+                    <p>{formatNumber(highestBuyer.bid_point)}&nbsp;P</p>
                   </div>
                 </div>
               </div>

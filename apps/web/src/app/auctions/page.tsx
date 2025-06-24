@@ -5,7 +5,7 @@ const AuctionsPage = () => {
   const router = useRouter();
 
   const goToAuctionDetail = () => {
-    router.push('/auctions/5d7c686c-1d3d-41c4-8a7f-21977163a51c');
+    router.push('/auctions/e8583b1b-988e-4713-b849-44f49fb3b610');
   };
 
   return (

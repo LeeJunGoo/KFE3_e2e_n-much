@@ -116,35 +116,6 @@ export async function deleteEpisode(episode_id: string) {
   return data;
 }
 
-// 특정 경매의 최고 입찰자와 입찰가 가져오기
-export const getHighestBid = async (auction_id: string) => {
-  const { data, error } = await supabase
-    .from('episodes')
-    .select(
-      `
-      
-      *,
-      buyerId:buyer_id (
-        buyer_id,
-        nickname,
-        avatar
-      )
-    
-    `
-    )
-    .eq('auction_id', auction_id)
-    .order('bid_point', { ascending: false })
-    .limit(1)
-    .maybeSingle();
-
-  if (error) {
-    console.log(error);
-    throw new Error('DB: 최고 입찰자 불러오기 에러');
-  }
-
-  return data;
-};
-
 //특정 유저의 episode data 가져오기
 export async function getUserEpisodes(buyer_id: string) {
   const { data, error } = await supabase
@@ -211,3 +182,29 @@ export async function patchEpisode(episode_id: string, title: string, descriptio
 
   return data;
 }
+
+export const getHighestBidder = async (auction_id: string) => {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select(
+      `
+      *,
+      buyer:buyer_id (
+        buyer_id,
+        nickname,
+        avatar
+      )
+    `
+    )
+    .eq('auction_id', auction_id)
+    .order('bid_point', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.log(error);
+    throw new Error('DB: 최고 입찰자 불러오기 에러');
+  }
+
+  return data;
+};
