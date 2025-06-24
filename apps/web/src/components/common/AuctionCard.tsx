@@ -4,7 +4,7 @@ import { FaClock, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
 
 export default function AuctionCard() {
   return (
-    <div className="w-48 overflow-hidden rounded-2xl border bg-white shadow-md">
+    <li className="w-48 overflow-hidden rounded-2xl border bg-white shadow-md">
       {/* 이미지 영역 */}
       <div className="relative flex h-48 items-center justify-center bg-gray-100">
         <div className="absolute top-3 right-3">
@@ -23,7 +23,7 @@ export default function AuctionCard() {
         </div>
 
         <div className="mt-2 text-sm text-gray-600">현재가</div>
-        <div className="text-xl font-bold text-blue-600">890,000원</div>
+        <div className="text-xl font-bold text-blue-600">890,000P</div>
         <div className="mt-3 flex items-center justify-between text-sm text-gray-500">
           <div className="flex items-center">
             <FaUsers className="mr-1 h-4 w-4" />
@@ -34,11 +34,7 @@ export default function AuctionCard() {
             1일 8시간
           </div>
         </div>
-
-        <button className="mt-4 w-full rounded-md bg-black py-2 text-white transition hover:bg-gray-800">
-          입찰하기
-        </button>
       </div>
-    </div>
+    </li>
   );
 }
