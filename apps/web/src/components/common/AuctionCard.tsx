@@ -31,7 +31,7 @@ export default function AuctionCard({
           <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">{status}</span>
         </div>
         {/* <span className="text-gray-400">이미지 영역</span> */}
-        <Image src={imageSrc} alt={'경매 이미지'} width={50} height={50} />
+        <Image src={imageSrc} alt={'경매 이미지'} fill={true} className="object-cover" />
       </div>
 
       {/* 본문 */}
