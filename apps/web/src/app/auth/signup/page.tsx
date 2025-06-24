@@ -1,38 +1,51 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { socialSignup, storeUserInfo } from 'lib/supabase/query/auth';
-import { AuthCard } from 'components/auth/AuthCard';
-
-type Role = 'BUYER' | 'SELLER';
-type Provider = 'google' | 'kakao';
+import { socialSignin, storeUserInfo } from 'src/lib/supabase/query/auth';
+import { AuthCard } from 'src/components/auth/AuthCard';
+import { Role, Provider } from '../../../types/auth/index';
 
 export default function SignupPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const handleTab1 = () => {
-    localStorage.setItem('role', 'BUYER');
+  const [role, setRole] = useState<Role | null>(null);
+
+  const handleTabChange = (selected: string) => {
+    if (selected === 'BUYER' || selected === 'SELLER') {
+      setRole(selected);
+      localStorage.setItem('role', selected);
+    }
   };
 
-  const handleTab2 = () => {
-    localStorage.setItem('role', 'SELLER');
-  };
-
-  const handleSocialSignup = async (provider: Provider) => {
-    await socialSignup(provider, 'http://localhost:3001/auth/signup');
+  const handleSocialSignin = async (provider: Provider) => {
+    await socialSignin(provider, 'http://localhost:3001/auth/signup');
   };
 
   useEffect(() => {
-    if (searchParams.get('code')) {
-      const savedRole = localStorage.getItem('role') as Role;
-      storeUserInfo(savedRole).then(() => {
-        // 회원정보 upsert가 끝나면 홈으로 이동, code 쿼리도 같이 정리!
+    const saved = localStorage.getItem('role');
+    if (saved === 'BUYER' || saved === 'SELLER') setRole(saved);
+  }, []);
+
+  useEffect(() => {
+    console.log('role: ', role);
+  }, [role]);
+
+  useEffect(() => {
+    if (role && searchParams.get('code')) {
+      storeUserInfo(role).then(() => {
         router.replace('/');
+        console.log('**storeUserInfo!');
       });
     }
-  }, [router, searchParams]);
+  }, [router, searchParams, role]);
 
-  return <AuthCard title="회원가입" onTab1={handleTab1} onTab2={handleTab2} onSocialSignup={handleSocialSignup} />;
+  return (
+    <main>
+      {role !== null && (
+        <AuthCard title="회원가입" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
+      )}
+    </main>
+  );
 }
