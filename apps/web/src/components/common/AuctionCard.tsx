@@ -1,6 +1,8 @@
 'use client';
 
+import { differenceInHours } from 'date-fns';
 import Image from 'next/image';
+import { TZDate } from 'react-day-picker';
 import { FaClock, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
 
 interface AuctionCardProp {
@@ -22,6 +24,18 @@ export default function AuctionCard({
   buyerCount,
   remainTime
 }: AuctionCardProp) {
+  const now = new TZDate(new Date(), 'Asia/Seoul');
+  const auctionTime = new TZDate(remainTime, 'Asia/Seoul');
+  const diff = differenceInHours(now, auctionTime);
+  const absDiff = Math.abs(diff);
+
+  if (status === 'OPEN' && absDiff < 4) {
+    status = '마감임박';
+  } else if (status === 'CLOSED') {
+    status = '마감';
+  } else if (status === 'CANCELED') {
+    status = '유찰';
+  }
   return (
     <li className="w-48 overflow-hidden rounded-2xl border bg-white shadow-md">
       {/* 이미지 영역 */}

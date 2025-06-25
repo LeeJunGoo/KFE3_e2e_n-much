@@ -10,7 +10,7 @@ const data = [
     starting_point: 1,
     current_point: 1,
     max_point: 12,
-    status: 'OPEN',
+    status: 'CANCELED',
     image_urls: [
       'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/ff033d82-10cd-4a31-81de-45734944b0f4.png',
       'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/vidding/auctions_images/86939520-f7ae-4248-8103-56b0cce45357.png',
