@@ -1,7 +1,8 @@
 import { ROLE_LABEL } from 'src/constants/mypage';
 import RoleBadge from './RoleBadge';
+import type { UserRoleDataProps } from 'src/types/mypage';
 
-const UserProfileCard = () => {
+const UserProfileCard = ({ role }: UserRoleDataProps) => {
   return (
     <section className="w-full rounded-2xl border bg-(--color-secondary) p-5 shadow-xs">
       <div className="flex items-start justify-between">
@@ -11,8 +12,7 @@ const UserProfileCard = () => {
             <RoleBadge role={ROLE_LABEL.BIDDER} />
           </div>
           <p className="text-sm text-(--color-warm-gray)">anjuwon@email.com</p>
-          {/* 경매자 */}
-          {/* <p className="mt-0.5 text-sm text-(--color-warm-gray)">서울특별시 서대문구</p> */}
+          {role === 'AUCTIONEER' && <p className="mt-0.5 text-sm text-(--color-warm-gray)">서울특별시 서대문구</p>}
         </div>
         <div className="relative flex size-14 shrink-0 overflow-hidden rounded-full bg-(--color-primary) text-white">
           <span className="text-lg font-medium">아바타</span>
@@ -26,7 +26,7 @@ const UserProfileCard = () => {
             <span className="font-medium text-(--color-accent)">P</span>
           </div>
         </div>
-        <p className="mt-1 text-xs text-[#B8B8B8]">마지막 업데이트: 2025년 6월 25일</p>
+        <p className="mt-1 text-xs text-(--color-warm-gray)">마지막 업데이트: 2025년 6월 25일</p>
       </div>
     </section>
   );
