@@ -103,9 +103,10 @@ export type Database = {
           created_at: string
           email: string
           favorites: string[] | null
-          nickname: string
+          nickname: string | null
           password: string
           point: number
+          social_name: string | null
           updated_at: string | null
         }
         Insert: {
@@ -114,9 +115,10 @@ export type Database = {
           created_at?: string
           email?: string
           favorites?: string[] | null
-          nickname?: string
+          nickname?: string | null
           password?: string
           point?: number
+          social_name?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -125,9 +127,10 @@ export type Database = {
           created_at?: string
           email?: string
           favorites?: string[] | null
-          nickname?: string
+          nickname?: string | null
           password?: string
           point?: number
+          social_name?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -195,10 +198,11 @@ export type Database = {
           created_at: string
           email: string
           favorites: string[] | null
-          nickname: string
+          nickname: string | null
           password: string
           point: number
           seller_id: string
+          social_name: string | null
           updated_at: string | null
         }
         Insert: {
@@ -206,10 +210,11 @@ export type Database = {
           created_at?: string
           email?: string
           favorites?: string[] | null
-          nickname?: string
+          nickname?: string | null
           password?: string
           point?: number
           seller_id?: string
+          social_name?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -217,10 +222,11 @@ export type Database = {
           created_at?: string
           email?: string
           favorites?: string[] | null
-          nickname?: string
+          nickname?: string | null
           password?: string
           point?: number
           seller_id?: string
+          social_name?: string | null
           updated_at?: string | null
         }
         Relationships: []
