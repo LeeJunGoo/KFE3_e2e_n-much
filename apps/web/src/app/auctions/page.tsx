@@ -1,3 +1,6 @@
+//FIXME - tanstack query 적용하기
+//FIXME - 사연 갯수 불러오기
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -43,26 +46,27 @@ export default function Page() {
         <ul className="grid grid-cols-2 gap-3">
           {auctions.length > 0 &&
             auctions.map((auction) => {
-              const {
-                auction_id: auctionId,
-                status,
-                image_urls: imageSrc,
-                title,
-                current_point: currentPoint,
-                address,
-                end_time: remainTime
-              } = auction;
+              const { auction_id, status, title, current_point, end_time } = auction;
+              let { image_urls, favorites } = auction;
+
+              if (!image_urls) {
+                image_urls = [];
+              }
+
+              if (!favorites) {
+                favorites = [];
+              }
 
               return (
                 <AuctionCard
-                  key={auctionId}
+                  key={auction_id}
                   status={status}
-                  imageSrc={imageSrc[0]!}
+                  imageSrc={image_urls[0]}
                   title={title}
-                  currentPoint={currentPoint}
-                  address={address[0]!}
-                  remainTime={remainTime}
+                  currentPoint={current_point}
+                  endTime={end_time}
                   buyerCount={5}
+                  favorites={favorites.length}
                 />
               );
             })}
