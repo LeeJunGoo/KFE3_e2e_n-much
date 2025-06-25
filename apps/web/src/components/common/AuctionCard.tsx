@@ -30,12 +30,15 @@ export default function AuctionCard({
   const absDiff = Math.abs(diff);
 
   if (status === 'OPEN' && absDiff < 4) {
-    status = '마감임박';
+    status = '마감 임박';
   } else if (status === 'CLOSED') {
     status = '마감';
   } else if (status === 'CANCELED') {
     status = '유찰';
+  } else {
+    status = '진행 중';
   }
+
   return (
     <li className="w-48 overflow-hidden rounded-2xl border bg-white shadow-md">
       {/* 이미지 영역 */}
