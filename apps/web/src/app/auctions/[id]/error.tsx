@@ -15,7 +15,7 @@ const Error = ({ error, reset }: { error: Error; reset: () => void }) => {
 
   return (
     <>
-      <div className="text-white">
+      <div className="text-black">
         <h3>에러가 발생 했습니다.</h3>
         <div>{error.message}</div>
         <button onClick={handleErrorOnClick}>다시 시도</button>

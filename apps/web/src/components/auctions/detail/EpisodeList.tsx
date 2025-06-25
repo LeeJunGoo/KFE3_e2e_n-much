@@ -8,19 +8,19 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
-import { useEffect, useRef, useState } from 'react';
-import EpisodeItem from './EpisodeItem';
-import { notFound } from 'next/navigation';
-import { FaRegCommentDots } from 'react-icons/fa';
 import Link from 'next/link';
-import { EpisodeItemProps, EpisodesListType } from 'src/types/episodes';
+import { useEffect, useRef, useState } from 'react';
+import { FaRegCommentDots } from 'react-icons/fa';
+import { fetchEpisodesById } from 'src/lib/queries/episodes';
+import { EpisodeItemProps } from 'src/types/episodes';
+import EpisodeItem from './EpisodeItem';
 
 const EPISODES_PER_PAGE = 5;
 
 const EpisodeList = ({ auction_id }: { auction_id: string }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
-  const [episodesCount, setEpisodesCount] = useState(1);
+  const [episodesCount, setEpisodesCount] = useState(0);
 
   const listHeaderRef = useRef<HTMLDivElement>(null);
   const isInitialRender = useRef(true);
@@ -42,17 +42,9 @@ const EpisodeList = ({ auction_id }: { auction_id: string }) => {
 
     const fetchEpisodes = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/api/episodes?auction_id=${auction_id}`);
-
-        if (!res.ok) {
-          if (res.status === 404) return notFound;
-          throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${res.statusText}`);
-        }
-
-        const data: EpisodesListType = await res.json();
-        setEpisodes(data.data.episode);
-
-        setEpisodesCount(data.data.count);
+        const episodesListData = await fetchEpisodesById(auction_id);
+        setEpisodes(episodesListData.episode);
+        setEpisodesCount(episodesListData.count);
       } catch (error) {
         if (error instanceof Error) {
           setEpisodes([]);
