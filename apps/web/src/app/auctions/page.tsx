@@ -139,7 +139,7 @@ const data = [
   }
 ];
 
-export default function Home() {
+export default function Page() {
   const resultCount = data.length;
   const sample = data[1];
 
@@ -157,8 +157,8 @@ export default function Home() {
         <p className="text-lg font-semibold text-[#1F1F25]">경매 리스트</p>
         <SelectOrder />
       </div>
-      <div>
-        <p className="pt-1 pb-2 text-sm text-[#666666]">{`총 ${resultCount}개의 최신 경매가 있습니다`}</p>
+      <div className="rounded-md bg-gray-300 px-2 py-2">
+        <p className="pt-1 pb-2 text-sm">{`총 ${resultCount}개의 최신 경매가 있습니다`}</p>
         <ul className="grid grid-cols-2 gap-3">
           {data.map((auction) => {
             const {

@@ -1,3 +1,4 @@
+//NOTE - 마감 임박: 1일
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
