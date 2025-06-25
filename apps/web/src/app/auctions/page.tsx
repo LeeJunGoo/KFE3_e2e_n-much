@@ -140,7 +140,7 @@ const data = [
 ];
 
 export default function Home() {
-  const resultCount = 5;
+  const resultCount = data.length;
   const sample = data[1];
 
   console.log('status', sample?.status);
@@ -154,35 +154,37 @@ export default function Home() {
   return (
     <>
       <div className="mb-4 flex w-full justify-between">
-        <p>총 {resultCount}개의 경매가 있습니다.</p>
+        <p className="text-lg font-semibold text-[#1F1F25]">경매 리스트</p>
         <SelectOrder />
       </div>
-      {/* <ul className="flex flex-wrap justify-center"> */}
-      <ul className="grid grid-cols-3 gap-5">
-        {data.map((auction) => {
-          const {
-            auction_id: auctionId,
-            status,
-            image_urls: imageSrc,
-            title,
-            current_point: currentPoint,
-            address,
-            end_time: remainTime
-          } = auction;
-          return (
-            <AuctionCard
-              key={auctionId}
-              status={status}
-              imageSrc={imageSrc[0]!}
-              title={title}
-              currentPoint={currentPoint}
-              address={address[0]!}
-              remainTime={remainTime}
-              buyerCount={5}
-            />
-          );
-        })}
-      </ul>
+      <div>
+        <p className="pt-1 pb-2 text-sm text-[#666666]">{`총 ${resultCount}개의 최신 경매가 있습니다`}</p>
+        <ul className="grid grid-cols-2 gap-3">
+          {data.map((auction) => {
+            const {
+              auction_id: auctionId,
+              status,
+              image_urls: imageSrc,
+              title,
+              current_point: currentPoint,
+              address,
+              end_time: remainTime
+            } = auction;
+            return (
+              <AuctionCard
+                key={auctionId}
+                status={status}
+                imageSrc={imageSrc[0]!}
+                title={title}
+                currentPoint={currentPoint}
+                address={address[0]!}
+                remainTime={remainTime}
+                buyerCount={5}
+              />
+            );
+          })}
+        </ul>
+      </div>
     </>
   );
 }
