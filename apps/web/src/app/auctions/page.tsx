@@ -22,17 +22,15 @@ export default function Page() {
       if (result.status === 'success' && result.data) {
         setAuctions(result.data);
       }
+      setIsLoading(false);
     }
 
     init();
-    setIsLoading(false);
   }, []);
 
   if (isLoading) {
     return <p>Loading...</p>;
   }
-
-  console.log(auctions);
 
   return (
     <>
