@@ -27,7 +27,7 @@ export const BIDDER_MENU: MyPageMenuItem[] = [
   {
     label: '내가 쓴 스토리',
     icon: <HiDocumentText className="size-5 text-(--color-accent)" />,
-    href: '/mypage/stories'
+    href: '/mypage/episodes'
   }
 ];
 
@@ -45,6 +45,6 @@ export const AUCTIONEER_MENU = [
   {
     label: '주소 변경',
     icon: <HiDocumentText className="size-5 text-(--color-accent)" />,
-    href: '/mypage/stories'
+    href: '/mypage/'
   }
 ];

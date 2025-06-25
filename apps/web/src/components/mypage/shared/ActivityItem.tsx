@@ -46,7 +46,7 @@ type ActivityItemProps = {
 
 const ActivityItem = ({ activity }: ActivityItemProps) => {
   return (
-    <li className="mb-3 flex items-center justify-between border-b pb-4 last:mb-0 last:border-b-0 last:pb-0">
+    <li className="mb-3 flex items-center justify-between border-b border-(--color-warm-gray)/30 pb-4 last:mb-0 last:border-b-0 last:pb-0">
       <div className="flex items-center gap-2">
         <div className="flex size-8 items-center justify-center rounded-full bg-(--color-secondary)">
           {activity.type === 'auction' ? (
