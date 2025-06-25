@@ -5,7 +5,8 @@ import { Role, Provider } from '../../../types/auth/index';
 
 const supabase = createClient();
 
-export const socialSignin = async (provider: Provider, redirectTo: string) => {
+export const socialSignin = async (props: { provider: Provider; redirectTo: string }) => {
+  const { provider, redirectTo } = props;
   // 소셜 로그인 인증 성공 시 ?code=... 쿼리파라미터를 redirectTo 주소에 붙여 리다이렉트함
   try {
     await supabase.auth.signInWithOAuth({
@@ -57,10 +58,11 @@ export const storeUserInfo = async (role: Role) => {
         buyer_id: user.id,
         email: user.email ?? '',
         favorites: [],
-        nickname: user.user_metadata?.name ?? '',
+        nickname: null,
         created_at: user.created_at ?? new Date().toISOString(),
         password: '',
         point: 0,
+        social_name: user.user_metadata?.name ?? '',
         updated_at: user.updated_at ?? new Date().toISOString()
       });
     } else if (role === 'SELLER') {
@@ -69,15 +71,16 @@ export const storeUserInfo = async (role: Role) => {
         seller_id: user.id,
         email: user.email ?? '',
         favorites: [],
-        nickname: user.user_metadata?.name ?? '',
+        nickname: null,
         created_at: user.created_at ?? new Date().toISOString(),
         password: '',
         point: 0,
+        social_name: user.user_metadata?.name ?? '',
         updated_at: user.updated_at ?? new Date().toISOString()
       });
     }
     if (userData) {
-      console.log(`${userData.nickname} 님, ${role}로 사용자 정보 저장 성공`);
+      console.log(`${userData.social_name} 님, ${role}로 사용자 정보 저장 성공`);
     } else {
       throw new Error('사용자 정보 저장 실패');
     }
@@ -86,6 +89,22 @@ export const storeUserInfo = async (role: Role) => {
       console.error(error + error.message);
     } else {
       console.error('알 수 없는 오류가 발생: ', error);
+    }
+  }
+};
+
+//NOTE - 로그인된 유저 정보 불러오기
+export const getAuthInfo = async () => {
+  try {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    return user;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('🚀 ~ getAuthInfo:', error.message);
+      throw new Error('DB: 로그인 정보를 가져오지 못했습니다.');
     }
   }
 };

@@ -1,29 +1,40 @@
+import { User } from '@supabase/supabase-js';
+import PageTitle from 'src/components/common/PageTitle';
 import EpisodesForm from 'src/components/episodes/EpisodesForm';
-import { notFound } from 'next/navigation';
-import { EpisodeReturnDataType } from 'src/types/episodes';
+
+import { fetchEpisodeById } from 'src/lib/queries/episodes';
+import { getAuthInfo } from 'src/lib/supabase/query/auth';
+import { EpisodeRow } from 'src/lib/supabase/type';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
-  // const [auction_id, episode_id] = (await params).id;
-  // let initialData: EpisodeReturnDataType | null = null;
+  const [auction_id, episode_id] = (await params).id;
+  let initialEpisodeInfo: EpisodeRow | undefined;
+  let initialUserInfo: User | null | undefined;
 
-  // if (episode_id) {
-  //   try {
-  //     const res = await fetch(`http://localhost:3001/api/episodes?episode_id=${episode_id}`);
+  if (episode_id) {
+    try {
+      initialEpisodeInfo = await fetchEpisodeById(episode_id);
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+    }
+  } else {
+    // NOTE - 로그인 정보
+    initialUserInfo = await getAuthInfo();
+  }
 
-  //     if (!res.ok) {
-  //       if (res.status === 404) return notFound();
-  //       throw new Error('네트워트 통신 에러가 발생했습니다.' + res.status);
-  //     }
-
-  //     initialData = await res.json();
-  //   } catch (error) {
-  //     if (error instanceof Error) {
-  //       throw new Error('DB 에러가 발생했습니다.:' + error);
-  //     }
-  //   }
-  // }
-
-  return <main>{/* <EpisodesForm auction_id={auction_id!} initialData={initialData} /> */}</main>;
+  return (
+    <main>
+      <PageTitle>{initialEpisodeInfo ? '사연 수정' : '사연 등록'}</PageTitle>
+      <EpisodesForm
+        auction_id={auction_id!}
+        episode_id={episode_id}
+        initialEpisodeInfo={initialEpisodeInfo}
+        initialUserInfo={initialUserInfo}
+      />
+    </main>
+  );
 };
 
 export default EpisodePage;

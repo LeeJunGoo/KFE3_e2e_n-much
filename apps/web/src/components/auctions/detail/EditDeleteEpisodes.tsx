@@ -5,6 +5,7 @@ import { EpisodeRow } from 'src/lib/supabase/type';
 
 import { notFound, useRouter } from 'next/navigation';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { fetchDeleteEpisode } from 'src/lib/queries/episodes';
 
 const EditDeleteEpisodes = ({
   auction_id,
@@ -27,30 +28,15 @@ const EditDeleteEpisodes = ({
     }
 
     try {
-      const res = await fetch('http://localhost:3001/api/episodes', {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        method: 'DELETE',
-        body: JSON.stringify({
-          episode_id
-        })
-      });
+      const result = await fetchDeleteEpisode(episode_id);
 
-      if (!res.ok) {
-        if (res.status === 404) return notFound;
-        throw new Error('사연을 삭제하는 과정에서 네트워크 오류가 발생했습니다.' + res.status);
-      }
-
-      const data = await res.json();
-
-      if ((data.status = 'status')) {
+      if (result === 'success') {
         alert('삭제 되었습니다.');
         window.location.reload();
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(`DB 에러 발생: ${error.message}`);
+        throw new Error(error.message);
       }
     }
   };

@@ -103,9 +103,10 @@ export type Database = {
           created_at: string
           email: string
           favorites: string[] | null
-          nickname: string
+          nickname: string | null
           password: string
           point: number
+          social_name: string | null
           updated_at: string | null
         }
         Insert: {
@@ -114,9 +115,10 @@ export type Database = {
           created_at?: string
           email?: string
           favorites?: string[] | null
-          nickname?: string
+          nickname?: string | null
           password?: string
           point?: number
+          social_name?: string | null
           updated_at?: string | null
         }
         Update: {
@@ -125,9 +127,10 @@ export type Database = {
           created_at?: string
           email?: string
           favorites?: string[] | null
-          nickname?: string
+          nickname?: string | null
           password?: string
           point?: number
+          social_name?: string | null
           updated_at?: string | null
         }
         Relationships: []
@@ -148,7 +151,7 @@ export type Database = {
         }
         Insert: {
           auction_id: string
-          bid_point: number
+          bid_point?: number
           bid_time?: string
           buyer_id: string
           created_at?: string
@@ -192,35 +195,38 @@ export type Database = {
       sellers: {
         Row: {
           avatar: string | null
-          created_at: string | null
+          created_at: string
           email: string
           favorites: string[] | null
-          nickname: string
+          nickname: string | null
           password: string
           point: number
           seller_id: string
+          social_name: string | null
           updated_at: string | null
         }
         Insert: {
           avatar?: string | null
-          created_at?: string | null
+          created_at?: string
           email?: string
           favorites?: string[] | null
-          nickname?: string
+          nickname?: string | null
           password?: string
           point?: number
           seller_id?: string
+          social_name?: string | null
           updated_at?: string | null
         }
         Update: {
           avatar?: string | null
-          created_at?: string | null
+          created_at?: string
           email?: string
           favorites?: string[] | null
-          nickname?: string
+          nickname?: string | null
           password?: string
           point?: number
           seller_id?: string
+          social_name?: string | null
           updated_at?: string | null
         }
         Relationships: []
