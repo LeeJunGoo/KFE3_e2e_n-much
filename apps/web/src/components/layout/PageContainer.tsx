@@ -5,7 +5,7 @@ interface PageContainerProps {
 
 const PageContainer = ({ children, className = '' }: PageContainerProps) => {
   return (
-    <main className={`min-h-[calc(100vh-4rem)] bg-(--color-background) px-5 pt-8 pb-20 ${className}`}>{children}</main>
+    <main className={`min-h-[calc(100vh-4rem)] bg-(--color-background) px-5 pt-8 pb-20 ${className} `}>{children}</main>
   );
 };
 

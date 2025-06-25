@@ -45,22 +45,24 @@ type ActivityItemProps = {
 };
 
 const ActivityItem = ({ activity }: ActivityItemProps) => {
+  const { type, title, date } = activity;
+
   return (
     <li className="mb-3 flex items-center justify-between border-b border-(--color-warm-gray)/30 pb-4 last:mb-0 last:border-b-0 last:pb-0">
       <div className="flex items-center gap-2">
         <div className="flex size-8 items-center justify-center rounded-full bg-(--color-secondary)">
-          {activity.type === 'auction' ? (
+          {type === 'auction' ? (
             <FaGavel className="size-3 text-(--color-accent)" />
           ) : (
             <FaCoins className="size-3 text-(--color-accent)" />
           )}
         </div>
         <div className="flex flex-col">
-          <h4 className="text-sm font-medium">{activity.title}</h4>
-          <time className="text-xs text-(--color-warm-gray)">{activity.date}</time>
+          <h4 className="text-sm font-medium">{title}</h4>
+          <time className="text-xs text-(--color-warm-gray)">{date}</time>
         </div>
       </div>
-      {activity.type === 'auction' ? (
+      {type === 'auction' ? (
         <StatusBadge status={BID_STATUS_LABEL[activity.status]} />
       ) : (
         <span className="font-medium text-(--color-accent)">+{activity.amount.toLocaleString()}P</span>

@@ -11,7 +11,7 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
   const colorMap: Record<BidStatusType, string> = {
     진행중: 'bg-(--color-accent)',
     '낙찰 예정': 'bg-(--color-green)',
-    종료됨: 'bg-(--color-warm-gray)'
+    종료됨: 'bg-(--color-light-gray)'
   };
 
   return (

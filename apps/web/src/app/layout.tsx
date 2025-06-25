@@ -12,10 +12,10 @@ export const metadata = home;
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body className={`flex flex-col w-full max-w-2xl m-auto shadow-2xl relative ${pretendard.className}`}>
+      <body className={`relative m-auto flex w-full max-w-2xl flex-col shadow-2xl ${pretendard.className}`}>
         <QueryProvider>
           <Header />
-          <PageContainer>{children}</PageContainer>
+          {children}
           <TabBar />
         </QueryProvider>
       </body>
