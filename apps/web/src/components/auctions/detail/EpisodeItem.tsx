@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { FiAward } from 'react-icons/fi';
 import { IoMdTime } from 'react-icons/io';
 
-// import { BiddingForm } from './BiddingForm';
+import { BiddingForm } from './BiddingForm';
 import EditDeleteEpisodes from './EditDeleteEpisodes';
 import { EpisodeItemProps } from 'src/types/episodes';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
@@ -22,7 +22,7 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
       {/* 작성자 정보 */}
       <div>
         <div>
-          <p className="font-semibold text-gray-800">{episode.user.nickname}</p>
+          <p className="font-semibold text-gray-800">{episode.buyer.nickname}</p>
           <div className="flex items-center gap-1 text-xs text-gray-500">
             <IoMdTime />
             <time>{episodeTime}</time>
@@ -44,7 +44,6 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
           {/* 오른쪽 버튼 그룹 */}
           <div className="flex items-center gap-2">
             {/* 에피소드 수정 및 삭제 버튼 */}
-
             <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />
 
             <CollapsibleTrigger asChild>
@@ -55,14 +54,14 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
             </CollapsibleTrigger>
           </div>
         </div>
-        {/* 4. 펼쳐질 콘텐츠 영역 - 버튼 그룹과 완전히 분리되어 있습니다. */}
+        {/*  펼쳐질 콘텐츠 영역 - 버튼 그룹과 완전히 분리 */}
         <CollapsibleContent className="mt-2 CollapsibleContent w-full space-y-4 rounded-lg bg-[#F4F4F7] p-4">
-          {/* <BiddingForm
+          <BiddingForm
             auction_id={episode.auction_id}
-            buyer_id={episode.buyer_id}
+            episode_id={episode.episode_id}
             currentBid={episode.bid_point}
-            userPoints={1000000}
-          /> */}
+            userPoint={1000000}
+          />
         </CollapsibleContent>
       </Collapsible>
     </li>

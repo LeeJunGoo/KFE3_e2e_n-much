@@ -92,3 +92,19 @@ export const storeUserInfo = async (role: Role) => {
     }
   }
 };
+
+//NOTE - 로그인된 유저 정보 불러오기
+export const getAuthInfo = async () => {
+  try {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    return user;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('🚀 ~ getAuthInfo:', error.message);
+      throw new Error('DB: 로그인 정보를 가져오지 못했습니다.');
+    }
+  }
+};

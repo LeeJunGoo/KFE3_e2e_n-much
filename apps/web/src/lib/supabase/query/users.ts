@@ -61,31 +61,3 @@ export async function upsertSeller(userData: SellerInsert) {
   }
   return user;
 }
-
-//경매자 총 경매수 count, 현재 진행중인 경매 count
-export const getUserAuctionCount = async (sellerId: string) => {
-  const { count: totalCount, error: totalError } = await supabase
-    .from('auctions')
-    .select('*', { count: 'exact', head: true })
-    .eq('seller_id', sellerId);
-
-  const { count: activeCount, error: activeError } = await supabase
-    .from('auctions')
-    .select('*', { count: 'exact', head: true })
-    .eq('seller_id', sellerId)
-    .eq('status', 'OPEN');
-
-  if (totalError) {
-    console.log('totalError:', totalError);
-    throw new Error('DB: 경매자의 총 경매 수를 불러오는 과정에서 Error 발생');
-  }
-  if (activeError) {
-    console.log('activeError:', activeError);
-    throw new Error('DB: 경매자의 현재 진행중인 경매 수를 불러오는 과정에서 Error 발생');
-  }
-
-  return {
-    totalAuctions: totalCount || 0,
-    activeAuctions: activeCount || 0
-  };
-};
