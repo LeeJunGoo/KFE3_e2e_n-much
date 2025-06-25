@@ -5,7 +5,6 @@ import { Badge } from '@repo/ui/components/ui/badge';
 import { differenceInHours } from 'date-fns';
 import Image from 'next/image';
 import { TZDate } from 'react-day-picker';
-import { v4 } from 'uuid';
 import { FaHeart } from 'react-icons/fa';
 import { FaBookOpen } from 'react-icons/fa6';
 
@@ -26,10 +25,7 @@ export default function AuctionCard({ imageSrc, title, remainTime }: AuctionCard
   const absDiff = Math.abs(diff);
 
   return (
-    <li
-      key={v4()}
-      className="!rounded-button cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]"
-    >
+    <li className="!rounded-button cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]">
       <div className="relative">
         <div className="h-[120px] w-full">
           <Image src={imageSrc} fill={true} alt={`${title} 이미지`} className="object-cover object-top" />
