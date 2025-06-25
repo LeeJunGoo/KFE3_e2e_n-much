@@ -1,13 +1,26 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useCountdown } from 'src/hooks/useCountDown';
-import { AuctionRow } from 'src/lib/supabase/type';
+import { fetchUpdateEpisodeWinning } from 'src/lib/queries/episodes';
+import { AuctionTimeProps } from 'src/types/auctions/detail';
 
-type AuctionTimeProps = Pick<AuctionRow, 'start_time' | 'end_time'>;
-
-const AuctionTimer = ({ start_time, end_time }: AuctionTimeProps) => {
+const AuctionTimer = ({ highestBuyer, start_time, end_time }: AuctionTimeProps) => {
   const { remainingTime, status } = useCountdown(start_time, end_time);
   const timerTextColor = status === 'ongoing' ? 'text-blue-600' : 'text-red-600 animate-pulse';
+  console.log('너가 실행');
+
+  // 데이터 처리
+  useEffect(() => {
+    if (status === 'ended' && highestBuyer.episode_id) {
+      console.log('너 실행');
+      const endedAction = async () => {
+        const data = await fetchUpdateEpisodeWinning(highestBuyer.episode_id, (highestBuyer.winning_bid = true));
+        console.log('🚀 ~ endedAction ~ data:', data);
+      };
+      endedAction();
+    }
+  }, [status, highestBuyer]);
 
   return (
     <div>

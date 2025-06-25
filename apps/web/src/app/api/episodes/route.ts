@@ -1,84 +1,93 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import {
-  addEpisode,
+  createEpisode,
   deleteEpisode,
-  getAllEpisodes,
   getEpisode,
   getEpisodesByAuctionId,
-  getUserEpisodes,
+  selectWinningEpisode,
   updateEpisode
 } from '../../../lib/supabase/query/episodes';
 
-const commonHeader = {
-  headers: { 'Content-Type': 'application/json' }
-};
-
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
-  const episodeId = searchParams.get('episode_id');
-  const buyerId = searchParams.get('buyer_id');
-  const auction_id = searchParams.get('auction_id');
+  const auctionId = searchParams.get('auctionId');
+  const episodeId = searchParams.get('episodeId');
+  let res;
 
   try {
+    if (!auctionId && !episodeId) {
+      return NextResponse.json('id가 존재하지 않습니다.', { status: 400 });
+    }
+
+    if (auctionId) {
+      res = await getEpisodesByAuctionId(auctionId);
+    }
+
     if (episodeId) {
-      const res = await getEpisode(episodeId);
-      return Response.json({ status: 'success', data: res }, commonHeader);
+      res = await getEpisode(episodeId);
     }
 
-    if (buyerId) {
-      const res = await getUserEpisodes(buyerId);
-      return Response.json({ status: 'success', data: res }, commonHeader);
-    }
-
-    if (auction_id) {
-      const res = await getEpisodesByAuctionId(auction_id);
-      return Response.json({ status: 'success', data: res }, commonHeader);
-    }
-
-    const res = await getAllEpisodes();
-    return Response.json({ status: 'success', data: res }, commonHeader);
+    return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json({ status: 'error', error: error.message }, commonHeader);
+      throw new Error(error.message);
     }
   }
 }
 
 export async function POST(request: NextRequest) {
-  const { auction_id, buyer_id, bid_point } = await request.json();
+  const { auction_id, buyer_id, title, description } = await request.json();
+
+  if (!auction_id || !buyer_id || !title || !description) {
+    return NextResponse.json({ message: 'id, title, description 값이 존재하지 않습니다.' }, { status: 400 });
+  }
 
   try {
-    const res = await addEpisode(auction_id, buyer_id, bid_point);
-    return Response.json({ status: 'success', data: res }, commonHeader);
+    const res = await createEpisode(auction_id, buyer_id, title, description);
+
+    return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json({ status: 'error', error: error.message }, commonHeader);
+      throw new Error(error.message);
     }
   }
 }
 
 export async function PATCH(request: NextRequest) {
-  const { episode_id, winning_bid } = await request.json();
+  const { episode_id, title, description, winning_bid } = await request.json();
+  const searchParams = request.nextUrl.searchParams;
+  const type = searchParams.get('type');
+  let res;
+
+  if (!episode_id) {
+    return NextResponse.json({ error: 'id 값이 존재하지 않습니다.' }, { status: 400 });
+  }
 
   try {
-    const res = await updateEpisode(episode_id, winning_bid);
-    return Response.json({ status: 'success', data: res }, commonHeader);
+    if (type === 'updateEpisode') {
+      res = await updateEpisode(episode_id, title, description);
+    }
+
+    if (type === 'winningEpisode') {
+      res = await selectWinningEpisode(episode_id, winning_bid);
+    }
+
+    return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json({ status: 'error', error: error.message }, commonHeader);
+      throw new Error(error.message);
     }
   }
 }
 
 export async function DELETE(request: NextRequest) {
   const { episode_id } = await request.json();
-
   try {
     const res = await deleteEpisode(episode_id);
-    return Response.json({ status: 'success', data: res }, commonHeader);
+    return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
     if (error instanceof Error) {
-      return Response.json({ status: 'error', error: error.message }, commonHeader);
+      return NextResponse.json(error.message);
     }
   }
 }

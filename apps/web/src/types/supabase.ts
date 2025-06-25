@@ -148,7 +148,7 @@ export type Database = {
         }
         Insert: {
           auction_id: string
-          bid_point: number
+          bid_point?: number
           bid_time?: string
           buyer_id: string
           created_at?: string
@@ -192,7 +192,7 @@ export type Database = {
       sellers: {
         Row: {
           avatar: string | null
-          created_at: string | null
+          created_at: string
           email: string
           favorites: string[] | null
           nickname: string
@@ -203,7 +203,7 @@ export type Database = {
         }
         Insert: {
           avatar?: string | null
-          created_at?: string | null
+          created_at?: string
           email?: string
           favorites?: string[] | null
           nickname?: string
@@ -214,7 +214,7 @@ export type Database = {
         }
         Update: {
           avatar?: string | null
-          created_at?: string | null
+          created_at?: string
           email?: string
           favorites?: string[] | null
           nickname?: string

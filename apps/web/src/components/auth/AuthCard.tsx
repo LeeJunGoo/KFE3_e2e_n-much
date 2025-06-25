@@ -19,7 +19,7 @@ export function AuthCard({ title, role, onTabChange, onSocialSignin }: AuthCardP
       <Card className="max-w-sm rounded-md overflow-hidden p-0 shadow-lg border-none gap-0">
         <Tabs
           value={role}
-          onValueChange={(v) => {
+          onValueChange={(v: any) => {
             if (v === 'BUYER' || v === 'SELLER') onTabChange(v);
           }}
         >
