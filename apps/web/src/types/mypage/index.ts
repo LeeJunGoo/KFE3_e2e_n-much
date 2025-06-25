@@ -8,3 +8,14 @@ export type MyBidAuctions = (EpisodeRow & {
 
 export type CreateBuyerPayload = Pick<BuyerInsert, 'email' | 'nickname'>;
 export type CreateSellerPayload = Pick<SellerInsert, 'email' | 'nickname'>;
+
+export type MyPageMenuItem = {
+  label: string;
+  icon: React.ReactNode;
+  href: string;
+};
+
+//조건 분기 처리
+export interface UserRoleDataProps {
+  role: string;
+}
