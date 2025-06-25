@@ -1,3 +1,4 @@
+import { AUCTION_TAB_FILTERS } from 'src/constants/mypage';
 import { AuctionRow, BuyerInsert, EpisodeRow, SellerInsert } from 'src/lib/supabase/type';
 
 // export type MyPageUserInfo = UserRow;
@@ -19,3 +20,6 @@ export type MyPageMenuItem = {
 export interface UserRoleDataProps {
   role: string;
 }
+
+//내 경매 현황
+export type TabKey = keyof typeof AUCTION_TAB_FILTERS;

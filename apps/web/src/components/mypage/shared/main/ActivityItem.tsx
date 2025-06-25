@@ -1,6 +1,6 @@
 import { FaGavel, FaCoins } from 'react-icons/fa6';
 import { BID_STATUS_LABEL } from 'src/constants/mypage';
-import StatusBadge from './StatusBadge';
+import StatusBadge from '../StatusBadge';
 
 //NOTE - 삭제 예정
 export const activities: Activity[] = [

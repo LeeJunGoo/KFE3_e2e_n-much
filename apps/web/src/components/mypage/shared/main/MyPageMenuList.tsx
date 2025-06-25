@@ -1,6 +1,6 @@
 'use client';
-import BidderMenuList from '../bidder/BidderMenuList';
-import AuctioneerMenuList from '../auctioneer/AuctioneerMenuList';
+import BidderMenuList from '../../bidder/BidderMenuList';
+import AuctioneerMenuList from '../../auctioneer/AuctioneerMenuList';
 import { AUCTIONEER_MENU, BIDDER_MENU } from 'src/constants/mypage';
 import type { UserRoleDataProps } from 'src/types/mypage';
 

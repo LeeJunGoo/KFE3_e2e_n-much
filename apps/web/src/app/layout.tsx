@@ -1,7 +1,5 @@
 import QueryProvider from '../providers/QueryProvider';
-import PageContainer from '../components/layout/PageContainer';
 import { home } from '../metadata/common/home';
-
 import './globals.css';
 import TabBar from '../components/common/TabBar';
 import Header from 'src/components/layout/Header';

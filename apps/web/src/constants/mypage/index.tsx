@@ -48,3 +48,14 @@ export const AUCTIONEER_MENU = [
     href: '/mypage/'
   }
 ];
+
+//내 경매 현황
+export const AUCTION_TABS = [
+  { label: '경매현황', value: 'ongoing' },
+  { label: '경매종료', value: 'closed' }
+];
+
+export const AUCTION_TAB_FILTERS = {
+  ongoing: ['전체', '입찰중', '낙찰예정'],
+  closed: ['전체', '낙찰', '유찰']
+};

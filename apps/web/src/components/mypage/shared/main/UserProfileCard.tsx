@@ -1,5 +1,5 @@
 import { ROLE_LABEL } from 'src/constants/mypage';
-import RoleBadge from './RoleBadge';
+import RoleBadge from '../RoleBadge';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const UserProfileCard = ({ role }: UserRoleDataProps) => {
