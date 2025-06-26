@@ -99,6 +99,7 @@ export default function AuctionForm() {
     const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
     const data = await fetch(fetchUrl);
     const result = await data.json();
+
     return result;
   }
 
