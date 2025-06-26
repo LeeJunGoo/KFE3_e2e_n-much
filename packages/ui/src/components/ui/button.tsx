@@ -21,7 +21,8 @@ const buttonVariants = cva(
         //variant custom
         base: 'rounded-lg bg-(--color-primary) text-white px-4 py-2 text-sm font-medium transition-colors duration-200 hover:bg-(--color-accent)',
         active: 'rounded-md whitespace-nowrap bg-(--color-accent) shadow-xs text-white',
-        inActive: 'rounded-md whitespace-nowrap bg-(--color-primary) shadow-xs text-white hover:bg-(--color-accent)'
+        inActive: 'rounded-md whitespace-nowrap bg-(--color-primary) shadow-xs text-white hover:bg-(--color-accent)',
+        text: 'bg-transparent text-(--color-accent) font-normal hover:font-medium'
       },
       size: {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
