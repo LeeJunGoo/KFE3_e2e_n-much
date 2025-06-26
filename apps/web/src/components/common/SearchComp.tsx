@@ -1,34 +1,15 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { Button } from '@repo/ui/components/ui/button';
-// import { Input } from '@repo/ui/components/ui/input';
+import React, { useState } from 'react';
+import useRecentKeywords from 'src/hooks/useRecentKeywords';
 import { getSearchedAuctions } from 'src/lib/supabase/query/auctions';
+import { Button } from '@repo/ui/components/ui/button';
 import { IoCloseOutline } from 'react-icons/io5';
 import { FaSearch } from 'react-icons/fa';
 
-const STORAGE_KEY = 'keywords';
-const MAX_LENGTH = 6;
-
 export default function SearchComp() {
   const [keyword, setKeyword] = useState('');
-  const [savedKeywords, setSavedKeywords] = useState<string[]>([]);
-
-  function getPrevKeywords(): string[] {
-    const storedData: string | null = localStorage.getItem(STORAGE_KEY);
-    const prevKeywords: string[] = storedData ? (JSON.parse(storedData) as string[]) : [];
-    return prevKeywords;
-  }
-
-  function getCurrentKeywords(prevKeywords: string[], newKeyword: string): string[] {
-    // 읽어온 데이터에서 newKeyword와 중복 제거
-    let currentKeywords = prevKeywords.filter((item) => item !== newKeyword);
-    currentKeywords.unshift(newKeyword);
-    // 6개만 남기기
-    if (currentKeywords.length > MAX_LENGTH) {
-      currentKeywords = currentKeywords.slice(0, MAX_LENGTH);
-    }
-    return currentKeywords;
-  }
+  // 최근 검색어 커스텀 훅
+  const { recentKeywords, insert, remove, clear } = useRecentKeywords();
 
   const handleSearchByKeyword = async () => {
     // 공백으로 인한 버그 막기(로컬스토리지에는 공백 포함해서 저장된 keyword가 UI에서는 공백 없이 보여짐, 중복 발생)
@@ -36,24 +17,9 @@ export default function SearchComp() {
     if (!trimmedKeyword) return;
     const dataList = await getSearchedAuctions(trimmedKeyword);
     console.log('검색 결과: ', dataList);
-    // 최근 검색어
-    const prevKeywords = getPrevKeywords();
-    const currentKeywords = getCurrentKeywords(prevKeywords, trimmedKeyword);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentKeywords));
-    setSavedKeywords(currentKeywords);
+    // 최근 검색어 추가
+    insert(trimmedKeyword);
     setKeyword('');
-  };
-
-  const handleDeleteKeyword = (keyword: string) => {
-    const prevKeywords = getPrevKeywords();
-    const currentKeywords = prevKeywords.filter((item) => item !== keyword);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(currentKeywords));
-    setSavedKeywords(currentKeywords);
-  };
-
-  const handleClearKeywords = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-    setSavedKeywords([]);
   };
 
   // 엔터키 입력 감지 핸들러
@@ -62,14 +28,6 @@ export default function SearchComp() {
       handleSearchByKeyword();
     }
   };
-
-  useEffect(() => {
-    setSavedKeywords(getPrevKeywords());
-  }, []);
-
-  useEffect(() => {
-    console.log('savedKeywords: ', savedKeywords);
-  }, [savedKeywords]);
 
   return (
     // 임시 모달
@@ -97,17 +55,17 @@ export default function SearchComp() {
         <div data-role="recent_keywords_section" className="mb-6">
           <div className="mb-3 flex items-center justify-between">
             <h3 className="text-base font-medium">최근 검색어</h3>
-            <Button className="p-0 text-xs text-[#B8B8B8]" variant="ghost" onClick={handleClearKeywords}>
+            <Button className="p-0 text-xs text-[#B8B8B8]" variant="ghost" onClick={clear}>
               전체 삭제
             </Button>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            {savedKeywords.length > 0 &&
-              savedKeywords.map((keyword, idx) => {
+            {recentKeywords.length > 0 &&
+              recentKeywords.map((keyword, idx) => {
                 return (
                   <div key={`${keyword}-${idx}`} className="flex items-center rounded-full bg-[#EEF2FB] px-3 py-2">
                     <span className="flex-1 truncate text-sm">{keyword}</span>
-                    <button className="ml-1 text-[#B8B8B8]" onClick={() => handleDeleteKeyword(keyword)}>
+                    <button className="ml-1 text-[#B8B8B8]" onClick={() => remove(keyword)}>
                       <IoCloseOutline />
                     </button>
                   </div>
