@@ -2,14 +2,14 @@ import GoBackButton from './GoBackButton';
 import PageTitle from './PageTitle';
 
 interface PageHeaderProps {
-  title: string;
+  children: React.ReactNode;
 }
 
-const PageHeader = ({ title }: PageHeaderProps) => {
+const PageHeader = ({ children }: PageHeaderProps) => {
   return (
     <div className="relative border-b border-b-(--color-warm-gray)/30 py-5">
       <GoBackButton />
-      <PageTitle>{title}</PageTitle>
+      <PageTitle>{children}</PageTitle>
     </div>
   );
 };

@@ -5,7 +5,7 @@ import AuctionTabsSection from 'src/components/mypage/shared/auctions/AuctionTab
 const MyAuctions = () => {
   return (
     <>
-      <PageHeader title="내 경매 현황" />
+      <PageHeader>내 경매 현황</PageHeader>
       <PageContainer className="pt-2">
         <AuctionTabsSection />
       </PageContainer>
