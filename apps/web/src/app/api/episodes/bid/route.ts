@@ -6,8 +6,8 @@ export async function PATCH(request: NextRequest) {
   const { auction_id, episode_id, bid_point } = await request.json();
   try {
     const [episodeInfo, auctionInfo] = await Promise.all([
-      await updateEpisodeBidPoint(episode_id, bid_point),
-      await getAuction(auction_id)
+      updateEpisodeBidPoint(episode_id, bid_point),
+      getAuction(auction_id)
     ]);
 
     // 에피소드의 입찰가가 경매 물품의 현재 입찰가보다 높을 경우, 경매 물품의 현재 입찰가를 변경

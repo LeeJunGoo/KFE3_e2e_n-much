@@ -100,6 +100,7 @@ export default function AuctionForm() {
     const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
     const data = await fetch(fetchUrl);
     const result = await data.json();
+
     return result;
   }
 
@@ -230,7 +231,7 @@ export default function AuctionForm() {
 
   return (
     <>
-      <PageTitle className="text-left pb-10">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
+      <PageTitle className="pb-10 text-left">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -286,7 +287,7 @@ export default function AuctionForm() {
             control={form.control}
             name="startDay"
             render={({ field }) => (
-              <FormItem className="flex flex-col w-1/2">
+              <FormItem className="flex w-1/2 flex-col">
                 <FormLabel>경매 시작일&#42;</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -338,7 +339,7 @@ export default function AuctionForm() {
             control={form.control}
             name="endDay"
             render={({ field }) => (
-              <FormItem className="flex flex-col w-1/2">
+              <FormItem className="flex w-1/2 flex-col">
                 <FormLabel>경매 종료일&#42;</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
