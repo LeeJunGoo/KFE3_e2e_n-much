@@ -1,5 +1,6 @@
 //FIXME - tanstack query 적용하기
 //FIXME - episodes 타입 수정하기
+//TODO - 경매 마감순, 인기 경매, 최신 경매 url 파라미터 넘기기
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -7,8 +8,12 @@ import SelectOrder from 'src/components/auctions/SelectOrder';
 import AuctionCard from 'src/components/common/AuctionCard';
 import { AuctionRow } from 'src/lib/supabase/type';
 
+interface EpisodeCount {
+  episodes: [{ count: number }];
+}
+
 export default function Page() {
-  const [auctions, setAuctions] = useState<AuctionRow[]>([]);
+  const [auctions, setAuctions] = useState<(AuctionRow & EpisodeCount)[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [order, setOrder] = useState<string>('');
 
