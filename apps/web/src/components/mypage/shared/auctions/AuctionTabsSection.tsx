@@ -36,7 +36,7 @@ const AuctionTabsSection = () => {
       <Tabs value={tabValue} onValueChange={handleTabChange} className="w-full">
         <AuctionTabsHeader />
         <AuctionStatusFilters tab={tabValue} activeFilter={activeFilter} onFilterChange={handleFilterChange} />
-        <AuctionTabsContent tab={tabValue} filter={activeFilter} data={filteredData} />
+        <AuctionTabsContent tab={tabValue} data={filteredData} />
       </Tabs>
     </section>
   );

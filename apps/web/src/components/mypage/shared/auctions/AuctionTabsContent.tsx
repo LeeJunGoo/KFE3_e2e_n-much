@@ -2,13 +2,13 @@ import { TabsContent } from '@repo/ui/components/ui/tabs';
 import AuctionListItem from './AuctionListItem';
 import type { AuctionTabsContentProps } from 'src/types/mypage';
 
-const AuctionTabsContent = ({ tab, filter, data }: AuctionTabsContentProps) => {
+const AuctionTabsContent = ({ tab, data }: AuctionTabsContentProps) => {
   return (
     <TabsContent value={tab}>
       {data.length > 0 ? (
         <ul>
           {data.map((item) => (
-            <AuctionListItem key={item.id} item={item} filter={filter} />
+            <AuctionListItem key={item.id} item={item} />
           ))}
         </ul>
       ) : (

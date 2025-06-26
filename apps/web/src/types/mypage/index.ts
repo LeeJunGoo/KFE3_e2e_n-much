@@ -39,11 +39,9 @@ export type AuctionStatus = 'bidding' | 'winning' | 'won' | 'failed';
 
 export interface AuctionTabsContentProps {
   tab: 'ongoing' | 'closed';
-  filter: string;
   data: AuctionItem[];
 }
 
 export interface AuctionListItemProps {
   item: AuctionItem;
-  filter: string;
 }

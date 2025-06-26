@@ -49,7 +49,7 @@ export const AUCTIONEER_MENU = [
   }
 ];
 
-//내 경매 현황
+// 내 경매 현황 tab
 export const AUCTION_TABS = [
   { label: '경매현황', value: 'ongoing' },
   { label: '경매종료', value: 'closed' }
@@ -59,3 +59,11 @@ export const AUCTION_TAB_FILTERS = {
   ongoing: ['전체', '입찰중', '낙찰예정'],
   closed: ['전체', '낙찰', '유찰']
 };
+
+// 내 경매 현황 filter
+export const AUCTION_STATUS_LABELS = {
+  bidding: '입찰중',
+  winning: '낙찰예정',
+  won: '낙찰',
+  lost: '유찰'
+} as const;
