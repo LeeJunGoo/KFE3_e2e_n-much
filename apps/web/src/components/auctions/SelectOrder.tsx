@@ -7,19 +7,24 @@ import {
   SelectTrigger,
   SelectValue
 } from '@repo/ui/components/ui/select';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function SelectOrder() {
+interface SelectOrderProp {
+  setOrder: Dispatch<SetStateAction<string>>;
+}
+
+export default function SelectOrder({ setOrder }: SelectOrderProp) {
   return (
-    <Select>
+    <Select onValueChange={setOrder}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="정렬 순서 선택" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel>정렬 순서</SelectLabel>
-          <SelectItem value="apple">마감 임박순</SelectItem>
-          <SelectItem value="banana">인기순</SelectItem>
-          <SelectItem value="blueberry">최신순</SelectItem>
+          <SelectItem value="end_time">마감 임박순</SelectItem>
+          <SelectItem value="favorites">인기순</SelectItem>
+          <SelectItem value="created_at">최신순</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
