@@ -1,9 +1,10 @@
 //NOTE - 마감 임박: 1일
 //FIXME - 이미지 없음에 기본 이미지 넣기
+//FIXME - 경매 상태 정하기
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
-import { differenceInDays, formatDistanceToNow, setDefaultOptions } from 'date-fns';
+import { differenceInHours, formatDistanceToNow, setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import { TZDate } from 'react-day-picker';
@@ -20,11 +21,11 @@ interface AuctionCardProp {
   favorites: number;
 }
 
-export default function AuctionCard({ imageSrc, title, endTime, favorites, episodeCount }: AuctionCardProp) {
+export default function AuctionCard({ imageSrc, title, endTime, favorites, episodeCount, status }: AuctionCardProp) {
   setDefaultOptions({ locale: ko });
   const now = new TZDate(new Date(), 'Asia/Seoul');
   const auctionTime = new TZDate(endTime, 'Asia/Seoul');
-  const diff = differenceInDays(now, auctionTime);
+  const diffDay = differenceInHours(now, auctionTime);
   const remainTime = formatDistanceToNow(auctionTime, { addSuffix: true });
 
   return (
@@ -40,7 +41,9 @@ export default function AuctionCard({ imageSrc, title, endTime, favorites, episo
 
         <Badge
           className={`absolute right-2 bottom-2 ${
-            diff < 1 ? 'bg-[#D84A5F] hover:bg-[#D84A5F]' : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
+            status === 'OPEN' && -24 < diffDay && diffDay < 0
+              ? 'bg-[#D84A5F] hover:bg-[#D84A5F]'
+              : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
           } px-2 py-1 font-normal text-white`}
         >
           {remainTime}
