@@ -1,5 +1,5 @@
+import { Button } from '@repo/ui/components/ui/button';
 import { MdInfoOutline } from 'react-icons/md';
-import UIButton from 'src/components/common/UIButton';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const MyPageNotification = ({ role }: UserRoleDataProps) => {
@@ -16,14 +16,18 @@ const MyPageNotification = ({ role }: UserRoleDataProps) => {
           <p className="text-sm leading-relaxed text-(--color-warm-gray)">
             현재 참여 중인 스토리가 2건 있습니다. 종료 시간을 확인해 주세요.
           </p>
-          <UIButton className="mt-3 w-full">스토리 확인하기</UIButton>
+          <Button variant="base" className="mt-3 w-full">
+            스토리 확인하기
+          </Button>
         </>
       ) : (
         <>
           <p className="text-sm leading-relaxed text-(--color-warm-gray)">
             현재 작성하신 경매가 2건 있습니다. 종료 시간을 확인해 주세요.
           </p>
-          <UIButton className="mt-3 w-full">경매 확인하기</UIButton>
+          <Button variant="base" className="mt-3 w-full">
+            경매 확인하기
+          </Button>
         </>
       )}
     </section>

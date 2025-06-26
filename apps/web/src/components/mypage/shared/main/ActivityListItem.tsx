@@ -1,6 +1,6 @@
 import { FaGavel, FaCoins } from 'react-icons/fa6';
 import { BID_STATUS_LABEL } from 'src/constants/mypage';
-import StatusBadge from '../StatusBadge';
+import StatusBadge from './StatusBadge';
 
 //NOTE - 삭제 예정
 export const activities: Activity[] = [
@@ -40,11 +40,11 @@ type PointActivity = {
 
 type Activity = AuctionActivity | PointActivity;
 
-type ActivityItemProps = {
+type ActivityListItemProps = {
   activity: Activity;
 };
 
-const ActivityItem = ({ activity }: ActivityItemProps) => {
+const ActivityListItem = ({ activity }: ActivityListItemProps) => {
   const { type, title, date } = activity;
 
   return (
@@ -71,4 +71,4 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
   );
 };
 
-export default ActivityItem;
+export default ActivityListItem;

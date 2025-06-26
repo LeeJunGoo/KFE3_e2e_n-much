@@ -1,6 +1,6 @@
-import UIButton from 'src/components/common/UIButton';
 import AuctionStatusBadge from './AuctionStatusBadge';
 import type { AuctionListItemProps } from 'src/types/mypage';
+import { Button } from '@repo/ui/components/ui/button';
 
 const AuctionListItem = ({ item }: AuctionListItemProps) => {
   const { title, currentPrice, myBidAmount, endDate, status } = item;
@@ -32,7 +32,9 @@ const AuctionListItem = ({ item }: AuctionListItemProps) => {
           </div>
         </div>
       </div>
-      <UIButton className="mt-3 w-full">상세보기</UIButton>
+      <Button variant="base" className="mt-3 w-full">
+        상세보기
+      </Button>
     </li>
   );
 };

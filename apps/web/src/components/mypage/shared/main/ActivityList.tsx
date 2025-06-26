@@ -1,5 +1,5 @@
-import { activities } from './ActivityItem';
-import ActivityItem from './ActivityItem';
+import { activities } from './ActivityListItem';
+import ActivityListItem from './ActivityListItem';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const ActivityList = ({ role }: UserRoleDataProps) => {
@@ -11,7 +11,7 @@ const ActivityList = ({ role }: UserRoleDataProps) => {
         <h3 className="mb-3 font-medium">최근 활동</h3>
         <ul className="rounded-xl bg-white p-4 shadow-sm">
           {recent.map((activity, idx) => (
-            <ActivityItem key={idx} activity={activity} />
+            <ActivityListItem key={idx} activity={activity} />
           ))}
         </ul>
       </section>
@@ -26,7 +26,7 @@ const ActivityList = ({ role }: UserRoleDataProps) => {
         <h3 className="mb-3 font-medium">최근 활동</h3>
         <ul className="rounded-xl bg-white p-4 shadow-sm">
           {onlyAuctions.map((activity, idx) => (
-            <ActivityItem key={idx} activity={activity} />
+            <ActivityListItem key={idx} activity={activity} />
           ))}
         </ul>
       </section>

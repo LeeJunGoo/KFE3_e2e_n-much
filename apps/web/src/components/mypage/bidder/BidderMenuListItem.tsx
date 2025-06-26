@@ -2,11 +2,11 @@ import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa6';
 import type { MyPageMenuItem } from 'src/types/mypage';
 
-type BidderMenuListProps = {
+type BidderMenuListItemProps = {
   el: MyPageMenuItem;
 };
 
-const BidderMenuList = ({ el }: BidderMenuListProps) => {
+const BidderMenuListItem = ({ el }: BidderMenuListItemProps) => {
   const { href, icon, label } = el;
 
   return (
@@ -26,4 +26,4 @@ const BidderMenuList = ({ el }: BidderMenuListProps) => {
     </li>
   );
 };
-export default BidderMenuList;
+export default BidderMenuListItem;
