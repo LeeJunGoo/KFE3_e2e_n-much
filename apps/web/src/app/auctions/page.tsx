@@ -63,7 +63,7 @@ export default function Page() {
                   title={title}
                   currentPoint={current_point}
                   endTime={end_time}
-                  buyerCount={episodes[0]['count']}
+                  episodeCount={episodes[0]['count']}
                   favorites={favorites.length}
                 />
               );
