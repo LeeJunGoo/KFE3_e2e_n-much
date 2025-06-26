@@ -1,6 +1,8 @@
-import { FaGavel, FaCoins } from 'react-icons/fa6';
+import { IconType } from 'react-icons';
+import { FaGavel, FaCoins, FaCartShopping, FaGift, FaCalendarCheck } from 'react-icons/fa6';
 import { HiDocumentText } from 'react-icons/hi';
-import type { MyPageMenuItem } from 'src/types/mypage';
+import type { ActivityType, MyPageMenuItem } from 'src/types/mypage';
+import { MdFormatListBulleted } from 'react-icons/md';
 
 export const ROLE_LABEL = {
   BIDDER: '입찰 참여자',
@@ -80,3 +82,54 @@ export const AUCTION_STATUS_VARIANTS = {
   won: 'success',
   lost: 'error'
 } as const;
+
+//ActivityItem.tsx size
+export const SIZE_MAP = {
+  sm: {
+    icon: 'size-3',
+    container: 'size-8',
+    gap: 'gap-2'
+  },
+  md: {
+    icon: 'size-4',
+    container: 'size-10',
+    gap: 'gap-3'
+  }
+} as const;
+
+export const ACTIVITY_MAP: Record<
+  ActivityType,
+  {
+    icon: IconType;
+    label: string;
+  }
+> = {
+  all: {
+    icon: MdFormatListBulleted,
+    label: '전체'
+  },
+  auction: {
+    icon: FaGavel,
+    label: '경매 참여'
+  },
+  point: {
+    icon: FaCoins,
+    label: '포인트 충전'
+  },
+  use: {
+    icon: FaCartShopping,
+    label: '포인트 사용'
+  },
+  event: {
+    icon: FaGift,
+    label: '이벤트 보상'
+  },
+  participation: {
+    icon: FaCalendarCheck,
+    label: '이벤트 참여'
+  },
+  signup: {
+    icon: FaGift,
+    label: '회원가입'
+  }
+};

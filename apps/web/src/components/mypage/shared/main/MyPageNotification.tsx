@@ -1,6 +1,6 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { MdInfoOutline } from 'react-icons/md';
-import ListCard from '../../ListCard';
+import ListCard from '../../../common/ui/ListCard';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const MyPageNotification = ({ role }: UserRoleDataProps) => {

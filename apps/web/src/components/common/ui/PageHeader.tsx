@@ -1,4 +1,4 @@
-import GoBackButton from './GoBackButton';
+import GoBackButton from '../GoBackButton';
 import PageTitle from './PageTitle';
 
 interface PageHeaderProps {

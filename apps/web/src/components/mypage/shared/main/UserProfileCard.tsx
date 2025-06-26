@@ -1,6 +1,6 @@
 import { ROLE_LABEL } from 'src/constants/mypage';
 import RoleBadge from './RoleBadge';
-import SectionCard from '../SectionCard';
+import SectionCard from '../../../common/ui/SectionCard';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const UserProfileCard = ({ role }: UserRoleDataProps) => {

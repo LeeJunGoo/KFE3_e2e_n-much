@@ -1,61 +1,86 @@
+import { FaCoins, FaCartShopping } from 'react-icons/fa6';
+import { MdFormatListBulleted } from 'react-icons/md';
+
 import { Button } from '@repo/ui/components/ui/button';
-import { FaGavel } from 'react-icons/fa6';
-import PageHeader from 'src/components/common/PageHeader';
+import PageHeader from 'src/components/common/ui/PageHeader';
+import SectionHeader from 'src/components/common/ui/SectionHeader';
 import PageContainer from 'src/components/layout/PageContainer';
-import ListCard from 'src/components/mypage/ListCard';
-import SectionCard from 'src/components/mypage/shared/SectionCard';
+import ListCard from 'src/components/common/ui/ListCard';
+import SectionCard from 'src/components/common/ui/SectionCard';
+import TransactionSection from 'src/components/mypage/points/TransactionSection';
+import { activities } from 'src/constants/mypage/mockData';
+
+//삭제 예정
 
 const MyPoints = () => {
   return (
     <>
       <PageHeader>포인트 사용 내역</PageHeader>
       <PageContainer>
-        <SectionCard>
-          <h3>현재 보유 포인트</h3>
-          <p>2,230P</p>
+        <SectionCard className="flex flex-col items-center">
+          <SectionHeader className="mb-1 text-sm font-normal">현재 보유 포인트</SectionHeader>
+          <p className="mb-2 flex items-center gap-1 text-(--color-accent)">
+            <span className="text-3xl font-bold">2,230</span>
+            <span className="text-xl font-medium">P</span>
+          </p>
+          <p className="text-xs text-(--color-warm-gray)">마지막 업데이트 : 2025년 6월 27일</p>
         </SectionCard>
-        <nav>
+        <nav className="mt-6">
           <div>
-            <div>
-              <h3>기간별 필터</h3>
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="font-medium">기간별 필터</h3>
               <Button variant="text" size="sm" className="text-(--color-accent)">
                 초기화
               </Button>
             </div>
-            <ul>
-              <li>전체</li>
-              <li>1개월</li>
-              <li>3개월</li>
-              <li>6개월</li>
-            </ul>
+            <ListCard as="ul" className="flex h-auto w-full items-center justify-center space-x-1 p-2">
+              <li className="w-1/4">
+                <Button variant="active" className="w-full text-xs">
+                  전체
+                </Button>
+              </li>
+              <li className="w-1/4">
+                <Button variant="inActive" className="w-full text-xs">
+                  1개월
+                </Button>
+              </li>
+              <li className="w-1/4">
+                <Button variant="inActive" className="w-full text-xs">
+                  3개월
+                </Button>
+              </li>
+              <li className="w-1/4">
+                <Button variant="inActive" className="w-full text-xs">
+                  6개월
+                </Button>
+              </li>
+            </ListCard>
           </div>
-          <div>
-            <h3>유형별 필터</h3>
-            <ul>
-              <li>전체</li>
-              <li>충전</li>
-              <li>사용</li>
-              <li>경매</li>
+          <div className="mt-6">
+            <SectionHeader className="mb-3">유형별 필터</SectionHeader>
+            <ul className="flex items-center gap-2">
+              <li>
+                <Button variant="active" size="sm" className="text-xs">
+                  <MdFormatListBulleted />
+                  <span>전체</span>
+                </Button>
+              </li>
+              <li>
+                <Button variant="inActive" size="sm" className="text-xs">
+                  <FaCoins className="size-3" />
+                  <span>충전</span>
+                </Button>
+              </li>
+              <li className="">
+                <Button variant="inActive" size="sm" className="text-xs">
+                  <FaCartShopping className="size-3" />
+                  사용
+                </Button>
+              </li>
             </ul>
           </div>
         </nav>
-        <section>
-          <h3>거래 내역</h3>
-          <ul>
-            <ListCard as="li">
-              <div className="flex items-center gap-2">
-                <div className="bg-(--color-secondary) flex size-8 items-center justify-center rounded-full">
-                  <FaGavel className="text-(--color-accent) size-3" />
-                  {/* <FaCoins - className="size-3 text-(--color-accent)" /> */}
-                </div>
-                <div className="flex flex-col">
-                  <h4 className="text-sm font-medium">타이틀</h4>
-                  <time className="text-(--color-warm-gray) text-xs">2025.05.05</time>
-                </div>
-              </div>
-            </ListCard>
-          </ul>
-        </section>
+        <TransactionSection activities={activities} />
       </PageContainer>
     </>
   );

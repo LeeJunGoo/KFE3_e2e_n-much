@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { FaChevronRight } from 'react-icons/fa6';
-import ListCard from '../ListCard';
+import ListCard from '../../common/ui/ListCard';
 import type { MyPageMenuItem } from 'src/types/mypage';
 
 type BidderMenuListItemProps = {

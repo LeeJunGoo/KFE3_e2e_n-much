@@ -16,7 +16,7 @@ const MyPage = () => {
       <UserProfileCard role={role} />
       <MyPageMenuList role={role} />
       <MyPageNotification role={role} />
-      <ActivityList role={role} />
+      <ActivityList />
     </PageContainer>
   );
 };
