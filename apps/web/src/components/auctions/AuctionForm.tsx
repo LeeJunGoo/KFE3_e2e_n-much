@@ -3,9 +3,8 @@
 
 //TODO - 폼 유효성 검사 상의
 //TODO - 날짜, 시간 유효성 검사 고려 (경매 최소 기간 상의)
-//TODO - 경매 등록 후, 상세 페이지로 이동
-//TODO - ui 수정
-
+//TODO - 날짜 시간 업로드 리팩토링하기
+//TODO - 찜하기(favorites) 빈 배열로 초기화
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -100,6 +99,7 @@ export default function AuctionForm() {
     const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
     const data = await fetch(fetchUrl);
     const result = await data.json();
+
     return result;
   }
 
@@ -230,7 +230,7 @@ export default function AuctionForm() {
 
   return (
     <>
-      <PageTitle className="text-left pb-10">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
+      <PageTitle className="pb-10 text-left">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -286,7 +286,7 @@ export default function AuctionForm() {
             control={form.control}
             name="startDay"
             render={({ field }) => (
-              <FormItem className="flex flex-col w-1/2">
+              <FormItem className="flex w-1/2 flex-col">
                 <FormLabel>경매 시작일&#42;</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -338,7 +338,7 @@ export default function AuctionForm() {
             control={form.control}
             name="endDay"
             render={({ field }) => (
-              <FormItem className="flex flex-col w-1/2">
+              <FormItem className="flex w-1/2 flex-col">
                 <FormLabel>경매 종료일&#42;</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>

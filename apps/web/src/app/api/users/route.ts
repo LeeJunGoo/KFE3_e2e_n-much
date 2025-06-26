@@ -1,6 +1,6 @@
+//FIXME - 사용 안하고 있습니다.
+
 // import { NextRequest } from 'next/server';
-// import { addUser, getAllUsers, getUser, updateUser } from 'src/lib/supabase/query/users';
-// import { CreateUserPayload } from 'src/types/mypage';
 
 // const commonHeader = {
 //   headers: { 'Content-Type': 'application/json' }

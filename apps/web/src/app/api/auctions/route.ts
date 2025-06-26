@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { AuctionInsert } from 'src/lib/supabase/type';
-import {
-  addAuction,
-  deleteAuction,
-  getAllAuctions,
-  getAuctionWithSellerInfo
-} from '../../../lib/supabase/query/auctions';
+import { addAuction, deleteAuction, getAllAuctions, getAuction } from '../../../lib/supabase/query/auctions';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -14,7 +9,7 @@ export async function GET(request: NextRequest) {
   try {
     // 특정 경매 조회
     if (auctionId) {
-      const res = await getAuctionWithSellerInfo(auctionId);
+      const res = await getAuction(auctionId);
       return NextResponse.json({ status: 'success', data: res });
     }
 
@@ -25,6 +20,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
   }
 }
+
 export async function POST(request: NextRequest) {
   const auctionData: AuctionInsert = await request.json();
 
