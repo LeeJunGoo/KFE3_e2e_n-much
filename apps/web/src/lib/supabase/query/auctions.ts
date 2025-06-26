@@ -180,8 +180,8 @@ export const getSellerAuctionCount = async (sellerId: string) => {
 export const getAllAuctionsWithEpisodeCount = async () => {
   const { data, error } = await supabase.from('auctions').select(
     `
-      *,episodes(count)
-    `
+    *,episodes(count)
+  `
   );
 
   if (error) {
@@ -190,4 +190,25 @@ export const getAllAuctionsWithEpisodeCount = async () => {
   }
 
   return data;
+};
+
+// 모든 경매와 경매의 사연 갯수를 불러오기
+export const getAllAuctionsWithEpisodeCountByOrder = async (orderParam: string, isAscending: boolean) => {
+  if (orderParam) {
+    const { data, error } = await supabase
+      .from('auctions')
+      .select(
+        `
+    *,episodes(count)
+  `
+      )
+      .order(orderParam, { ascending: isAscending });
+
+    if (error) {
+      console.error(error);
+      throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
+    }
+
+    return data;
+  }
 };

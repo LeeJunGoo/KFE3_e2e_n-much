@@ -4,6 +4,7 @@
 //TODO - 폼 유효성 검사 상의
 //TODO - 날짜, 시간 유효성 검사 고려 (경매 최소 기간 상의)
 //TODO - 날짜 시간 업로드 리팩토링하기
+//TODO - 찜하기(favorites) 빈 배열로 초기화
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';

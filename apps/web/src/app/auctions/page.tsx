@@ -40,7 +40,7 @@ export default function Page() {
         <SelectOrder />
       </div>
       <div className="rounded-md bg-gray-300 px-2 py-2">
-        <p className="pt-1 pb-2 text-sm">{`총 ${auctions.length}개의 최신 경매가 있습니다`}</p>
+        <p className="pt-1 pb-2 text-sm">{`총 ${auctions.length}개의 경매가 있습니다`}</p>
         <ul className="grid grid-cols-2 gap-3">
           {auctions.length > 0 &&
             auctions.map((auction) => {
