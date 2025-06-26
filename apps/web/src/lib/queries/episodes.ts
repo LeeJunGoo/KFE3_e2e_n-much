@@ -1,7 +1,7 @@
 import { EpisodeInfo, EpisodesListType } from 'src/types/episodes';
 import { EpisodeInsert, EpisodeRow } from '../supabase/type';
 
-//NOTE - 특정 경매 물품에 대한 사연 리스트 불러오기
+// NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
 export const fetchEpisodesById = async (auction_id: string) => {
   const res = await fetch(`http://localhost:3001/api/episodes/?auctionId=${auction_id}`);
 
@@ -14,7 +14,7 @@ export const fetchEpisodesById = async (auction_id: string) => {
   return data.data;
 };
 
-//NOTE - 특정 사연 정보
+//NOTE - 톡정 에피소드 정보
 export const fetchEpisodeById = async (episode_id: EpisodeRow['episode_id']) => {
   const res = await fetch(`http://localhost:3001/api/episodes/?episodeId=${episode_id}`);
 
@@ -32,7 +32,7 @@ export const fetchEpisodeById = async (episode_id: EpisodeRow['episode_id']) => 
   return result.data;
 };
 
-//NOTE - 사연 등록하기
+//NOTE - 톡정 에피소드 등록
 export const fetchCreateEpisode = async ({
   auction_id,
   buyer_id,
@@ -64,7 +64,7 @@ export const fetchCreateEpisode = async ({
   return data.status;
 };
 
-//NOTE - 사연 수정하기
+//NOTE - 톡정 에피소드 수정
 export const fetchEditEpisode = async ({
   episode_id,
   title,
@@ -94,7 +94,7 @@ export const fetchEditEpisode = async ({
   return data.status;
 };
 
-//NOTE - 사연 삭제하기
+//NOTE - 톡정 에피소드 삭제
 export const fetchDeleteEpisode = async (episode_id: string) => {
   const res = await fetch('http://localhost:3001/api/episodes', {
     headers: {
@@ -116,7 +116,7 @@ export const fetchDeleteEpisode = async (episode_id: string) => {
   return data.status;
 };
 
-//NOTE - 특정 에피소드 입찰하기
+//NOTE - 특정 에피소드 입찰
 export const fetchUpdateEpisodeBid = async (auction_id: string, episode_id: string, bid_point: number) => {
   const res = await fetch('http://localhost:3001/api/episodes/bid', {
     headers: { 'Content-Type': 'application/json' },
@@ -138,7 +138,7 @@ export const fetchUpdateEpisodeBid = async (auction_id: string, episode_id: stri
   return data.status;
 };
 
-//NOTE - 특정 에피소드 낙찰하기
+//NOTE - 특정 에피소드 낙찰
 export const fetchUpdateEpisodeWinning = async (episode_id: string, winning_bid: boolean) => {
   const res = await fetch('http://localhost:3001/api/episodes?type=winningEpisode', {
     headers: { 'Content-Type': 'application/json' },

@@ -19,7 +19,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
   const [auctionInfo, highestBuyer] = await Promise.all([
     fetchAuctionWithSellerInfo(auctionId), // NOTE - 경매 상품 및 경매 업체 정보
-    fetchHighestBidder(auctionId) //NOTE - 최고 입찰자의 정보
+    fetchHighestBidder(auctionId) // NOTE - 최고 입찰자의 정보
   ]);
 
   const { title, current_point, start_time, end_time, image_urls, description, seller_id, address, seller } =
@@ -34,31 +34,31 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
         <div className="flex justify-between">
           <Link
             href={'/auctions'}
-            className="flex items-center gap-2 text-[#8E74F2] hover:text-[#D6CBFF] transition-colors"
+            className="flex items-center gap-2 text-[#8E74F2] transition-colors hover:text-[#D6CBFF]"
           >
             <FaArrowLeft />
             <span>경매 목록으로 돌아가기</span>
           </Link>
           {/* 경매 상품 수정 및 삭제 버튼  */}
-          {userInfo?.id === seller_id && <EditDeleteActions auctionId={auctionId} />}
+          {userInfo?.id !== seller_id && <EditDeleteActions auctionId={auctionId} />}
         </div>
       </header>
       <main className="space-y-7 scroll-smooth">
-        <div className="bg-[#F3F4F6] p-4 rounded-lg space-y-3">
+        <div className="space-y-3 rounded-lg bg-[#F3F4F6] p-4">
           <h1 className="text-2xl font-bold">{title}</h1>
           <div>
-            <p className="text-gray-400 text-sm">현재&nbsp;입찰가</p>
-            <p className="text-[#8E74F2] text-lg font-semibold">{formatNumber(current_point)}&nbsp;P</p>
+            <p className="text-sm text-gray-400">현재&nbsp;입찰가</p>
+            <p className="text-lg font-semibold text-[#8E74F2]">{formatNumber(current_point)}&nbsp;P</p>
           </div>
           <div>
             <AuctionTimer highestBuyer={highestBuyer} start_time={start_time} end_time={end_time} />
           </div>
         </div>
-        <div className="px-7 space-y-7">
+        <div className="space-y-7 px-7">
           {/* 이미지 슬라이드  */}
           <AuctionDetailCard image_urls={image_urls} />
           {/* 상품 정보 */}
-          <div className="border rounded-lg divide-y">
+          <div className="divide-y rounded-lg border">
             <div className="px-6 py-4">
               <h2 className="text-lg font-bold">상품 정보</h2>
             </div>
@@ -69,18 +69,18 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
           </div>
 
           {/* 업체 정보 */}
-          <div className="border rounded-lg divide-y">
+          <div className="divide-y rounded-lg border">
             <div className="px-6 py-4">
               <h2 className="text-lg font-bold">업체 정보</h2>
             </div>
-            <div className="px-6 py-4 space-y-5">
+            <div className="space-y-5 px-6 py-4">
               <div className="flex gap-3">
                 <Image
                   src={seller.avatar || BuyerTestImage}
                   alt="아바타입니다."
                   width={50}
                   height={50}
-                  className=" bg-blue-400/30 border-gray-200 object-cover rounded-full hover:scale-105 transition-transform duration-300"
+                  className="rounded-full border-gray-200 bg-blue-400/30 object-cover transition-transform duration-300 hover:scale-105"
                 ></Image>
                 <div className="space-y-1">
                   <p className="font-semibold">업체이름: {seller.nickname}</p>
@@ -91,12 +91,12 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                 </div>
               </div>
               <div className="space-y-2">
-                <p className="flex justify-between text-gray-500 text-sm">
+                <p className="flex justify-between text-sm text-gray-500">
                   <span>총 경매 수</span>
                   <span>{totalAuctions}</span>
                 </p>
 
-                <p className="flex justify-between text-gray-500 text-sm">
+                <p className="flex justify-between text-sm text-gray-500">
                   <span>현재 진행중인 경매</span>
                   <span>{activeAuctions}</span>
                 </p>
@@ -104,20 +104,20 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             </div>
           </div>
           {/* 최고 입찰가 */}
-          <div className="border rounded-lg divide-y">
+          <div className="divide-y rounded-lg border">
             <div className="px-6 py-4">
               <h2 className="text-lg font-bold">최고 입찰가</h2>
             </div>
             {highestBuyer ? (
-              <div className="px-6 py-4 space-y-5">
-                <div className="flex justify-between items-center">
+              <div className="space-y-5 px-6 py-4">
+                <div className="flex items-center justify-between">
                   <div className="flex gap-3">
                     <Image
                       src={highestBuyer.buyer.avatar || BuyerTestImage}
                       alt="아바타입니다."
                       width={50}
                       height={50}
-                      className=" bg-blue-400/30 border-gray-200 object-cover rounded-full hover:scale-105 transition-transform duration-300"
+                      className="rounded-full border-gray-200 bg-blue-400/30 object-cover transition-transform duration-300 hover:scale-105"
                     ></Image>
 
                     <div className="space-y-1">
@@ -134,7 +134,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                 </div>
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center gap-3 px-6 py-10 text-center bg-slate-50 rounded-b-lg">
+              <div className="flex flex-col items-center justify-center gap-3 rounded-b-lg bg-slate-50 px-6 py-10 text-center">
                 <FaRegCommentDots className="text-4xl text-slate-400" />
                 <div>
                   <p className="font-semibold text-slate-700">아직 첫 입찰자가 없어요</p>
