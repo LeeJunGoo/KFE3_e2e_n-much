@@ -1,5 +1,5 @@
 import ActivityListItem from './ActivityListItem';
-import type { Activity, UserRoleDataProps } from 'src/types/mypage';
+import type { Activity } from 'src/types/mypage';
 
 //삭제 에정
 export const activities: Activity[] = [
