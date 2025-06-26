@@ -8,24 +8,16 @@ interface AuctionStatusFiltersProps {
   onFilterChange: (filter: string) => void;
 }
 
-//삭제 예정
-const FILTER_STYLES = {
-  base: 'rounded-md px-3 py-1.5 text-xs whitespace-nowrap transition-colors',
-  active: 'border border-(--color-accent) bg-(--color-accent) text-white',
-  inactive: 'border text-(--color-accent) hover:border-transparent hover:bg-(--color-primary) hover:text-white'
-} as const;
-
 const AuctionStatusFilters = ({ tab, activeFilter, onFilterChange }: AuctionStatusFiltersProps) => {
   const filters = AUCTION_TAB_FILTERS[tab];
+  const statusStyles = 'px-3 py-1.5 text-xs';
+  const getVariant = (label: string) => (activeFilter === label ? 'active' : 'inActive');
 
   return (
     <ul className="flex gap-2 py-2 pt-3">
       {filters.map((label) => (
         <li key={label}>
-          <UIButton
-            variant={activeFilter === label ? 'filterActive' : 'filterInactive'}
-            onClick={() => onFilterChange(label)}
-          >
+          <UIButton variant={getVariant(label)} className={statusStyles} onClick={() => onFilterChange(label)}>
             {label}
           </UIButton>
         </li>
