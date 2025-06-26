@@ -16,7 +16,7 @@ import { useCallback, useEffect, useState } from 'react';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
-import { addHours, compareAsc, format, subDays } from 'date-fns';
+import { addHours, compareAsc, format, set, subDays } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Calendar } from '@repo/ui/components/ui/calendar';
@@ -177,8 +177,25 @@ export default function AuctionForm() {
     } catch (error) {
       console.log(error);
     }
-    console.log('imageUrls', imageUrls);
+
+    const korStartTime = startTime.split(':');
+    const korStartDate = set(startDay, {
+      hours: Number(korStartTime[0]),
+      minutes: Number(korStartTime[1]),
+      seconds: Number(korStartTime[2])
+    });
+    const utcStartDate = new TZDate(korStartDate, 'utc');
+
+    const korEndTime = endTime.split(':');
+    const korEndDate = set(endDay, {
+      hours: Number(korEndTime[0]),
+      minutes: Number(korEndTime[1]),
+      seconds: Number(korEndTime[2])
+    });
+    const utcEndDate = new TZDate(korEndDate, 'utc');
+
     const auctionId = uuidv4();
+
     const fetchUrl = `http://localhost:3001/api/auctions`;
     const data = await fetch(fetchUrl, {
       method: 'POST',
@@ -187,8 +204,8 @@ export default function AuctionForm() {
         seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2',
         title,
         address: [address, detailAddress],
-        start_time: startDay.toISOString().split('T')[0] + 'T' + startTime,
-        end_time: endDay.toISOString().split('T')[0] + 'T' + endTime,
+        start_time: utcStartDate,
+        end_time: utcEndDate,
         description,
         starting_point: startingPoint,
         current_point: startingPoint,
@@ -202,7 +219,7 @@ export default function AuctionForm() {
     console.log(values);
     console.log('결과', result);
     console.log('옥션아이디', auctionId);
-    router.push(`http://localhost:3001/auctions/${auctionId}`);
+    // router.push(`http://localhost:3001/auctions/${auctionId}`);
   }
 
   const handlePostCodeSearch = (data: Address) => {
