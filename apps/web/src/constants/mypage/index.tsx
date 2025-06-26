@@ -13,6 +13,12 @@ export const BID_STATUS_LABEL = {
   ENDED: '종료됨'
 } as const;
 
+export const BID_STATUS_VARIANTS = {
+  PROGRESS: 'warning',
+  EXPECTED: 'info',
+  ENDED: 'muted'
+} as const;
+
 export const BIDDER_MENU: MyPageMenuItem[] = [
   {
     label: '내 경매 현황',
@@ -66,4 +72,11 @@ export const AUCTION_STATUS_LABELS = {
   winning: '낙찰예정',
   won: '낙찰',
   lost: '유찰'
+} as const;
+
+export const AUCTION_STATUS_VARIANTS = {
+  bidding: 'warning',
+  winning: 'info',
+  won: 'success',
+  lost: 'error'
 } as const;

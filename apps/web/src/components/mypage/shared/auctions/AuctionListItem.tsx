@@ -1,5 +1,6 @@
 import { Button } from '@repo/ui/components/ui/button';
 import LabelBadge from 'src/components/common/LabelBadge';
+import { AUCTION_STATUS_LABELS, AUCTION_STATUS_VARIANTS } from 'src/constants/mypage';
 import type { AuctionListItemProps } from 'src/types/mypage';
 
 const AuctionListItem = ({ item }: AuctionListItemProps) => {
@@ -14,7 +15,9 @@ const AuctionListItem = ({ item }: AuctionListItemProps) => {
         <div className="flex-1">
           <div className="mb-2 flex items-start justify-between">
             <h3 className="line-clamp-1 font-medium">{title}</h3>
-            <LabelBadge status={status} />
+            <LabelBadge status={status} variant={AUCTION_STATUS_VARIANTS[status]}>
+              {AUCTION_STATUS_LABELS[status]}
+            </LabelBadge>
           </div>
           <div className="mt-1 flex flex-col gap-0.5">
             <p className="flex justify-between text-sm">
