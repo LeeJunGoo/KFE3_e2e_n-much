@@ -11,10 +11,14 @@ export default function Page() {
   const [auctions, setAuctions] = useState<AuctionRow[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [order, setOrder] = useState<string>('');
-  console.log(order);
 
   async function getAllAuction(order: string) {
-    const fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}`;
+    let fetchUrl = null;
+    if (!order) {
+      fetchUrl = `http://localhost:3001/api/auctions_with_episode_count`;
+    } else {
+      fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}`;
+    }
     const data = await fetch(fetchUrl);
     const result = await data.json();
     return result;
