@@ -12,7 +12,9 @@ const AuctionTabsContent = ({ tab, data }: AuctionTabsContentProps) => {
           ))}
         </ul>
       ) : (
-        <div>{tab === 'ongoing' ? '진행중인 경매가 없습니다.' : '종료된 경매가 없습니다.'}</div>
+        <div className="text-semibold flex min-h-[30dvh] w-full items-center justify-center">
+          {tab === 'ongoing' ? '진행중인 경매가 없습니다.' : '종료된 경매가 없습니다.'}
+        </div>
       )}
     </TabsContent>
   );

@@ -1,4 +1,16 @@
+import { AUCTION_STATUS_LABELS } from 'src/constants/mypage';
 import { AuctionItem, AuctionStatus, TabKey } from 'src/types/mypage';
+
+//Status 객체 매핑
+export const AUCTION_STATUS_LABEL_MAP: Record<string, keyof typeof AUCTION_STATUS_LABELS> = Object.entries(
+  AUCTION_STATUS_LABELS
+).reduce(
+  (acc, [key, label]) => {
+    acc[label] = key as keyof typeof AUCTION_STATUS_LABELS;
+    return acc;
+  },
+  {} as Record<string, keyof typeof AUCTION_STATUS_LABELS>
+);
 
 export const filterAuctionsByTab = (auctions: AuctionItem[], tab: TabKey): AuctionItem[] => {
   const now = new Date();
@@ -15,15 +27,8 @@ export const filterAuctionsByTab = (auctions: AuctionItem[], tab: TabKey): Aucti
 export const filterAuctionsByStatus = (auctions: AuctionItem[], filter: string): AuctionItem[] => {
   if (filter === '전체') return auctions;
 
-  const statusMap: Record<string, AuctionStatus[]> = {
-    입찰중: ['bidding'],
-    낙찰예정: ['winning'],
-    낙찰: ['won'],
-    유찰: ['failed']
-  };
+  const statusKey = AUCTION_STATUS_LABEL_MAP[filter] as AuctionStatus;
+  if (!statusKey) return auctions;
 
-  const targetStatuses = statusMap[filter];
-  if (!targetStatuses) return auctions;
-
-  return auctions.filter((auction) => targetStatuses.includes(auction.status));
+  return auctions.filter((auction) => auction.status === statusKey);
 };

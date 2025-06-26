@@ -33,7 +33,7 @@ export const MOCK_AUCTION_DATA: AuctionItem[] = [
     title: '명품 핸드백 에르메스',
     currentPrice: 3500000,
     endDate: '2025-06-24T14:00:00Z', // 과거 날짜
-    status: 'failed',
+    status: 'lost',
     imageUrl: '/images/hermes.jpg',
     myBidAmount: 3000000
   },

@@ -35,7 +35,7 @@ export interface AuctionItem {
   myBidAmount?: number;
 }
 
-export type AuctionStatus = 'bidding' | 'winning' | 'won' | 'failed';
+export type AuctionStatus = 'bidding' | 'winning' | 'won' | 'lost';
 
 export interface AuctionTabsContentProps {
   tab: 'ongoing' | 'closed';
