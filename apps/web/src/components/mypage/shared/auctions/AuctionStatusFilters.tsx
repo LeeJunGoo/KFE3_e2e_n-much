@@ -1,5 +1,5 @@
-import ActiveButton from 'src/components/common/ActiveButton';
 import { AUCTION_TAB_FILTERS } from 'src/constants/mypage';
+import FilterListItem from '../FilterListItem';
 import type { TabKey } from 'src/types/mypage';
 
 interface AuctionStatusFiltersProps {
@@ -16,15 +16,13 @@ const AuctionStatusFilters = ({ tab, activeFilter, onFilterChange }: AuctionStat
     <nav>
       <ul className="flex items-center gap-2 py-2">
         {filters.map((label) => (
-          <li key={label}>
-            <ActiveButton
-              active={activeFilter === label}
-              className={statusStyles}
-              onClick={() => onFilterChange(label)}
-            >
-              {label}
-            </ActiveButton>
-          </li>
+          <FilterListItem
+            key={label}
+            label={label}
+            isActive={activeFilter === label}
+            onClick={() => onFilterChange(label)}
+            className={statusStyles}
+          />
         ))}
       </ul>
     </nav>
