@@ -3,7 +3,7 @@
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
-import { differenceInHours } from 'date-fns';
+import { differenceInDays, differenceInHours } from 'date-fns';
 import Image from 'next/image';
 import { TZDate } from 'react-day-picker';
 import { FaHeart } from 'react-icons/fa';
@@ -19,10 +19,10 @@ interface AuctionCardProp {
   favorites: number;
 }
 
-export default function AuctionCard({ imageSrc, title, endTime, favorites }: AuctionCardProp) {
+export default function AuctionCard({ imageSrc, title, endTime, favorites, buyerCount }: AuctionCardProp) {
   const now = new TZDate(new Date(), 'Asia/Seoul');
   const auctionTime = new TZDate(endTime, 'Asia/Seoul');
-  const diff = differenceInHours(now, auctionTime);
+  const diff = differenceInDays(now, auctionTime);
   const absDiff = Math.abs(diff);
 
   if (imageSrc)
@@ -39,7 +39,7 @@ export default function AuctionCard({ imageSrc, title, endTime, favorites }: Auc
 
           <Badge
             className={`absolute right-2 bottom-2 ${
-              absDiff < 4 ? 'bg-[#D84A5F] hover:bg-[#D84A5F]' : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
+              absDiff < 1 ? 'bg-[#D84A5F] hover:bg-[#D84A5F]' : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
             } px-2 py-1 font-normal text-white`}
           >
             {absDiff}
@@ -54,7 +54,7 @@ export default function AuctionCard({ imageSrc, title, endTime, favorites }: Auc
             </div>
             <div className="flex items-center">
               <FaBookOpen className="mr-1" />
-              <span>{10}개의 스토리</span>
+              <span>{buyerCount}개의 스토리</span>
             </div>
           </div>
         </div>

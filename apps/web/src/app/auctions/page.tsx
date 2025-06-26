@@ -1,6 +1,4 @@
 //FIXME - tanstack query 적용하기
-//FIXME - 사연 갯수 불러오기
-
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -13,7 +11,7 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   async function getAllAuction() {
-    const fetchUrl = `http://localhost:3001/api/auctions`;
+    const fetchUrl = `http://localhost:3001/api/auctions_with_episode_count`;
     const data = await fetch(fetchUrl);
     const result = await data.json();
     return result;
@@ -46,7 +44,7 @@ export default function Page() {
         <ul className="grid grid-cols-2 gap-3">
           {auctions.length > 0 &&
             auctions.map((auction) => {
-              const { auction_id, status, title, current_point, end_time } = auction;
+              const { auction_id, status, title, current_point, end_time, episodes } = auction;
               let { image_urls, favorites } = auction;
 
               if (!image_urls) {
@@ -65,7 +63,7 @@ export default function Page() {
                   title={title}
                   currentPoint={current_point}
                   endTime={end_time}
-                  buyerCount={5}
+                  buyerCount={episodes[0]['count']}
                   favorites={favorites.length}
                 />
               );

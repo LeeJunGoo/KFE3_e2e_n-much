@@ -175,3 +175,19 @@ export const getSellerAuctionCount = async (sellerId: string) => {
     activeAuctions: activeCount || 0
   };
 };
+
+// 모든 경매와 경매의 사연 갯수를 불러오기
+export const getAllAuctionsWithEpisodeCount = async () => {
+  const { data, error } = await supabase.from('auctions').select(
+    `
+      *,episodes(count)
+    `
+  );
+
+  if (error) {
+    console.error(error);
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
+  }
+
+  return data;
+};
