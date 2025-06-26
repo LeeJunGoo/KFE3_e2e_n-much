@@ -13,15 +13,21 @@ const AuctionStatusFilters = ({ tab, activeFilter, onFilterChange }: AuctionStat
   const statusStyles = 'px-3 text-xs';
 
   return (
-    <ul className="flex items-center gap-2 py-2">
-      {filters.map((label) => (
-        <li key={label}>
-          <ActiveButton active={activeFilter === label} className={statusStyles} onClick={() => onFilterChange(label)}>
-            {label}
-          </ActiveButton>
-        </li>
-      ))}
-    </ul>
+    <nav>
+      <ul className="flex items-center gap-2 py-2">
+        {filters.map((label) => (
+          <li key={label}>
+            <ActiveButton
+              active={activeFilter === label}
+              className={statusStyles}
+              onClick={() => onFilterChange(label)}
+            >
+              {label}
+            </ActiveButton>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 

@@ -1,10 +1,11 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { MdInfoOutline } from 'react-icons/md';
+import ListCard from '../../ListCard';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const MyPageNotification = ({ role }: UserRoleDataProps) => {
   return (
-    <section className="mt-6 w-full rounded-xl bg-white p-4 shadow-xs">
+    <ListCard as="section" className="mt-6 w-full">
       <div className="mb-3 flex items-center gap-3">
         <div className="flex size-10 items-center justify-center rounded-full bg-(--color-secondary)">
           <MdInfoOutline className="size-5 text-(--color-accent)" />
@@ -30,7 +31,7 @@ const MyPageNotification = ({ role }: UserRoleDataProps) => {
           </Button>
         </>
       )}
-    </section>
+    </ListCard>
   );
 };
 
