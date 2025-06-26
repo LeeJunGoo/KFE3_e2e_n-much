@@ -1,37 +1,64 @@
+//NOTE - 마감 임박: 1일
+//FIXME - 이미지 없음에 기본 이미지 넣기
+//FIXME - 경매 상태 정하기
 'use client';
 
-import { FaClock, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
+import { Badge } from '@repo/ui/components/ui/badge';
+import { differenceInHours, formatDistanceToNow, setDefaultOptions } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import Image from 'next/image';
+import { TZDate } from 'react-day-picker';
+import { FaHeart } from 'react-icons/fa';
+import { FaBookOpen } from 'react-icons/fa6';
 
-export default function AuctionCard() {
+interface AuctionCardProp {
+  status: string;
+  imageSrc: string | undefined;
+  title: string;
+  currentPoint: number;
+  episodeCount: number;
+  endTime: string;
+  favorites: number;
+}
+
+export default function AuctionCard({ imageSrc, title, endTime, favorites, episodeCount, status }: AuctionCardProp) {
+  setDefaultOptions({ locale: ko });
+  const now = new TZDate(new Date(), 'Asia/Seoul');
+  const auctionTime = new TZDate(endTime, 'Asia/Seoul');
+  const diffDay = differenceInHours(now, auctionTime);
+  const remainTime = formatDistanceToNow(auctionTime, { addSuffix: true });
+
   return (
-    <li className="w-48 overflow-hidden rounded-2xl border bg-white shadow-md">
-      {/* 이미지 영역 */}
-      <div className="relative flex h-48 items-center justify-center bg-gray-100">
-        <div className="absolute top-3 right-3">
-          <span className="rounded-full bg-green-200 px-2 py-1 text-xs text-green-800">진행중</span>
+    <li className="!rounded-button cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]">
+      <div className="relative">
+        <div className="h-[120px] w-full">
+          {imageSrc ? (
+            <Image src={imageSrc} fill={true} alt={`${title} 이미지`} className="object-cover object-top" />
+          ) : (
+            <p>이미지 없음</p>
+          )}
         </div>
-        <span className="text-gray-400">이미지 영역</span>
+
+        <Badge
+          className={`absolute right-2 bottom-2 ${
+            status === 'OPEN' && -24 < diffDay && diffDay < 0
+              ? 'bg-[#D84A5F] hover:bg-[#D84A5F]'
+              : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
+          } px-2 py-1 font-normal text-white`}
+        >
+          {remainTime}
+        </Badge>
       </div>
-
-      {/* 본문 */}
-      <div className="p-4">
-        <h2 className="text-md font-semibold">아이폰 14 Pro 256GB</h2>
-
-        <div className="mt-1 flex items-center text-sm text-gray-500">
-          <FaMapMarkerAlt className="mr-1 h-4 w-4" />
-          부산시 해운대구
-        </div>
-
-        <div className="mt-2 text-sm text-gray-600">현재가</div>
-        <div className="text-xl font-bold text-blue-600">890,000P</div>
-        <div className="mt-3 flex items-center justify-between text-sm text-gray-500">
+      <div className="p-2">
+        <h3 className="mb-1.5 overflow-hidden text-sm font-medium text-ellipsis text-[#1F1F25]">{title}</h3>
+        <div className="flex items-center justify-between text-xs text-[#B8B8B8]">
           <div className="flex items-center">
-            <FaUsers className="mr-1 h-4 w-4" />
-            28명 입찰
+            <FaHeart color="#D84A5F" className="mr-1" />
+            <span>{favorites}</span>
           </div>
           <div className="flex items-center">
-            <FaClock className="mr-1 h-4 w-4" />
-            1일 8시간
+            <FaBookOpen className="mr-1" />
+            <span>{episodeCount}개의 스토리</span>
           </div>
         </div>
       </div>

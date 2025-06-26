@@ -12,4 +12,3 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 //FIXME - i.namu.wiki 삭제하기 (테스트용)
-//FIXME - domains는 15버전으로 수정하기
