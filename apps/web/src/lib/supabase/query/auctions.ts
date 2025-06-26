@@ -175,3 +175,12 @@ export const getSellerAuctionCount = async (sellerId: string) => {
     activeAuctions: activeCount || 0
   };
 };
+
+export const getSearchedAuctions = async (keyword: string) => {
+  const { data, error } = await supabase.from('auctions').select('*').ilike('title', `%${keyword}%`);
+
+  if (error) {
+    throw new Error('DB: 경매 검색 에러');
+  }
+  return data;
+};
