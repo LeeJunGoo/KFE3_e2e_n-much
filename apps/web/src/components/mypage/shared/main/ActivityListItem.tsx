@@ -1,6 +1,6 @@
 import { FaGavel, FaCoins } from 'react-icons/fa6';
 import { BID_STATUS_LABEL } from 'src/constants/mypage';
-import StatusBadge from './StatusBadge';
+import LabelBadge from 'src/components/common/LabelBadge';
 
 //NOTE - 삭제 예정
 export const activities: Activity[] = [
@@ -63,7 +63,7 @@ const ActivityListItem = ({ activity }: ActivityListItemProps) => {
         </div>
       </div>
       {type === 'auction' ? (
-        <StatusBadge status={BID_STATUS_LABEL[activity.status]} />
+        <LabelBadge status={BID_STATUS_LABEL[activity.status]} />
       ) : (
         <span className="font-medium text-(--color-accent)">+{activity.amount.toLocaleString()}P</span>
       )}

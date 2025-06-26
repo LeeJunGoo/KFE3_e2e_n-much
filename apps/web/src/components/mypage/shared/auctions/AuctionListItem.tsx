@@ -1,6 +1,6 @@
-import AuctionStatusBadge from './AuctionStatusBadge';
-import type { AuctionListItemProps } from 'src/types/mypage';
 import { Button } from '@repo/ui/components/ui/button';
+import LabelBadge from 'src/components/common/LabelBadge';
+import type { AuctionListItemProps } from 'src/types/mypage';
 
 const AuctionListItem = ({ item }: AuctionListItemProps) => {
   const { title, currentPrice, myBidAmount, endDate, status } = item;
@@ -14,7 +14,7 @@ const AuctionListItem = ({ item }: AuctionListItemProps) => {
         <div className="flex-1">
           <div className="mb-2 flex items-start justify-between">
             <h3 className="line-clamp-1 font-medium">{title}</h3>
-            <AuctionStatusBadge status={status} />
+            <LabelBadge status={status} />
           </div>
           <div className="mt-1 flex flex-col gap-0.5">
             <p className="flex justify-between text-sm">
