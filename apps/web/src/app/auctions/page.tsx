@@ -1,8 +1,7 @@
 //FIXME - tanstack query 적용하기
-//FIXME - episodes 타입 수정하기
-//TODO - 경매 마감순, 인기 경매, 최신 경매 url 파라미터 넘기기
 'use client';
 
+import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import SelectOrder from 'src/components/auctions/SelectOrder';
 import AuctionCard from 'src/components/common/AuctionCard';
@@ -13,11 +12,13 @@ interface EpisodeCount {
 }
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const auctionOrderParam = searchParams.get('order');
   const [auctions, setAuctions] = useState<(AuctionRow & EpisodeCount)[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [order, setOrder] = useState<string>('');
+  const [order, setOrder] = useState<string | null>(auctionOrderParam);
 
-  async function getAllAuction(order: string) {
+  async function getAllAuction(order: string | null) {
     let fetchUrl = null;
     if (!order) {
       fetchUrl = `http://localhost:3001/api/auctions_with_episode_count`;
@@ -49,7 +50,7 @@ export default function Page() {
     <>
       <div className="mb-4 flex w-full justify-between">
         <p className="text-lg font-semibold text-[#1F1F25]">경매 리스트</p>
-        <SelectOrder setOrder={setOrder} />
+        <SelectOrder order={order} setOrder={setOrder} />
       </div>
       <div className="rounded-md bg-gray-300 px-2 py-2">
         <p className="pt-1 pb-2 text-sm">{`총 ${auctions.length}개의 경매가 있습니다`}</p>

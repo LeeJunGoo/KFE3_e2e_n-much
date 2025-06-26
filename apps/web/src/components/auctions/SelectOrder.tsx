@@ -10,12 +10,17 @@ import {
 import { Dispatch, SetStateAction } from 'react';
 
 interface SelectOrderProp {
-  setOrder: Dispatch<SetStateAction<string>>;
+  order: string | null | undefined;
+  setOrder: Dispatch<SetStateAction<string | null>>;
 }
 
-export default function SelectOrder({ setOrder }: SelectOrderProp) {
+export default function SelectOrder({ order, setOrder }: SelectOrderProp) {
+  if (!order) {
+    order = undefined;
+  }
+
   return (
-    <Select onValueChange={setOrder}>
+    <Select onValueChange={setOrder} defaultValue={order}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="정렬 순서 선택" />
       </SelectTrigger>
