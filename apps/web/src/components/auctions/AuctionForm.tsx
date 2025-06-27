@@ -218,7 +218,7 @@ export default function AuctionForm() {
     console.log(values);
     console.log('결과', result);
     console.log('옥션아이디', auctionId);
-    // router.push(`http://localhost:3001/auctions/${auctionId}`);
+    router.push(`http://localhost:3001/auctions/${auctionId}`);
   }
 
   const handlePostCodeSearch = (data: Address) => {
