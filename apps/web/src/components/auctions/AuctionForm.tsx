@@ -208,7 +208,6 @@ export default function AuctionForm() {
         end_time: utcEndDate,
         description,
         starting_point: startingPoint,
-        current_point: startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls,
         updated_at: new TZDate(new Date(), 'utc')
