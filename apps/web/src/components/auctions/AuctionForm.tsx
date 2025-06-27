@@ -5,6 +5,7 @@
 //TODO - 날짜, 시간 유효성 검사 고려 (경매 최소 기간 상의)
 //TODO - 날짜 시간 업로드 리팩토링하기
 //TODO - 찜하기(favorites) 빈 배열로 초기화
+//FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -195,12 +196,11 @@ export default function AuctionForm() {
     const utcEndDate = new TZDate(korEndDate, 'utc');
 
     const auctionId = uuidv4();
-
     const fetchUrl = `http://localhost:3001/api/auctions`;
     const data = await fetch(fetchUrl, {
-      method: 'POST',
+      method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
-        auction_id: auctionId,
+        auction_id: isEditing ? auctionIdParam : auctionId,
         seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2',
         title,
         address: [address, detailAddress],
@@ -211,7 +211,8 @@ export default function AuctionForm() {
         current_point: startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls,
-        status: 'OPEN'
+        status: 'OPEN',
+        favorites: []
       })
     });
     const result = await data.json();
