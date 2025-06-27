@@ -212,7 +212,8 @@ export default function AuctionForm() {
         max_point: maxPoint,
         image_urls: imageUrls,
         status: 'OPEN',
-        favorites: []
+        favorites: [],
+        updated_at: new TZDate(new Date(), 'utc')
       })
     });
     const result = await data.json();
