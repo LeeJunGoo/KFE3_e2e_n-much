@@ -11,9 +11,9 @@ export default function SearchComp() {
   // 최근 검색어 커스텀 훅
   const { recentKeywords, insert, remove, clear } = useRecentKeywords();
 
-  const handleSearchByKeyword = async () => {
+  const handleSearchByKeyword = async (paramKeyword: string) => {
     // 공백으로 인한 버그 막기(로컬스토리지에는 공백 포함해서 저장된 keyword가 UI에서는 공백 없이 보여짐, 중복 발생)
-    const trimmedKeyword = keyword.trim();
+    const trimmedKeyword = paramKeyword.trim();
     if (!trimmedKeyword) return;
     const dataList = await getSearchedAuctions(trimmedKeyword);
     console.log('검색 결과: ', dataList);
@@ -22,10 +22,20 @@ export default function SearchComp() {
     setKeyword('');
   };
 
+  const handleSearchByRecentKeyword = (e: React.MouseEvent<HTMLDivElement>, paramKeyword: string) => {
+    setKeyword(paramKeyword);
+    handleSearchByKeyword(paramKeyword);
+  };
+
+  const handleRemoveKeyword = (e: React.MouseEvent<HTMLButtonElement>, paramKeyword: string) => {
+    e.stopPropagation();
+    remove(paramKeyword);
+  };
+
   // 엔터키 입력 감지 핸들러
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      handleSearchByKeyword();
+      handleSearchByKeyword(keyword);
     }
   };
 
@@ -45,8 +55,8 @@ export default function SearchComp() {
               onKeyDown={handleKeyDown}
             />
             <button
-              className="absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer text-[#B8B8B8] peer-focus:text-[#5B80C2]"
-              onClick={handleSearchByKeyword}
+              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-[#B8B8B8] peer-focus:text-[#5B80C2]"
+              onClick={() => handleSearchByKeyword(keyword)}
             >
               <FaSearch />
             </button>
@@ -61,11 +71,15 @@ export default function SearchComp() {
           </div>
           <div className="grid grid-cols-2 gap-2">
             {recentKeywords.length > 0 &&
-              recentKeywords.map((keyword, idx) => {
+              recentKeywords.map((k, idx) => {
                 return (
-                  <div key={`${keyword}-${idx}`} className="flex items-center rounded-full bg-[#EEF2FB] px-3 py-2">
-                    <span className="flex-1 truncate text-sm">{keyword}</span>
-                    <button className="ml-1 text-[#B8B8B8]" onClick={() => remove(keyword)}>
+                  <div
+                    key={`${k}-${idx}`}
+                    className="flex cursor-pointer items-center rounded-full bg-[#EEF2FB] px-3 py-2"
+                    onClick={(e) => handleSearchByRecentKeyword(e, k)}
+                  >
+                    <span className="flex-1 truncate text-sm">{k}</span>
+                    <button className="ml-1 text-[#B8B8B8]" onClick={(e) => handleRemoveKeyword(e, k)}>
                       <IoCloseOutline />
                     </button>
                   </div>
