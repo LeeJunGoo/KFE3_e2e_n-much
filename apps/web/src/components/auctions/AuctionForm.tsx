@@ -211,8 +211,6 @@ export default function AuctionForm() {
         current_point: startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls,
-        status: 'OPEN',
-        favorites: [],
         updated_at: new TZDate(new Date(), 'utc')
       })
     });
