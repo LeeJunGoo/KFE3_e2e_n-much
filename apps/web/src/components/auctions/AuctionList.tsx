@@ -1,4 +1,6 @@
 //FIXME - tanstack query 적용하기
+//TODO -  select와 url 불일치 고민하기
+//TODO - 서버 컴포넌트 전환 생각해보기
 'use client';
 
 import { useSearchParams } from 'next/navigation';
@@ -13,10 +15,10 @@ interface EpisodeCount {
 
 export default function AuctionList() {
   const searchParams = useSearchParams();
-  const auctionOrderParam = searchParams.get('order');
+  const auctionOrderParam = searchParams.get('order') || 'end_time';
   const [auctions, setAuctions] = useState<(AuctionRow & EpisodeCount)[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [order, setOrder] = useState<string | null>(auctionOrderParam);
+  const [order, setOrder] = useState<string>(auctionOrderParam);
 
   async function getAllAuction(order: string | null) {
     let fetchUrl = null;
