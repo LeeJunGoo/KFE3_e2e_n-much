@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import AuctionCard from 'src/components/common/AuctionCard';
 import LatestAuctionCard from 'src/components/main/LatestAuctionCard';
 import PopularAuctionCard from 'src/components/main/PopularAuctionCard';
@@ -20,9 +21,9 @@ const MainPage = async () => {
       <div className="mt-8 px-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-[#1F1F25]">곧 종료되는 경매</h2>
-          <a href="#" className="cursor-pointer text-sm text-[#5B80C2]">
+          <Link href="/auctions?order=end_time" className="cursor-pointer text-sm text-[#5B80C2]">
             더보기
-          </a>
+          </Link>
         </div>
         <div className="flex">
           <AuctionCard
@@ -49,9 +50,9 @@ const MainPage = async () => {
       <div className="mt-8 px-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-[#1F1F25]">인기 경매</h2>
-          <a href="#" className="cursor-pointer text-sm text-[#5B80C2]">
+          <Link href="/auctions?order=favorites" className="cursor-pointer text-sm text-[#5B80C2]">
             더보기
-          </a>
+          </Link>
         </div>
         <ul className="grid grid-cols-2 gap-3">
           {popularAuctions.map((auction: SortedAuctionItemType) => (
@@ -63,9 +64,9 @@ const MainPage = async () => {
       <div className="mt-8 px-4">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-[#1F1F25]">최신 경매</h2>
-          <a href="#" className="cursor-pointer text-sm text-[#5B80C2]">
+          <Link href="/auctions?order=created_at" className="cursor-pointer text-sm text-[#5B80C2]">
             더보기
-          </a>
+          </Link>
         </div>
         <ul className="overflow-hidden rounded-lg bg-white shadow-sm">
           {latestAuctions.map((auction: SortedAuctionItemType) => (
