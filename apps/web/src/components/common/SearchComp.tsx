@@ -32,13 +32,6 @@ export default function SearchComp() {
     remove(paramKeyword);
   };
 
-  // 엔터키 입력 감지 핸들러
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      handleSearchByKeyword(keyword);
-    }
-  };
-
   return (
     // 임시 모달
     <div className="fixed right-0 bottom-16 left-0 z-50 m-auto max-w-2xl bg-white">
@@ -46,20 +39,26 @@ export default function SearchComp() {
       <div data-role="search_box" className="p-4">
         <div data-role="input_section" className="mb-6">
           <div className="relative">
-            <input
-              type="text"
-              className="peer placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-lg border border-[#C6C7D1] bg-[#EEF2FB] px-3 py-1 pr-9 text-sm shadow-none transition-colors focus:ring-1 focus:ring-[#5B80C2] focus:outline-none focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-              placeholder="검색어를 입력하세요"
-              value={keyword || ''}
-              onChange={(e) => setKeyword(e.target.value)}
-              onKeyDown={handleKeyDown}
-            />
-            <button
-              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-[#B8B8B8] peer-focus:text-[#5B80C2]"
-              onClick={() => handleSearchByKeyword(keyword)}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSearchByKeyword(keyword);
+              }}
             >
-              <FaSearch />
-            </button>
+              <input
+                type="text"
+                className="peer placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-lg border border-[#C6C7D1] bg-[#EEF2FB] px-3 py-1 pr-9 text-sm shadow-none transition-colors focus:ring-1 focus:ring-[#5B80C2] focus:outline-none focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                placeholder="검색어를 입력하세요"
+                value={keyword || ''}
+                onChange={(e) => setKeyword(e.target.value)}
+              />
+              <button
+                className="absolute top-1/2 right-3 -translate-y-1/2 transform text-[#B8B8B8] peer-focus:text-[#5B80C2]"
+                type="submit"
+              >
+                <FaSearch />
+              </button>
+            </form>
           </div>
         </div>
         <div data-role="recent_keywords_section" className="mb-6">
