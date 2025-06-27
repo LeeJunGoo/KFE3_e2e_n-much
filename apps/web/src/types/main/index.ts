@@ -1,1 +1,7 @@
-//NOTE - 메인페이지 타입 지정
+export interface TabMenuItem {
+  label: string;
+  icon: React.ReactNode;
+  href?: string;
+  type: 'link' | 'button';
+  onClick?: () => void;
+}

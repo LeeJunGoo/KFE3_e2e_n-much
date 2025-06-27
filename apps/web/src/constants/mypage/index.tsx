@@ -1,6 +1,8 @@
-import { FaGavel, FaCoins } from 'react-icons/fa6';
+import { IconType } from 'react-icons';
+import { FaGavel, FaCoins, FaCartShopping, FaGift, FaCalendarCheck } from 'react-icons/fa6';
 import { HiDocumentText } from 'react-icons/hi';
-import type { MyPageMenuItem } from 'src/types/mypage';
+import type { ActivityType, MyPageMenuItem } from 'src/types/mypage';
+import { MdFormatListBulleted } from 'react-icons/md';
 
 export const ROLE_LABEL = {
   BIDDER: '입찰 참여자',
@@ -11,6 +13,12 @@ export const BID_STATUS_LABEL = {
   PROGRESS: '진행중',
   EXPECTED: '낙찰 예정',
   ENDED: '종료됨'
+} as const;
+
+export const BID_STATUS_VARIANTS = {
+  PROGRESS: 'warning',
+  EXPECTED: 'info',
+  ENDED: 'muted'
 } as const;
 
 export const BIDDER_MENU: MyPageMenuItem[] = [
@@ -49,7 +57,7 @@ export const AUCTIONEER_MENU = [
   }
 ];
 
-//내 경매 현황
+// 내 경매 현황 tab
 export const AUCTION_TABS = [
   { label: '경매현황', value: 'ongoing' },
   { label: '경매종료', value: 'closed' }
@@ -58,4 +66,70 @@ export const AUCTION_TABS = [
 export const AUCTION_TAB_FILTERS = {
   ongoing: ['전체', '입찰중', '낙찰예정'],
   closed: ['전체', '낙찰', '유찰']
+};
+
+// 내 경매 현황 filter
+export const AUCTION_STATUS_LABELS = {
+  bidding: '입찰중',
+  winning: '낙찰예정',
+  won: '낙찰',
+  lost: '유찰'
+} as const;
+
+export const AUCTION_STATUS_VARIANTS = {
+  bidding: 'warning',
+  winning: 'info',
+  won: 'success',
+  lost: 'error'
+} as const;
+
+//ActivityItem.tsx size
+export const SIZE_MAP = {
+  sm: {
+    icon: 'size-3',
+    container: 'size-8',
+    gap: 'gap-2'
+  },
+  md: {
+    icon: 'size-4',
+    container: 'size-10',
+    gap: 'gap-3'
+  }
+} as const;
+
+export const ACTIVITY_MAP: Record<
+  ActivityType,
+  {
+    icon: IconType;
+    label: string;
+  }
+> = {
+  all: {
+    icon: MdFormatListBulleted,
+    label: '전체'
+  },
+  auction: {
+    icon: FaGavel,
+    label: '경매 참여'
+  },
+  point: {
+    icon: FaCoins,
+    label: '포인트 충전'
+  },
+  use: {
+    icon: FaCartShopping,
+    label: '포인트 사용'
+  },
+  event: {
+    icon: FaGift,
+    label: '이벤트 보상'
+  },
+  participation: {
+    icon: FaCalendarCheck,
+    label: '이벤트 참여'
+  },
+  signup: {
+    icon: FaGift,
+    label: '회원가입'
+  }
 };
