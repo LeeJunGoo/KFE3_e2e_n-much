@@ -2,13 +2,13 @@
 
 import { AuctionRow } from 'src/lib/supabase/type';
 
-export type SortedAuction = AuctionRow & {
+export type SortedAuctionItemType = AuctionRow & {
   episodes: {
     count: number;
   }[];
 };
 
 export type SortedAuctionsType = {
-  data: SortedAuction[];
+  data: SortedAuctionItemType[];
   status: string;
 };
