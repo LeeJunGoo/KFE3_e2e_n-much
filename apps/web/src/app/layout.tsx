@@ -1,7 +1,7 @@
 import QueryProvider from '../providers/QueryProvider';
 import { home } from '../metadata/common/home';
 import './globals.css';
-import TabBar from '../components/common/TabBar';
+import TabBar from '../components/layout/TabBar';
 import Header from 'src/components/layout/Header';
 import { pretendard } from 'assets/fonts';
 

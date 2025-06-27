@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import React from 'react';
-import { IoNotifications } from 'react-icons/io5';
-import Logo from '../../../assets/images/logo.svg';
 import Link from 'next/link';
+import Logo from '../../../assets/images/logo.svg';
+import { IoNotifications } from 'react-icons/io5';
+import { Button } from '@repo/ui/components/ui/button';
 
 const Header = () => {
   return (
@@ -14,10 +14,10 @@ const Header = () => {
           </h1>
         </Link>
         <div className="flex items-center">
-          <button className="relative">
-            <IoNotifications size={24} className="text-(--color-accent)" />
-            <span className="absolute top-0 right-0.5 size-2 rounded-full bg-(--color-red)" />
-          </button>
+          <Button variant="text" className="relative !p-0">
+            <IoNotifications className="size-6 text-(--color-accent)" />
+            <span className="absolute top-1.5 right-0.5 size-2 rounded-full bg-(--color-red)" />
+          </Button>
         </div>
       </div>
     </header>
