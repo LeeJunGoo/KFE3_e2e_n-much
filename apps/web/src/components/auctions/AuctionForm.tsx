@@ -5,6 +5,7 @@
 //TODO - 날짜, 시간 유효성 검사 고려 (경매 최소 기간 상의)
 //TODO - 날짜 시간 업로드 리팩토링하기
 //TODO - 찜하기(favorites) 빈 배열로 초기화
+//FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,7 +17,7 @@ import { useCallback, useEffect, useState } from 'react';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
-import { addHours, compareAsc, format, subDays } from 'date-fns';
+import { addHours, compareAsc, format, set, subDays } from 'date-fns';
 import { CalendarIcon } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Calendar } from '@repo/ui/components/ui/calendar';
@@ -130,8 +131,8 @@ export default function AuctionForm() {
           endDay,
           endTime,
           description,
-          startingPoint: starting_point,
-          maxPoint: max_point
+          startingPoint: String(starting_point),
+          maxPoint: String(max_point)
         });
         if (image_urls) {
           setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image })));
@@ -177,24 +178,39 @@ export default function AuctionForm() {
     } catch (error) {
       console.log(error);
     }
-    console.log('imageUrls', imageUrls);
+
+    const korStartTime = startTime.split(':');
+    const korStartDate = set(startDay, {
+      hours: Number(korStartTime[0]),
+      minutes: Number(korStartTime[1]),
+      seconds: Number(korStartTime[2])
+    });
+    const utcStartDate = new TZDate(korStartDate, 'utc');
+
+    const korEndTime = endTime.split(':');
+    const korEndDate = set(endDay, {
+      hours: Number(korEndTime[0]),
+      minutes: Number(korEndTime[1]),
+      seconds: Number(korEndTime[2])
+    });
+    const utcEndDate = new TZDate(korEndDate, 'utc');
+
     const auctionId = uuidv4();
     const fetchUrl = `http://localhost:3001/api/auctions`;
     const data = await fetch(fetchUrl, {
-      method: 'POST',
+      method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
-        auction_id: auctionId,
+        auction_id: isEditing ? auctionIdParam : auctionId,
         seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2',
         title,
         address: [address, detailAddress],
-        start_time: startDay.toISOString().split('T')[0] + 'T' + startTime,
-        end_time: endDay.toISOString().split('T')[0] + 'T' + endTime,
+        start_time: utcStartDate,
+        end_time: utcEndDate,
         description,
         starting_point: startingPoint,
-        current_point: startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls,
-        status: 'OPEN'
+        updated_at: new TZDate(new Date(), 'utc')
       })
     });
     const result = await data.json();

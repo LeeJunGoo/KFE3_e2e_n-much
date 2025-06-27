@@ -65,7 +65,10 @@ export const addAuction = async (auctionData: AuctionInsert) => {
 };
 
 //NOTE -  경매 물품 수정
-export const updateAuction = async (auction_id: string, editData: AuctionUpdate) => {
+export const updateAuction = async (auction_id: string | undefined, editData: AuctionUpdate) => {
+  if (!auction_id) {
+    throw new Error('DB: 경매 수정 에러(auctionId가 없습니다.)');
+  }
   const { data, error } = await supabase
     .from('auctions')
     .update({ ...editData })
