@@ -9,7 +9,7 @@ type RoleBadgeProps = {
 
 const RoleBadge = ({ role }: RoleBadgeProps) => {
   return (
-    <Badge className="rounded-full border border-transparent bg-(--color-primary) px-2 py-0.5 text-xs font-semibold text-white">
+    <Badge variant="primary" className="rounded-full">
       {role}
     </Badge>
   );

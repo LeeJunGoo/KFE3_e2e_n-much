@@ -28,7 +28,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Button } from '@repo/ui/components/ui/button';
 import { cn } from '@repo/ui/lib/utils';
 import { uploadImage } from 'src/lib/supabase/query/bucket';
-import PageTitle from '../common/PageTitle';
+import PageTitle from '../common/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 
 export default function AuctionForm() {
