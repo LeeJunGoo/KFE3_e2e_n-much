@@ -4,9 +4,9 @@ import { AUCTION_TABS } from 'src/constants/mypage';
 
 const AuctionTabsHeader = () => {
   return (
-    <TabsList className="rounded-none">
+    <TabsList className="w-full rounded-none">
       {AUCTION_TABS.map((tab) => (
-        <TabTriggerItem key={tab.label} {...tab} className="text-md py-3" />
+        <TabTriggerItem key={tab.label} {...tab} className="text-md w-full bg-transparent py-5" />
       ))}
     </TabsList>
   );

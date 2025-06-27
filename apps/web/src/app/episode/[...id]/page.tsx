@@ -1,5 +1,5 @@
 import { User } from '@supabase/supabase-js';
-import PageTitle from 'src/components/common/PageTitle';
+import PageTitle from 'src/components/common/ui/PageTitle';
 import EpisodesForm from 'src/components/episodes/EpisodesForm';
 
 import { fetchEpisodeById } from 'src/lib/queries/episodes';
