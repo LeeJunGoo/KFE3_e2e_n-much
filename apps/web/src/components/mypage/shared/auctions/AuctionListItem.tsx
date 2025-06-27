@@ -1,8 +1,10 @@
-import UIButton from 'src/components/common/UIButton';
+import { Button } from '@repo/ui/components/ui/button';
+import LabelBadge from 'src/components/common/LabelBadge';
+import { AUCTION_STATUS_LABELS, AUCTION_STATUS_VARIANTS } from 'src/constants/mypage';
 import type { AuctionListItemProps } from 'src/types/mypage';
 
-const AuctionListItem = ({ item, filter }: AuctionListItemProps) => {
-  const { title, currentPrice, myBidAmount, endDate } = item;
+const AuctionListItem = ({ item }: AuctionListItemProps) => {
+  const { title, currentPrice, myBidAmount, endDate, status } = item;
 
   return (
     <li className="mb-4 rounded-xl bg-white p-4 shadow-xs">
@@ -13,9 +15,9 @@ const AuctionListItem = ({ item, filter }: AuctionListItemProps) => {
         <div className="flex-1">
           <div className="mb-2 flex items-start justify-between">
             <h3 className="line-clamp-1 font-medium">{title}</h3>
-            <div className="inline-flex items-center rounded-md border border-transparent bg-[#28A745] px-2.5 py-0.5 text-xs font-semibold text-white">
-              {filter}
-            </div>
+            <LabelBadge status={status} variant={AUCTION_STATUS_VARIANTS[status]}>
+              {AUCTION_STATUS_LABELS[status]}
+            </LabelBadge>
           </div>
           <div className="mt-1 flex flex-col gap-0.5">
             <p className="flex justify-between text-sm">
@@ -33,7 +35,9 @@ const AuctionListItem = ({ item, filter }: AuctionListItemProps) => {
           </div>
         </div>
       </div>
-      <UIButton className="mt-3 w-full">상세보기</UIButton>
+      <Button variant="base" className="mt-3 w-full">
+        상세보기
+      </Button>
     </li>
   );
 };

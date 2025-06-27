@@ -1,113 +1,29 @@
-'use client';
-
-import PageTitle from 'src/components/common/PageTitle';
-import { useRouter } from 'next/navigation';
+import PageHeader from 'src/components/common/ui/PageHeader';
+import SectionHeader from 'src/components/common/ui/SectionHeader';
+import PageContainer from 'src/components/layout/PageContainer';
+import SectionCard from 'src/components/common/ui/SectionCard';
+import TransactionSection from 'src/components/mypage/points/TransactionSection';
+import { activities } from 'src/constants/mypage/mockData';
+import PointOverview from 'src/components/mypage/shared/points/PointOverview';
+import DateRangeFilter from 'src/components/mypage/shared/points/DateRangeFilter';
+import ActivityTypeFilter from 'src/components/mypage/shared/points/ActivityTypeFilter';
 
 const MyPoints = () => {
-  const router = useRouter();
-
-  const handleBack = () => {
-    router.back();
-  };
   return (
-    <section>
-      <div className="relative">
-        <button onClick={handleBack} className="absolute top-1/2 left-0 -translate-y-1/2 cursor-pointer">
-          뒤로가기
-        </button>
-        <PageTitle>포인트 사용 내역</PageTitle>
-      </div>
-      <ul className="mt-11">
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-        <li className="flex items-baseline justify-between gap-5 border-b border-gray-300 px-2 py-4">
-          <time className="text-sm text-gray-300">05.12</time>
-          <p>회원가입 이벤트</p>
-          <div className="ml-auto flex flex-col items-end">
-            <p className="text-lg font-semibold text-purple-400">100,000 P</p>
-            <p className="text-gray-400">110,000 P</p>
-          </div>
-        </li>
-      </ul>
-    </section>
+    <>
+      <PageHeader>포인트 사용 내역</PageHeader>
+      <PageContainer>
+        <SectionCard className="flex flex-col items-center">
+          <SectionHeader className="mb-1 text-sm font-normal">현재 보유 포인트</SectionHeader>
+          <PointOverview />
+        </SectionCard>
+        <nav className="mt-6">
+          <DateRangeFilter />
+          <ActivityTypeFilter />
+        </nav>
+        <TransactionSection activities={activities} />
+      </PageContainer>
+    </>
   );
 };
 

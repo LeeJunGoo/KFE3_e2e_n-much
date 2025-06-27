@@ -1,4 +1,4 @@
-import { AuctionItem } from 'src/types/mypage';
+import { Activity, AuctionItem } from 'src/types/mypage';
 
 export const MOCK_AUCTION_DATA: AuctionItem[] = [
   {
@@ -33,7 +33,7 @@ export const MOCK_AUCTION_DATA: AuctionItem[] = [
     title: '명품 핸드백 에르메스',
     currentPrice: 3500000,
     endDate: '2025-06-24T14:00:00Z', // 과거 날짜
-    status: 'failed',
+    status: 'lost',
     imageUrl: '/images/hermes.jpg',
     myBidAmount: 3000000
   },
@@ -45,5 +45,38 @@ export const MOCK_AUCTION_DATA: AuctionItem[] = [
     status: 'bidding',
     imageUrl: '',
     myBidAmount: 1150000
+  }
+];
+
+export const activities: Activity[] = [
+  {
+    type: 'point',
+    title: '포인트 충전',
+    date: '2025년 6월 22일',
+    amount: 3000
+  },
+  {
+    type: 'event',
+    title: '이벤트 보상',
+    date: '2025년 6월 21일',
+    amount: 500
+  },
+  {
+    type: 'event',
+    title: '이벤트 참여',
+    date: '2025년 6월 20일',
+    amount: -300
+  },
+  {
+    type: 'signup',
+    title: '회원가입 포인트 지급',
+    date: '2025년 6월 19일',
+    amount: 1000
+  },
+  {
+    type: 'point',
+    title: '포인트 사용',
+    date: '2025년 6월 17일',
+    amount: -1500
   }
 ];

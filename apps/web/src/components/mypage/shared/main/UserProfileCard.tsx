@@ -1,10 +1,11 @@
 import { ROLE_LABEL } from 'src/constants/mypage';
-import RoleBadge from '../RoleBadge';
+import RoleBadge from './RoleBadge';
+import SectionCard from '../../../common/ui/SectionCard';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const UserProfileCard = ({ role }: UserRoleDataProps) => {
   return (
-    <section className="w-full rounded-2xl bg-(--color-secondary) p-5 shadow-xs">
+    <SectionCard>
       <div className="flex items-start justify-between">
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
@@ -28,7 +29,7 @@ const UserProfileCard = ({ role }: UserRoleDataProps) => {
         </div>
         <p className="mt-1 text-xs text-(--color-warm-gray)">마지막 업데이트: 2025년 6월 25일</p>
       </div>
-    </section>
+    </SectionCard>
   );
 };
 
