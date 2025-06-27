@@ -131,8 +131,8 @@ export default function AuctionForm() {
           endDay,
           endTime,
           description,
-          startingPoint: starting_point,
-          maxPoint: max_point
+          startingPoint: String(starting_point),
+          maxPoint: String(max_point)
         });
         if (image_urls) {
           setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image })));
