@@ -11,9 +11,7 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const auctionId = searchParams.get('auction_id');
   const orderParam = searchParams.get('orderParam');
-  console.log('🚀 ~ GET ~ orderParam:', orderParam);
   const count = searchParams.get('count');
-  console.log('🚀 ~ GET ~ count:', count);
   let res;
 
   try {

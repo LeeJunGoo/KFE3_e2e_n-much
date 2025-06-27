@@ -1,9 +1,8 @@
-import { SortedAuctionItemType } from 'src/types/main';
 import NotAuctionImage from 'assets/images/auctionDefault.png';
 import Image from 'next/image';
-import { FaBookOpen, FaHeart } from 'react-icons/fa6';
 import Link from 'next/link';
-import testImage from 'assets/images/test.png';
+import { FaBookOpen, FaHeart } from 'react-icons/fa6';
+import { SortedAuctionItemType } from 'src/types/main';
 
 const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
   const isImage = auction.image_urls && auction.image_urls.length > 0;
@@ -17,7 +16,7 @@ const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => 
       <Link href={`/auctions/${auction.auction_id}`} className="relative overflow-hidden rounded-lg">
         <div className="relative h-[200px] w-full">
           <Image
-            src={testImage!}
+            src={auctionImage!}
             alt={auction.title}
             fill
             sizes="(min-width: 768px) 390px, 100vw"
