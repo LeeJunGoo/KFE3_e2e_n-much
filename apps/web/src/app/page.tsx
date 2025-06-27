@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import AuctionCard from 'src/components/common/AuctionCard';
 import LatestAuctionCard from 'src/components/main/LatestAuctionCard';
+import MainBanner from 'src/components/main/MainBanner';
 import PopularAuctionCard from 'src/components/main/PopularAuctionCard';
 import { fetchSortedAuctions } from 'src/lib/queries/auctions';
 import { SortedAuctionItemType } from 'src/types/main';
@@ -11,12 +12,13 @@ const MainPage = async () => {
     fetchSortedAuctions('favorites', 5),
     fetchSortedAuctions('created_at', 8)
   ]);
-  console.log('🚀 ~ MainPage ~ popularAuctions:', popularAuctions);
 
   return (
-    <div className="relative min-h-screen bg-[#F4F4F7] pb-20">
-      {/* Main Content Area */}
-      <div className="pt-14 pb-16">{/* Hero Slider */}</div>
+    <div className="relative min-h-screen bg-[#F4F4F7] pt-14 pb-30">
+      {/* Main Banner Area */}
+
+      <MainBanner></MainBanner>
+
       {/* Ending Soon Auctions */}
       <div className="mt-8 px-4">
         <div className="mb-4 flex items-center justify-between">

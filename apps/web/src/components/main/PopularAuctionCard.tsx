@@ -16,7 +16,13 @@ const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => 
     <li className="transition-transform hover:scale-[1.02]">
       <Link href={`/auctions/${auction.auction_id}`} className="relative overflow-hidden rounded-lg">
         <div className="relative h-[200px] w-full">
-          <Image src={testImage!} alt={auction.title} fill className="rounded-lg object-cover p-1" />
+          <Image
+            src={testImage!}
+            alt={auction.title}
+            fill
+            sizes="(min-width: 768px) 390px, 100vw"
+            className="rounded-lg object-cover p-1"
+          />
 
           <div className="absolute bottom-0 left-0 p-3 text-white">
             <h3 className="line-clamp-2 text-sm font-medium">{auction.title}</h3>
