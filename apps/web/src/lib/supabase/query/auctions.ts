@@ -53,7 +53,10 @@ export const addAuction = async (auctionData: AuctionInsert) => {
 };
 
 //NOTE -  경매 물품 수정
-export const updateAuction = async (auction_id: string, editData: AuctionUpdate) => {
+export const updateAuction = async (auction_id: string | undefined, editData: AuctionUpdate) => {
+  if (!auction_id) {
+    throw new Error('DB: 경매 수정 에러(auctionId가 없습니다.)');
+  }
   const { data, error } = await supabase
     .from('auctions')
     .update({ ...editData })
@@ -167,4 +170,14 @@ export const getAuctionsWithEpisodeCountByOrder = async (orderParam: string, isA
 
     return data;
   }
+};
+
+// 키워드가 타이틀에 포함되는 경매리스트를 불러오기
+export const getAuctionsByKeyword = async (keyword: string) => {
+  const { data, error } = await supabase.from('auctions').select('*').ilike('title', `%${keyword}%`);
+
+  if (error) {
+    throw new Error('DB: 경매 검색 에러');
+  }
+  return data;
 };

@@ -1,10 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
+<<<<<<< HEAD
 import { AuctionInsert } from 'src/lib/supabase/type';
 import {
   addAuction,
   deleteAuction,
   getAuction,
   getAuctionsWithEpisodeCountByOrder
+=======
+import { AuctionInsert, AuctionUpdate } from 'src/lib/supabase/type';
+import {
+  addAuction,
+  deleteAuction,
+  getAllAuctions,
+  getAuction,
+  updateAuction
+>>>>>>> 8ba17b50393eebbd4dd277b2d43de897f3e3fe1d
 } from '../../../lib/supabase/query/auctions';
 
 export async function GET(request: NextRequest) {
@@ -51,18 +61,18 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// export async function PATCH(request: NextRequest) {
-//   const { auction_id, editData } = await request.json();
+export async function PATCH(request: NextRequest) {
+  const auctionData: AuctionUpdate = await request.json();
 
-//   try {
-//     const res = await updateAuction(auction_id, editData);
-//     return NextResponse.json({ status: 'success', data: res });
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       return NextResponse.json({ status: 'error', error: error.message });
-//     }
-//   }
-// }
+  try {
+    const res = await updateAuction(auctionData.auction_id, auctionData);
+    return NextResponse.json({ status: 'success', data: res });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ status: 'error', error: error.message });
+    }
+  }
+}
 
 export async function DELETE(request: NextRequest) {
   const { auction_id } = await request.json();
