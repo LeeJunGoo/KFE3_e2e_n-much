@@ -1,15 +1,32 @@
 'use client';
 import React, { useState } from 'react';
 import useRecentKeywords from 'src/hooks/useRecentKeywords';
+import usePopularKeywords from 'src/hooks/usePopularKeywords';
 import { getSearchedAuctions } from 'src/lib/supabase/query/auctions';
 import { Button } from '@repo/ui/components/ui/button';
 import { IoCloseOutline } from 'react-icons/io5';
 import { FaSearch } from 'react-icons/fa';
+import { FaCaretUp } from 'react-icons/fa';
+// import { FaCaretDown } from 'react-icons/fa';
 
 export default function SearchComp() {
   const [keyword, setKeyword] = useState('');
+
   // 최근 검색어 커스텀 훅
   const { recentKeywords, insert, remove, clear } = useRecentKeywords();
+  // 인기 검색어 커스텀 훅
+  const { popularKeywords } = usePopularKeywords();
+
+  const colCount = 2;
+  const rowCount = Math.ceil(popularKeywords.length / colCount);
+
+  const verticalOrdered = [];
+  for (let row = 0; row < rowCount; row++) {
+    for (let col = 0; col < colCount; col++) {
+      const idx = row + col * rowCount;
+      if (popularKeywords[idx]) verticalOrdered.push(popularKeywords[idx]);
+    }
+  }
 
   const handleSearchByKeyword = async (paramKeyword: string) => {
     // 공백으로 인한 버그 막기(로컬스토리지에는 공백 포함해서 저장된 keyword가 UI에서는 공백 없이 보여짐, 중복 발생)
@@ -73,7 +90,7 @@ export default function SearchComp() {
               recentKeywords.map((k, idx) => {
                 return (
                   <div
-                    key={`${k}-${idx}`}
+                    key={`recent-${k}-${idx}`}
                     className="flex cursor-pointer items-center rounded-full bg-[#EEF2FB] px-3 py-2"
                     onClick={(e) => handleSearchByRecentKeyword(e, k)}
                   >
@@ -88,7 +105,24 @@ export default function SearchComp() {
         </div>
         {/* DB 테이블 추가 필요 */}
         <div data-role="popular_keywords_section">
-          <h3 className="text-base font-medium">인기 검색어</h3>
+          <h3 className="mb-3 text-base font-medium">인기 검색어</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {popularKeywords.length > 0 &&
+              popularKeywords.map((k, idx) => {
+                return (
+                  <div key={`popular-${k}-${idx}`} className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <span className="w-6 font-medium text-[#5B80C2]">{k.rank}</span>
+                      <span className="text-sm">{k.keyword}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <FaCaretUp className="mr-1 text-[#65BA84]" />
+                      {/* <FaCaretDown className="text-[#D84A5F]" /> */}
+                    </div>
+                  </div>
+                );
+              })}
+          </div>
         </div>
       </div>
     </div>
