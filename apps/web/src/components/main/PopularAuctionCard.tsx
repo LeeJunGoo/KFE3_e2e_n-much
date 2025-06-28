@@ -24,7 +24,7 @@ const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => 
           />
 
           {/* --- [수정] 밝은 검정색 그라디언트 오버레이 --- */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent" />
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/70 to-transparent" />
 
           <div className="absolute bottom-0 left-0 w-full p-3 text-white">
             <h3 className="line-clamp-2 text-sm font-medium">{auction.title}</h3>

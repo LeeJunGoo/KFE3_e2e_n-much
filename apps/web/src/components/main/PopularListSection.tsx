@@ -5,7 +5,7 @@ import PopularAuctionCard from './PopularAuctionCard';
 import PageTitle from '../common/ui/PageTitle';
 
 const PopularListSection = async () => {
-  const popularAuctions = await fetchSortedAuctions('favorites', false, 5);
+  const popularAuctions = await fetchSortedAuctions('favorites', false, 4);
 
   if (!popularAuctions || popularAuctions.length === 0) {
     return (
