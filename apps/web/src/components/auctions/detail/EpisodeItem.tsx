@@ -18,7 +18,7 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
   const episodeTime = formatToKoreanDateTime(episode.created_at);
 
   return (
-    <li className="px-6 py-5 list-none">
+    <li className="list-none px-6 py-5">
       {/* 작성자 정보 */}
       <div>
         <div>
@@ -30,7 +30,7 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
         </div>
         <div className="mt-4">
           <h3 className="text-lg font-bold text-gray-900">{episode.title}</h3>
-          <p className="mt-2 text-gray-700 leading-relaxed whitespace-pre-wrap">{isExpanded && episode.description}</p>
+          <p className="mt-2 leading-relaxed whitespace-pre-wrap text-gray-700">{isExpanded && episode.description}</p>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
             <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />
 
             <CollapsibleTrigger asChild>
-              <Button size="sm" className="bg-[#8E74F9] hover:bg-[#3f3562] gap-1.5">
+              <Button size="sm" className="gap-1.5 bg-[#8E74F9] hover:bg-[#3f3562]">
                 <FiAward />
                 입찰하기
               </Button>
@@ -55,7 +55,7 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
           </div>
         </div>
         {/*  펼쳐질 콘텐츠 영역 - 버튼 그룹과 완전히 분리 */}
-        <CollapsibleContent className="mt-2 CollapsibleContent w-full space-y-4 rounded-lg bg-[#F4F4F7] p-4">
+        <CollapsibleContent className="CollapsibleContent mt-2 w-full space-y-4 rounded-lg bg-[#F4F4F7] p-4">
           <BiddingForm
             auction_id={episode.auction_id}
             episode_id={episode.episode_id}

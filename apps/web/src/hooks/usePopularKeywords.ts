@@ -35,7 +35,7 @@ export default function usePopularKeywords() {
   }, []);
 
   useEffect(() => {
-    console.log(popularKeywords);
+    // console.log(popularKeywords);
   }, [popularKeywords]);
 
   return { popularKeywords };

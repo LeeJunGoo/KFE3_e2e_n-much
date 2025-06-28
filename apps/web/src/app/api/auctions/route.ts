@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AuctionInsert } from 'src/lib/supabase/type';
+import { AuctionInsert, AuctionUpdate } from 'src/lib/supabase/type';
 import {
   addAuction,
   deleteAuction,
   getAllAuctions,
-  getAuctionWithSellerInfo
+  getAuction,
+  updateAuction
 } from '../../../lib/supabase/query/auctions';
 
 export async function GET(request: NextRequest) {
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
   try {
     // 특정 경매 조회
     if (auctionId) {
-      const res = await getAuctionWithSellerInfo(auctionId);
+      const res = await getAuction(auctionId);
       return NextResponse.json({ status: 'success', data: res });
     }
 
@@ -25,6 +26,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
   }
 }
+
 export async function POST(request: NextRequest) {
   const auctionData: AuctionInsert = await request.json();
 
@@ -38,18 +40,18 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// export async function PATCH(request: NextRequest) {
-//   const { auction_id, editData } = await request.json();
+export async function PATCH(request: NextRequest) {
+  const auctionData: AuctionUpdate = await request.json();
 
-//   try {
-//     const res = await updateAuction(auction_id, editData);
-//     return NextResponse.json({ status: 'success', data: res });
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       return NextResponse.json({ status: 'error', error: error.message });
-//     }
-//   }
-// }
+  try {
+    const res = await updateAuction(auctionData.auction_id, auctionData);
+    return NextResponse.json({ status: 'success', data: res });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ status: 'error', error: error.message });
+    }
+  }
+}
 
 export async function DELETE(request: NextRequest) {
   const { auction_id } = await request.json();

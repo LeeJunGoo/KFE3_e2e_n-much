@@ -1,5 +1,6 @@
-@import '@repo/ui/styles.css';
 @import 'tailwindcss';
+@import '@repo/ui/styles.css';
+@import "@repo/tailwind-config";
 
 html {
   scrollbar-width: none;
