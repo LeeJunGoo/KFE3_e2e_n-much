@@ -1,6 +1,3 @@
-//NOTE - 마감 임박: 1일
-//FIXME - 이미지 없음에 기본 이미지 넣기
-//FIXME - 경매 상태 정하기
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
@@ -10,6 +7,7 @@ import Image from 'next/image';
 import { TZDate } from 'react-day-picker';
 import { FaHeart } from 'react-icons/fa';
 import { FaBookOpen } from 'react-icons/fa6';
+import noAuctionImage from '../../../assets/images/noAuctionImage.png';
 
 interface AuctionCardProp {
   status: string;
@@ -35,7 +33,7 @@ export default function AuctionCard({ imageSrc, title, endTime, favorites, episo
           {imageSrc ? (
             <Image src={imageSrc} fill={true} alt={`${title} 이미지`} className="object-cover object-top" />
           ) : (
-            <p>이미지 없음</p>
+            <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
           )}
         </div>
 
