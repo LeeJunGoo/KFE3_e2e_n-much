@@ -162,7 +162,8 @@ export const getAllAuctionsWithEpisodeCountByOrder = async (orderParam: string, 
   }
 };
 
-export const getSearchedAuctions = async (keyword: string) => {
+// 키워드가 타이틀에 포함되는 경매리스트를 불러오기
+export const getAuctionsByKeyword = async (keyword: string) => {
   const { data, error } = await supabase.from('auctions').select('*').ilike('title', `%${keyword}%`);
 
   if (error) {

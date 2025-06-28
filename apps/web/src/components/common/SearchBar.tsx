@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import useRecentKeywords from 'src/hooks/useRecentKeywords';
 import usePopularKeywords from 'src/hooks/usePopularKeywords';
-import { getSearchedAuctions } from 'src/lib/supabase/query/auctions';
+import { getAuctionsByKeyword } from 'src/lib/supabase/query/auctions';
 import { Button } from '@repo/ui/components/ui/button';
 import { IoCloseOutline } from 'react-icons/io5';
 import { FaSearch } from 'react-icons/fa';
@@ -32,7 +32,7 @@ const SearchBar = () => {
     // 공백으로 인한 버그 막기(로컬스토리지에는 공백 포함해서 저장된 keyword가 UI에서는 공백 없이 보여짐, 중복 발생)
     const trimmedKeyword = paramKeyword.trim();
     if (!trimmedKeyword) return;
-    const dataList = await getSearchedAuctions(trimmedKeyword);
+    const dataList = await getAuctionsByKeyword(trimmedKeyword);
     console.log('검색 결과: ', dataList);
     // 최근 검색어 추가
     insert(trimmedKeyword);
