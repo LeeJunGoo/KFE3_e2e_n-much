@@ -3,6 +3,18 @@ import { AuctionInsert, AuctionUpdate } from '../type';
 
 const supabase = createClient();
 
+//NOTE - 전체 경매 상품 정보
+export const getAllAuctions = async () => {
+  const { data, error } = await supabase.from('auctions').select(`*`);
+
+  if (error) {
+    console.error('🚀 ~ getAllAuctions:', error.message);
+    throw new Error('DB : 모든 경매 불러오기 에러');
+  }
+
+  return data;
+};
+
 //NOTE - 특정 상품 정보
 export const getAuction = async (auction_id: string) => {
   const { data, error } = await supabase.from('auctions').select(`*`).eq('auction_id', auction_id).maybeSingle();
