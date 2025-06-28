@@ -30,6 +30,7 @@ import { cn } from '@repo/ui/lib/utils';
 import { uploadImage } from 'src/lib/supabase/query/bucket';
 import PageTitle from '../common/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
+import PageContainer from '../layout/PageContainer';
 
 export default function AuctionForm() {
   const searchParams = useSearchParams();
@@ -245,7 +246,7 @@ export default function AuctionForm() {
   }
 
   return (
-    <>
+    <PageContainer>
       <PageTitle className="pb-10 text-left">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -473,6 +474,6 @@ export default function AuctionForm() {
             );
           })}
       </ul>
-    </>
+    </PageContainer>
   );
 }
