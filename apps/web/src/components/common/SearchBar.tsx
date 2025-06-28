@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useRecentKeywords from 'src/hooks/useRecentKeywords';
 import usePopularKeywords from 'src/hooks/usePopularKeywords';
 import { useAuctionsStore } from 'src/store/AuctionsStore';
