@@ -16,7 +16,9 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
   // NOTE - 로그인 정보
   const userInfo = await getAuthInfo();
-
+  // <Button variant="base" size="sm">
+  //   asdfasdfasdf
+  // </Button>
   const [auctionInfo, highestBuyer] = await Promise.all([
     fetchAuctionWithSellerInfo(auctionId), // NOTE - 경매 상품 및 경매 업체 정보
     fetchHighestBidder(auctionId) // NOTE - 최고 입찰자의 정보

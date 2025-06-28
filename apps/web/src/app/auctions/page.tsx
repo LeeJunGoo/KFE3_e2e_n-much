@@ -57,7 +57,7 @@ export default function Page() {
         <ul className="grid grid-cols-2 gap-3">
           {auctions.length > 0 &&
             auctions.map((auction) => {
-              const { auction_id, status, title, current_point, end_time, episodes } = auction;
+              const { auction_id, status, title, current_point, end_time, episodes, address } = auction;
               let { image_urls, favorites } = auction;
 
               if (!image_urls) {
@@ -71,6 +71,7 @@ export default function Page() {
               return (
                 <AuctionCard
                   key={auction_id}
+                  auction_id={auction_id}
                   status={status}
                   imageSrc={image_urls[0]}
                   title={title}
@@ -78,6 +79,7 @@ export default function Page() {
                   endTime={end_time}
                   episodeCount={episodes[0]['count']}
                   favorites={favorites.length}
+                  address={address[0]}
                 />
               );
             })}

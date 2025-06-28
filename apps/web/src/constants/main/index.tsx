@@ -1,6 +1,6 @@
 import { AiFillHome } from 'react-icons/ai';
-import { IoSearch } from 'react-icons/io5';
 import { FaGavel, FaUser } from 'react-icons/fa6';
+import { IoSearch } from 'react-icons/io5';
 import type { TabMenuItem } from 'src/types/main';
 
 export const TAB_MENUS: TabMenuItem[] = [

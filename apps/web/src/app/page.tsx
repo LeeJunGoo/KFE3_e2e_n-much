@@ -1,64 +1,70 @@
-import Link from 'next/link';
-import EndingSoonAuctionCarousel from 'src/components/main/EndingSoonAuctionCarousel';
-import LatestAuctionCard from 'src/components/main/LatestAuctionCard';
+import { Suspense } from 'react';
+import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
+import PageContainer from 'src/components/layout/PageContainer';
+import EndingSoonListSection from 'src/components/main/EndingSoonListSection';
+import LatestListSection from 'src/components/main/LatestListSection';
 import MainBanner from 'src/components/main/MainBanner';
-import PopularAuctionCard from 'src/components/main/PopularAuctionCard';
-import { fetchSortedAuctions } from 'src/lib/queries/auctions';
-import { SortedAuctionItemType } from 'src/types/main';
+import PopularListSection from 'src/components/main/PopularListSection';
 
 const MainPage = async () => {
-  // const endingSoonAuctions: SortedAuctionItemType[] = [];
-  // const popularAuctions: SortedAuctionItemType[] = [];
-  // const latestAuctions: SortedAuctionItemType[] = [];
-  const [endingSoonAuctions, popularAuctions, latestAuctions] = await Promise.all([
-    fetchSortedAuctions('end_time', 5),
-    fetchSortedAuctions('favorites', 5),
-    fetchSortedAuctions('created_at', 8)
-  ]);
-
   return (
-    <div className="relative min-h-screen bg-[#F4F4F7] pt-14 pb-30">
-      {/* Main Banner Area */}
+    <PageContainer>
       <MainBanner />
       {/* Ending Soon Auctions */}
-      <div className="mt-8 px-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-[#1F1F25]">곧 종료되는 경매</h2>
-          <Link href="/auctions?order=end_time" className="cursor-pointer text-sm text-[#5B80C2]">
-            더보기
-          </Link>
-        </div>
-        <EndingSoonAuctionCarousel endingSoonAuctions={endingSoonAuctions} />
-      </div>
+      <AuctionErrorBoundary
+        fallback={
+          <div className="flex h-[200px] items-center justify-center border-2">
+            <h3 className="text-[22px]">⚠️ 곧 마감 물품 섹션에서 오류가 발생했습니다.</h3>
+          </div>
+        }
+      >
+        <Suspense
+          fallback={
+            <div className="flex h-[200px] items-center justify-center">
+              <span className="animate-pulse text-lg text-gray-500">{'🚚 경매 데이터를 불러오는 중입니다...'}</span>
+            </div>
+          }
+        >
+          <EndingSoonListSection />
+        </Suspense>
+      </AuctionErrorBoundary>
       {/* Popular Auctions */}
-      <div className="mt-8 px-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-[#1F1F25]">인기 경매</h2>
-          <Link href="/auctions?order=favorites" className="cursor-pointer text-sm text-[#5B80C2]">
-            더보기
-          </Link>
-        </div>
-        <ul className="grid grid-cols-2 gap-3">
-          {popularAuctions.map((auction: SortedAuctionItemType) => (
-            <PopularAuctionCard key={auction.auction_id} auction={auction} />
-          ))}
-        </ul>
-      </div>
+      <AuctionErrorBoundary
+        fallback={
+          <div className="flex h-[200px] items-center justify-center border-2">
+            <h3 className="text-[22px]">⚠️ 인기 경매 물품 섹션에서 오류가 발생했습니다.</h3>
+          </div>
+        }
+      >
+        <Suspense
+          fallback={
+            <div className="flex h-[200px] items-center justify-center">
+              <span className="animate-pulse text-lg text-gray-500">{'🚚 경매 데이터를 불러오는 중입니다...'}</span>
+            </div>
+          }
+        >
+          <PopularListSection />
+        </Suspense>
+      </AuctionErrorBoundary>
       {/* Latest Auctions */}
-      <div className="mt-8 px-4">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-[#1F1F25]">최신 경매</h2>
-          <Link href="/auctions?order=created_at" className="cursor-pointer text-sm text-[#5B80C2]">
-            더보기
-          </Link>
-        </div>
-        <ul className="overflow-hidden rounded-lg bg-white shadow-sm">
-          {latestAuctions.map((auction: SortedAuctionItemType) => (
-            <LatestAuctionCard key={auction.auction_id} auction={auction} />
-          ))}
-        </ul>
-      </div>
-    </div>
+      <AuctionErrorBoundary
+        fallback={
+          <div className="flex h-[200px] items-center justify-center border-2">
+            <h3 className="text-[22px]">⚠️ 최신 경매 물품 섹션에서 오류가 발생했습니다.</h3>
+          </div>
+        }
+      >
+        <Suspense
+          fallback={
+            <div className="flex h-[200px] items-center justify-center">
+              <span className="animate-pulse text-lg text-gray-500">{'🚚 경매 데이터를 불러오는 중입니다...'}</span>
+            </div>
+          }
+        >
+          <LatestListSection />
+        </Suspense>
+      </AuctionErrorBoundary>
+    </PageContainer>
   );
 };
 export default MainPage;

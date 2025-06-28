@@ -22,7 +22,7 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
   const episodesCount = auction.episodes && auction.episodes.length > 0 ? auction.episodes.length : 0;
 
   return (
-    <li>
+    <li className="border-b border-(--color-warm-gray)/30 last:border-b-0">
       <Link
         href={`/auctions/${auction.auction_id}`}
         className="flex cursor-pointer items-center p-3 transition-colors hover:bg-(--color-secondary)"

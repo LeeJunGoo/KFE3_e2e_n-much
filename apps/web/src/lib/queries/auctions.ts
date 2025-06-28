@@ -68,22 +68,3 @@ export const fetchDeleteAuction = async (auction_id: string) => {
 
   return data.status;
 };
-
-//NOTE - 경매 데이터 마감 임박, 인기순, 최신순
-export const fetchSortedAuctions = async (order: string, count: number) => {
-  const res = await fetch(`http://localhost:3001/api/auctions?orderParam=${order}&count=${count}`);
-
-  if (!res.ok) {
-    const errorData = await res.json();
-
-    if (res.status === 400) {
-      console.log(errorData.message);
-    }
-
-    throw new Error('경매 데이터를 불러오는 과정에서 네트워크 에러가 발생했습니다.');
-  }
-
-  const data: SortedAuctionsType = await res.json();
-
-  return data.data;
-};
