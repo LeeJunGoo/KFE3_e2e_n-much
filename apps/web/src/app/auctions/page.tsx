@@ -1,6 +1,7 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import AuctionList from 'src/components/auctions/AuctionList';
 import SelectOrder from 'src/components/auctions/SelectOrder';
+import PageContainer from 'src/components/layout/PageContainer';
 import { fetchAllAuctionWithEpisodeCount } from 'src/lib/queries/auctions';
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
@@ -18,7 +19,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   });
 
   return (
-    <>
+    <PageContainer>
       <div className="mb-4 flex w-full justify-between">
         <p className="text-lg font-semibold text-[#1F1F25]">경매 리스트</p>
         <SelectOrder order={order} />
@@ -26,6 +27,6 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
       <HydrationBoundary state={dehydrate(queryClient)}>
         <AuctionList order={order} />
       </HydrationBoundary>
-    </>
+    </PageContainer>
   );
 }
