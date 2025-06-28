@@ -104,6 +104,7 @@ const SearchBar = () => {
           </div>
         </div>
         {/* DB 테이블 추가 필요 */}
+        {/* 
         <div data-role="popular_keywords_section">
           <h3 className="mb-3 text-base font-medium">인기 검색어</h3>
           <div className="grid grid-cols-2 gap-2">
@@ -117,13 +118,14 @@ const SearchBar = () => {
                     </div>
                     <div className="flex items-center">
                       <FaCaretUp className="mr-1 text-[#65BA84]" />
-                      {/* <FaCaretDown className="text-[#D84A5F]" /> */}
+                      <FaCaretDown className="text-[#D84A5F]" />
                     </div>
                   </div>
                 );
               })}
           </div>
         </div>
+         */}
       </div>
     </div>
   );
