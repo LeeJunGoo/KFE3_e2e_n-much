@@ -18,8 +18,13 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
   const diffDay = differenceInHours(now, auctionTime);
   const remainTime = formatDistanceToNow(auctionTime, { addSuffix: true });
 
-  const favoritesCount = auction.favorites && auction.favorites.length > 0 ? auction.favorites.length : 0;
-  const episodesCount = auction.episodes && auction.episodes.length > 0 ? auction.episodes.length : 0;
+  const favoritesCount = auction.favorites?.length || 0;
+  const episodesCount = auction.episodes?.length || 0;
+
+  const isUrgent = auction.status === 'OPEN' && -24 < diffDay && diffDay < 0;
+  const badgeColor = isUrgent
+    ? 'bg-[var(--color-red)] hover:bg-[var(--color-red)]'
+    : 'bg-[var(--color-accent)] hover:bg-[var(--color-accent)]';
 
   return (
     <li className="border-b border-(--color-warm-gray)/30 last:border-b-0">
@@ -27,32 +32,23 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
         href={`/auctions/${auction.auction_id}`}
         className="flex cursor-pointer items-center p-3 transition-colors hover:bg-(--color-secondary)"
       >
-        <div className="relative h-20 w-20">
-          <Image src={auctionImage!} alt={auction.title} fill className="mr-3 rounded-lg object-contain" />
+        <div className="relative mr-3 h-20 w-20 flex-shrink-0">
+          <Image src={auctionImage!} alt={auction.title} fill sizes="80px" className="rounded-lg object-contain" />
         </div>
+
         <div className="ml-2 flex-1">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="mr-2 flex-1 font-medium text-[#1F1F25]">{auction.title}</h3>
+              <h3 className="mr-2 flex-1 font-medium">{auction.title}</h3>
             </div>
-
-            <Badge
-              className={`${
-                auction.status === 'OPEN' && -24 < diffDay && diffDay < 0
-                  ? 'bg-[#D84A5F] hover:bg-[#D84A5F]'
-                  : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
-              } px-2 py-1 font-normal text-white`}
-            >
-              {remainTime}
-            </Badge>
+            <Badge className={`${badgeColor} px-2 py-1 font-normal`}>{remainTime}</Badge>
           </div>
-          <div className="mt-2 flex items-center gap-3 text-sm text-[#B8B8B8]">
+          <div className="mt-2 flex items-center gap-3 text-sm text-(--color-warm-gray)">
             <div className="flex items-center gap-3">
               <i className="flex items-center gap-1">
                 <FaHeart className="mr-1 text-sm text-(--color-red)" />
                 <span>{favoritesCount}</span>
               </i>
-
               <i className="flex items-center gap-1">
                 <FaBookOpen className="text-sm text-(--color-primary)" />
                 <span>{episodesCount}</span>

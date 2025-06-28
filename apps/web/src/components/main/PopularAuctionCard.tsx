@@ -23,13 +23,10 @@ const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => 
             className="object-cover"
           />
 
-          {/* --- [수정] 밝은 검정색 그라디언트 오버레이 --- */}
           <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/70 to-transparent" />
 
           <div className="absolute bottom-0 left-0 w-full p-3 text-white">
             <h3 className="line-clamp-2 text-sm font-medium">{auction.title}</h3>
-            {/* <address className="max-w-[65%] truncate">{address}</address> */}
-            {/* <address className="mt-1 max-w-[71%] truncate text-xs not-italic">{auction.address[0]}</address> */}
             <div className="mt-2 flex items-center gap-3 text-xs">
               <i className="flex items-center gap-1 not-italic">
                 <FaHeart className="mr-1 text-sm text-red-500" />

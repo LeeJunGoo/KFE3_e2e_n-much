@@ -46,14 +46,14 @@ export default function AuctionCard({
     <li className="!rounded-button overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]">
       <Link href={`/auctions/${auction_id}`}>
         <div className="relative">
-          <div className="h-40 w-full">
+          <div className="relative h-40 w-full">
             {imageSrc ? (
               <Image
                 src={imageSrc}
                 fill
                 alt={`${title} 이미지`}
                 className="object-cover"
-                sizes="(min-width: 768px) 390px, 100vw"
+                sizes="(min-width: 768px) 400px, 100vw"
               />
             ) : (
               <p>이미지 없음</p>
@@ -74,7 +74,7 @@ export default function AuctionCard({
           <h3 className="mb-1.5 overflow-hidden text-sm font-medium text-ellipsis text-[#1F1F25]">{title}</h3>
           <div className="mb-2 flex items-center justify-between text-xs text-(--color-warm-gray)">
             <address className="max-w-[65%] truncate">{address}</address>
-            <span className="font-semibold text-(--color-warm-gray)">{formatNumber(currentPoint)}&nbsp;P</span>
+            <span className="font-semibold text-(--color-accent)">{formatNumber(currentPoint)}&nbsp;P</span>
           </div>
           <div className="flex items-center justify-between text-xs text-(--color-warm-gray)">
             <div className="flex items-center">
