@@ -1,16 +1,18 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useRecentKeywords from 'src/hooks/useRecentKeywords';
 import usePopularKeywords from 'src/hooks/usePopularKeywords';
+import { useAuctionsStore } from 'src/store/AuctionsStore';
 import { getAuctionsByKeyword } from 'src/lib/supabase/query/auctions';
 import { Button } from '@repo/ui/components/ui/button';
 import { IoCloseOutline } from 'react-icons/io5';
 import { FaSearch } from 'react-icons/fa';
-import { FaCaretUp } from 'react-icons/fa';
+// import { FaCaretUp } from 'react-icons/fa';
 // import { FaCaretDown } from 'react-icons/fa';
 
 const SearchBar = () => {
   const [keyword, setKeyword] = useState('');
+  const { setAuctions } = useAuctionsStore();
 
   // 최근 검색어 커스텀 훅
   const { recentKeywords, insert, remove, clear } = useRecentKeywords();
@@ -32,8 +34,9 @@ const SearchBar = () => {
     // 공백으로 인한 버그 막기(로컬스토리지에는 공백 포함해서 저장된 keyword가 UI에서는 공백 없이 보여짐, 중복 발생)
     const trimmedKeyword = paramKeyword.trim();
     if (!trimmedKeyword) return;
-    const dataList = await getAuctionsByKeyword(trimmedKeyword);
-    console.log('검색 결과: ', dataList);
+    const newActions = await getAuctionsByKeyword(trimmedKeyword);
+    // DB에서 가져온 검색 결과를 store에 저장
+    setAuctions(newActions);
     // 최근 검색어 추가
     insert(trimmedKeyword);
     setKeyword('');
