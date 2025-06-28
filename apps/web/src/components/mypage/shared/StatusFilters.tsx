@@ -1,5 +1,5 @@
-import { AUCTION_TAB_FILTERS } from 'src/constants/mypage';
-import FilterListItem from '../FilterListItem';
+import { STORY_CONFIG } from 'src/constants/mypage';
+import FilterListItem from './FilterListItem';
 import type { TabKey } from 'src/types/mypage';
 
 interface AuctionStatusFiltersProps {
@@ -8,8 +8,8 @@ interface AuctionStatusFiltersProps {
   onFilterChange: (filter: string) => void;
 }
 
-const AuctionStatusFilters = ({ tab, activeFilter, onFilterChange }: AuctionStatusFiltersProps) => {
-  const filters = AUCTION_TAB_FILTERS[tab];
+const StatusFilters = ({ tab, activeFilter, onFilterChange }: AuctionStatusFiltersProps) => {
+  const filters = STORY_CONFIG.tabFilters[tab];
   const statusStyles = 'px-3 text-xs';
 
   return (
@@ -29,4 +29,4 @@ const AuctionStatusFilters = ({ tab, activeFilter, onFilterChange }: AuctionStat
   );
 };
 
-export default AuctionStatusFilters;
+export default StatusFilters;

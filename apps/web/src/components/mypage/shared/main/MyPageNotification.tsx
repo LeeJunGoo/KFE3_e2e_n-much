@@ -1,35 +1,41 @@
 import { Button } from '@repo/ui/components/ui/button';
-import { MdInfoOutline } from 'react-icons/md';
+import { MdInfoOutline, MdLightbulb } from 'react-icons/md';
+import Link from 'next/link';
 import ListCard from '../../../common/ui/ListCard';
+import { mockStoryData } from 'src/constants/mypage/mockData';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const MyPageNotification = ({ role }: UserRoleDataProps) => {
+  const biddingCount = mockStoryData.filter((story) => story.status === 'bidding').length;
+
   return (
     <ListCard as="section" className="mt-6 w-full">
       <div className="mb-3 flex items-center gap-3">
         <div className="flex size-10 items-center justify-center rounded-full bg-(--color-secondary)">
-          <MdInfoOutline className="size-5 text-(--color-accent)" />
+          {role === 'BIDDER' ? (
+            <MdInfoOutline className="size-5 text-(--color-accent)" />
+          ) : (
+            <MdLightbulb className="size-5 text-(--color-accent)" />
+          )}
         </div>
-        <h3 className="font-medium">알림</h3>
+        <h3 className="font-medium">{role === 'BIDDER' ? '알림' : '팁'}</h3>
       </div>
+
       {role === 'BIDDER' ? (
         <>
           <p className="text-sm leading-relaxed text-(--color-warm-gray)">
-            현재 참여 중인 스토리가 2건 있습니다. 종료 시간을 확인해 주세요.
+            현재 참여 중인 스토리가 {biddingCount}건 있습니다. 종료 시간을 확인해 주세요.
           </p>
-          <Button variant="base" className="mt-3 w-full">
-            스토리 확인하기
-          </Button>
+          <Link href="/mypage/episodes?tab=ongoing&filter=입찰중">
+            <Button variant="base" className="mt-3 w-full">
+              스토리 확인하기
+            </Button>
+          </Link>
         </>
       ) : (
-        <>
-          <p className="text-sm leading-relaxed text-(--color-warm-gray)">
-            현재 작성하신 경매가 2건 있습니다. 종료 시간을 확인해 주세요.
-          </p>
-          <Button variant="base" className="mt-3 w-full">
-            경매 확인하기
-          </Button>
-        </>
+        <p className="text-sm leading-relaxed text-(--color-warm-gray)">
+          경매 제목을 구체적으로 작성하면 더 많은 입찰자를 유치할 수 있어요!
+        </p>
       )}
     </ListCard>
   );

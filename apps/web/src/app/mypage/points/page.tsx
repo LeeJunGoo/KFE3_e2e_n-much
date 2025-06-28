@@ -1,14 +1,26 @@
+'use client';
+import { useState } from 'react';
 import PageHeader from 'src/components/common/ui/PageHeader';
 import SectionHeader from 'src/components/common/ui/SectionHeader';
 import PageContainer from 'src/components/layout/PageContainer';
 import SectionCard from 'src/components/common/ui/SectionCard';
 import TransactionSection from 'src/components/mypage/points/TransactionSection';
+import MyPointFiltersSection from 'src/components/mypage/points/MyPointFiltersSection';
 import { activities } from 'src/constants/mypage/mockData';
 import PointOverview from 'src/components/mypage/shared/points/PointOverview';
-import DateRangeFilter from 'src/components/mypage/shared/points/DateRangeFilter';
-import ActivityTypeFilter from 'src/components/mypage/shared/points/ActivityTypeFilter';
+import { filterActivities } from 'src/utils/mypage/pointFilters';
 
 const MyPoints = () => {
+  const [periodFilter, setPeriodFilter] = useState('전체');
+  const [typeFilter, setTypeFilter] = useState('전체');
+
+  const filteredActivities = filterActivities(activities, periodFilter, typeFilter);
+
+  const handleFiltersChange = (period: string, type: string) => {
+    setPeriodFilter(period);
+    setTypeFilter(type);
+  };
+
   return (
     <>
       <PageHeader>포인트 사용 내역</PageHeader>
@@ -17,11 +29,9 @@ const MyPoints = () => {
           <SectionHeader className="mb-1 text-sm font-normal">현재 보유 포인트</SectionHeader>
           <PointOverview />
         </SectionCard>
-        <nav className="mt-6">
-          <DateRangeFilter />
-          <ActivityTypeFilter />
-        </nav>
-        <TransactionSection activities={activities} />
+
+        <MyPointFiltersSection onFiltersChange={handleFiltersChange} />
+        <TransactionSection activities={filteredActivities} />
       </PageContainer>
     </>
   );

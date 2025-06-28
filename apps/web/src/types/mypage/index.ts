@@ -1,8 +1,10 @@
-import { AUCTION_TAB_FILTERS, BID_STATUS_LABEL } from 'src/constants/mypage';
 import { AuctionRow, BuyerInsert, EpisodeRow, SellerInsert } from 'src/lib/supabase/type';
 
-// export type MyPageUserInfo = UserRow;
+// =====================================================
+// 🏷️ 기본 타입들
+// =====================================================
 export type MyCreatedAuctions = AuctionRow[];
+
 export type MyBidAuctions = (EpisodeRow & {
   auction: AuctionRow;
 })[];
@@ -16,15 +18,21 @@ export type MyPageMenuItem = {
   href: string;
 };
 
-//조건 분기 처리
 export interface UserRoleDataProps {
   role: 'BIDDER' | 'AUCTIONEER';
 }
 
-//내 경매 현황 page
-export type TabKey = keyof typeof AUCTION_TAB_FILTERS;
+// =====================================================
+// 🎯 상태 & 탭 타입들
+// =====================================================
+export type TabKey = 'ongoing' | 'closed';
+export type AuctionStatus = 'bidding' | 'pending' | 'completed' | 'failed' | 'ended';
 
-//mock data (제거용)
+// =====================================================
+// 📦 아이템 인터페이스들
+// =====================================================
+
+// 경매 아이템
 export interface AuctionItem {
   id: string;
   title: string;
@@ -35,51 +43,42 @@ export interface AuctionItem {
   myBidAmount?: number;
 }
 
-export type AuctionStatus = 'bidding' | 'winning' | 'won' | 'lost';
+// 포인트 활동
+type PointActivity = {
+  type: 'charge' | 'purchase' | 'event' | 'signup';
+  title: string;
+  date: string;
+  amount: number;
+};
 
-export interface AuctionTabsContentProps {
-  tab: 'ongoing' | 'closed';
-  data: AuctionItem[];
-}
-
-export interface AuctionListItemProps {
-  item: AuctionItem;
-}
-
-//NOTE - 삭제 예정
-export type AuctionActivity = {
+// 경매 활동
+type AuctionActivity = {
   type: 'auction';
   title: string;
   date: string;
-  status: keyof typeof BID_STATUS_LABEL;
+  status: AuctionStatus;
+  myBidAmount?: number;
 };
 
-export type PointActivity = {
-  type: 'point';
-  title: string;
-  date: string;
-  amount: number;
-};
+// 통합 활동 타입
+export type Activity = AuctionActivity | PointActivity;
 
-export type SignupActivity = {
-  type: 'signup';
-  title: string;
-  date: string;
-  amount: number;
-};
-
-export type EventActivity = {
-  type: 'event';
-  title: string;
-  date: string;
-  amount: number;
-};
-
-export type Activity = AuctionActivity | PointActivity | SignupActivity | EventActivity;
+// =====================================================
+// 🎨 컴포넌트 Props들
+// =====================================================
+export interface MyAuctionListItemProps {
+  item: AuctionItem;
+}
 
 export type ActivityListItemProps = {
   activity: Activity;
 };
-/** ---------------------------------- */
 
-export type ActivityType = 'all' | 'auction' | 'point' | 'use' | 'event' | 'participation' | 'signup';
+export interface TabsHeaderProps {
+  tab: TabKey;
+}
+
+export interface TabsContentProps<T = AuctionItem> {
+  tab: TabKey;
+  data: T[];
+}

@@ -1,20 +1,17 @@
-import { AUCTION_STATUS_LABELS } from 'src/constants/mypage';
+import { STATUS_LABELS } from 'src/constants/mypage';
 import { AuctionItem, AuctionStatus, TabKey } from 'src/types/mypage';
 
-//Status 객체 매핑
-export const AUCTION_STATUS_LABEL_MAP: Record<string, keyof typeof AUCTION_STATUS_LABELS> = Object.entries(
-  AUCTION_STATUS_LABELS
-).reduce(
+// 객체 매핑
+export const STATUS_LABEL_MAP: Record<string, keyof typeof STATUS_LABELS> = Object.entries(STATUS_LABELS).reduce(
   (acc, [key, label]) => {
-    acc[label] = key as keyof typeof AUCTION_STATUS_LABELS;
+    acc[label] = key as keyof typeof STATUS_LABELS;
     return acc;
   },
-  {} as Record<string, keyof typeof AUCTION_STATUS_LABELS>
+  {} as Record<string, keyof typeof STATUS_LABELS>
 );
 
-export const filterAuctionsByTab = (auctions: AuctionItem[], tab: TabKey): AuctionItem[] => {
+export const filterByTabKey = (auctions: AuctionItem[], tab: TabKey): AuctionItem[] => {
   const now = new Date();
-
   if (tab === 'ongoing') {
     // 진행 중인 경매 (종료일이 현재보다 미래)
     return auctions.filter((auction) => new Date(auction.endDate) > now);
@@ -24,11 +21,11 @@ export const filterAuctionsByTab = (auctions: AuctionItem[], tab: TabKey): Aucti
   }
 };
 
-export const filterAuctionsByStatus = (auctions: AuctionItem[], filter: string): AuctionItem[] => {
-  if (filter === '전체') return auctions;
+export const filterByStatusLabel = <T extends { status: string }>(items: T[], filter: string): T[] => {
+  if (filter === '전체') return items;
 
-  const statusKey = AUCTION_STATUS_LABEL_MAP[filter] as AuctionStatus;
-  if (!statusKey) return auctions;
+  const statusKey = STATUS_LABEL_MAP[filter] as AuctionStatus;
+  if (!statusKey) return items;
 
-  return auctions.filter((auction) => auction.status === statusKey);
+  return items.filter((item) => item.status === statusKey);
 };

@@ -1,0 +1,67 @@
+import { FaChevronRight, FaGavel } from 'react-icons/fa6';
+import { Badge } from '@repo/ui/components/ui/badge';
+import type { StoryItem } from 'src/utils/mypage/storyFilters';
+
+interface MyStoryListItemProps {
+  item: StoryItem;
+}
+
+const MyStoryListItem = ({ item }: MyStoryListItemProps) => {
+  const { title, createdAt, status, prize } = item;
+
+  // 상태별 Badge variant
+  const getVariant = (status: string) => {
+    switch (status) {
+      case 'bidding':
+        return 'warning';
+      case 'pending':
+        return 'info';
+      case 'completed':
+        return 'success';
+      case 'failed':
+        return 'error';
+      case 'ended':
+        return 'muted';
+      default:
+        return 'muted';
+    }
+  };
+
+  const getStatusText = (status: string) => {
+    switch (status) {
+      case 'bidding':
+        return '입찰중';
+      case 'pending':
+        return '낙찰예정';
+      case 'completed':
+        return '낙찰완료';
+      case 'failed':
+        return '유찰';
+      case 'ended':
+        return '종료됨';
+      default:
+        return status;
+    }
+  };
+
+  return (
+    <>
+      <div className="flex flex-1 flex-col gap-1">
+        <div className="flex items-center justify-between">
+          <h3 className="text-base font-medium">{title}</h3>
+          <Badge variant={getVariant(status)}>{getStatusText(status)}</Badge>
+        </div>
+        <p className="text-sm text-(--color-warm-gray)">작성일: {createdAt}</p>
+        <div className="mt-2 rounded-lg bg-(--color-secondary) p-3 transition-colors duration-200 group-hover:bg-(--color-accent)/30">
+          <p className="flex items-center gap-2 text-sm text-(--color-accent) transition-all duration-200 group-hover:text-white">
+            <FaGavel />
+            <span>{prize}</span>
+          </p>
+        </div>
+      </div>
+      <FaChevronRight className="mt-1 ml-3 text-(--color-warm-gray)" />
+    </>
+  );
+};
+
+export default MyStoryListItem;

@@ -1,6 +1,6 @@
 import PageHeader from 'src/components/common/ui/PageHeader';
 import PageContainer from 'src/components/layout/PageContainer';
-import AuctionTabsSection from 'src/components/mypage/shared/auctions/AuctionTabsSection';
+import AuctionTabsSection from 'src/components/mypage/shared/auctions/MyAuctionTabsSection';
 
 const MyAuctions = () => {
   return (

@@ -1,6 +1,7 @@
 import { ROLE_LABEL } from 'src/constants/mypage';
 import RoleBadge from './RoleBadge';
 import SectionCard from '../../../common/ui/SectionCard';
+import { formatNumber } from 'src/utils/formatNumber';
 import type { UserRoleDataProps } from 'src/types/mypage';
 
 const UserProfileCard = ({ role }: UserRoleDataProps) => {
@@ -23,7 +24,7 @@ const UserProfileCard = ({ role }: UserRoleDataProps) => {
         <div className="flex items-center justify-between">
           <p className="text-sm">보유 포인트</p>
           <div className="flex items-baseline gap-1">
-            <span className="text-lg font-bold text-(--color-accent)">2,230</span>
+            <span className="text-lg font-bold text-(--color-accent)">{formatNumber(2230)}</span>
             <span className="font-medium text-(--color-accent)">P</span>
           </div>
         </div>

@@ -1,18 +1,17 @@
 import { createLabelBadge } from './LabelBadge';
-import {
-  BID_STATUS_LABEL,
-  AUCTION_STATUS_LABELS,
-  BID_STATUS_VARIANTS,
-  AUCTION_STATUS_VARIANTS
-} from 'src/constants/mypage';
+import { STATUS_LABELS, STATUS_VARIANTS } from 'src/constants/mypage';
 
-export type BidStatusType = keyof typeof BID_STATUS_LABEL;
-export type AuctionStatusType = keyof typeof AUCTION_STATUS_LABELS;
+export type StatusType = keyof typeof STATUS_LABELS;
 
-export const BidStatusBadge = createLabelBadge<BidStatusType>(BID_STATUS_VARIANTS, BID_STATUS_LABEL);
+export const StatusBadge = createLabelBadge<StatusType>(STATUS_VARIANTS, STATUS_LABELS);
+StatusBadge.displayName = 'StatusBadge';
 
-BidStatusBadge.displayName = 'BidStatusBadge';
+/*
+<StatusBadge status="bidding" />    // 입찰중 (warning)
+<StatusBadge status="pending" />    // 낙찰예정 (info)
+<StatusBadge status="completed" />  // 낙찰완료 (success)
+<StatusBadge status="failed" />     // 유찰 (error)
+<StatusBadge status="ended" />      // 종료됨 (muted)
+*/
 
-export const AuctionStatusBadge = createLabelBadge<AuctionStatusType>(AUCTION_STATUS_VARIANTS, AUCTION_STATUS_LABELS);
-
-AuctionStatusBadge.displayName = 'AuctionStatusBadge';
+export default StatusBadge;
