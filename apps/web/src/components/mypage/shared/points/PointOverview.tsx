@@ -1,13 +1,21 @@
 import { formatNumber } from 'src/utils/formatNumber';
+import { useGetUserInfo } from 'src/hooks/queries/useUsers';
 
 const PointOverview = () => {
+  const { data: userInfo } = useGetUserInfo();
+  const currentPoint = userInfo?.userInfo?.point ?? 0;
+  const lastUpdated = userInfo?.userInfo?.updated_at;
+
+  // 날짜 포맷팅 변수로 분리 (리팩토링 예정)
+  const formattedDate = lastUpdated ? new Date(lastUpdated).toLocaleDateString('ko-KR') : '정보 없음';
+
   return (
     <>
       <p className="mb-2 flex items-center gap-1 text-(--color-accent)">
-        <span className="text-3xl font-bold">{formatNumber(2230)}</span>
+        <span className="text-3xl font-bold">{formatNumber(currentPoint)}</span>
         <span className="text-xl font-medium">P</span>
       </p>
-      <p className="text-xs text-(--color-warm-gray)">마지막 업데이트 : 2025년 6월 27일</p>
+      <p className="text-xs text-(--color-warm-gray)">마지막 업데이트: {formattedDate}</p>
     </>
   );
 };

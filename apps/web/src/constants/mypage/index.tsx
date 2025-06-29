@@ -1,7 +1,7 @@
 import { IconType } from 'react-icons';
 import { FaGavel, FaCoins, FaCartShopping, FaGift, FaUserPlus } from 'react-icons/fa6';
 import { HiDocumentText } from 'react-icons/hi';
-import type { MyPageMenuItem } from 'src/types/mypage';
+import type { BadgeVariant, MyPageMenuItem } from 'src/types/mypage';
 
 // =====================================================
 // 🏷️ 기본 라벨들
@@ -39,12 +39,12 @@ export const SELLER_MENU: MyPageMenuItem[] = [
     label: '포인트 사용 내역',
     icon: <FaCoins className="text-(--color-accent)" />,
     href: '/mypage/points'
-  },
-  {
-    label: '주소 확인',
-    icon: <HiDocumentText className="size-5 text-(--color-accent)" />,
-    href: '/mypage/'
   }
+  // {
+  //   label: '주소 확인',
+  //   icon: <HiDocumentText className="size-5 text-(--color-accent)" />,
+  //   href: '/mypage/'
+  // }
 ];
 
 // =====================================================
@@ -53,20 +53,14 @@ export const SELLER_MENU: MyPageMenuItem[] = [
 
 // 상태 라벨 (경매 & 스토리 공통 사용)
 export const STATUS_LABELS = {
-  bidding: '입찰중',
-  pending: '낙찰예정',
-  completed: '낙찰완료',
-  failed: '유찰',
-  ended: '종료됨'
-} as const;
+  OPEN: '진행중',
+  CLOSED: '종료됨'
+};
 
 // Badge variant (상태별 색상)
-export const STATUS_VARIANTS = {
-  bidding: 'warning',
-  pending: 'info',
-  completed: 'success',
-  failed: 'error',
-  ended: 'muted'
+export const STATUS_VARIANTS: Record<string, BadgeVariant> = {
+  OPEN: 'info',
+  CLOSED: 'muted'
 } as const;
 
 // =====================================================
@@ -116,7 +110,7 @@ export const CHARGE_FILTER_CONFIG = {
     charge: '충전',
     use: '사용'
   }
-} as const;
+};
 
 // =====================================================
 // 🎨 활동 아이콘 & 사이즈 (ActivityItem용)

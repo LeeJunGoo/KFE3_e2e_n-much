@@ -145,9 +145,9 @@ export const getUserInfo = async () => {
 
     // 둘 다 없으면 임시 데이터 반환 (개발용)
     return {
-      role: 'BUYER' as const,
+      role: 'SELLER' as const,
       userInfo: {
-        buyer_id: userId,
+        seller_id: userId,
         email: user.email || '',
         social_name: user.user_metadata?.name || '',
         nickname: null,

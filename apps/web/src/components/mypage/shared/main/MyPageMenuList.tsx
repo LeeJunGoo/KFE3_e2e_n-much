@@ -1,5 +1,5 @@
 import BuyerMenuListItem from '../../buyer/BuyerMenuListItem';
-import SellerMenuListItem from '../../auctioneer/SellerMenuListItem';
+import SellerMenuListItem from '../../seller/SellerMenuListItem';
 import { SELLER_MENU, BUYER_MENU } from 'src/constants/mypage';
 import type { MenuRoleProps } from 'src/types/mypage';
 

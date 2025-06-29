@@ -6,15 +6,17 @@ import PageContainer from 'src/components/layout/PageContainer';
 import SectionCard from 'src/components/common/ui/SectionCard';
 import TransactionSection from 'src/components/mypage/points/TransactionSection';
 import MyPointFiltersSection from 'src/components/mypage/points/MyPointFiltersSection';
-import { activities } from 'src/constants/mypage/mockData';
 import PointOverview from 'src/components/mypage/shared/points/PointOverview';
 import { filterActivities } from 'src/utils/mypage/pointFilters';
+import { useGetUserPointTransactions } from 'src/hooks/queries/usePoints';
 
 const MyPoints = () => {
   const [periodFilter, setPeriodFilter] = useState('전체');
   const [typeFilter, setTypeFilter] = useState('전체');
 
-  const filteredActivities = filterActivities(activities, periodFilter, typeFilter);
+  const { data: pointTransactions = [] } = useGetUserPointTransactions();
+
+  const filteredActivities = filterActivities(pointTransactions, periodFilter, typeFilter);
 
   const handleFiltersChange = (period: string, type: string) => {
     setPeriodFilter(period);
@@ -29,7 +31,6 @@ const MyPoints = () => {
           <SectionHeader className="mb-1 text-sm font-normal">현재 보유 포인트</SectionHeader>
           <PointOverview />
         </SectionCard>
-
         <MyPointFiltersSection onFiltersChange={handleFiltersChange} />
         <TransactionSection activities={filteredActivities} />
       </PageContainer>

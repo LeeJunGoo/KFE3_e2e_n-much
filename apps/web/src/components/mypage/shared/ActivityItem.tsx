@@ -1,22 +1,21 @@
 import { twMerge } from 'tailwind-merge';
 import { FaCoins, FaCartShopping, FaGift, FaUserPlus, FaGavel } from 'react-icons/fa6';
-import type { Activity } from 'src/types/mypage';
+import type { PointRow } from 'src/lib/supabase/type';
 
 type ActivityItemProps = {
-  activity: Activity;
+  activity: PointRow;
   size?: 'sm' | 'md';
 };
 
 const ActivityItem = ({ activity, size = 'sm' }: ActivityItemProps) => {
-  const { title, date, type } = activity;
+  const { title, created_at, type } = activity;
 
-  // 아이콘 매핑 (MdAuction → FaGavel로 변경)
   const getIcon = (activityType: string) => {
     switch (activityType) {
       case 'charge':
         return FaCoins;
       case 'auction':
-        return FaGavel; // 경매 아이콘
+        return FaGavel;
       case 'purchase':
         return FaCartShopping;
       case 'event':
@@ -38,6 +37,12 @@ const ActivityItem = ({ activity, size = 'sm' }: ActivityItemProps) => {
   const Icon = getIcon(type);
   const styles = getSizeStyles(size);
 
+  // 삭제 예정 (임시)
+  const formatDate = (dateString: string | null) => {
+    if (!dateString) return '날짜 없음';
+    return new Date(dateString).toLocaleDateString('ko-KR');
+  };
+
   return (
     <div className={twMerge('flex items-center', styles.gap)}>
       <div
@@ -47,7 +52,7 @@ const ActivityItem = ({ activity, size = 'sm' }: ActivityItemProps) => {
       </div>
       <div className="flex flex-col">
         <h4 className="text-sm font-medium">{title}</h4>
-        <time className="text-xs text-(--color-warm-gray)">{date}</time>
+        <time className="text-xs text-(--color-warm-gray)">{formatDate(created_at)}</time>
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
 import ListCard from 'src/components/common/ui/ListCard';
 import PointSummary from '../shared/points/PointSummary';
 import ActivityItem from '../shared/ActivityItem';
-import type { Activity } from 'src/types/mypage';
+import { PointRow } from 'src/lib/supabase/type';
 
 interface TransactionHistoryListProps {
-  activities: Activity[];
+  activities: PointRow[];
 }
 
 const TransactionHistoryList = ({ activities }: TransactionHistoryListProps) => {

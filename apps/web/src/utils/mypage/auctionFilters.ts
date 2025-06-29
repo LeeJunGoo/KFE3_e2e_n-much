@@ -1,5 +1,6 @@
 import { STATUS_LABELS } from 'src/constants/mypage';
-import { AuctionItem, AuctionStatus, TabKey } from 'src/types/mypage';
+import { AuctionRow } from 'src/lib/supabase/type';
+import { AuctionStatus, TabKey } from 'src/types/mypage';
 
 // 객체 매핑
 export const STATUS_LABEL_MAP: Record<string, keyof typeof STATUS_LABELS> = Object.entries(STATUS_LABELS).reduce(
@@ -10,14 +11,13 @@ export const STATUS_LABEL_MAP: Record<string, keyof typeof STATUS_LABELS> = Obje
   {} as Record<string, keyof typeof STATUS_LABELS>
 );
 
-export const filterByTabKey = (auctions: AuctionItem[], tab: TabKey): AuctionItem[] => {
-  const now = new Date();
+export const filterByTabKey = (auctions: AuctionRow[], tab: TabKey): AuctionRow[] => {
   if (tab === 'ongoing') {
-    // 진행 중인 경매 (종료일이 현재보다 미래)
-    return auctions.filter((auction) => new Date(auction.endDate) > now);
+    // 진행 중인 경매 (OPEN 상태)
+    return auctions.filter((auction) => auction.status === 'OPEN');
   } else {
-    // 종료된 경매 (종료일이 현재보다 과거)
-    return auctions.filter((auction) => new Date(auction.endDate) <= now);
+    // 종료된 경매 (CLOSED 상태)
+    return auctions.filter((auction) => auction.status === 'CLOSED');
   }
 };
 

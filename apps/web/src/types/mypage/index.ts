@@ -1,8 +1,11 @@
+import { badgeVariants } from '@repo/ui/components/ui/badge';
+import { VariantProps } from 'class-variance-authority';
 import { AuctionRow, BuyerInsert, BuyerRow, EpisodeRow, SellerInsert, SellerRow } from 'src/lib/supabase/type';
 
 // =====================================================
 // 🏷️ 기본 타입들
 // =====================================================
+export type BadgeVariant = VariantProps<typeof badgeVariants>['variant'];
 export type MyCreatedAuctions = AuctionRow[];
 
 export type MyBidAuctions = (EpisodeRow & {
@@ -77,7 +80,7 @@ export type Activity = AuctionActivity | PointActivity;
 // 🎨 컴포넌트 Props들
 // =====================================================
 export interface MyAuctionListItemProps {
-  item: AuctionItem;
+  item: AuctionRow;
 }
 
 export type ActivityListItemProps = {

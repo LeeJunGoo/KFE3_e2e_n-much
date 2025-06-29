@@ -219,6 +219,39 @@ export type Database = {
         }
         Relationships: []
       }
+      points: {
+        Row: {
+          amount: number
+          balance: number
+          created_at: string | null
+          description: string | null
+          title: string
+          transaction_id: string
+          type: string
+          user_id: string | null
+        }
+        Insert: {
+          amount: number
+          balance: number
+          created_at?: string | null
+          description?: string | null
+          title: string
+          transaction_id?: string
+          type: string
+          user_id?: string | null
+        }
+        Update: {
+          amount?: number
+          balance?: number
+          created_at?: string | null
+          description?: string | null
+          title?: string
+          transaction_id?: string
+          type?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       sellers: {
         Row: {
           avatar: string | null

@@ -2,16 +2,23 @@
 import { Tabs } from '@repo/ui/components/ui/tabs';
 import MyTabsHeader from '../MyTabsHeader';
 import MyTabsContent from '../MyTabsContent';
-import MyAuctionListItem from './MyAuctionListItem'; // 추가!
+import MyAuctionListItem from './MyAuctionListItem';
 import { useState } from 'react';
 import { filterByTabKey } from 'src/utils/mypage/auctionFilters';
-import { MOCK_AUCTION_DATA } from 'src/constants/mypage/mockData';
 import { TAB_LABELS } from 'src/constants/mypage';
+import { useGetSellerAuctions } from 'src/hooks/queries/useAuctions';
 import type { TabKey } from 'src/types/mypage';
 
 const MyAuctionTabsSection = () => {
   const [tabValue, setTabValue] = useState<TabKey>('ongoing');
-  const filteredAuctions = filterByTabKey(MOCK_AUCTION_DATA, tabValue);
+  const { data: sellerAuctions = [] } = useGetSellerAuctions();
+
+  const filteredAuctions = filterByTabKey(sellerAuctions, tabValue);
+
+  const transformedAuctions = filteredAuctions.map((auction) => ({
+    ...auction,
+    id: auction.auction_id // auction_id를 id로 매핑
+  }));
 
   const handleTabChange = (value: string) => {
     setTabValue(value as TabKey);
@@ -23,7 +30,7 @@ const MyAuctionTabsSection = () => {
         <MyTabsHeader tabLabels={TAB_LABELS} />
         <MyTabsContent
           tab={tabValue}
-          data={filteredAuctions}
+          data={transformedAuctions}
           renderItem={(item) => <MyAuctionListItem item={item} />}
           itemClassName="mb-4"
           emptyMessage={{
