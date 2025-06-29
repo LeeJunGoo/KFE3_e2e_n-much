@@ -4,6 +4,7 @@ import './globals.css';
 import TabBar from '../components/layout/TabBar';
 import Header from 'src/components/layout/Header';
 import { pretendard } from 'assets/fonts';
+import AppProvider from 'src/providers/AppProvider';
 
 export const metadata = home;
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           {children}
           <TabBar />
+          <AppProvider />
         </QueryProvider>
       </body>
     </html>
