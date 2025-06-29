@@ -3,8 +3,11 @@ import { MdInfoOutline, MdLightbulb } from 'react-icons/md';
 import Link from 'next/link';
 import ListCard from '../../../common/ui/ListCard';
 import type { MenuRoleProps } from 'src/types/mypage';
+import { useGetUserBiddingCount } from 'src/hooks/queries/useEpisodes';
 
 const MyPageNotification = ({ role }: MenuRoleProps) => {
+  const { data: biddingCount = 0 } = useGetUserBiddingCount();
+
   return (
     <ListCard as="section" className="mt-6 w-full">
       <div className="mb-3 flex items-center gap-3">
@@ -20,8 +23,7 @@ const MyPageNotification = ({ role }: MenuRoleProps) => {
       {role === 'BUYER' ? (
         <>
           <p className="text-sm leading-relaxed text-(--color-warm-gray)">
-            {/* 현재 참여 중인 스토리가 {biddingCount}건 있습니다. 종료 시간을 확인해 주세요. */}
-            참여 중인 스토리를 확인해 주세요.
+            현재 참여 중인 스토리가 {biddingCount}건 있습니다. 종료 시간을 확인해 주세요.
           </p>
           <Link href="/mypage/episodes?tab=ongoing&filter=입찰중">
             <Button variant="base" className="mt-3 w-full">

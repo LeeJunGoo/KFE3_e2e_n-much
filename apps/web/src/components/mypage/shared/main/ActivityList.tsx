@@ -7,10 +7,10 @@ export const activities: Activity[] = [
     type: 'auction',
     title: '빈티지 카메라 경매',
     date: '2025년 6월 23일',
-    status: 'PROGRESS'
+    status: 'bidding'
   },
   {
-    type: 'point',
+    type: 'charge',
     title: '포인트 충전',
     date: '2025년 6월 22일',
     amount: 3000
@@ -37,10 +37,10 @@ export const activities: Activity[] = [
     type: 'auction',
     title: '빈티지 시계 경매',
     date: '2025년 6월 18일',
-    status: 'ENDED'
+    status: 'pending'
   },
   {
-    type: 'point',
+    type: 'signup',
     title: '포인트 사용',
     date: '2025년 6월 17일',
     amount: -1500

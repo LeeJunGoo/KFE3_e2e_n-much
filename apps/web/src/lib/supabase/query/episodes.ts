@@ -153,3 +153,23 @@ export const getHighestBidder = async (auction_id: string) => {
 
   return data;
 };
+
+// NOTE - 사용자 참여 중인 경매 개수 조회
+export async function getUserBiddingCount(buyer_id: string) {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select(
+      `
+      episode_id,
+      auctions!inner(status)
+    `
+    )
+    .eq('buyer_id', buyer_id)
+    .eq('auctions.status', 'OPEN');
+
+  if (error) {
+    throw new Error('DB: 참여 중인 경매 개수 조회 에러');
+  }
+
+  return data?.length || 0;
+}

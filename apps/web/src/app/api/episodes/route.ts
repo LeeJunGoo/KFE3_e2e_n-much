@@ -4,27 +4,39 @@ import {
   deleteEpisode,
   getEpisode,
   getEpisodesByAuctionId,
+  getUserBiddingCount,
   selectWinningEpisode,
   updateEpisode
 } from '../../../lib/supabase/query/episodes';
+import { createClient } from 'src/lib/supabase/client/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const auctionId = searchParams.get('auctionId');
   const episodeId = searchParams.get('episodeId');
+  const type = searchParams.get('type');
   let res;
-
   try {
-    if (!auctionId && !episodeId) {
-      return NextResponse.json('id가 존재하지 않습니다.', { status: 400 });
+    if (!auctionId && !episodeId && !type) {
+      return NextResponse.json('id 또는 type이 존재하지 않습니다.', { status: 400 });
     }
 
     if (auctionId) {
       res = await getEpisodesByAuctionId(auctionId);
     }
-
     if (episodeId) {
       res = await getEpisode(episodeId);
+    }
+    if (type === 'biddingCount') {
+      // 추가
+      const supabase = await createClient();
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('로그인된 사용자가 없습니다');
+      }
+      res = await getUserBiddingCount(user.id);
     }
 
     return NextResponse.json({ status: 'success', data: res });

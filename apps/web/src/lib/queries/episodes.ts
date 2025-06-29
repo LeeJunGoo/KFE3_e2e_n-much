@@ -158,3 +158,13 @@ export const fetchUpdateEpisodeWinning = async (episode_id: string, winning_bid:
 
   return data.status;
 };
+
+//NOTE - 사용자 참여 중인 경매 개수 조회
+export const fetchUserBiddingCount = async () => {
+  const res = await fetch('http://localhost:3001/api/episodes?type=biddingCount');
+  if (!res.ok) {
+    throw new Error('참여 중인 경매 개수를 가져오는 과정에서 네트워크 에러가 발생했습니다.');
+  }
+  const data = await res.json();
+  return data.data;
+};
