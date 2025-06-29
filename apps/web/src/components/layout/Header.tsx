@@ -13,12 +13,13 @@ const Header = () => {
             <Image src={Logo} alt="logo" className="size-12" />
           </h1>
         </Link>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <Button variant="text" className="relative !p-0">
             <IoNotifications className="size-6 text-(--color-accent)" />
             <span className="absolute top-1.5 right-0.5 size-2 rounded-full bg-(--color-red)" />
           </Button>
-        </div>
+        </div> */}
+        <Link href="/signin">로그인</Link>
       </div>
     </header>
   );
