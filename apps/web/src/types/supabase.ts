@@ -56,7 +56,7 @@ export type Database = {
           address: string[]
           auction_id?: string
           created_at?: string
-          current_point: number
+          current_point?: number
           description: string
           end_time: string
           favorites?: string[] | null
@@ -65,7 +65,7 @@ export type Database = {
           seller_id: string
           start_time: string
           starting_point: number
-          status: string
+          status?: string
           title: string
           updated_at?: string | null
         }
@@ -145,6 +145,7 @@ export type Database = {
           description: string
           episode_id: string
           likes: string[] | null
+          status: string | null
           title: string
           updated_at: string | null
           winning_bid: boolean
@@ -158,6 +159,7 @@ export type Database = {
           description?: string
           episode_id?: string
           likes?: string[] | null
+          status?: string | null
           title?: string
           updated_at?: string | null
           winning_bid?: boolean
@@ -171,6 +173,7 @@ export type Database = {
           description?: string
           episode_id?: string
           likes?: string[] | null
+          status?: string | null
           title?: string
           updated_at?: string | null
           winning_bid?: boolean
@@ -191,6 +194,30 @@ export type Database = {
             referencedColumns: ["auction_id"]
           },
         ]
+      }
+      keywords: {
+        Row: {
+          count: number
+          created_at: string
+          id: string
+          keyword: string
+          updated_at: string | null
+        }
+        Insert: {
+          count?: number
+          created_at?: string
+          id?: string
+          keyword: string
+          updated_at?: string | null
+        }
+        Update: {
+          count?: number
+          created_at?: string
+          id?: string
+          keyword?: string
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       sellers: {
         Row: {

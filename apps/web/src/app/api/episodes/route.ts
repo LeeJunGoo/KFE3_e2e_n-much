@@ -5,6 +5,7 @@ import {
   getEpisode,
   getEpisodesByAuctionId,
   getUserBiddingCount,
+  getUserStories,
   selectWinningEpisode,
   updateEpisode
 } from '../../../lib/supabase/query/episodes';
@@ -15,6 +16,7 @@ export async function GET(request: NextRequest) {
   const auctionId = searchParams.get('auctionId');
   const episodeId = searchParams.get('episodeId');
   const type = searchParams.get('type');
+
   let res;
   try {
     if (!auctionId && !episodeId && !type) {
@@ -28,7 +30,6 @@ export async function GET(request: NextRequest) {
       res = await getEpisode(episodeId);
     }
     if (type === 'biddingCount') {
-      // 추가
       const supabase = await createClient();
       const {
         data: { user }
@@ -38,6 +39,16 @@ export async function GET(request: NextRequest) {
       }
       res = await getUserBiddingCount(user.id);
     }
+    if (type === 'userStories') {
+      const supabase = await createClient();
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('로그인된 사용자가 없습니다');
+      }
+      res = await getUserStories(user.id);
+    }
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
@@ -46,7 +57,6 @@ export async function GET(request: NextRequest) {
     }
   }
 }
-
 export async function POST(request: NextRequest) {
   const { auction_id, buyer_id, title, description } = await request.json();
 

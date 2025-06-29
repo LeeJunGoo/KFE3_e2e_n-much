@@ -173,3 +173,33 @@ export async function getUserBiddingCount(buyer_id: string) {
 
   return data?.length || 0;
 }
+
+// NOTE - 사용자가 작성한 스토리 목록 조회
+export async function getUserStories(buyer_id: string) {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select(
+      `
+      episode_id,
+      title,
+      description,
+      created_at,
+      status,
+      bid_point,
+      auctions!inner(
+        auction_id,
+        title,
+        status,
+        end_time
+      )
+    `
+    )
+    .eq('buyer_id', buyer_id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error('DB: 사용자 스토리 목록 조회 에러');
+  }
+
+  return data;
+}

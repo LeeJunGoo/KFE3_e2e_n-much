@@ -1,17 +1,20 @@
 import { TabKey } from 'src/types/mypage';
 
 export interface StoryItem {
-  id: number;
+  id: string;
+  episode_id: string;
   title: string;
   status: string;
-  createdAt: string;
-  prize: string;
+  created_at: string;
+  auctions: {
+    title: string;
+  };
   description: string;
 }
 
 export const filterStoryByTab = (stories: StoryItem[], tab: TabKey): StoryItem[] => {
   if (tab === 'ongoing') {
-    return stories.filter((story) => story.status === 'bidding' || story.status === 'pending');
+    return stories.filter((story) => story.status === 'bidding');
   } else {
     return stories.filter(
       (story) => story.status === 'completed' || story.status === 'failed' || story.status === 'ended'
