@@ -5,6 +5,7 @@ import MyPageNotification from 'src/components/mypage/shared/main/MyPageNotifica
 import ActivityList from 'src/components/mypage/shared/main/ActivityList';
 import { useState } from 'react';
 import PageContainer from 'src/components/layout/PageContainer';
+import LogoutButton from 'src/components/mypage/shared/LogoutButton';
 
 type RoleType = 'AUCTIONEER' | 'BIDDER';
 
@@ -17,6 +18,7 @@ const MyPage = () => {
       <MyPageMenuList role={role} />
       <MyPageNotification role={role} />
       <ActivityList />
+      <LogoutButton />
     </PageContainer>
   );
 };
