@@ -8,33 +8,28 @@ import type { MyPageMenuItem } from 'src/types/mypage';
 // =====================================================
 
 export const ROLE_LABEL = {
-  BIDDER: '입찰 참여자',
-  AUCTIONEER: '경매 진행자'
+  BUYER: '입찰 참여자',
+  SELLER: '경매 진행자'
 } as const;
 
 // =====================================================
 // 📋 메뉴 설정
 // =====================================================
 
-export const BIDDER_MENU: MyPageMenuItem[] = [
+export const BUYER_MENU: MyPageMenuItem[] = [
   {
-    label: '내 경매 현황',
-    icon: <FaGavel className="text-(--color-accent)" />,
-    href: '/mypage/auctions'
+    label: '내가 쓴 스토리',
+    icon: <HiDocumentText className="size-5 text-(--color-accent)" />,
+    href: '/mypage/episodes'
   },
   {
     label: '포인트 사용 내역',
     icon: <FaCoins className="text-(--color-accent)" />,
     href: '/mypage/points'
-  },
-  {
-    label: '내가 쓴 스토리',
-    icon: <HiDocumentText className="size-5 text-(--color-accent)" />,
-    href: '/mypage/episodes'
   }
 ];
 
-export const AUCTIONEER_MENU: MyPageMenuItem[] = [
+export const SELLER_MENU: MyPageMenuItem[] = [
   {
     label: '내 경매 보기',
     icon: <FaGavel className="text-(--color-accent)" />,
@@ -46,7 +41,7 @@ export const AUCTIONEER_MENU: MyPageMenuItem[] = [
     href: '/mypage/points'
   },
   {
-    label: '주소 변경',
+    label: '주소 확인',
     icon: <HiDocumentText className="size-5 text-(--color-accent)" />,
     href: '/mypage/'
   }

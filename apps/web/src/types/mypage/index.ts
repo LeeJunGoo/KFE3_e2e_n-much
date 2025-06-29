@@ -1,4 +1,4 @@
-import { AuctionRow, BuyerInsert, EpisodeRow, SellerInsert } from 'src/lib/supabase/type';
+import { AuctionRow, BuyerInsert, BuyerRow, EpisodeRow, SellerInsert, SellerRow } from 'src/lib/supabase/type';
 
 // =====================================================
 // 🏷️ 기본 타입들
@@ -18,8 +18,18 @@ export type MyPageMenuItem = {
   href: string;
 };
 
-export interface UserRoleDataProps {
-  role: 'BIDDER' | 'AUCTIONEER';
+export type UserRoleDataProps =
+  | {
+      role: 'BUYER';
+      userInfo: BuyerRow;
+    }
+  | {
+      role: 'SELLER';
+      userInfo: SellerRow;
+    };
+
+export interface MenuRoleProps {
+  role: 'BUYER' | 'SELLER';
 }
 
 // =====================================================

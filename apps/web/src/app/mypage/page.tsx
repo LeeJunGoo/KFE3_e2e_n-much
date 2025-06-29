@@ -3,18 +3,22 @@ import UserProfileCard from 'src/components/mypage/shared/main/UserProfileCard';
 import MyPageMenuList from 'src/components/mypage/shared/main/MyPageMenuList';
 import MyPageNotification from 'src/components/mypage/shared/main/MyPageNotification';
 import ActivityList from 'src/components/mypage/shared/main/ActivityList';
-import { useState } from 'react';
 import PageContainer from 'src/components/layout/PageContainer';
 import LogoutButton from 'src/components/mypage/shared/LogoutButton';
-
-type RoleType = 'AUCTIONEER' | 'BIDDER';
+import { useGetUserInfo } from 'src/hooks/queries/useUsers';
 
 const MyPage = () => {
-  //NOTE - supabase 연동 전까지는 목데이터로 임시 처리
-  const [role] = useState<RoleType>('BIDDER');
+  const { data: userInfo, isLoading, error } = useGetUserInfo();
+
+  if (isLoading) return <div>로딩 중...</div>;
+  if (error) return <div>사용자 정보를 찾을 수 없습니다.</div>;
+  if (!userInfo) return <div>사용자 정보가 없습니다.</div>;
+
+  const { role, userInfo: userData } = userInfo;
+
   return (
     <PageContainer>
-      <UserProfileCard role={role} />
+      <UserProfileCard role={role} userInfo={userData} />
       <MyPageMenuList role={role} />
       <MyPageNotification role={role} />
       <ActivityList />

@@ -17,9 +17,7 @@ const LogoutButton = () => {
   return (
     <div className="my-4 flex items-center justify-center text-(--color-warm-gray)">
       <ConfirmDialog title="로그아웃 확인" description="정말로 로그아웃하시겠습니까?" onConfirm={handleLogout}>
-        <Button variant="ghost">
-          <span>로그아웃</span>
-        </Button>
+        <Button variant="ghost">로그아웃</Button>
       </ConfirmDialog>
     </div>
   );

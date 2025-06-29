@@ -6,7 +6,7 @@ type AuctioneerMenuListProps = {
   el: MyPageMenuItem;
 };
 
-const AuctioneerMenuListItem = ({ el }: AuctioneerMenuListProps) => {
+const SellerMenuListItem = ({ el }: AuctioneerMenuListProps) => {
   return (
     <li className="flex cursor-pointer items-center justify-between rounded-xl bg-white p-4 shadow-xs transition-all duration-200 hover:bg-(--color-secondary)">
       <Link href={el.href} className="flex items-center gap-3">
@@ -18,4 +18,4 @@ const AuctioneerMenuListItem = ({ el }: AuctioneerMenuListProps) => {
   );
 };
 
-export default AuctioneerMenuListItem;
+export default SellerMenuListItem;

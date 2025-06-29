@@ -19,7 +19,7 @@ const Header = () => {
             <span className="absolute top-1.5 right-0.5 size-2 rounded-full bg-(--color-red)" />
           </Button>
         </div> */}
-        <Link href="/signin">로그인</Link>
+        <Link href="/auth/signin">로그인</Link>
       </div>
     </header>
   );
