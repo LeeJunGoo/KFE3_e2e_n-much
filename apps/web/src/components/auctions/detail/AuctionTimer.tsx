@@ -11,7 +11,7 @@ const AuctionTimer = ({ highestBuyer, start_time, end_time }: AuctionTimeProps) 
 
   // 데이터 처리
   useEffect(() => {
-    if (status === 'ended' && highestBuyer.episode_id) {
+    if (status === 'ended' && highestBuyer?.episode_id) {
       const endedAction = async () => {
         const data = await fetchUpdateEpisodeWinning(highestBuyer.episode_id, (highestBuyer.winning_bid = true));
       };

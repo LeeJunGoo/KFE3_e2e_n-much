@@ -17,8 +17,6 @@ export async function PATCH(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: episodeInfo });
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
+    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
   }
 }

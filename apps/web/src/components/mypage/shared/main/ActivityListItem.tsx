@@ -1,9 +1,9 @@
 import ActivityMeta from './ActivityMeta';
 import ActivityItem from '../ActivityItem';
-import type { Activity } from 'src/types/mypage';
+import type { PointRow } from 'src/lib/supabase/type';
 
 type ActivityListItemProps = {
-  activity: Activity;
+  activity: PointRow;
 };
 
 const ActivityListItem = ({ activity }: ActivityListItemProps) => {

@@ -161,6 +161,28 @@ export const getAllAuctionsWithEpisodeCountByOrder = async (orderParam: string, 
     return data;
   }
 };
+//NOTE -  특정 경매와 경매의 사연 개수를 불러오기
+export const getAuctionsWithEpisodeCountByOrder = async (orderParam: string, isAscending: boolean, count: number) => {
+  if (orderParam) {
+    const { data, error } = await supabase
+      .from('auctions')
+      .select(
+        `
+    *,episodes(count)
+  `
+      )
+      .order(orderParam, { ascending: isAscending })
+      .eq('status', 'OPEN')
+      .limit(count);
+
+    if (error) {
+      console.error(error);
+      throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
+    }
+
+    return data;
+  }
+};
 
 // 키워드가 타이틀에 포함되는 경매리스트를 불러오기
 export const getAuctionsByKeyword = async (keyword: string) => {
@@ -171,3 +193,18 @@ export const getAuctionsByKeyword = async (keyword: string) => {
   }
   return data;
 };
+
+// NOTE - 셀러가 등록한 경매 목록 조회
+export async function getSellerAuctions(seller_id: string) {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select('*')
+    .eq('seller_id', seller_id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error('DB: 셀러 경매 목록 조회 에러');
+  }
+
+  return data;
+}
