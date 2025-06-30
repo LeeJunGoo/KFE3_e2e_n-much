@@ -141,25 +141,37 @@ export const getAllAuctionsWithEpisodeCount = async () => {
 };
 
 // 모든 경매와 경매의 사연 갯수를 불러오기
-export const getAllAuctionsWithEpisodeCountByOrder = async (orderParam: string, isAscending: boolean) => {
-  if (orderParam) {
-    const { data, error } = await supabase
-      .from('auctions')
-      .select(
-        `
+export const getAllAuctionsWithEpisodeCountByOrder = async (
+  orderParam: string | null,
+  isAscending: boolean,
+  pageParam: number | null
+) => {
+  const itemsPerPage = 5;
+
+  if (!orderParam) {
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(순서 파라미터가 없습니다.)');
+  }
+
+  if (!pageParam) {
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(페이지 파라미터가 없습니다.)');
+  }
+
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(
+      `
     *,episodes(count)
   `
-      )
-      .order(orderParam, { ascending: isAscending })
-      .eq('status', 'OPEN');
+    )
+    .order(orderParam, { ascending: isAscending })
+    .eq('status', 'OPEN')
+    .range(pageParam, pageParam + itemsPerPage);
 
-    if (error) {
-      console.error(error);
-      throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
-    }
-
-    return data;
+  if (error) {
+    console.error(error);
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
   }
+  return data;
 };
 //NOTE -  특정 경매와 경매의 사연 개수를 불러오기
 export const getAuctionsWithEpisodeCountByOrder = async (orderParam: string, isAscending: boolean, count: number) => {

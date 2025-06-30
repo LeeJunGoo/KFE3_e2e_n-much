@@ -71,7 +71,7 @@ export const fetchDeleteAuction = async (auction_id: string) => {
 
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
 export async function fetchAllAuctionWithEpisodeCount(order: string) {
-  const fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}`;
+  const fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}?page=1`;
 
   const data = await fetch(fetchUrl);
   const result = await data.json();
