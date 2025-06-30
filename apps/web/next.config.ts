@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'api.dicebear.com' },
       { protocol: 'https', hostname: 'i.namu.wiki' },
-      { protocol: 'https', hostname: 'psszbhuartnhkzomgxmq.supabase.co' }
+      { protocol: 'https', hostname: 'psszbhuartnhkzomgxmq.supabase.co' },
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' } //
     ]
   }
 };

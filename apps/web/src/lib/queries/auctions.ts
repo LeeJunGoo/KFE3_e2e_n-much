@@ -69,6 +69,16 @@ export const fetchDeleteAuction = async (auction_id: string) => {
   return data.status;
 };
 
+//NOTE - 셀러가 등록한 경매 목록 조회
+export const fetchSellerAuctions = async () => {
+  const res = await fetch('http://localhost:3001/api/auctions?type=sellerAuctions');
+  if (!res.ok) {
+    throw new Error('셀러 경매 목록을 가져오는 과정에서 네트워크 에러가 발생했습니다.');
+  }
+  const data = await res.json();
+  return data.data;
+};
+
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
 export async function fetchAllAuctionWithEpisodeCount(order: string) {
   const fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}?page=1`;

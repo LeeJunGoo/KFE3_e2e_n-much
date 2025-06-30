@@ -205,3 +205,18 @@ export const getAuctionsByKeyword = async (keyword: string) => {
   }
   return data;
 };
+
+// NOTE - 셀러가 등록한 경매 목록 조회
+export async function getSellerAuctions(seller_id: string) {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select('*')
+    .eq('seller_id', seller_id)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    throw new Error('DB: 셀러 경매 목록 조회 에러');
+  }
+
+  return data;
+}

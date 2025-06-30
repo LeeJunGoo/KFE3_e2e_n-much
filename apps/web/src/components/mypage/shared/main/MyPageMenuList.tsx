@@ -1,15 +1,14 @@
-'use client';
-import BidderMenuListItem from '../../bidder/BidderMenuListItem';
-import AuctioneerMenuListItem from '../../auctioneer/AuctioneerMenuListItem';
-import { AUCTIONEER_MENU, BIDDER_MENU } from 'src/constants/mypage';
-import type { UserRoleDataProps } from 'src/types/mypage';
+import BuyerMenuListItem from '../../buyer/BuyerMenuListItem';
+import SellerMenuListItem from '../../seller/SellerMenuListItem';
+import { SELLER_MENU, BUYER_MENU } from 'src/constants/mypage';
+import type { MenuRoleProps } from 'src/types/mypage';
 
-const MyPageMenuList = ({ role }: UserRoleDataProps) => {
+const MyPageMenuList = ({ role }: MenuRoleProps) => {
   return (
     <nav className="mt-6">
       <ul className="space-y-3">
-        {role === 'BIDDER' && BIDDER_MENU.map((el) => <BidderMenuListItem key={el.label} el={el} />)}
-        {role === 'AUCTIONEER' && AUCTIONEER_MENU.map((el) => <AuctioneerMenuListItem key={el.label} el={el} />)}
+        {role === 'BUYER' && BUYER_MENU.map((el) => <BuyerMenuListItem key={el.label} el={el} />)}
+        {role === 'SELLER' && SELLER_MENU.map((el) => <SellerMenuListItem key={el.label} el={el} />)}
       </ul>
     </nav>
   );
