@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '../../../assets/images/logo.svg';
-import { IoNotifications } from 'react-icons/io5';
-import { Button } from '@repo/ui/components/ui/button';
+// import { IoNotifications } from 'react-icons/io5';
+// import { Button } from '@repo/ui/components/ui/button';
 
 const Header = () => {
   return (

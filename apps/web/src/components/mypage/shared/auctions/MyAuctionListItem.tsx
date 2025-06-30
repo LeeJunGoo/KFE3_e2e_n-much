@@ -1,9 +1,9 @@
-import { Button } from '@repo/ui/components/ui/button';
+import Image from 'next/image';
 import LabelBadge from 'src/components/common/LabelBadge';
+import { Button } from '@repo/ui/components/ui/button';
 import { STATUS_LABELS, STATUS_VARIANTS } from 'src/constants/mypage';
 import { formatNumber } from 'src/utils/formatNumber';
 import type { MyAuctionListItemProps } from 'src/types/mypage';
-import Image from 'next/image';
 
 const MyAuctionListItem = ({ item }: MyAuctionListItemProps) => {
   const { title, current_point, starting_point, end_time, status } = item;

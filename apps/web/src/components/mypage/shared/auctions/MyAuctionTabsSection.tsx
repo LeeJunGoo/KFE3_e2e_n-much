@@ -17,7 +17,7 @@ const MyAuctionTabsSection = () => {
 
   const transformedAuctions = filteredAuctions.map((auction) => ({
     ...auction,
-    id: auction.auction_id // auction_id를 id로 매핑
+    id: auction.auction_id
   }));
 
   const handleTabChange = (value: string) => {

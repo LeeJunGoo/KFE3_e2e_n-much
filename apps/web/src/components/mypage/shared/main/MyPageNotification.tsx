@@ -1,9 +1,9 @@
-import { Button } from '@repo/ui/components/ui/button';
-import { MdInfoOutline, MdLightbulb } from 'react-icons/md';
 import Link from 'next/link';
 import ListCard from '../../../common/ui/ListCard';
-import type { MenuRoleProps } from 'src/types/mypage';
+import { Button } from '@repo/ui/components/ui/button';
+import { MdInfoOutline, MdLightbulb } from 'react-icons/md';
 import { useGetUserBiddingCount } from 'src/hooks/queries/useEpisodes';
+import type { MenuRoleProps } from 'src/types/mypage';
 
 const MyPageNotification = ({ role }: MenuRoleProps) => {
   const { data: biddingCount = 0 } = useGetUserBiddingCount();

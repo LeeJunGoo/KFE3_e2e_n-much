@@ -1,5 +1,5 @@
-import { TabsList } from '@repo/ui/components/ui/tabs';
 import TabTriggerItem from '../../common/TabTriggerItem';
+import { TabsList } from '@repo/ui/components/ui/tabs';
 
 interface MyTabsHeaderProps {
   tabLabels: Record<string, string>;
