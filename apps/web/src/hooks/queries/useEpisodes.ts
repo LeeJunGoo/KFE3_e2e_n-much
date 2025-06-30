@@ -1,11 +1,17 @@
-// import { useQuery } from '@tanstack/react-query';
-// import { fetchUserEpisodes } from '../../lib/queries/episodes';
-// import { episodeQueryKeys } from './keys/episodes';
+import { useQuery } from '@tanstack/react-query';
+import { episodeQueryKeys } from './keys/episodes';
+import { fetchUserBiddingCount, fetchUserStories } from 'src/lib/queries/episodes';
 
-// export const useGetUserEpisodes = (userId: string) => {
-//   return useQuery({
-//     queryKey: episodeQueryKeys.user(userId),
-//     queryFn: () => fetchUserEpisodes(userId),
-//     enabled: !!userId
-//   });
-// };
+export const useGetUserBiddingCount = () => {
+  return useQuery({
+    queryKey: episodeQueryKeys.biddingCount(),
+    queryFn: fetchUserBiddingCount
+  });
+};
+
+export const useGetUserStories = () => {
+  return useQuery({
+    queryKey: episodeQueryKeys.userStories(),
+    queryFn: fetchUserStories
+  });
+};

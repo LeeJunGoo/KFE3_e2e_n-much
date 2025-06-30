@@ -108,3 +108,21 @@ export const getAuthInfo = async () => {
     }
   }
 };
+
+// logout
+export const getAuthLogout = async () => {
+  try {
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      throw new Error(`로그아웃 실패: ${error.message}`);
+    }
+
+    return { success: true, message: '로그아웃 되었습니다.' };
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error('DB: 로그아웃 실패');
+  }
+};
