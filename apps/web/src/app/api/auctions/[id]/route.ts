@@ -15,18 +15,19 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
   try {
     if (type === 'auction') {
       res = await getAuctionWithSellerInfo(id);
-    }
-    if (type === 'seller') {
+    } else if (type === 'seller') {
       res = await getSellerAuctionCount(id);
-    }
-    if (type === 'buyer') {
+    } else if (type === 'buyer') {
       res = await getHighestBidder(id);
+    } else {
+      return NextResponse.json(
+        { status: 'error', message: '잘못된 정보를 전달하였습니다.', id, type },
+        { status: 400 }
+      );
     }
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
+    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
   }
 }
