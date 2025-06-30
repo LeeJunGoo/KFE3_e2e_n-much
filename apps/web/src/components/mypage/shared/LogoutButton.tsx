@@ -12,9 +12,11 @@ interface LogoutButtonProps {
 
 const LogoutButton = ({ className }: LogoutButtonProps) => {
   const { push } = useRouter();
+
   const handleLogout = async () => {
     try {
       await fetchLogout();
+
       toast.success('로그아웃 되었습니다!');
       push('/');
     } catch (error) {
