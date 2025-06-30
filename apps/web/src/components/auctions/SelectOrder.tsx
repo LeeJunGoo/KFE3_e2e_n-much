@@ -10,15 +10,11 @@ import {
 import { Dispatch, SetStateAction } from 'react';
 
 interface SelectOrderProp {
-  order: string | null | undefined;
-  setOrder: Dispatch<SetStateAction<string | null>>;
+  order: string;
+  setOrder: Dispatch<SetStateAction<string>>;
 }
 
 export default function SelectOrder({ order, setOrder }: SelectOrderProp) {
-  if (!order) {
-    order = undefined;
-  }
-
   return (
     <Select onValueChange={setOrder} defaultValue={order}>
       <SelectTrigger className="w-[180px]">

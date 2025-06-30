@@ -76,15 +76,15 @@ const EpisodeList = ({ auction_id }: { auction_id: string }) => {
           <span className="ml-1 text-blue-600">({episodesCount})</span>
         </h2>
 
-        <p className="text-sm text-gray-500 mt-1">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
-        <Link href={`/episode/${auction_id}`} className="bg-amber-300 border rounded-sm mt-5 inline-block p-1">
+        <p className="mt-1 text-sm text-gray-500">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
+        <Link href={`/episode/${auction_id}`} className="mt-5 inline-block rounded-sm border bg-amber-300 p-1">
           사연 등록
         </Link>
       </div>
 
       {/* 사연 목록 */}
       {episodesCount === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-3 px-6 py-10 text-center bg-slate-50 rounded-b-lg">
+        <div className="flex flex-col items-center justify-center gap-3 rounded-b-lg bg-slate-50 px-6 py-10 text-center">
           <FaRegCommentDots className="text-4xl text-slate-400" />
           <div>
             <p className="font-semibold text-slate-700">아직 사연이 없어요</p>
@@ -99,7 +99,7 @@ const EpisodeList = ({ auction_id }: { auction_id: string }) => {
         </ul>
       )}
 
-      <div className="px-6 py-4 border-t">
+      <div className="border-t px-6 py-4">
         <Pagination>
           <PaginationContent>
             <PaginationItem>
