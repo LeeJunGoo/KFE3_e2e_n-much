@@ -3,11 +3,11 @@ import { FaChevronRight } from 'react-icons/fa6';
 import ListCard from '../../common/ui/ListCard';
 import type { MyPageMenuItem } from 'src/types/mypage';
 
-type BidderMenuListItemProps = {
+interface BuyerMenuListItemProps {
   el: MyPageMenuItem;
-};
+}
 
-const BidderMenuListItem = ({ el }: BidderMenuListItemProps) => {
+const BuyerMenuListItem = ({ el }: BuyerMenuListItemProps) => {
   const { href, icon, label } = el;
 
   return (
@@ -28,4 +28,4 @@ const BidderMenuListItem = ({ el }: BidderMenuListItemProps) => {
     </li>
   );
 };
-export default BidderMenuListItem;
+export default BuyerMenuListItem;

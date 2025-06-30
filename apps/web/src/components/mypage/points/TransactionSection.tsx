@@ -1,9 +1,9 @@
 import SectionHeader from 'src/components/common/ui/SectionHeader';
 import TransactionHistoryList from './TransactionHistoryList';
-import type { Activity } from 'src/types/mypage';
+import type { PointRow } from 'src/lib/supabase/type';
 
 interface TransactionSectionProps {
-  activities: Activity[];
+  activities: PointRow[];
 }
 
 const TransactionSection = ({ activities }: TransactionSectionProps) => {

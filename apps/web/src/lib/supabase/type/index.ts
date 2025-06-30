@@ -20,3 +20,7 @@ export type SellerUpdate = Database['public']['Tables']['sellers']['Update']; //
 export type BuyerRow = Database['public']['Tables']['buyers']['Row']; // 데이터 조회(GET)
 export type BuyerInsert = Database['public']['Tables']['buyers']['Insert']; // 데이터 추가(POST)
 export type BuyerUpdate = Database['public']['Tables']['buyers']['Update']; // 데이터 수정(PATCH)
+
+//NOTE - supabase Point type
+export type PointRow = Database['public']['Tables']['points']['Row'];
+
