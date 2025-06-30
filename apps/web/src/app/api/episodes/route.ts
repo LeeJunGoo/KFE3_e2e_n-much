@@ -52,9 +52,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
+    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
   }
 }
 export async function POST(request: NextRequest) {
@@ -69,9 +67,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
+    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
   }
 }
 
@@ -96,9 +92,7 @@ export async function PATCH(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    }
+    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
   }
 }
 
@@ -108,8 +102,6 @@ export async function DELETE(request: NextRequest) {
     const res = await deleteEpisode(episode_id);
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json(error.message);
-    }
+    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
   }
 }
