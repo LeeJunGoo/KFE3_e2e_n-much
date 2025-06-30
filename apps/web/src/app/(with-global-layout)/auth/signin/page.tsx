@@ -4,10 +4,10 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { socialSignin, storeUserInfo } from 'src/lib/supabase/query/auth';
 import { AuthCard } from 'src/components/auth/AuthCard';
-import { Role, Provider } from '../../../types/auth/index';
+import { Role, Provider } from '../../../../types/auth/index';
 import { LoadingSpinner } from 'src/components/auth/LoadingSpinner';
 
-export default function SignupPage() {
+export default function SigninPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -54,7 +54,7 @@ export default function SignupPage() {
     <section>
       {!isLoading ? (
         role !== null && (
-          <AuthCard title="회원가입" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
+          <AuthCard title="로그인" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
         )
       ) : (
         <LoadingSpinner size={48} color="#8E74F9" />
