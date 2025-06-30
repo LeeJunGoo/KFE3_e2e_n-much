@@ -10,6 +10,11 @@ import { fetchAuctionWithSellerInfo, fetchHighestBidder, fetchSellerAuctionCount
 import { formatNumber } from 'src/utils/formatNumber';
 import BuyerTestImage from 'assets/images/test.png';
 import { getAuthInfo } from 'src/lib/supabase/query/auth';
+import { Dialog } from '@repo/ui/components/ui/dialog';
+import AuctionDetail from 'src/components/auctions/detail/AuctionDetail';
+import { Card } from '@repo/ui/components/ui/card';
+import { AlignVerticalJustifyStart } from 'lucide-react';
+import AuctionDetailICarousel from 'src/components/auctions/detail/AuctionDetailICarousel';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
@@ -32,123 +37,156 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
   return (
     <>
-      <header className="mb-10">
-        <div className="flex justify-between">
-          <Link
-            href={'/auctions'}
-            className="flex items-center gap-2 text-[#8E74F2] transition-colors hover:text-[#D6CBFF]"
-          >
-            <FaArrowLeft />
-            <span>경매 목록으로 돌아가기</span>
-          </Link>
-          {/* 경매 상품 수정 및 삭제 버튼  */}
-          {userInfo?.id !== seller_id && <EditDeleteActions auctionId={auctionId} />}
-        </div>
-      </header>
-      <main className="space-y-7 scroll-smooth">
-        <div className="space-y-3 rounded-lg bg-[#F3F4F6] p-4">
-          <h1 className="text-2xl font-bold">{title}</h1>
-          <div>
-            <p className="text-sm text-gray-400">현재&nbsp;입찰가</p>
-            <p className="text-lg font-semibold text-[#8E74F2]">{formatNumber(current_point)}&nbsp;P</p>
-          </div>
-          <div>
-            <AuctionTimer highestBuyer={highestBuyer} start_time={start_time} end_time={end_time} />
+      <div className="relative flex min-h-screen flex-col bg-[#F4F4F7]">
+        {/* 이미지 슬라이더 */}
+        <AuctionDetailICarousel imageUrls={image_urls} />
+        <div className="relative h-[250px] w-full">
+          {/* 상단 네비게이션 */}
+          <div className="absolute top-0 right-0 left-0 z-10 flex items-center justify-between p-4">
+            {/* <button
+              className="!rounded-button flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white/70 shadow-sm"
+              onClick={() => window.history.back()}
+            >
+              <i className="fas fa-arrow-left text-[#1F1F25]"></i>
+            </button> */}
+            <button className="!rounded-button flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white/70 shadow-sm">
+              <i className="fas fa-share-alt text-[#1F1F25]"></i>
+            </button>
           </div>
         </div>
-        <div className="space-y-7 px-7">
-          {/* 이미지 슬라이드  */}
-          <AuctionDetailCard image_urls={image_urls} />
-          {/* 상품 정보 */}
-          <div className="divide-y rounded-lg border">
-            <div className="px-6 py-4">
-              <h2 className="text-lg font-bold">상품 정보</h2>
-            </div>
+        {/* 메인 콘텐츠 */}
+        <div className="relative z-10 -mt-6 flex-1 px-4 pb-20">
+          {/* 경매 상품 정보 */}
+          <AuctionDetail auctionInfo={auctionInfo} />
 
-            <div className="px-6 py-4 leading-relaxed text-gray-600">
-              <p>{description}</p>
+          {/* 판매자 정보 */}
+          <Card className="mb-4 p-5 shadow-sm">
+            {/* <div className="mb-4 flex items-center">
+              <AlignVerticalJustifyStart className="mr-3 h-12 w-12">
+                <AvatarImage src={auctionData.seller.profileImage} alt={auctionData.seller.name} />
+                <AvatarFallback>{auctionData.seller.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <div>
+                <h3 className="font-medium text-[#1F1F25]">{auctionData.seller.name}</h3>
+                <p className="text-sm text-[#B8B8B8]">{auctionData.seller.address}</p>
+              </div>
+            </div> */}
+            <div className="flex text-sm text-[#B8B8B8]">
+              <div className="flex-1">
+                <p>총 경매</p>
+                <p className="font-medium text-[#1F1F25]">{totalAuctions}개</p>
+              </div>
+              <div className="flex-1">
+                <p>진행중인 경매</p>
+                <p className="font-medium text-[#1F1F25]">{activeAuctions}개</p>
+              </div>
             </div>
-          </div>
-
-          {/* 업체 정보 */}
-          <div className="divide-y rounded-lg border">
-            <div className="px-6 py-4">
-              <h2 className="text-lg font-bold">업체 정보</h2>
-            </div>
-            <div className="space-y-5 px-6 py-4">
-              <div className="flex gap-3">
-                <Image
-                  src={seller.avatar || BuyerTestImage}
-                  alt="아바타입니다."
-                  width={50}
-                  height={50}
-                  className="rounded-full border-gray-200 bg-blue-400/30 object-cover transition-transform duration-300 hover:scale-105"
-                ></Image>
-                <div className="space-y-1">
-                  <p className="font-semibold">업체이름: {seller.nickname}</p>
-                  <p className="flex items-center">
-                    <FaMapMarkerAlt />
-                    <span className="text-sm">{address}</span>
-                  </p>
+          </Card>
+          {/* 최고 입찰자 정보 */}
+          {/* <Card className="mb-4 p-5 shadow-sm">
+            <h3 className="mb-3 font-medium text-[#1F1F25]">현재 최고 입찰</h3>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#A3BCE5] text-white">
+                  <i className="fas fa-user-alt text-xs"></i>
                 </div>
-              </div>
-              <div className="space-y-2">
-                <p className="flex justify-between text-sm text-gray-500">
-                  <span>총 경매 수</span>
-                  <span>{totalAuctions}</span>
-                </p>
-
-                <p className="flex justify-between text-sm text-gray-500">
-                  <span>현재 진행중인 경매</span>
-                  <span>{activeAuctions}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-          {/* 최고 입찰가 */}
-          <div className="divide-y rounded-lg border">
-            <div className="px-6 py-4">
-              <h2 className="text-lg font-bold">최고 입찰가</h2>
-            </div>
-            {highestBuyer ? (
-              <div className="space-y-5 px-6 py-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-3">
-                    <Image
-                      src={highestBuyer.buyer.avatar || BuyerTestImage}
-                      alt="아바타입니다."
-                      width={50}
-                      height={50}
-                      className="rounded-full border-gray-200 bg-blue-400/30 object-cover transition-transform duration-300 hover:scale-105"
-                    ></Image>
-
-                    <div className="space-y-1">
-                      <p className="font-semibold">{highestBuyer.buyer.nickname}</p>
-                      <p className="flex items-center">
-                        <IoMdTime />
-                        <time className="text-sm">{highestBuyer.created_at}</time>
-                      </p>
-                    </div>
-                  </div>
-                  <div className="font-semibold text-[#8E74F2]">
-                    <p>{formatNumber(highestBuyer.bid_point)}&nbsp;P</p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center gap-3 rounded-b-lg bg-slate-50 px-6 py-10 text-center">
-                <FaRegCommentDots className="text-4xl text-slate-400" />
                 <div>
-                  <p className="font-semibold text-slate-700">아직 첫 입찰자가 없어요</p>
-                  <p className="mt-1 text-sm text-slate-500">가장 먼저 입찰하여 상품을 차지할 기회를 잡아보세요!</p>
+                  <p className="font-medium text-[#1F1F25]">{auctionData.topBidder.nickname}</p>
+                  <p className="text-xs text-[#B8B8B8]">{auctionData.topBidder.bidTime}</p>
+                </div>
+              </div>
+              <p className="font-bold text-[#5B80C2]">{auctionData.topBidder.bidAmount.toLocaleString()} P</p>
+            </div>
+          </Card> */}
+          {/* 사연 섹션
+          <Card className="mb-4 p-5 shadow-sm">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="font-medium text-[#1F1F25]">사연 모음</h3>
+              <span className="text-sm text-[#5B80C2]">사연 {auctionData.stories.length}</span>
+            </div>
+            <div className="space-y-4">
+              {auctionData.stories.map((story, index) => (
+                <div
+                  key={story.id}
+                  className={`pb-4 ${index < auctionData.stories.length - 1 ? 'border-b border-[#EEF2FB]' : ''}`}
+                >
+                  <div className="mb-2 flex items-start justify-between">
+                    <div className="flex items-center">
+                      <div className="mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#EEF2FB]">
+                        <i className="fas fa-user-alt text-[10px] text-[#5B80C2]"></i>
+                      </div>
+                      <span className="text-sm font-medium">{story.author}</span>
+                    </div>
+                    <span className="text-xs text-[#B8B8B8]">{story.createdAt.split(' ')[0]}</span>
+                  </div>
+                  <h4 className="mb-1 font-medium text-[#1F1F25]">{story.title}</h4>
+                  <p className="mb-1 line-clamp-2 text-sm text-[#B8B8B8]">{story.content}</p>
+                  <div className="flex items-center justify-between">
+                    <button
+                      className="cursor-pointer text-xs text-[#5B80C2]"
+                      onClick={() => {
+                        setSelectedStory(story);
+                        setShowStoryModal(true);
+                      }}
+                    >
+                      더보기
+                    </button>
+                    {story.author === '쿠키마니아' && (
+                      <div className="flex space-x-2">
+                        <button className="cursor-pointer text-xs text-[#B8B8B8]">수정</button>
+                        <button className="cursor-pointer text-xs text-[#D84A5F]">삭제</button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {auctionData.stories.length > 4 && (
+              <div className="mt-4 flex justify-center">
+                <div className="flex space-x-1">
+                  {[1, 2, 3].map((page) => (
+                    <button
+                      key={page}
+                      className={`h-2 w-2 rounded-full ${page === 1 ? 'bg-[#5B80C2]' : 'bg-[#EEF2FB]'}`}
+                    ></button>
+                  ))}
                 </div>
               </div>
             )}
-          </div>
-
-          <EpisodeList auction_id={auctionId} />
+          </Card>
+        </div> */}
+          {/* 사연 상세 모달
+        <Dialog open={showStoryModal} onOpenChange={setShowStoryModal}>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle className="mb-4 text-center text-lg font-bold">사연 상세</DialogTitle>
+            </DialogHeader>
+            {selectedStory && (
+              <div className="py-4">
+                <div className="mb-4 flex items-center">
+                  <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#EEF2FB]">
+                    <i className="fas fa-user-alt text-sm text-[#5B80C2]"></i>
+                  </div>
+                  <div>
+                    <p className="font-medium text-[#1F1F25]">{selectedStory.author}</p>
+                    <p className="text-xs text-[#B8B8B8]">{selectedStory.createdAt}</p>
+                  </div>
+                </div>
+                <h3 className="mb-3 text-lg font-bold text-[#1F1F25]">{selectedStory.title}</h3>
+                <p className="mb-6 text-sm whitespace-pre-line text-[#1F1F25]">{selectedStory.content}</p>
+                <Button
+                  className="!rounded-button w-full bg-[#5B80C2] text-white hover:bg-[#4A6DA8]"
+                  onClick={() => setShowStoryModal(false)}
+                >
+                  닫기
+                </Button>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog> */}
+          {/* 입찰 모달 */}
         </div>
-      </main>
+      </div>
     </>
   );
 };

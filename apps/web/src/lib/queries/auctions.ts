@@ -4,7 +4,6 @@ import {
   AuctionWithSellerInfo,
   SellerAuctionCountType
 } from 'src/types/auctions/detail';
-import { SortedAuctionsType } from 'src/types/main';
 
 // NOTE - 경매 상품 및 경매 업체 정보
 export const fetchAuctionWithSellerInfo = async (auctionId: string) => {
