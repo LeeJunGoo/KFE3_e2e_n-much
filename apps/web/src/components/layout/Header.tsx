@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '../../../assets/images/logo.svg';
-import LogoutButton from 'src/components/mypage/shared/LogoutButton';
 // import { IoNotifications } from 'react-icons/io5';
 // import { Button } from '@repo/ui/components/ui/button';
 
