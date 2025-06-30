@@ -4,7 +4,6 @@ import {
   AuctionWithSellerInfo,
   SellerAuctionCountType
 } from 'src/types/auctions/detail';
-import { SortedAuctionsType } from 'src/types/main';
 
 // NOTE - 경매 상품 및 경매 업체 정보
 export const fetchAuctionWithSellerInfo = async (auctionId: string) => {
@@ -80,9 +79,8 @@ export const fetchSellerAuctions = async () => {
 };
 
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
-export async function fetchAllAuctionWithEpisodeCount(order: string) {
-  const fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}?page=1`;
-
+export async function fetchAllAuctionWithEpisodeCount({ order, page }: { order: string; page: number }) {
+  const fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}&page=${page}`;
   const data = await fetch(fetchUrl);
   const result = await data.json();
 

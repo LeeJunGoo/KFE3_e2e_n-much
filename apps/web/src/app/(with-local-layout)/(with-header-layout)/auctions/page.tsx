@@ -7,15 +7,19 @@ import { fetchAllAuctionWithEpisodeCount } from 'src/lib/queries/auctions';
 export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   const queryClient = new QueryClient();
 
-  let { order } = await searchParams;
+  let { order, page } = await searchParams;
 
   if (!order) {
     order = 'end_time';
   }
 
+  if (!page) {
+    page = '1';
+  }
+
   await queryClient.prefetchQuery({
     queryKey: ['auctions'],
-    queryFn: await fetchAllAuctionWithEpisodeCount(order)
+    queryFn: await fetchAllAuctionWithEpisodeCount({ order, page: Number(page) })
   });
 
   return (

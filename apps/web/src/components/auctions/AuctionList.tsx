@@ -14,13 +14,15 @@ interface EpisodeCount {
 }
 
 export default function AuctionList({ order }: { order: string }) {
+  const page = 1;
   const {
     data: auctions,
     isLoading,
     isError
   } = useQuery({
-    queryKey: ['auctions'],
-    queryFn: () => fetchAllAuctionWithEpisodeCount(order)
+    queryKey: ['auctions', order, order],
+    queryFn: () => fetchAllAuctionWithEpisodeCount({ order, page }),
+    staleTime: 0
   });
   if (isError) {
     return <p>에러 발생</p>;
