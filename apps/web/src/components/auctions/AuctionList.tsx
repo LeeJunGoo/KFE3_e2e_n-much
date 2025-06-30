@@ -36,17 +36,21 @@ export default function AuctionList({ order }: { order: string }) {
       <ul className="grid grid-cols-2 gap-3">
         {auctions.length > 0 &&
           auctions.map((auction: AuctionRow & EpisodeCount) => {
-            const { auction_id, status, title, current_point, end_time, episodes } = auction;
+            const { auction_id, status, title, current_point, end_time, episodes, address } = auction;
             let { image_urls, favorites } = auction;
+
             if (!image_urls) {
               image_urls = [];
             }
             if (!favorites) {
               favorites = [];
             }
+
             return (
               <AuctionCard
                 key={auction_id}
+                auction_id={auction_id}
+                address={address[0]}
                 status={status}
                 imageSrc={image_urls[0]}
                 title={title}

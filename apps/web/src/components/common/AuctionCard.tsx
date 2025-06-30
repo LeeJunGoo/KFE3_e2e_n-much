@@ -1,3 +1,6 @@
+//NOTE - 마감 임박: 1일
+//FIXME - 이미지 없음에 기본 이미지 넣기
+//FIXME - 경매 상태 정하기
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
@@ -8,8 +11,8 @@ import Link from 'next/link';
 import { TZDate } from 'react-day-picker';
 import { FaHeart } from 'react-icons/fa';
 import { FaBookOpen } from 'react-icons/fa6';
-import noAuctionImage from '../../../assets/images/noAuctionImage.png';
 import { formatNumber } from 'src/utils/formatNumber';
+import noAuctionImage from '../../../assets/images/noAuctionImage.png';
 
 interface AuctionCardProp {
   auction_id: string;
@@ -41,15 +44,22 @@ export default function AuctionCard({
   const remainTime = formatDistanceToNow(auctionTime, { addSuffix: true });
 
   return (
-    <li className="!rounded-button cursor-pointer overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]">
-      <div className="relative">
-        <div className="h-[120px] w-full">
-          {imageSrc ? (
-            <Image src={imageSrc} fill={true} alt={`${title} 이미지`} className="object-cover object-top" />
-          ) : (
-            <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
-          )}
-        </div>
+    <li className="!rounded-button overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]">
+      <Link href={`/auctions/${auction_id}`}>
+        <div className="relative">
+          <div className="relative h-40 w-full">
+            {imageSrc ? (
+              <Image
+                src={imageSrc}
+                fill
+                alt={`${title} 이미지`}
+                className="object-cover"
+                sizes="(min-width: 768px) 400px, 100vw"
+              />
+            ) : (
+              <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
+            )}
+          </div>
 
           <Badge
             className={`absolute right-2 bottom-2 ${
