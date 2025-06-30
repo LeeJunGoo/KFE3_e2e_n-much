@@ -1,10 +1,15 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from '../../../assets/images/logo.svg';
+import LogoutButton from 'src/components/mypage/shared/LogoutButton';
+import { useGetUserInfo } from 'src/hooks/queries/useUsers';
 // import { IoNotifications } from 'react-icons/io5';
 // import { Button } from '@repo/ui/components/ui/button';
 
 const Header = () => {
+  const { data: userInfo, isLoading } = useGetUserInfo();
+
   return (
     <header className="h-16 w-full border-b border-b-(--color-light-gray)/30 px-5">
       <div className="flex h-full items-center justify-between">
@@ -19,7 +24,17 @@ const Header = () => {
             <span className="absolute top-1.5 right-0.5 size-2 rounded-full bg-(--color-red)" />
           </Button>
         </div> */}
-        <Link href="/auth/signin">로그인</Link>
+        <div className="flex items-center">
+          {isLoading ? (
+            <div className="h-4 w-12 animate-pulse rounded bg-gray-200" />
+          ) : userInfo ? (
+            <LogoutButton className="my-0" />
+          ) : (
+            <Link href="/auth/signin" className="text-(--color-accent) hover:underline">
+              로그인
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );
