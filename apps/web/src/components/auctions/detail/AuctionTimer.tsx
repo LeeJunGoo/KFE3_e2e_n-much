@@ -1,13 +1,14 @@
 'use client';
 
 import { useEffect } from 'react';
+import { IoMdTime } from 'react-icons/io';
 import { useCountdown } from 'src/hooks/useCountDown';
 import { fetchUpdateEpisodeWinning } from 'src/lib/queries/episodes';
 import { AuctionTimeProps } from 'src/types/auctions/detail';
 
-const AuctionTimer = ({ highestBuyer, start_time, end_time }: AuctionTimeProps) => {
-  const { remainingTime, status } = useCountdown(start_time, end_time);
-  const timerTextColor = status === 'ongoing' ? 'text-blue-600' : 'text-red-600 animate-pulse';
+const AuctionTimer = ({ highestBuyer, startTime, endTime }: AuctionTimeProps) => {
+  const { remainingTime, status } = useCountdown(startTime, endTime);
+  const timerTextColor = status === 'ongoing' ? 'text-(--color-accent)' : 'text-(--color-red)';
 
   // 데이터 처리
   useEffect(() => {
@@ -20,9 +21,9 @@ const AuctionTimer = ({ highestBuyer, start_time, end_time }: AuctionTimeProps) 
   }, [status, highestBuyer]);
 
   return (
-    <div>
-      <p className="text-sm text-[#6B7280]">경매 남은 시간</p>
-      <p className={`text-lg font-semibold ${timerTextColor}`}>{remainingTime}</p>
+    <div className="mb-3 flex items-center gap-1 text-(--color-accent)">
+      <IoMdTime />
+      <span className={`text-sm font-semibold ${timerTextColor}`}>남은 시간: {remainingTime}</span>
     </div>
   );
 };

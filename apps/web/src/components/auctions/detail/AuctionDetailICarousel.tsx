@@ -32,7 +32,7 @@ const AuctionDetailICarousel = ({ imageUrls }: { imageUrls: ImageArrayProps }) =
                   alt={`경매 이미지 ${index + 1}`}
                   fill
                   className="object-cover"
-                  sizes="(min-width: 768px) 700px, 100vw"
+                  sizes="(min-width: 768px) 700px, 50vw"
                   priority
                 />
               </div>

@@ -3,7 +3,7 @@ import { AuctionRow, BuyerRow, EpisodeRow, SellerRow } from 'src/lib/supabase/ty
 //NOTE - 경매 상세페이지 타입 지정
 
 export type BuyerInfo = {
-  buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname'>;
+  buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
 };
 
 export type SellerInfo = {
@@ -24,4 +24,7 @@ export type SellerAuctionCountType = {
   };
 };
 
-export type AuctionTimeProps = Pick<AuctionRow, 'start_time' | 'end_time'> & { highestBuyer: EpisodeRow & BuyerInfo };
+export type AuctionTimeProps = {
+  startTime: AuctionRow['start_time'];
+  endTime: AuctionRow['end_time'];
+} & { highestBuyer: EpisodeRow & BuyerInfo };

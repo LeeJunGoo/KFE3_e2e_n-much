@@ -32,18 +32,10 @@ const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] 
 
   return (
     <div className="space-x-2">
-      <Button
-        variant="secondary"
-        className="rounded-sm px-4 py-2 text-sm font-semibold transition-colors hover:bg-(--color-primary)"
-        onClick={() => router.push(`/auctions/write?auction_id=${auctionId}`)}
-      >
+      <Button variant="inActive" onClick={() => router.push(`/auctions/write?auction_id=${auctionId}`)}>
         수정
       </Button>
-      <Button
-        variant="destructive"
-        onClick={handleAuctionDelete}
-        className="rounded-sm px-4 py-2 text-sm font-semibold transition-colors hover:bg-(--color-warm-gray)"
-      >
+      <Button variant="outline" onClick={handleAuctionDelete}>
         삭제
       </Button>
     </div>
