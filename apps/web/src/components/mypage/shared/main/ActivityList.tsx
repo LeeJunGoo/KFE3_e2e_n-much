@@ -1,49 +1,83 @@
 import ActivityListItem from './ActivityListItem';
-import type { Activity } from 'src/types/mypage';
+import type { PointRow } from 'src/lib/supabase/type';
+
+type ActivityWithStatus = PointRow & {
+  status?: 'OPEN' | 'CLOSED';
+};
 
 //삭제 에정
-export const activities: Activity[] = [
+export const activities: ActivityWithStatus[] = [
   {
     type: 'auction',
     title: '빈티지 카메라 경매',
-    date: '2025년 6월 23일',
-    status: 'PROGRESS'
+    created_at: '2025-06-23T00:00:00.000Z',
+    amount: 0,
+    balance: 5000,
+    description: '경매 참여',
+    transaction_id: 'txn_001',
+    user_id: 'user_001',
+    status: 'OPEN'
   },
   {
-    type: 'point',
+    type: 'charge',
     title: '포인트 충전',
-    date: '2025년 6월 22일',
-    amount: 3000
+    created_at: '2025-06-22T00:00:00.000Z',
+    amount: 3000,
+    balance: 5000,
+    description: '포인트 충전',
+    transaction_id: 'txn_002',
+    user_id: 'user_001'
   },
   {
     type: 'event',
     title: '이벤트 보상',
-    date: '2025년 6월 21일',
-    amount: 500
+    created_at: '2025-06-21T00:00:00.000Z',
+    amount: 500,
+    balance: 2000,
+    description: '이벤트 참여 보상',
+    transaction_id: 'txn_003',
+    user_id: 'user_001'
   },
   {
     type: 'event',
     title: '이벤트 참여',
-    date: '2025년 6월 20일',
-    amount: -300
+    created_at: '2025-06-20T00:00:00.000Z',
+    amount: -300,
+    balance: 1500,
+    description: '이벤트 참여비',
+    transaction_id: 'txn_004',
+    user_id: 'user_001'
   },
   {
     type: 'signup',
     title: '회원가입 포인트 지급',
-    date: '2025년 6월 19일',
-    amount: 1000
+    created_at: '2025-06-19T00:00:00.000Z',
+    amount: 1000,
+    balance: 1800,
+    description: '회원가입 축하 포인트',
+    transaction_id: 'txn_005',
+    user_id: 'user_001'
   },
   {
     type: 'auction',
     title: '빈티지 시계 경매',
-    date: '2025년 6월 18일',
-    status: 'ENDED'
+    created_at: '2025-06-18T00:00:00.000Z',
+    amount: 0,
+    balance: 800,
+    description: '경매 대기',
+    transaction_id: 'txn_006',
+    user_id: 'user_001',
+    status: 'CLOSED'
   },
   {
-    type: 'point',
+    type: 'purchase',
     title: '포인트 사용',
-    date: '2025년 6월 17일',
-    amount: -1500
+    created_at: '2025-06-17T00:00:00.000Z',
+    amount: -1500,
+    balance: 800,
+    description: '상품 구매',
+    transaction_id: 'txn_007',
+    user_id: 'user_001'
   }
 ];
 
@@ -54,8 +88,8 @@ const ActivityList = () => {
     <section className="mt-6">
       <h3 className="mb-3 font-medium">최근 활동</h3>
       <ul className="rounded-xl bg-white p-4 shadow-sm">
-        {recent.map((activity, idx) => (
-          <ActivityListItem key={idx} activity={activity} />
+        {recent.map((activity, index) => (
+          <ActivityListItem key={index} activity={activity} />
         ))}
       </ul>
     </section>

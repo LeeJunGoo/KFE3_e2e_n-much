@@ -1,19 +1,24 @@
 import LabelBadge from 'src/components/common/LabelBadge';
-import { BID_STATUS_LABEL, BID_STATUS_VARIANTS } from 'src/constants/mypage';
-import type { Activity } from 'src/types/mypage';
+import { STATUS_LABELS, STATUS_VARIANTS } from 'src/constants/mypage';
+import type { PointRow } from 'src/lib/supabase/type';
 
-type ActivityMetaProps = {
-  activity: Activity;
+// PointRow + status 속성
+type ActivityWithStatus = PointRow & {
+  status?: 'OPEN' | 'CLOSED';
 };
 
+interface ActivityMetaProps {
+  activity: ActivityWithStatus;
+}
+
 const ActivityMeta = ({ activity }: ActivityMetaProps) => {
-  if (activity.type === 'auction') {
-    return <LabelBadge status={BID_STATUS_LABEL[activity.status]} variant={BID_STATUS_VARIANTS[activity.status]} />;
+  if (activity.type === 'auction' && activity.status) {
+    return <LabelBadge status={STATUS_LABELS[activity.status]} variant={STATUS_VARIANTS[activity.status]} />;
   }
 
   return (
     <div className="text-right">
-      <span className="font-medium text-(--color-accent)">{activity.amount.toLocaleString()}P</span>
+      <span className="font-medium text-(--color-accent)">{activity.amount?.toLocaleString() || '0'}P</span>
     </div>
   );
 };
