@@ -15,6 +15,8 @@ import AuctionDetail from 'src/components/auctions/detail/AuctionDetail';
 import { Card } from '@repo/ui/components/ui/card';
 import { AlignVerticalJustifyStart } from 'lucide-react';
 import AuctionDetailICarousel from 'src/components/auctions/detail/AuctionDetailICarousel';
+import PageContainer from 'src/components/layout/PageContainer';
+import AuctionDetailNavbar from 'src/components/auctions/detail/AuctionDetailNavbar';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
@@ -37,25 +39,17 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
   return (
     <>
-      <div className="relative flex min-h-screen flex-col bg-[#F4F4F7]">
-        {/* 이미지 슬라이더 */}
-        <AuctionDetailICarousel imageUrls={image_urls} />
-        <div className="relative h-[250px] w-full">
+      <PageContainer className="-pt-8 -px-5">
+        <div className="relative h-68 w-full">
+          {/* 이미지 슬라이더 */}
+          <AuctionDetailICarousel imageUrls={image_urls} />
           {/* 상단 네비게이션 */}
-          <div className="absolute top-0 right-0 left-0 z-10 flex items-center justify-between p-4">
-            {/* <button
-              className="!rounded-button flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white/70 shadow-sm"
-              onClick={() => window.history.back()}
-            >
-              <i className="fas fa-arrow-left text-[#1F1F25]"></i>
-            </button> */}
-            <button className="!rounded-button flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white/70 shadow-sm">
-              <i className="fas fa-share-alt text-[#1F1F25]"></i>
-            </button>
-          </div>
+          <AuctionDetailNavbar auctionId={auctionId} />
         </div>
+
+        {/* </div> */}
         {/* 메인 콘텐츠 */}
-        <div className="relative z-10 -mt-6 flex-1 px-4 pb-20">
+        <div className="relative z-10 flex-1 -translate-y-10 px-4 pb-20">
           {/* 경매 상품 정보 */}
           <AuctionDetail auctionInfo={auctionInfo} />
 
@@ -186,7 +180,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
         </Dialog> */}
           {/* 입찰 모달 */}
         </div>
-      </div>
+      </PageContainer>
     </>
   );
 };
