@@ -2,7 +2,7 @@
 import { useRouter } from 'next/navigation';
 import { FaArrowLeft } from 'react-icons/fa6';
 
-const GoBackButton = ({ className }: { className: string }) => {
+const GoBackButton = ({ className }: { className?: string }) => {
   const router = useRouter();
 
   const handleGoBack = () => {

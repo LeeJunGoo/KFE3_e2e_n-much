@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import PageHeader from 'src/components/common/ui/PageHeader';
 import PageContainer from 'src/components/layout/PageContainer';
 import MyStorySection from 'src/components/mypage/episodes/MyStorySection';
@@ -7,7 +8,9 @@ const MyStories = () => {
     <div>
       <PageHeader>내가 쓴 스토리</PageHeader>
       <PageContainer className="pt-2">
-        <MyStorySection />
+        <Suspense fallback={<div>로딩중</div>}>
+          <MyStorySection />
+        </Suspense>
       </PageContainer>
     </div>
   );
