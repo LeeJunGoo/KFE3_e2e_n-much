@@ -7,10 +7,12 @@ import { AuthCard } from 'src/components/auth/AuthCard';
 import { Role, Provider } from '../../../../types/auth/index';
 import { LoadingSpinner } from 'src/components/auth/LoadingSpinner';
 import { toast } from '@repo/ui/components/ui/sonner';
+import { useUserStore } from 'src/store/UserStore';
 
 export default function SigninPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { setUser } = useUserStore();
 
   // 리디렉션됐을 때, storeUserInfo()의 중복호출을 막기 위해서 null로 초기화.
   const [role, setRole] = useState<Role | null>(null);
@@ -67,10 +69,12 @@ export default function SigninPage() {
             }
           }
           currentUserInfo = savedUser.info;
-          toast.success('소셜 로그인 성공!');
         }
         // **  store에 저장 - 예정
+        if (!currentUserInfo) return;
         console.log('currentUserInfo:', currentUserInfo);
+        setUser(currentUserInfo, role);
+        toast.success('소셜 로그인 성공!');
         router.replace('/main');
       } catch (error) {
         console.error(error);

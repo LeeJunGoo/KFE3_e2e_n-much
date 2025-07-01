@@ -5,11 +5,13 @@ type User = BuyerUpdate | SellerUpdate;
 
 interface UserStore {
   user: User;
-  setUser: (user: User) => void;
+  role: string;
+  setUser: (user: User, newRole: string) => void;
 }
 
 export const useUserStore = create<UserStore>((set) => ({
   // 키워드로 검색한 경매 리스트
   user: {},
-  setUser: (newUser: User) => set({ user: newUser })
+  role: '',
+  setUser: (newUser, newRole) => set({ user: newUser, role: newRole })
 }));
