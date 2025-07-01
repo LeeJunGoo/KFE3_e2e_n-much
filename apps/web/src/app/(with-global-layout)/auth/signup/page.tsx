@@ -82,7 +82,7 @@ export default function SignupPage() {
   }, [searchParams, role, router]);
 
   return (
-    <section>
+    <>
       {!isLoading ? (
         role !== null && (
           <AuthCard title="회원가입" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
@@ -90,6 +90,6 @@ export default function SignupPage() {
       ) : (
         <LoadingSpinner size={48} color="#8E74F9" />
       )}
-    </section>
+    </>
   );
 }
