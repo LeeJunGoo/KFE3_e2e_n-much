@@ -8,7 +8,7 @@ const MyStories = () => {
     <div>
       <PageHeader>내가 쓴 스토리</PageHeader>
       <PageContainer className="pt-2">
-        <Suspense fallback={<div>로딩중</div>}>
+        <Suspense fallback={<div>스토리를 불러오는 중...</div>}>
           <MyStorySection />
         </Suspense>
       </PageContainer>
