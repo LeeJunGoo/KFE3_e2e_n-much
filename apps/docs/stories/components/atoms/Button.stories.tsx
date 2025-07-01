@@ -8,6 +8,12 @@ const meta: Meta<typeof Button> = {
     layout: 'centered'
   },
   tags: ['autodocs'],
+  args: {
+    children: '기본 버튼',
+    variant: 'base',
+    size: 'default',
+    style: { cursor: 'pointer' }
+  },
   argTypes: {
     variant: {
       control: 'select',
@@ -15,7 +21,10 @@ const meta: Meta<typeof Button> = {
     },
     size: {
       control: 'select',
-      options: ['default', 'sm', 'lg', 'icon']
+      options: ['default', 'sm', 'lg']
+    },
+    style: {
+      table: { disable: true }
     }
   }
 };
