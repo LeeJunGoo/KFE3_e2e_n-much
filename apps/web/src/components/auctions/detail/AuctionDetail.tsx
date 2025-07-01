@@ -1,7 +1,6 @@
-'use client';
 import { Badge } from '@repo/ui/components/ui/badge';
-import { Button } from '@repo/ui/components/ui/button';
 import { Card } from '@repo/ui/components/ui/card';
+import Link from 'next/link';
 import { PropsWithChildren } from 'react';
 import { AuctionRow } from 'src/lib/supabase/type';
 import { SellerInfo } from 'src/types/auctions/detail';
@@ -36,12 +35,12 @@ const AuctionDetail = ({ auctionInfo, children }: PropsWithChildren<{ auctionInf
         </div>
         {/* 액션 버튼 */}
         <div className="flex space-x-3">
-          <Button
-            className="!rounded-button flex-1 bg-(--color-accent) text-(--color-secondary) hover:bg-(--color-primary)"
-            onClick={() => alert('사연 작성 모달 열기')}
+          <Link
+            href={`/episode/${auctionInfo.auction_id}`}
+            className="flex-1 rounded-md bg-(--color-accent) p-2 text-center text-(--color-secondary) transition-colors hover:bg-(--color-primary)"
           >
             사연 작성하기
-          </Button>
+          </Link>
         </div>
       </div>
     </Card>

@@ -27,7 +27,8 @@ export const getEpisodesByAuctionId = async (auctionId: string) => {
       *,
       buyer:buyer_id (
         nickname,
-        avatar
+        avatar,
+        email
       )
     `,
       { count: 'exact' }

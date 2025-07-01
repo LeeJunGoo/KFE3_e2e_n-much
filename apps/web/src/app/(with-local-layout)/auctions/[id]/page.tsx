@@ -1,22 +1,21 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import { Card } from '@repo/ui/components/ui/card';
+import { FaRegCommentDots } from 'react-icons/fa6';
 import AuctionDetail from 'src/components/auctions/detail/AuctionDetail';
 import AuctionDetailICarousel from 'src/components/auctions/detail/AuctionDetailICarousel';
 import AuctionDetailNavbar from 'src/components/auctions/detail/AuctionDetailNavbar';
 import AuctionTimer from 'src/components/auctions/detail/AuctionTimer';
+import EpisodeList from 'src/components/auctions/detail/EpisodeList';
 import PageContainer from 'src/components/layout/PageContainer';
-import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import { fetchAuctionWithSellerInfo, fetchHighestBidder, fetchSellerAuctionCount } from 'src/lib/queries/auctions';
+import { fetchEpisodesById } from 'src/lib/queries/episodes';
 import { formatNumber } from 'src/utils/formatNumber';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
 import { maskEmail } from 'src/utils/maskEmail';
-import { FaRegCommentDots } from 'react-icons/fa6';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
 
-  // <Button variant="base" size="sm">
-  //   asdfasdfasdf
-  // </Button>
   const [auctionInfo, highestBuyer] = await Promise.all([
     fetchAuctionWithSellerInfo(auctionId), // NOTE - 경매 상품 및 경매 업체 정보
     fetchHighestBidder(auctionId) // NOTE - 최고 입찰자의 정보
@@ -27,26 +26,31 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   // NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수
   const { totalAuctions, activeAuctions } = await fetchSellerAuctionCount(seller_id);
 
+  //NOTE - 에피소드 리스트 및 개수
+  const episodesListData = await fetchEpisodesById(auctionId);
+  const episodes = episodesListData.episode;
+  const episodesCount = episodesListData.count;
+
   return (
     <>
-      <PageContainer className="-pt-8 -px-5">
-        <div className="relative h-68 w-full">
+      <PageContainer className="-pt-8 -px-5 min-h-screen">
+        <div className="h-68 w-full">
           {/* 이미지 슬라이더 */}
           <AuctionDetailICarousel imageUrls={image_urls} />
           {/* 상단 네비게이션 */}
           <AuctionDetailNavbar auctionId={auctionId} />
         </div>
-
         {/* 메인 콘텐츠 */}
-        <div className="relative z-10 flex-1 -translate-y-10 px-4 pb-20">
+        <div className="-translate-y-14 px-4">
           {/* 경매 상품 정보 */}
           <AuctionDetail auctionInfo={auctionInfo}>
+            {/* //FIXME - 타이머 한국 시간으로 수정 */}
             <AuctionTimer highestBuyer={highestBuyer} startTime={start_time} endTime={end_time} />
           </AuctionDetail>
 
           {/* 판매자 정보 */}
           <Card className="mb-4 p-5 shadow-sm">
-            <h3 className="font-medium text-(--color-text-base)">경매자 정보</h3>
+            <h3 className="font-medium text-(--color-text-base)">판매자 정보</h3>
             <div className="mb-4 flex items-center">
               <Avatar className="mr-3 h-12 w-12">
                 <AvatarImage src={seller.avatar!} alt={seller.nickname!} />
@@ -106,83 +110,16 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
             )}
           </Card>
           {/* 사연 섹션 */}
-          <Card className="mb-4 p-5 shadow-sm">
+          <Card className="p-5 shadow-sm">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-(((--color-text-base))) font-medium">사연 모음</h3>
-              {/* <span className="text-sm text-[#5B80C2]">사연 {auctionData.stories.length}</span>
+              <span className="text-sm text-(--color-accent)">사연 {episodesCount}</span>
             </div>
-            <div className="space-y-4">
-              {auctionData.stories.map((story, index) => (
-                <div
-                  key={story.id}
-                  className={`pb-4 ${index < auctionData.stories.length - 1 ? 'border-b border-[#EEF2FB]' : ''}`}
-                >
-                  <div className="mb-2 flex items-start justify-between">
-                    <div className="flex items-center">
-                      <div className="mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-[#EEF2FB]">
-                        <i className="fas fa-user-alt text-[10px] text-[#5B80C2]"></i>
-                      </div>
-                      <span className="text-sm font-medium">{story.author}</span>
-                    </div>
-                    <span className="text-xs text-(--color-warm-gray)">{story.createdAt.split(' ')[0]}</span>
-                  </div>
-                  <h4 className="text-(((--color-text-base))) mb-1 font-medium">{story.title}</h4>
-                  <p className="mb-1 line-clamp-2 text-sm text-(--color-warm-gray)">{story.content}</p>
-                  <div className="flex items-center justify-between">
-            
-                    {story.author === '쿠키마니아' && (
-                      <div className="flex space-x-2">
-                        <button className="cursor-pointer text-xs text-(--color-warm-gray)">수정</button>
-                        <button className="cursor-pointer text-xs text-[#D84A5F]">삭제</button>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-            {auctionData.stories.length > 4 && (
-              <div className="mt-4 flex justify-center">
-                <div className="flex space-x-1">
-                  {[1, 2, 3].map((page) => (
-                    <button
-                      key={page}
-                      className={`h-2 w-2 rounded-full ${page === 1 ? 'bg-[#5B80C2]' : 'bg-[#EEF2FB]'}`}
-                    ></button>
-                  ))}
-                </div> */}
-            </div>
-            {/* )} */}
+
+            {/* 사연 리스트 */}
+            <EpisodeList auction_id={auctionId} />
           </Card>
 
-          {/* 사연 상세 모달
-        <Dialog open={showStoryModal} onOpenChange={setShowStoryModal}>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle className="mb-4 text-center text-lg font-bold">사연 상세</DialogTitle>
-            </DialogHeader>
-            {selectedStory && (
-              <div className="py-4">
-                <div className="mb-4 flex items-center">
-                  <div className="mr-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#EEF2FB]">
-                    <i className="fas fa-user-alt text-sm text-[#5B80C2]"></i>
-                  </div>
-                  <div>
-                    <p className="font-medium text-(((--color-text-base)))">{selectedStory.author}</p>
-                    <p className="text-xs text-(--color-warm-gray)">{selectedStory.createdAt}</p>
-                  </div>
-                </div>
-                <h3 className="mb-3 text-lg font-bold text-(((--color-text-base)))">{selectedStory.title}</h3>
-                <p className="mb-6 text-sm whitespace-pre-line text-(((--color-text-base)))">{selectedStory.content}</p>
-                <Button
-                  className="!rounded-button w-full bg-[#5B80C2] text-white hover:bg-[#4A6DA8]"
-                  onClick={() => setShowStoryModal(false)}
-                >
-                  닫기
-                </Button>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog> */}
           {/* 입찰 모달 */}
         </div>
       </PageContainer>

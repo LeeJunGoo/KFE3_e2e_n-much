@@ -1,69 +1,52 @@
-'use client';
-
-import { Button } from '@repo/ui/components/ui/button';
-
-import { useState } from 'react';
-import { FiAward } from 'react-icons/fi';
-import { IoMdTime } from 'react-icons/io';
-
-import { BiddingForm } from './BiddingForm';
-import EditDeleteEpisodes from './EditDeleteEpisodes';
+import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import { EpisodeItemProps } from 'src/types/episodes';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@repo/ui/components/ui/collapsible';
+import { maskEmail } from 'src/utils/maskEmail';
+import EditDeleteEpisodes from './EditDeleteEpisodes';
+import EpisodeBidButton from './EpisodeBidButton';
+import EpisodeMoreButton from './EpisodeMoreButton';
 
 const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isBiddingOpen, setIsBiddingOpen] = useState(false);
   const episodeTime = formatToKoreanDateTime(episode.created_at);
 
   return (
-    <li className="list-none px-6 py-5">
-      {/* 작성자 정보 */}
-      <div>
-        <div>
-          <p className="font-semibold text-gray-800">{episode.buyer.nickname}</p>
-          <div className="flex items-center gap-1 text-xs text-gray-500">
-            <IoMdTime />
-            <time>{episodeTime}</time>
+    <li className="list-none space-y-1 pb-4">
+      <div className="flex items-center justify-between">
+        {/* 작성자 정보 */}
+        <div className="flex items-center">
+          {/* //FIXME - 아바타 이미지 넣기 */}
+          <Avatar className="mr-3 h-12 w-12">
+            <AvatarImage src={episode.buyer.avatar!} alt={episode.buyer.nickname!} />
+            {/* //FIXME - 기본 아타바로 변경해야합니다. */}
+            <AvatarFallback>{'아바타가 존재하지 않습니다.'}</AvatarFallback>
+          </Avatar>
+
+          <div>
+            <div className="flex items-center gap-1">
+              <p className="font-medium text-(--color-text-base)">{episode.buyer.nickname}</p>
+              <p className="text-xs text-(--color-warm-gray)">&#40;{maskEmail(episode.buyer.email)}&#41;</p>
+            </div>
+            <p className="text-xs text-(--color-warm-gray)">{episodeTime}</p>
           </div>
         </div>
-        <div className="mt-4">
-          <h3 className="text-lg font-bold text-gray-900">{episode.title}</h3>
-          <p className="mt-2 leading-relaxed whitespace-pre-wrap text-gray-700">{isExpanded && episode.description}</p>
-        </div>
+        {/* //FIXME -  유효성 검사: 판매자 or 에피소드 작성자일 경우에만 */}
+        <EpisodeBidButton episode={episode} />
       </div>
-
-      <Collapsible open={isBiddingOpen} defaultOpen={false} onOpenChange={setIsBiddingOpen} className="mt-4">
-        <div className="flex justify-between">
-          {/* 더보기 버튼 */}
-          <Button variant="link" className="p-0 text-sm text-blue-600" onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? '접기' : '더보기'}
-          </Button>
-
-          {/* 오른쪽 버튼 그룹 */}
-          <div className="flex items-center gap-2">
-            {/* 에피소드 수정 및 삭제 버튼 */}
-            <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />
-
-            <CollapsibleTrigger asChild>
-              <Button size="sm" className="gap-1.5 bg-[#8E74F9] hover:bg-[#3f3562]">
-                <FiAward />
-                입찰하기
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-        </div>
-        {/*  펼쳐질 콘텐츠 영역 - 버튼 그룹과 완전히 분리 */}
-        <CollapsibleContent className="CollapsibleContent mt-2 w-full space-y-4 rounded-lg bg-[#F4F4F7] p-4">
-          <BiddingForm
-            auction_id={episode.auction_id}
-            episode_id={episode.episode_id}
-            currentBid={episode.bid_point}
-            userPoint={1000000}
-          />
-        </CollapsibleContent>
-      </Collapsible>
+      <div>
+        <h4 className="text-(((--color-text-base))) mb-1 font-medium">{episode.title}</h4>
+        <p className="text-md line-clamp-2 leading-relaxed text-(--color-warm-gray)">
+          {episode.description} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla molestias cumque neque
+          amet laudantium tempore deserunt temporibus, fuga rerum itaque, totam laboriosam ad, magnam eaque aliquid
+          harum error fugit minima!
+        </p>
+      </div>
+      <div className="flex items-center justify-between">
+        <EpisodeMoreButton episode={episode} />
+        {/* //FIXME - 유효성 검사: 로그인된 유저가 에피소드 유저인 지 */}
+        {episode.buyer_id !== '로그인된 유저' && (
+          <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />
+        )}
+      </div>
     </li>
   );
 };
