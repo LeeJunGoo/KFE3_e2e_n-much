@@ -5,12 +5,12 @@ import { Button } from '@repo/ui/components/ui/button';
 const DialogPreview = ({ title, description }: { title: string; description: string }) => {
   return (
     <div className="relative w-full min-w-[500px] max-w-[500px] rounded-lg border border-gray-200 bg-white p-5 text-center shadow-lg">
-      <button className="absolute right-4 top-4 flex h-7 w-7 cursor-pointer items-center justify-center rounded text-gray-500 transition-all duration-200 hover:text-gray-800">
+      <button className="text-(--color-warm-gray) absolute right-4 top-4 flex h-7 w-7 cursor-pointer items-center justify-center rounded transition-all duration-200 hover:text-gray-800">
         ×
       </button>
       <div className="mb-6">
         <h2 className="mb-2 text-center text-lg font-semibold">{title}</h2>
-        <p className="text-center text-sm text-gray-500">{description}</p>
+        <p className="text-(--color-warm-gray) text-center text-sm">{description}</p>
       </div>
       <div className="flex gap-2">
         <Button variant="outline" className="flex-1 cursor-pointer">
