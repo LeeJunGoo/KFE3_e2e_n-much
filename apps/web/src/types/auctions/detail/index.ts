@@ -27,4 +27,4 @@ export type SellerAuctionCountType = {
 export type AuctionTimeProps = {
   startTime: AuctionRow['start_time'];
   endTime: AuctionRow['end_time'];
-} & { highestBuyer: EpisodeRow & BuyerInfo };
+};

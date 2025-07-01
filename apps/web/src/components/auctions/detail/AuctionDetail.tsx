@@ -1,11 +1,11 @@
 import { Badge } from '@repo/ui/components/ui/badge';
 import { Card } from '@repo/ui/components/ui/card';
 import Link from 'next/link';
-import { PropsWithChildren } from 'react';
 import { AuctionRow } from 'src/lib/supabase/type';
 import { SellerInfo } from 'src/types/auctions/detail';
+import AuctionTimer from './AuctionTimer';
 
-const AuctionDetail = ({ auctionInfo, children }: PropsWithChildren<{ auctionInfo: AuctionRow & SellerInfo }>) => {
+const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionRow & SellerInfo }) => {
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case 'OPEN':
@@ -28,7 +28,9 @@ const AuctionDetail = ({ auctionInfo, children }: PropsWithChildren<{ auctionInf
         </div>
         <p className="mb-3 text-sm text-(--color-warm-gray)">{auctionInfo.description}</p>
 
-        {children}
+        {/* //FIXME - 타이머 한국 시간으로 수정 */}
+        <AuctionTimer startTime={auctionInfo.start_time} endTime={auctionInfo.end_time} />
+
         <div className="mb-4">
           <p className="text-sm text-(--color-warm-gray)">현재 최고 입찰가</p>
           <p className="text-xl font-bold text-(--color-text-base)">{auctionInfo.current_point.toLocaleString()} P</p>
