@@ -20,7 +20,6 @@ const config: StorybookConfig = {
   framework: {
     name: getAbsolutePath('@storybook/nextjs'),
     options: {}
-  },
-  staticDirs: []
+  }
 };
 export default config;
