@@ -18,7 +18,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   }
 
   await queryClient.prefetchQuery({
-    queryKey: ['auctions'],
+    queryKey: ['auctions', order, page],
     queryFn: await fetchAllAuctionWithEpisodeCount({ order, page: Number(page) })
   });
 
