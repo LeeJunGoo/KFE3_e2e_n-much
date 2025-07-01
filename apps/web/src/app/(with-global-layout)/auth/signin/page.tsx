@@ -63,6 +63,7 @@ export default function SigninPage() {
         } else {
           // 기존 유저 role이 현재 role과 다를 경우
           if (role !== savedUser.role) {
+            setRole(savedUser.role);
             if (!confirm(`${savedUser.role}로 저장된 사용자입니다. 로그인 하시겠습니까?`)) {
               router.replace('/auth/signup');
               return;

@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { getAuthInfo, socialSignin, upserAuthInfo, getExistsUser } from 'src/lib/supabase/query/auth';
 import { AuthCard } from 'src/components/auth/AuthCard';
-import { Role, Provider } from '../../../../types/auth/index';
+import type { Role, Provider } from '../../../../types/auth/index';
 import { LoadingSpinner } from 'src/components/auth/LoadingSpinner';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useUserStore } from 'src/store/UserStore';
@@ -63,6 +63,7 @@ export default function SignupPage() {
         } else {
           // 기존 유저 role이 현재 role과 다를 경우
           if (role !== savedUser.role) {
+            setRole(savedUser.role);
             if (!confirm(`${savedUser.role}로 저장된 사용자입니다. 로그인 하시겠습니까?`)) {
               router.replace('/auth/signup');
               return;

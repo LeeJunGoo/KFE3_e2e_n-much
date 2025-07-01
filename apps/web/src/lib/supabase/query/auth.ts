@@ -32,9 +32,9 @@ export const getExistsUser = async (id: string) => {
     const sellerData = await getSellerById(userId);
 
     if (buyerData) {
-      return { info: buyerData, role: 'BUYER' };
+      return { info: buyerData, role: 'BUYER' as Role };
     } else if (sellerData) {
-      return { info: sellerData, role: 'SELLER' };
+      return { info: sellerData, role: 'SELLER' as Role };
     } else {
       return undefined;
     }
