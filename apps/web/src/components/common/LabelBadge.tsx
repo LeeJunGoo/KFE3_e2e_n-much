@@ -4,11 +4,11 @@ import type { VariantProps } from 'class-variance-authority';
 
 type BadgeVariant = VariantProps<typeof badgeVariants>['variant'];
 
-type LabelBadgeProps = {
+interface LabelBadgeProps {
   status: string;
   variant?: BadgeVariant;
   children?: React.ReactNode;
-};
+}
 
 const LabelBadge = ({ status, variant = 'default', children }: LabelBadgeProps) => {
   return <Badge variant={variant}>{children || status}</Badge>;
@@ -16,7 +16,7 @@ const LabelBadge = ({ status, variant = 'default', children }: LabelBadgeProps) 
 
 LabelBadge.displayName = 'LabelBadge';
 
-//도메인별 팩토리 함수
+// 도메인별 팩토리 함수
 export const createLabelBadge = <T extends string>(
   variantMap: Record<T, BadgeVariant>,
   labelMap?: Record<T, string>

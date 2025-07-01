@@ -4,6 +4,7 @@ import {
   AuctionWithSellerInfo,
   SellerAuctionCountType
 } from 'src/types/auctions/detail';
+import { SortedAuctionsType } from 'src/types/main';
 
 // NOTE - 경매 상품 및 경매 업체 정보
 export const fetchAuctionWithSellerInfo = async (auctionId: string) => {
@@ -66,4 +67,14 @@ export const fetchDeleteAuction = async (auction_id: string) => {
   const data: AuctionInfo = await res.json();
 
   return data.status;
+};
+
+//NOTE - 셀러가 등록한 경매 목록 조회
+export const fetchSellerAuctions = async () => {
+  const res = await fetch('http://localhost:3001/api/auctions?type=sellerAuctions');
+  if (!res.ok) {
+    throw new Error('셀러 경매 목록을 가져오는 과정에서 네트워크 에러가 발생했습니다.');
+  }
+  const data = await res.json();
+  return data.data;
 };

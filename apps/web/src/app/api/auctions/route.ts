@@ -5,17 +5,33 @@ import {
   deleteAuction,
   getAllAuctions,
   getAuction,
+  getSellerAuctions,
   updateAuction
 } from '../../../lib/supabase/query/auctions';
+import { createClient } from 'src/lib/supabase/client/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const auctionId = searchParams.get('auction_id');
+  const type = searchParams.get('type');
 
   try {
     // 특정 경매 조회
     if (auctionId) {
       const res = await getAuction(auctionId);
+      return NextResponse.json({ status: 'success', data: res });
+    }
+
+    // 셀러 경매 목록 조회
+    if (type === 'sellerAuctions') {
+      const supabase = await createClient();
+      const {
+        data: { user }
+      } = await supabase.auth.getUser();
+      if (!user) {
+        throw new Error('로그인된 사용자가 없습니다');
+      }
+      const res = await getSellerAuctions(user.id);
       return NextResponse.json({ status: 'success', data: res });
     }
 
