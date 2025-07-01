@@ -1,3 +1,5 @@
+//TODO - 하단의 경매 현황 누르면 url 파라미터로 end_time을 넘기도록 해야 함
+
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import AuctionList from 'src/components/auctions/AuctionList';
 import SelectOrder from 'src/components/auctions/SelectOrder';
