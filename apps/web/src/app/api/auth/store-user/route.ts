@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { storeUserInfo } from 'src/lib/supabase/query/auth';
+import { storeUserInfo } from 'src/lib/supabase/query/users';
 
 export async function POST(request: Request) {
   try {
