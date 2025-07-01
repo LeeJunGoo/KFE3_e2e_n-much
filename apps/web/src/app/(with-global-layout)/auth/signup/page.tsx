@@ -67,10 +67,10 @@ export default function SignupPage() {
             }
           }
           currentUserInfo = savedUser.info;
-          toast.success('소셜 로그인 성공!');
         }
         // **  store에 저장 - 예정
         console.log('currentUserInfo:', currentUserInfo);
+        toast.success('소셜 로그인 성공!');
         router.replace('/main');
       } catch (error) {
         console.error(error);

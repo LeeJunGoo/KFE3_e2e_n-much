@@ -46,12 +46,18 @@ export const getExistsUser = async (id: string) => {
 };
 
 export const upserAuthInfo = async (role: Role, authInfo: User) => {
+  console.log('authInfo:', authInfo);
   try {
     const commonFields = {
       avatar: authInfo.user_metadata?.avatar_url ?? null,
-      email: authInfo.email,
+      created_at: authInfo.created_at ?? new Date().toISOString(),
+      email: authInfo.email ?? '',
+      favorites: [],
+      nickname: null,
       password: '',
-      social_name: authInfo.user_metadata?.name ?? null
+      point: 0,
+      social_name: authInfo.user_metadata?.name ?? '',
+      updated_at: authInfo.updated_at ?? new Date().toISOString()
     };
 
     let newUserData: BuyerUpdate | SellerUpdate | undefined;
