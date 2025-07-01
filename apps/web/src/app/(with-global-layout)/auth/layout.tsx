@@ -4,7 +4,9 @@ import PageContainer from 'src/components/layout/PageContainer';
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <PageContainer>
-      <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <div className="flex min-h-screen items-center justify-center">{children}</div>
+      </Suspense>
     </PageContainer>
   );
 }
