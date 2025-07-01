@@ -2,10 +2,11 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { socialSignin, storeUserInfo } from 'src/lib/supabase/query/auth';
+import { getAuthInfo, socialSignin, upserAuthInfo, getExistsUser } from 'src/lib/supabase/query/auth';
 import { AuthCard } from 'src/components/auth/AuthCard';
 import { Role, Provider } from '../../../../types/auth/index';
 import { LoadingSpinner } from 'src/components/auth/LoadingSpinner';
+import { toast } from '@repo/ui/components/ui/sonner';
 
 export default function SignupPage() {
   const searchParams = useSearchParams();
@@ -23,7 +24,7 @@ export default function SignupPage() {
   };
 
   const handleSocialSignin = async (provider: Provider) => {
-    await socialSignin({ provider: provider, redirectTo: 'http://localhost:3001/auth/signin' });
+    await socialSignin({ provider: provider, redirectTo: 'http://localhost:3001/auth/signup' });
   };
 
   useEffect(() => {
@@ -40,18 +41,48 @@ export default function SignupPage() {
   }, [role]);
 
   useEffect(() => {
-    if (searchParams.get('code')) {
-      setIsLoading(true);
-      if (role) {
-        storeUserInfo(role).then(() => {
-          router.replace('/');
-        });
+    setIsLoading(false);
+    if (!searchParams.get('code')) return;
+    setIsLoading(true);
+    if (!role) return;
+    const storeSocialInfo = async () => {
+      try {
+        let currentUserInfo;
+
+        // auth에서 유저 정보 가져오기
+        const authInfo = await getAuthInfo();
+        if (!authInfo) return;
+        // 테이블에 저장된 유저 가져오기
+        const savedUser = await getExistsUser(authInfo.id);
+        // 새로운 유저라면 DB에 저장
+        if (!savedUser) {
+          const newUserInfo = await upserAuthInfo(role, authInfo);
+          currentUserInfo = newUserInfo;
+        } else {
+          // 기존 유저 role이 현재 role과 다를 경우
+          if (role !== savedUser.role) {
+            if (!confirm(`${savedUser.role}로 저장된 사용자입니다. 로그인 하시겠습니까?`)) {
+              router.replace('/auth/signup');
+              return;
+            }
+          }
+          currentUserInfo = savedUser.info;
+          toast.success('소셜 로그인 성공!');
+        }
+        // **  store에 저장 - 예정
+        console.log('currentUserInfo:', currentUserInfo);
+        router.replace('/main');
+      } catch (error) {
+        console.error(error);
+        toast.error('소셜 로그인 실패!');
       }
-    }
-  }, [router, searchParams, role]);
+    };
+
+    storeSocialInfo();
+  }, [searchParams, role, router]);
 
   return (
-    <section>
+    <>
       {!isLoading ? (
         role !== null && (
           <AuthCard title="회원가입" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
@@ -59,6 +90,6 @@ export default function SignupPage() {
       ) : (
         <LoadingSpinner size={48} color="#8E74F9" />
       )}
-    </section>
+    </>
   );
 }
