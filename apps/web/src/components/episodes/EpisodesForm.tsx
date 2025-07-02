@@ -3,14 +3,13 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { AuctionRow, EpisodeRow } from 'src/lib/supabase/type';
 
-import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import { fetchCreateEpisode, fetchEditEpisode } from 'src/lib/queries/episodes';
-import { User } from '@supabase/supabase-js';
-import ListCard from '../common/ui/ListCard';
 import { Input } from '@repo/ui/components/ui/input';
 import { Textarea } from '@repo/ui/components/ui/textarea';
+import { User } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 import { EPISODE_TIP } from 'src/constants/episodes';
+import { fetchCreateEpisode, fetchEditEpisode } from 'src/lib/queries/episodes';
 
 const EpisodesForm = ({
   initialEpisodeInfo,

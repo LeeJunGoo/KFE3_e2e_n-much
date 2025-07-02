@@ -1,15 +1,14 @@
 import { User } from '@supabase/supabase-js';
-import Image from 'next/image';
 import PageHeader from 'src/components/common/ui/PageHeader';
 import EpisodesForm from 'src/components/episodes/EpisodesForm';
 import PageContainer from 'src/components/layout/PageContainer';
 
+import EpisodesAuctionCard from 'src/components/episodes/EpisodesAuctionCard';
 import { fetchEpisodeById } from 'src/lib/queries/episodes';
 import { getAuthInfo } from 'src/lib/supabase/query/auth';
 import { EpisodeRow } from 'src/lib/supabase/type';
-import TestImage from 'assets/images/test.png';
-import AuctionTimer from 'src/components/auctions/detail/AuctionTimer';
-import ListCard from 'src/components/common/ui/ListCard';
+import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
+import { Suspense } from 'react';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auction_id, episode_id] = (await params).id;
@@ -33,21 +32,23 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
     <>
       <PageHeader>{initialEpisodeInfo ? '사연 수정' : '사연 등록'}</PageHeader>
       <PageContainer>
-        <ListCard>
-          <div className="flex gap-2">
-            <div className="flex flex-shrink-0 overflow-hidden rounded-lg">
-              <Image src={TestImage} alt="테스트 이미지입니다." width={80} height={80} className="object-cover" />
+        <AuctionErrorBoundary
+          fallback={
+            <div className="flex h-[120px] items-center justify-center border-2">
+              <h3 className="text-[22px]">⚠️ 경매 물품 정보 섹션에서 오류가 발생했습니다.</h3>
             </div>
-
-            <div className="flex flex-1 flex-col justify-between">
-              <div>
-                <p className="font-medium">제목</p>
-                <p className="text-sm text-(--color-warm-gray)">주소</p>
+          }
+        >
+          <Suspense
+            fallback={
+              <div className="flex h-[120px] items-center justify-center">
+                <span className="animate-pulse text-lg text-gray-500">{'🚚 경매 데이터를 불러오는 중입니다...'}</span>
               </div>
-              <AuctionTimer startTime="222" endTime="2222" />
-            </div>
-          </div>
-        </ListCard>
+            }
+          >
+            <EpisodesAuctionCard auction_id={auction_id!} />
+          </Suspense>
+        </AuctionErrorBoundary>
         <EpisodesForm
           auction_id={auction_id!}
           episode_id={episode_id}
