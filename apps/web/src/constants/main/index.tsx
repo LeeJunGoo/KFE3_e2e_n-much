@@ -8,7 +8,7 @@ export const TAB_MENUS: TabMenuItem[] = [
   {
     label: '홈',
     icon: <AiFillHome size={20} />,
-    href: '/',
+    href: '/main',
     type: 'link'
   },
   {
