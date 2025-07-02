@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { getAuthInfo, socialSignin, upsertAuthInfo, getExistsUser, getAuthLogout } from 'src/lib/supabase/query/auth';
 import { AuthCard } from 'src/components/auth/AuthCard';
 import { useUserStore } from 'src/store/UserStore';
-import { LoadingSpinner } from 'src/components/auth/LoadingSpinner';
+import { LoadingSpinner } from 'src/components/common/LoadingSpinner';
 import { toast } from '@repo/ui/components/ui/sonner';
 import type { Role, Provider } from '../../../../types/auth/index';
 
@@ -99,7 +99,10 @@ export default function SignupPage() {
           <AuthCard title="회원가입" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
         )
       ) : (
-        <LoadingSpinner size="xl" />
+        <div className="flex flex-col items-center justify-center gap-2">
+          <LoadingSpinner size="xl" />
+          <p className="text-gray-600">처리 중 입니다...</p>
+        </div>
       )}
     </>
   );

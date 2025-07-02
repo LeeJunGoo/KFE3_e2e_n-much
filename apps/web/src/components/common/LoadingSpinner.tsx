@@ -16,10 +16,6 @@ export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerPr
     xl: 'size-10'
   };
 
-  console.log('size value:', size);
-  console.log('sizeStyle[size]:', sizeStyle[size]);
-  console.log('typeof size:', typeof size);
-
   return (
     <div className="flex flex-col items-center justify-center">
       <LuLoaderCircle className={twMerge('animate-spin text-(--color-accent)', sizeStyle[size], className)} />
