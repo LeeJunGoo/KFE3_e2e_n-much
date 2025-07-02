@@ -91,7 +91,7 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
   }
 }
 
-export async function getAuctionById(auctionId: string | undefined) {
+export async function fetchAuctionById(auctionId: string | undefined) {
   const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
   const data = await fetch(fetchUrl);
   const result = await data.json();

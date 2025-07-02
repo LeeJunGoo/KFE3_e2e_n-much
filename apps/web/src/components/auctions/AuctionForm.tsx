@@ -18,7 +18,7 @@ import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
 import { addHours, compareAsc, format, set, subDays } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { FiCalendar as CalendarIcon } from 'react-icons/fi';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Calendar } from '@repo/ui/components/ui/calendar';
 import { ko } from 'date-fns/locale';
@@ -31,16 +31,28 @@ import { uploadImage } from 'src/lib/supabase/query/bucket';
 import PageTitle from '../common/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import PageContainer from '../layout/PageContainer';
+import { useQuery } from '@tanstack/react-query';
+import { fetchAuctionById } from 'src/lib/queries/auctions';
 
 export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
   const isEditing: boolean = auctionIdParam ? true : false;
-  const [isLoading, setIsLoading] = useState<boolean>(isEditing);
+  const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string }[]>([]);
   const router = useRouter();
+
+  const {
+    data: auction,
+    isLoading: isDataLoading,
+    isError
+  } = useQuery({
+    queryKey: ['auctionForm'],
+    queryFn: () => fetchAuctionById(auctionIdParam),
+    enabled: !!auctionIdParam
+  });
 
   const formSchema = z.object({
     title: z
@@ -94,25 +106,24 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     defaultValues: getFormDefaultValues()
   });
 
-  async function getAuction(auctionId: string | undefined) {
-    const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
-    const data = await fetch(fetchUrl);
-    const result = await data.json();
+  // async function getAuction(auctionId: string | undefined) {
+  //   const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
+  //   const data = await fetch(fetchUrl);
+  //   const result = await data.json();
 
-    return result;
-  }
+  //   return result;
+  // }
 
   useEffect(() => {
-    async function setFormDefaultValues(auctionId: string | undefined) {
+    async function setFormDefaultValues() {
       if (!isEditing) {
         return;
       }
 
-      const result = await getAuction(auctionId);
+      console.log('first', auction);
 
-      if (result.status === 'success' && result.data) {
-        const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } =
-          result.data;
+      if (auction) {
+        const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } = auction;
 
         const startDay = new TZDate(start_time, 'Asia/Seoul');
         const startTime = format(startDay, 'HH:mm:ss');
@@ -132,19 +143,20 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
           startingPoint: String(starting_point),
           maxPoint: String(max_point)
         });
+
         if (image_urls) {
           setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image })));
         }
 
-        setIsLoading(false);
+        setIsFormLoading(false);
       } else {
         form.reset(getFormDefaultValues());
-        setIsLoading(false);
+        setIsFormLoading(false);
       }
     }
 
-    setFormDefaultValues(auctionIdParam);
-  }, [auctionIdParam, form, getFormDefaultValues, isEditing]);
+    setFormDefaultValues();
+  }, [auctionIdParam, form, getFormDefaultValues, isEditing, auction]);
 
   useEffect(() => {
     if (confirmPostCode) {
@@ -238,7 +250,11 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     setShowPostCodeSearch(false);
   };
 
-  if (isLoading) {
+  if (isError) {
+    return <p>에러 발생</p>;
+  }
+
+  if (isFormLoading || isDataLoading) {
     return <p>Loading...</p>;
   }
 
