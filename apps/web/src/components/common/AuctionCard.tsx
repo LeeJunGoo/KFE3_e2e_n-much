@@ -73,7 +73,7 @@ export default function AuctionCard({
         <div className="p-2">
           <h3 className="mb-1.5 overflow-hidden text-sm font-medium text-ellipsis text-[#1F1F25]">{title}</h3>
           <div className="mb-2 flex items-center justify-between text-xs text-(--color-warm-gray)">
-            <address className="max-w-[65%] truncate">{address}</address>
+            <address className="max-w-[65%] truncate">{address} </address>
             <span className="font-semibold text-(--color-accent)">{formatNumber(currentPoint)}&nbsp;P</span>
           </div>
           <div className="flex items-center justify-between text-xs text-(--color-warm-gray)">
