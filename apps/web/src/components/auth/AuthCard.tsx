@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { Button } from '@repo/ui/components/ui/button';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@repo/ui/components/ui/tabs';
-import { Role } from '../../types/auth/index';
+import { FaGavel, FaScaleBalanced } from 'react-icons/fa6';
+import type { Role } from '../../types/auth/index';
 
 interface AuthCardProps {
   title: string;
@@ -15,24 +16,25 @@ interface AuthCardProps {
 
 export function AuthCard({ title, role, onTabChange, onSocialSignin }: AuthCardProps) {
   return (
-    <Card className="max-w-sm gap-0 overflow-hidden rounded-md border-none p-0 shadow-lg">
+    <Card className="max-w-sm gap-0 overflow-hidden rounded-2xl border-3 border-neutral-950 p-0 shadow-none">
       <Tabs
         value={role}
-        onValueChange={(v: any) => {
+        onValueChange={(v: string) => {
           if (v === 'BUYER' || v === 'SELLER') onTabChange(v);
         }}
       >
-        <TabsList className="h-12 w-full rounded-none bg-transparent p-0">
+        <TabsList className="h-11 w-full rounded-none bg-transparent p-0 shadow-lg shadow-[#EEF2FB]">
           <TabsTrigger
-            className="h-full rounded-none p-0 data-[state=active]:bg-[#8E74F9] data-[state=active]:text-white data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:bg-gray-200"
+            className="relative h-full overflow-hidden rounded-none p-0 before:absolute before:right-0 before:bottom-0 before:h-[3px] before:w-0 before:bg-[#5B80C2] before:transition-all before:duration-300 before:content-[''] data-[state=active]:bg-[#EEF2FB] data-[state=active]:font-semibold data-[state=active]:text-gray-950 data-[state=active]:before:w-full data-[state=inactive]:bg-white data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:bg-gray-200"
             value="BUYER"
           >
-            입찰 참여자
+            <FaGavel size={20} /> 입찰 참여자
           </TabsTrigger>
           <TabsTrigger
-            className="h-full rounded-none p-0 data-[state=active]:bg-[#8E74F9] data-[state=active]:text-white data-[state=inactive]:bg-gray-100 data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:bg-gray-200"
+            className="relative h-full overflow-hidden rounded-none p-0 before:absolute before:bottom-0 before:left-0 before:h-[3px] before:w-0 before:bg-[#5B80C2] before:transition-all before:duration-300 before:content-[''] data-[state=active]:bg-[#EEF2FB] data-[state=active]:font-semibold data-[state=active]:text-gray-950 data-[state=active]:before:w-full data-[state=inactive]:bg-white data-[state=inactive]:text-gray-500 data-[state=inactive]:hover:bg-gray-200"
             value="SELLER"
           >
+            <FaScaleBalanced size={20} />
             경매 진행자
           </TabsTrigger>
         </TabsList>

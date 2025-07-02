@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { getAuthInfo, socialSignin, upserAuthInfo, getExistsUser } from 'src/lib/supabase/query/auth';
+import { getAuthInfo, socialSignin, upsertAuthInfo, getExistsUser, getAuthLogout } from 'src/lib/supabase/query/auth';
 import { AuthCard } from 'src/components/auth/AuthCard';
-import { Role, Provider } from '../../../../types/auth/index';
+import { useUserStore } from 'src/store/UserStore';
 import { LoadingSpinner } from 'src/components/auth/LoadingSpinner';
 import { toast } from '@repo/ui/components/ui/sonner';
-import { useUserStore } from 'src/store/UserStore';
+import type { Role, Provider } from '../../../../types/auth/index';
 
 export default function SigninPage() {
   const searchParams = useSearchParams();
@@ -49,33 +49,38 @@ export default function SigninPage() {
     if (!role) return;
     const storeSocialInfo = async () => {
       try {
-        let currentUserInfo;
+        let userInfo;
+        let userRole = role;
 
         // auth에서 유저 정보 가져오기
         const authInfo = await getAuthInfo();
-
         if (!authInfo) return;
-        // 테이블에 저장된 유저 가져오기
+
+        // 테이블에 저장된 유저 정보 가져오기
         const savedUser = await getExistsUser(authInfo.id);
+
         // 새로운 유저라면 DB에 저장
         if (!savedUser) {
-          const newUserInfo = await upserAuthInfo(role, authInfo);
-          currentUserInfo = newUserInfo;
-        } else {
-          // 기존 유저 role이 현재 role과 다를 경우
-          if (role !== savedUser.role) {
-            setRole(savedUser.role);
+          const newUserInfo = await upsertAuthInfo(role, authInfo);
+          userInfo = newUserInfo;
+        }
+        if (savedUser) {
+          // 저장된 유저 정보의 role이 현재 role과 다른 경우
+          if (savedUser.role !== role) {
+            userRole = savedUser.role;
             if (!confirm(`${savedUser.role}로 저장된 사용자입니다. 로그인 하시겠습니까?`)) {
-              router.replace('/auth/signup');
+              const res = await getAuthLogout();
+              if (res.success) console.log('auth 쿠키 삭제 완료');
+              router.replace('/auth/signin');
               return;
             }
           }
-          currentUserInfo = savedUser.info;
+          userInfo = savedUser.info;
         }
-        // **  store에 저장 - 예정
-        if (!currentUserInfo) return;
-        console.log('currentUserInfo:', currentUserInfo);
-        setUser(currentUserInfo, role);
+
+        // store에 저장
+        if (userInfo) setUser(userInfo, userRole);
+
         toast.success('소셜 로그인 성공!');
         router.replace('/main');
       } catch (error) {
@@ -85,7 +90,7 @@ export default function SigninPage() {
     };
 
     storeSocialInfo();
-  }, [searchParams, role, router]);
+  }, [searchParams, role, router, setUser]);
 
   return (
     <>
