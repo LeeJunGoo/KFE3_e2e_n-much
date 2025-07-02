@@ -11,11 +11,11 @@ const PointOverview = () => {
 
   return (
     <>
-      <p className="mb-2 flex items-center gap-1 text-(--color-accent)">
+      <p className="text-(--color-accent) mb-2 flex items-center gap-1">
         <span className="text-3xl font-bold">{formatNumber(currentPoint)}</span>
         <span className="text-xl font-medium">P</span>
       </p>
-      <p className="text-xs text-(--color-warm-gray)">마지막 업데이트: {formattedDate}</p>
+      <p className="text-(--color-warm-gray) text-xs">마지막 업데이트: {formattedDate}</p>
     </>
   );
 };

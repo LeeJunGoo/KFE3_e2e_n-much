@@ -22,7 +22,7 @@ const TabNavigation = ({ isSearchOpen, setIsSearchOpen }: TabNavigationProps) =>
   const pathname = usePathname();
 
   return (
-    <nav className="fixed right-0 bottom-0 left-0 z-40 m-auto h-16 max-w-2xl border-t border-t-(--color-warm-gray)/30 bg-white">
+    <nav className="border-t-(--color-warm-gray)/30 fixed bottom-0 left-0 right-0 z-40 m-auto h-16 max-w-2xl border-t bg-white">
       <ul className="flex h-full items-center justify-between">
         {TAB_MENUS.map((item) => (
           <TabNavItem
