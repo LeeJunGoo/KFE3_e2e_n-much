@@ -9,6 +9,8 @@ import { fetchCreateEpisode, fetchEditEpisode } from 'src/lib/queries/episodes';
 import { User } from '@supabase/supabase-js';
 import ListCard from '../common/ui/ListCard';
 import { Input } from '@repo/ui/components/ui/input';
+import { Textarea } from '@repo/ui/components/ui/textarea';
+import { EPISODE_TIP } from 'src/constants/episodes';
 
 const EpisodesForm = ({
   initialEpisodeInfo,
@@ -55,56 +57,61 @@ const EpisodesForm = ({
 
   return (
     <form onSubmit={handleSubmit} className="mt-6">
-      <div className="space-y-2">
+      <div className="mb-4">
         <label htmlFor="title" className="text-md block font-medium text-(--color-text-base)">
           사연 제목&nbsp;
           <span className="text-(--color-red)">*</span>
         </label>
-        <div className="relative">
+        <div className="relative mt-2">
           <Input
             type="text"
             id="title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="h-11 bg-white focus:border-0"
-            placeholder="경매 상품의 제목을 입력하세요"
+            className="h-11 bg-white p-3.5"
+            placeholder="경매 상품의 제목을 입력하세요."
             required
           />
           <div className="absolute right-3 bottom-3 text-xs text-[#B8B8B8]">0/40</div>
         </div>
-        {/* 상세 내용 */}
-        <div>
-          <label htmlFor="description" className="text-sm text-gray-500">
-            상세 내용
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            rows={4}
-            className="mt-1 w-full resize-none rounded-md border border-[#F4F4F7] p-3 text-gray-500"
-            placeholder="상품에 대한 자세한 설명을 입력하세요"
-            required
-          ></textarea>
-          {/* 초기화, 등록 버튼 */}
-          <div className="flex justify-end space-x-2">
-            <Button
-              variant="outline"
-              type="button"
-              className="bg- focus:shadow-outline rounded px-4 py-2 font-semibold text-gray-700 hover:bg-gray-300 focus:outline-none"
-              onClick={handleReset}
-            >
-              초기화
-            </Button>
-            <Button
-              variant="default"
-              type="submit"
-              className="focus:shadow-outline rounded bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-700 focus:outline-none"
-            >
-              {isEditMode ? '수정 완료' : '사연 등록'}
-            </Button>
-          </div>
-        </div>
+      </div>
+      {/* 상세 내용 */}
+      <label htmlFor="description" className="text-md block font-medium text-(--color-text-base)">
+        상세 내용&nbsp;
+        <span className="text-(--color-red)">*</span>
+      </label>
+      <div className="relative mt-2">
+        <Textarea
+          id="description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          rows={4}
+          className="h-51 w-full resize-none bg-white p-3.5"
+          placeholder="이 경험이 당신에게 왜 특별한지 적어주세요...."
+          required
+        ></Textarea>
+        <div className="absolute right-3 bottom-3 text-xs text-[#B8B8B8]">0/1000</div>
+      </div>
+
+      <div className="my-6 rounded-lg bg-[#EEF2FB] p-4">
+        <h3 className="mb-2 text-sm font-medium text-[#5B80C2]">
+          <i className="fas fa-lightbulb mr-2"></i>좋은 사연을 위한 팁
+        </h3>
+        <ul className="space-y-2 text-sm text-(--color-warm-gray)">
+          {EPISODE_TIP.map((text, index) => (
+            <li key={index}>&bull;&nbsp;{text}&#46;</li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 초기화, 등록 버튼 */}
+      <div className="flex justify-end space-x-2">
+        <Button variant="outline" type="button" onClick={handleReset} className="h-10 flex-1">
+          초기화
+        </Button>
+        <Button variant="inActive" type="submit" className="h-10 flex-1">
+          {isEditMode ? '수정 완료' : '사연 등록'}
+        </Button>
       </div>
     </form>
   );
