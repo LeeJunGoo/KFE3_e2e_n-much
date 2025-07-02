@@ -94,7 +94,7 @@ export default function SigninPage() {
           <AuthCard title="로그인" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
         )
       ) : (
-        <LoadingSpinner size={48} color="#8E74F9" />
+        <LoadingSpinner size="xl" />
       )}
     </>
   );

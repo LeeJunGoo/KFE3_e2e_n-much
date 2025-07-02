@@ -93,7 +93,7 @@ export default function SignupPage() {
           <AuthCard title="회원가입" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
         )
       ) : (
-        <LoadingSpinner size={48} color="#8E74F9" />
+        <LoadingSpinner size="xl" />
       )}
     </>
   );

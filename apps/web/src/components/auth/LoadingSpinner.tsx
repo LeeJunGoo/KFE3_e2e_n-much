@@ -1,10 +1,28 @@
-import { Loader2 } from 'lucide-react';
+import { twMerge } from 'tailwind-merge';
+import { LuLoaderCircle } from 'react-icons/lu';
 
-export function LoadingSpinner({ size = 24, color = '#333' }: { size?: number; color?: string }) {
+type size = 'sm' | 'md' | 'lg' | 'xl';
+
+interface LoadingSpinnerProps {
+  size?: size;
+  className?: string;
+}
+
+export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerProps) {
+  const sizeStyle = {
+    sm: 'size-4',
+    md: 'size-6',
+    lg: 'size-8',
+    xl: 'size-10'
+  };
+
+  console.log('size value:', size);
+  console.log('sizeStyle[size]:', sizeStyle[size]);
+  console.log('typeof size:', typeof size);
+
   return (
     <div className="flex flex-col items-center justify-center">
-      <Loader2 className={`animate-spin`} style={{ width: size, height: size, color: color }} />
-      <p className="text-gray-600">처리 중입니다...</p>
+      <LuLoaderCircle className={twMerge('animate-spin text-(--color-accent)', sizeStyle[size], className)} />
     </div>
   );
 }
