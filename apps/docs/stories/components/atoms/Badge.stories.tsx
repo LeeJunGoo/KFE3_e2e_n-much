@@ -12,9 +12,6 @@ const meta: Meta<typeof Badge> = {
     variant: {
       control: 'select',
       options: ['success', 'error', 'info', 'muted']
-    },
-    asChild: {
-      control: 'boolean'
     }
   }
 };
