@@ -6,6 +6,7 @@ export type EpisodeItemProps = EpisodeRow & {
     buyer_id: string;
     nickname: string;
     avatar: string | null;
+    email: string;
   };
 };
 export type EpisodesListType = {

@@ -53,6 +53,7 @@ export default function SigninPage() {
 
         // auth에서 유저 정보 가져오기
         const authInfo = await getAuthInfo();
+
         if (!authInfo) return;
         // 테이블에 저장된 유저 가져오기
         const savedUser = await getExistsUser(authInfo.id);
