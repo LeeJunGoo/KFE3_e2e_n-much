@@ -11,18 +11,18 @@ const MyPageNotification = ({ role }: MenuRoleProps) => {
   return (
     <ListCard as="section" className="mt-6 w-full">
       <div className="mb-3 flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-full bg-(--color-secondary)">
+        <div className="bg-(--color-secondary) flex size-10 items-center justify-center rounded-full">
           {role === 'BUYER' ? (
-            <MdInfoOutline className="size-5 text-(--color-accent)" />
+            <MdInfoOutline className="text-(--color-accent) size-5" />
           ) : (
-            <MdLightbulb className="size-5 text-(--color-accent)" />
+            <MdLightbulb className="text-(--color-accent) size-5" />
           )}
         </div>
         <h3 className="font-medium">{role === 'BUYER' ? '알림' : '팁'}</h3>
       </div>
       {role === 'BUYER' ? (
         <>
-          <p className="text-sm leading-relaxed text-(--color-warm-gray)">
+          <p className="text-(--color-warm-gray) text-sm leading-relaxed">
             현재 참여 중인 스토리가 {biddingCount}건 있습니다. 종료 시간을 확인해 주세요.
           </p>
           <Link href="/mypage/episodes?tab=ongoing&filter=입찰중">
@@ -32,7 +32,7 @@ const MyPageNotification = ({ role }: MenuRoleProps) => {
           </Link>
         </>
       ) : (
-        <p className="text-sm leading-relaxed text-(--color-warm-gray)">
+        <p className="text-(--color-warm-gray) text-sm leading-relaxed">
           경매 제목을 구체적으로 작성하면 더 많은 입찰자를 유치할 수 있어요!
         </p>
       )}

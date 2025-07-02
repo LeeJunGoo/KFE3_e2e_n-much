@@ -14,6 +14,7 @@ const UserProfileCard = ({ role, userInfo }: UserRoleDataProps) => {
             <h2 className="text-xl font-bold">{userInfo?.nickname || userInfo?.social_name || '사용자'}</h2>
             <RoleBadge role={role === 'BUYER' ? ROLE_LABEL.BUYER : ROLE_LABEL.SELLER} />
           </div>
+          <p className="text-sm text-(--color-warm-gray)">{userInfo.email}</p>
           <p className="text-sm text-(--color-warm-gray)">{userInfo?.email}</p>
           {role === 'SELLER' && (
             <p className="mt-0.5 text-sm text-(--color-warm-gray)">
@@ -24,7 +25,7 @@ const UserProfileCard = ({ role, userInfo }: UserRoleDataProps) => {
         </div>
         <div className="relative flex size-14 shrink-0 overflow-hidden rounded-full bg-(--color-primary) text-white">
           {userInfo?.avatar ? (
-            <Image src={userInfo.avatar} alt="프로필" width={56} height={56} className="h-full w-full object-cover" />
+            <Image src={userInfo?.avatar} alt="프로필" width={56} height={56} className="h-full w-full object-cover" />
           ) : (
             <span className="text-lg font-medium">아바타</span>
           )}

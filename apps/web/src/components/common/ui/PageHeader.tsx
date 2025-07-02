@@ -7,7 +7,7 @@ interface PageHeaderProps {
 
 const PageHeader = ({ children }: PageHeaderProps) => {
   return (
-    <div className="relative border-b border-b-(--color-warm-gray)/30 py-5">
+    <div className="border-b-(--color-warm-gray)/30 relative border-b py-5">
       <GoBackButton />
       <PageTitle>{children}</PageTitle>
     </div>
