@@ -61,7 +61,7 @@ export default function AuctionCard({
           </div>
 
           <Badge
-            className={`absolute bottom-2 right-2 ${
+            className={`absolute right-2 bottom-2 ${
               status === 'OPEN' && -24 < diffDay && diffDay < 0
                 ? 'bg-[#D84A5F] hover:bg-[#D84A5F]'
                 : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
@@ -71,12 +71,12 @@ export default function AuctionCard({
           </Badge>
         </div>
         <div className="p-2">
-          <h3 className="mb-1.5 overflow-hidden text-ellipsis text-sm font-medium text-[#1F1F25]">{title}</h3>
-          <div className="text-(--color-warm-gray) mb-2 flex items-center justify-between text-xs">
-            <address className="max-w-[65%] truncate">{address}</address>
-            <span className="text-(--color-accent) font-semibold">{formatNumber(currentPoint)}&nbsp;P</span>
+          <h3 className="mb-1.5 overflow-hidden text-sm font-medium text-ellipsis text-[#1F1F25]">{title}</h3>
+          <div className="mb-2 flex items-center justify-between text-xs text-(--color-warm-gray)">
+            <address className="max-w-[65%] truncate">{address} </address>
+            <span className="font-semibold text-(--color-accent)">{formatNumber(currentPoint)}&nbsp;P</span>
           </div>
-          <div className="text-(--color-warm-gray) flex items-center justify-between text-xs">
+          <div className="flex items-center justify-between text-xs text-(--color-warm-gray)">
             <div className="flex items-center">
               <FaHeart color="#D84A5F" className="mr-1" />
               <span>{favorites}</span>

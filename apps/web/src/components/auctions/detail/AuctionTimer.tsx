@@ -4,8 +4,9 @@ import { IoMdTime } from 'react-icons/io';
 
 import { AuctionTimeProps } from 'src/types/auctions/detail';
 import { formatRemainingTime } from 'src/utils/formatRemainingTime';
+import { twMerge } from 'tailwind-merge';
 
-const AuctionTimer = ({ startTime, endTime }: AuctionTimeProps) => {
+const AuctionTimer = ({ startTime, endTime, className }: AuctionTimeProps) => {
   const { status, remainTime } = formatRemainingTime(startTime, endTime);
 
   let timerTextColor = '';
@@ -26,7 +27,7 @@ const AuctionTimer = ({ startTime, endTime }: AuctionTimeProps) => {
   }
 
   return (
-    <div className="mb-3 flex items-center gap-1 text-(--color-accent)">
+    <div className={twMerge('mb-3 flex items-center gap-1 text-(--color-accent)', className)}>
       <IoMdTime />
       <span className={`text-sm font-semibold ${timerTextColor}`}>{remainTime}</span>
     </div>
