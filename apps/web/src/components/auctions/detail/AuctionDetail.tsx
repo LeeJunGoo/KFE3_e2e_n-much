@@ -15,6 +15,7 @@ const AuctionDetail = ({
 }) => {
   const isBuyer = userInfo.role === 'BUYER';
 
+  //FIXME - 현재 경매가 종료 시 status 변경이 없으므로, Badge의 상태가 OPEN으로 고정
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case 'OPEN':
