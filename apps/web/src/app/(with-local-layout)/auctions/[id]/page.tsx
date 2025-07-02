@@ -1,4 +1,5 @@
 import { Suspense } from 'react';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import AuctionDetail from 'src/components/auctions/detail/AuctionDetail';
 import AuctionDetailICarousel from 'src/components/auctions/detail/AuctionDetailICarousel';
 import AuctionDetailNavbar from 'src/components/auctions/detail/AuctionDetailNavbar';
@@ -6,9 +7,11 @@ import EpisodeDetailSection from 'src/components/auctions/detail/EpisodeDetailSe
 import HighestBuyerInfoSection from 'src/components/auctions/detail/HighestBuyerInfoSection';
 import SellerInfoSection from 'src/components/auctions/detail/SellerInfoSection';
 import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
+import LoginPrompt from 'src/components/common/LoginPrompt';
 import PageContainer from 'src/components/layout/PageContainer';
 import { fetchAuctionWithSellerInfo } from 'src/lib/queries/auctions';
-import { fetchUserInfo } from 'src/lib/queries/auth';
+import { fetchDetailPageUserInfo } from 'src/lib/queries/auth';
+import { createClient } from 'src/lib/supabase/client/server';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
@@ -17,9 +20,17 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   const auctionInfo = await fetchAuctionWithSellerInfo(auctionId);
   const { image_urls, address, seller } = auctionInfo;
 
+  const supabase = await createClient();
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return <LoginPrompt />;
+  }
+
   //NOTE - 로그인된 유저 정보
-  const userInfo = await fetchUserInfo();
-  console.log('🚀 ~ AuctionDetailPage ~ userInfo:', userInfo);
+  const userInfo: UserInfoType = await fetchDetailPageUserInfo(user.id);
 
   return (
     <>
@@ -28,11 +39,11 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
           {/* 이미지 슬라이더 */}
           <AuctionDetailICarousel imageUrls={image_urls} />
           {/* 상단 네비게이션 */}
-          <AuctionDetailNavbar auctionId={auctionId} />
+          <AuctionDetailNavbar auctionId={auctionId} userInfo={userInfo} />
         </div>
         <div className="-translate-y-14 px-4">
           {/* 경매 상품 정보 */}
-          <AuctionDetail auctionInfo={auctionInfo} />
+          <AuctionDetail auctionInfo={auctionInfo} userInfo={userInfo} />
 
           {/* 판매자 정보 */}
           <SellerInfoSection seller={seller} address={address} />
@@ -54,9 +65,8 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
               <HighestBuyerInfoSection auctionId={auctionId} />
             </Suspense>
           </AuctionErrorBoundary>
-
           {/* 사연 섹션 */}
-          <EpisodeDetailSection auctionId={auctionId} />
+          <EpisodeDetailSection auctionId={auctionId} userInfo={userInfo} sellerId={seller.seller_id} />
         </div>
       </PageContainer>
     </>

@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
+import UserAvatar from 'src/components/common/UserAvatar';
 import { EpisodeItemProps } from 'src/types/episodes';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
 import { maskEmail } from 'src/utils/maskEmail';
@@ -6,21 +6,28 @@ import EditDeleteEpisodes from './EditDeleteEpisodes';
 import EpisodeBidButton from './EpisodeBidButton';
 import EpisodeMoreButton from './EpisodeMoreButton';
 
-const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
+import { SellerRow } from 'src/lib/supabase/type';
+
+const EpisodeItem = ({
+  episode,
+  userInfo,
+  sellerId
+}: {
+  episode: EpisodeItemProps;
+  userInfo: UserInfoType;
+  sellerId: SellerRow['seller_id'];
+}) => {
   const episodeTime = formatToKoreanDateTime(episode.created_at);
+  const isEpisodeBid = userInfo.seller_id === sellerId || episode.buyer_id === userInfo.buyer_id;
+  const isEpisodeEditDelete = episode.buyer_id === userInfo.buyer_id;
 
   return (
     <li className="list-none space-y-1 pb-4">
-      <div className="flex items-center justify-between">
+      <div className="mb-5 flex items-center justify-between">
         {/* 작성자 정보 */}
         <div className="flex items-center">
-          {/* //FIXME - 아바타 이미지 넣기 */}
-          <Avatar className="mr-3 h-12 w-12">
-            <AvatarImage src={episode.buyer.avatar!} alt={episode.buyer.nickname!} />
-            {/* //FIXME - 기본 아타바로 변경해야합니다. */}
-            <AvatarFallback>{'아바타가 존재하지 않습니다.'}</AvatarFallback>
-          </Avatar>
-
+          <UserAvatar src={episode.buyer.avatar!} alt={episode.buyer.nickname!} size="sm" />
           <div>
             <div className="flex items-center gap-1">
               <p className="font-medium text-(--color-text-base)">{episode.buyer.nickname}</p>
@@ -29,8 +36,7 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
             <p className="text-xs text-(--color-warm-gray)">{episodeTime}</p>
           </div>
         </div>
-        {/* //FIXME -  유효성 검사: 판매자 or 에피소드 작성자일 경우에만 */}
-        <EpisodeBidButton episode={episode} />
+        {isEpisodeBid && <EpisodeBidButton episode={episode} userInfo={userInfo} />}
       </div>
       <div>
         <h4 className="text-(((--color-text-base))) mb-1 font-medium">{episode.title}</h4>
@@ -42,12 +48,10 @@ const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
       </div>
       <div className="flex items-center justify-between">
         <EpisodeMoreButton episode={episode} />
-        {/* //FIXME - 유효성 검사: 로그인된 유저가 에피소드 유저인 지 */}
-        {episode.buyer_id !== '로그인된 유저' && (
-          <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />
-        )}
+        {isEpisodeEditDelete && <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />}
       </div>
     </li>
   );
 };
+
 export default EpisodeItem;

@@ -1,8 +1,17 @@
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import GoBackButton from 'src/components/common/GoBackButton';
 import { AuctionRow } from 'src/lib/supabase/type';
 import EditDeleteActions from './EditDeleteActions';
 
-const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+const AuctionDetailNavbar = async ({
+  auctionId,
+  userInfo
+}: {
+  auctionId: AuctionRow['auction_id'];
+  userInfo: UserInfoType;
+}) => {
+  const isSeller = userInfo.role === 'SELLER';
+
   return (
     <>
       <nav className="absolute top-5 right-0 left-0 z-10 flex items-center justify-between">
@@ -11,7 +20,7 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
         </div>
         <div>
           {/*//FIXME -  로그인된 유저가 isSeller인지 여부 */}
-          <EditDeleteActions auctionId={auctionId} />
+          {isSeller && <EditDeleteActions auctionId={auctionId} />}
         </div>
       </nav>
     </>

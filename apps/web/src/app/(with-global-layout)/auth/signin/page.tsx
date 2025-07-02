@@ -51,6 +51,7 @@ export default function SigninPage() {
 
         // auth에서 유저 정보 가져오기
         const authInfo = await getAuthInfo();
+
         if (!authInfo) return;
         // 테이블에 저장된 유저 가져오기
         const savedUser = await getExistsUser(authInfo.id);
@@ -71,7 +72,7 @@ export default function SigninPage() {
         }
         // **  store에 저장 - 예정
         console.log('currentUserInfo:', currentUserInfo);
-        router.replace('/main');
+        router.push('/main');
       } catch (error) {
         console.error(error);
         toast.error('소셜 로그인 실패!');

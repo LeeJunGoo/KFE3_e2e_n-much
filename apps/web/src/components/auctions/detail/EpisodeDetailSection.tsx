@@ -1,10 +1,18 @@
 import { Card } from '@repo/ui/components/ui/card';
-import React from 'react';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import { fetchEpisodesById } from 'src/lib/queries/episodes';
-import { AuctionRow } from 'src/lib/supabase/type';
+import { AuctionRow, SellerRow } from 'src/lib/supabase/type';
 import EpisodeList from './EpisodeList';
 
-const EpisodeDetailSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+const EpisodeDetailSection = async ({
+  auctionId,
+  userInfo,
+  sellerId
+}: {
+  auctionId: AuctionRow['auction_id'];
+  userInfo: UserInfoType;
+  sellerId: SellerRow['seller_id'];
+}) => {
   //NOTE - 에피소드 리스트 및 개수
   const episodesListData = await fetchEpisodesById(auctionId);
   const episodesCount = episodesListData.count;
@@ -16,7 +24,7 @@ const EpisodeDetailSection = async ({ auctionId }: { auctionId: AuctionRow['auct
       </div>
 
       {/* 사연 리스트 */}
-      <EpisodeList auction_id={auctionId} />
+      <EpisodeList auction_id={auctionId} userInfo={userInfo} sellerId={sellerId} />
     </Card>
   );
 };

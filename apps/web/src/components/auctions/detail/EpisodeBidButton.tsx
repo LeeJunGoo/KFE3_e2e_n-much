@@ -10,8 +10,9 @@ import { toast } from '@repo/ui/components/ui/sonner';
 import { fetchUpdateEpisodeBid } from 'src/lib/queries/episodes';
 import { EpisodeItemProps } from 'src/types/episodes';
 import { formatNumber } from 'src/utils/formatNumber';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
 
-const EpisodeBidButton = ({ episode }: { episode: EpisodeItemProps }) => {
+const EpisodeBidButton = ({ episode, userInfo }: { episode: EpisodeItemProps; userInfo: UserInfoType }) => {
   const [showEpisodeModal, setShowEpisodeModal] = useState<boolean>(false);
   const [bidAmount, setBidAmount] = useState<string>('');
 
@@ -26,8 +27,8 @@ const EpisodeBidButton = ({ episode }: { episode: EpisodeItemProps }) => {
       toast.error('현재 입찰가보다 높은 금액을 입력해주세요.');
       return;
     }
-    /* //FIXME - 로그인된 유저의 보유 포인트 */
-    if (amount > 20000) {
+
+    if (amount > userInfo.point) {
       toast.error('보유 포인트가 부족합니다.');
       return;
     }
@@ -79,8 +80,8 @@ const EpisodeBidButton = ({ episode }: { episode: EpisodeItemProps }) => {
           <form onSubmit={handleBid}>
             <div className="mb-5 text-center">
               <p className="mb-1 text-sm text-(--color-warm-gray)">현재 보유 포인트</p>
-              {/* //FIXME - 로그인된 유저의 보유 포인트 */}
-              <p className="text-xl font-bold text-(--color-text-base)">1000 P</p>
+
+              <p className="text-xl font-bold text-(--color-text-base)">{userInfo.point} P</p>
             </div>
             <div className="mb-5">
               <p className="mb-2 text-sm text-(--color-accent)">
@@ -93,8 +94,6 @@ const EpisodeBidButton = ({ episode }: { episode: EpisodeItemProps }) => {
                 value={bidAmount}
                 onChange={(e) => setBidAmount(e.target.value)}
                 min={episode.bid_point}
-                //FIXME - 로그인된 유저의 보유 포인트
-                // max={userPoints}
               />
               <p className="mt-1 text-xs text-(--color-accent)">* 현재 입찰가보다 높은 금액을 입력해주세요</p>
             </div>

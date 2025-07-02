@@ -1,6 +1,5 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import { Card } from '@repo/ui/components/ui/card';
-import React from 'react';
+import UserAvatar from 'src/components/common/UserAvatar';
 import { fetchSellerAuctionCount } from 'src/lib/queries/auctions';
 import { SellerInfo } from 'src/types/auctions/detail';
 
@@ -13,14 +12,9 @@ const SellerInfoSection = async ({ seller, address }: SellerInfoSectionProps) =>
     <Card className="mb-4 p-5 shadow-sm">
       <h3 className="font-medium text-(--color-text-base)">판매자 정보</h3>
       <div className="mb-4 flex items-center">
-        <Avatar className="mr-3 h-12 w-12">
-          <AvatarImage src={seller.avatar!} alt={seller.nickname!} />
-          {/* //FIXME - 기본 아타바로 변경해야합니다. */}
-          <AvatarFallback>{'아바타가 존재하지 않습니다.'}</AvatarFallback>
-        </Avatar>
+        <UserAvatar src={seller.avatar!} alt={seller.nickname!} size="sm" />
         <div>
           <h3 className="font-medium text-(--color-text-base)">{seller.nickname}</h3>
-          {/* //FIXME - 판매자의 주소로 변경해야합니다. */}
           <p className="text-sm text-(--color-warm-gray)">{address[0]}</p>
         </div>
       </div>

@@ -2,10 +2,17 @@ import { Badge } from '@repo/ui/components/ui/badge';
 import { Card } from '@repo/ui/components/ui/card';
 import Link from 'next/link';
 import { AuctionRow } from 'src/lib/supabase/type';
-import { SellerInfo } from 'src/types/auctions/detail';
 import AuctionTimer from './AuctionTimer';
+import { SellerInfoType } from 'src/types/auctions/detail';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
 
-const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionRow & SellerInfo }) => {
+const AuctionDetail = ({
+  auctionInfo,
+  userInfo
+}: {
+  auctionInfo: AuctionRow & SellerInfoType;
+  userInfo: UserInfoType;
+}) => {
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case 'OPEN':
@@ -28,7 +35,6 @@ const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionRow & SellerInfo }
         </div>
         <p className="mb-3 text-sm text-(--color-warm-gray)">{auctionInfo.description}</p>
 
-        {/* //FIXME - 타이머 한국 시간으로 수정 */}
         <AuctionTimer startTime={auctionInfo.start_time} endTime={auctionInfo.end_time} />
 
         <div className="mb-4">
@@ -37,12 +43,14 @@ const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionRow & SellerInfo }
         </div>
         {/* 액션 버튼 */}
         <div className="flex space-x-3">
-          <Link
-            href={`/episode/${auctionInfo.auction_id}`}
-            className="flex-1 rounded-md bg-(--color-accent) p-2 text-center text-(--color-secondary) transition-colors hover:bg-(--color-primary)"
-          >
-            사연 작성하기
-          </Link>
+          {userInfo.role === 'BUYER' && (
+            <Link
+              href={`/episode/${auctionInfo.auction_id}`}
+              className="flex-1 rounded-md bg-(--color-accent) p-2 text-center text-(--color-secondary) transition-colors hover:bg-(--color-primary)"
+            >
+              사연 작성하기
+            </Link>
+          )}
         </div>
       </div>
     </Card>

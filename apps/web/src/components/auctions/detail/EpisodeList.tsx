@@ -13,10 +13,20 @@ import { FaRegCommentDots } from 'react-icons/fa';
 import { fetchEpisodesById } from 'src/lib/queries/episodes';
 import { EpisodeItemProps } from 'src/types/episodes';
 import EpisodeItem from './EpisodeItem';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
+import { SellerRow } from 'src/lib/supabase/type';
 
 const EPISODES_PER_PAGE = 5;
 
-const EpisodeList = ({ auction_id }: { auction_id: string }) => {
+const EpisodeList = ({
+  auction_id,
+  userInfo,
+  sellerId
+}: {
+  auction_id: string;
+  userInfo: UserInfoType;
+  sellerId: SellerRow['seller_id'];
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
   const [episodesCount, setEpisodesCount] = useState(0);
@@ -80,7 +90,7 @@ const EpisodeList = ({ auction_id }: { auction_id: string }) => {
       ) : (
         <ul className="space-y-5 divide-y">
           {currentEpisodes.map((episode: EpisodeItemProps) => (
-            <EpisodeItem key={episode.episode_id} episode={episode} />
+            <EpisodeItem key={episode.episode_id} episode={episode} userInfo={userInfo} sellerId={sellerId} />
           ))}
         </ul>
       )}

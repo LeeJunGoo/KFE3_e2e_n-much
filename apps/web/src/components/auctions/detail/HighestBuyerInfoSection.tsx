@@ -1,13 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import { Card } from '@repo/ui/components/ui/card';
-import React from 'react';
+import DefaultAvatar from 'assets/images/avatarDefault.svg';
+import Image from 'next/image';
 import { FaRegCommentDots } from 'react-icons/fa6';
+import UserAvatar from 'src/components/common/UserAvatar';
 import { fetchHighestBidder } from 'src/lib/queries/auctions';
 import { AuctionRow } from 'src/lib/supabase/type';
 import { formatNumber } from 'src/utils/formatNumber';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
 import { maskEmail } from 'src/utils/maskEmail';
-import AvatarDefault from 'assets/images/avatar_default.svg';
 
 const HighestBuyerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   // NOTE - 최고 입찰자의 정보
@@ -19,13 +20,7 @@ const HighestBuyerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['a
       {highestBuyer ? (
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            {/* //FIXME - 아바타 이미지 넣기 */}
-            <Avatar className="mr-3 h-12 w-12">
-              <AvatarImage src={highestBuyer.buyer.avatar!} alt={highestBuyer.buyer.nickname!} />
-              {/* //FIXME - 기본 아타바로 변경해야합니다. */}
-              <AvatarFallback>{AvatarDefault}</AvatarFallback>
-            </Avatar>
-
+            <UserAvatar src={highestBuyer.buyer.avatar!} alt={highestBuyer.buyer.nickname!} size="sm" />
             <div>
               <div className="flex items-center gap-1">
                 <p className="font-medium text-(--color-text-base)">{highestBuyer.buyer.nickname}</p>

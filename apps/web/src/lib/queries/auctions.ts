@@ -1,6 +1,6 @@
 import {
   AuctionHighestBidder,
-  AuctionInfo,
+  AuctionInfoType,
   AuctionWithSellerInfo,
   SellerAuctionCountType
 } from 'src/types/auctions/detail';
@@ -63,7 +63,7 @@ export const fetchDeleteAuction = async (auction_id: string) => {
     }
     throw new Error('경매 데이터를 삭제하는 과정에서 네트워크 에러가 발생했습니다.');
   }
-  const data: AuctionInfo = await res.json();
+  const data: AuctionInfoType = await res.json();
 
   return data.status;
 };
