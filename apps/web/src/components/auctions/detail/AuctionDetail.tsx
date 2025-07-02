@@ -13,6 +13,8 @@ const AuctionDetail = ({
   auctionInfo: AuctionRow & SellerInfoType;
   userInfo: UserInfoType;
 }) => {
+  const isBuyer = userInfo.role === 'BUYER';
+
   const getStatusBadgeColor = (status: string) => {
     switch (status) {
       case 'OPEN':
@@ -43,7 +45,7 @@ const AuctionDetail = ({
         </div>
         {/* 액션 버튼 */}
         <div className="flex space-x-3">
-          {userInfo.role === 'BUYER' && (
+          {isBuyer && (
             <Link
               href={`/episode/${auctionInfo.auction_id}`}
               className="flex-1 rounded-md bg-(--color-accent) p-2 text-center text-(--color-secondary) transition-colors hover:bg-(--color-primary)"

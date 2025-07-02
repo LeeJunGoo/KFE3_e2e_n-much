@@ -1,9 +1,9 @@
 import { Card } from '@repo/ui/components/ui/card';
 import UserAvatar from 'src/components/common/UserAvatar';
 import { fetchSellerAuctionCount } from 'src/lib/queries/auctions';
-import { SellerInfo } from 'src/types/auctions/detail';
+import { SellerInfoType } from 'src/types/auctions/detail';
 
-type SellerInfoSectionProps = SellerInfo & { address: string[] };
+type SellerInfoSectionProps = SellerInfoType & { address: string[] };
 
 const SellerInfoSection = async ({ seller, address }: SellerInfoSectionProps) => {
   // NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수

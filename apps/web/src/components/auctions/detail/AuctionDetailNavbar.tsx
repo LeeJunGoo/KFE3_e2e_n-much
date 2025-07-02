@@ -18,10 +18,7 @@ const AuctionDetailNavbar = async ({
         <div className="bg-gray flex h-10 w-10 justify-center rounded-sm bg-(--color-background)/70 shadow-sm">
           <GoBackButton className="-translate-x-2" />
         </div>
-        <div>
-          {/*//FIXME -  로그인된 유저가 isSeller인지 여부 */}
-          {isSeller && <EditDeleteActions auctionId={auctionId} />}
-        </div>
+        <div>{isSeller && <EditDeleteActions auctionId={auctionId} />}</div>
       </nav>
     </>
   );

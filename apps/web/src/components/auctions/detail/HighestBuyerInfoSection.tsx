@@ -1,7 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import { Card } from '@repo/ui/components/ui/card';
-import DefaultAvatar from 'assets/images/avatarDefault.svg';
-import Image from 'next/image';
 import { FaRegCommentDots } from 'react-icons/fa6';
 import UserAvatar from 'src/components/common/UserAvatar';
 import { fetchHighestBidder } from 'src/lib/queries/auctions';

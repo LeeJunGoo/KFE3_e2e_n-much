@@ -40,11 +40,7 @@ const EpisodeItem = ({
       </div>
       <div>
         <h4 className="text-(((--color-text-base))) mb-1 font-medium">{episode.title}</h4>
-        <p className="text-md line-clamp-2 leading-relaxed text-(--color-warm-gray)">
-          {episode.description} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla molestias cumque neque
-          amet laudantium tempore deserunt temporibus, fuga rerum itaque, totam laboriosam ad, magnam eaque aliquid
-          harum error fugit minima!
-        </p>
+        <p className="text-md line-clamp-2 leading-relaxed text-(--color-warm-gray)">{episode.description}</p>
       </div>
       <div className="flex items-center justify-between">
         <EpisodeMoreButton episode={episode} />
