@@ -90,3 +90,15 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
     throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
   }
 }
+
+export async function getAuctionById(auctionId: string | undefined) {
+  const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
+  const data = await fetch(fetchUrl);
+  const result = await data.json();
+
+  if (result.status === 'success') {
+    return result.data;
+  } else {
+    throw new Error('auction_id로 경매 fetch 실패');
+  }
+}

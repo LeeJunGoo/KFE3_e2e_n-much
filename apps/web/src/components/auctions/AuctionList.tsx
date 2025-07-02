@@ -1,8 +1,6 @@
 'use client';
 
-//FIXME - tanstack query 적용하기
-//TODO -  select와 url 불일치 고민하기
-//TODO - 서버 컴포넌트 전환 생각해보기
+//TODO - 스피너 적용하기
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchAllAuctionWithEpisodeCount } from 'src/lib/queries/auctions';
