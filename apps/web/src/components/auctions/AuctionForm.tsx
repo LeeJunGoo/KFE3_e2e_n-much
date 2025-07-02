@@ -67,10 +67,10 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
   });
 
-  const formDefaultValues = useCallback(() => {
+  const getFormDefaultValues = useCallback(() => {
     const today = new Date();
     const startDay = new TZDate(today, 'Asia/Seoul');
-    const endDay = addHours(startDay, 25);
+    const endDay = addHours(startDay, 25); //NOTE - 임시로 설정한 기본 값
 
     const startTime = format(startDay, 'HH:mm:ss');
     const endTime = format(endDay, 'HH:mm:ss');
@@ -91,7 +91,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: formDefaultValues()
+    defaultValues: getFormDefaultValues()
   });
 
   async function getAuction(auctionId: string | undefined) {
@@ -138,13 +138,13 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
 
         setIsLoading(false);
       } else {
-        form.reset(formDefaultValues);
+        form.reset(getFormDefaultValues());
         setIsLoading(false);
       }
     }
 
     setFormDefaultValues(auctionIdParam);
-  }, [auctionIdParam, form, formDefaultValues, isEditing]);
+  }, [auctionIdParam, form, getFormDefaultValues, isEditing]);
 
   useEffect(() => {
     if (confirmPostCode) {
@@ -443,7 +443,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
             variant="outline"
             type="reset"
             onClick={() => {
-              form.reset(formDefaultValues());
+              form.reset(getFormDefaultValues());
               setPreviewImages([]);
             }}
             className="w-1/2"
