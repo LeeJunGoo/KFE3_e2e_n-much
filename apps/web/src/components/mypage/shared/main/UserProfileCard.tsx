@@ -14,7 +14,6 @@ const UserProfileCard = ({ role, userInfo }: UserRoleDataProps) => {
             <h2 className="text-xl font-bold">{userInfo?.nickname || userInfo?.social_name || '사용자'}</h2>
             <RoleBadge role={role === 'BUYER' ? ROLE_LABEL.BUYER : ROLE_LABEL.SELLER} />
           </div>
-          <p className="text-sm text-(--color-warm-gray)">{userInfo.email}</p>
           <p className="text-sm text-(--color-warm-gray)">{userInfo?.email}</p>
           {role === 'SELLER' && (
             <p className="mt-0.5 text-sm text-(--color-warm-gray)">
@@ -41,7 +40,7 @@ const UserProfileCard = ({ role, userInfo }: UserRoleDataProps) => {
         </div>
         <p className="mt-1 text-xs text-(--color-warm-gray)">
           마지막 업데이트:
-          {userInfo?.updated_at ? new Date(userInfo.updated_at).toLocaleDateString('ko-KR') : '정보 없음'}
+          {userInfo?.updated_at ? new Date(userInfo?.updated_at).toLocaleDateString('ko-KR') : '정보 없음'}
         </p>
       </div>
     </SectionCard>

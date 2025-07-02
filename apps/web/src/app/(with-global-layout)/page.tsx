@@ -5,10 +5,12 @@ import { ChevronRight, Heart, Star, Trophy, Users, PenTool, X } from 'lucide-rea
 import { Button } from '@repo/ui/components/ui/button';
 import { Card } from '@repo/ui/components/ui/card';
 import { LuGift } from 'react-icons/lu';
+import { useRouter } from 'next/navigation';
 
 const OnboardingFlow = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isSkipped, setIsSkipped] = useState(false);
+  const router = useRouter();
 
   const nextSlide = () => {
     if (currentSlide < 2) {
@@ -29,6 +31,10 @@ const OnboardingFlow = () => {
   };
 
   if (isSkipped) {
+    setTimeout(() => {
+      router.push('/auth/signin');
+    }, 2000);
+
     return (
       <div className="via-background flex min-h-screen items-center justify-center bg-gradient-to-br from-(--color-secondary) to-(--color-primary)/20 px-6">
         <div className="animate-fade-in-scale text-center">
