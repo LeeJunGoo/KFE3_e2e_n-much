@@ -6,7 +6,7 @@ import DefaultAvatar from 'assets/images/avatarDefault.svg';
 type UserAvatarType = {
   src: string;
   alt: string;
-  size: 'sm' | 'md' | 'lg' | 'xlg';
+  size: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
 };
 
@@ -15,7 +15,7 @@ const UserAvatar = ({ src, alt, size, className }: UserAvatarType) => {
     sm: 'size-8',
     md: 'size-10',
     lg: 'size-12',
-    xlg: 'size-14'
+    xl: 'size-14'
   };
 
   return (
