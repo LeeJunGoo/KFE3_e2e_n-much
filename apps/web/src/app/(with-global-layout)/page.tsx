@@ -74,7 +74,7 @@ const OnboardingFlow = () => {
                   ? 'w-8 bg-(--color-accent)'
                   : index < currentSlide
                     ? 'w-2 bg-(--color-primary)'
-                    : 'w-2 bg-(--color-light-gray)'
+                    : 'w-2 bg-(--color-light-gray)/20'
               }`}
             />
           ))}
@@ -130,16 +130,16 @@ const SlideOne = () => (
     <Card className="animate-fade-in-scale w-full max-w-sm border-0 bg-white/80 p-4 shadow-lg backdrop-blur-sm">
       <div className="mb-3 flex items-center space-x-3">
         <div className="h-3 w-3 rounded-full bg-(--color-red)"></div>
-        <div className="h-3 w-3 rounded-full bg-(--color-primary)"></div>
+        <div className="h-3 w-3 rounded-full bg-(--color-yellow)"></div>
         <div className="h-3 w-3 rounded-full bg-(--color-green)"></div>
       </div>
       <div className="space-y-3">
-        <div className="h-3 w-3/4 rounded bg-(--color-light-gray)/50"></div>
+        <div className="h-3 w-3/4 rounded bg-(--color-light-gray)/20"></div>
         <div className="rounded-lg bg-(--color-secondary) p-3">
           <p className="text-text-base text-sm font-medium">2인 식사권</p>
           <p className="mt-1 text-xs text-(--color-warm-gray)">로맨틱한 저녁 식사</p>
         </div>
-        <div className="h-2 w-1/2 rounded bg-(--color-light-gray)/30"></div>
+        <div className="h-2 w-1/2 rounded bg-(--color-light-gray)/10"></div>
       </div>
     </Card>
   </div>
