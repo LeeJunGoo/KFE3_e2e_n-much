@@ -1,7 +1,8 @@
 import { createClient } from '../client/client';
-import { upsertBuyer, upsertSeller } from 'src/lib/supabase/query/users';
-import { BuyerInsert, SellerInsert } from '../type';
+import { upsertBuyer, upsertSeller, getBuyerById, getSellerById } from 'src/lib/supabase/query/users';
+import { BuyerUpdate, SellerUpdate } from '../type';
 import { Role, Provider } from '../../../types/auth/index';
+import type { User } from '@supabase/supabase-js';
 
 const supabase = createClient();
 
@@ -22,73 +23,61 @@ export const socialSignin = async (props: { provider: Provider; redirectTo: stri
   }
 };
 
-export const storeUserInfo = async (role: Role) => {
+export const getExistsUser = async (id: string) => {
   try {
-    const {
-      data: { user }
-    } = await supabase.auth.getUser();
+    const userId = id;
+    // BUYER 테이블 존재 여부 검사
+    const buyerData = await getBuyerById(userId);
+    // SELLER 테이블 존재 여부 검사
+    const sellerData = await getSellerById(userId);
 
-    if (!user) {
-      throw new Error('사용자 정보 가져오기 실패');
+    if (buyerData) {
+      return { info: buyerData, role: 'BUYER' as Role };
+    } else if (sellerData) {
+      return { info: sellerData, role: 'SELLER' as Role };
+    } else {
+      return undefined;
     }
-    console.log(user);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error('DB: id와 일치하는 사용자 정보를 가져오지 못했습니다.');
+    }
+  }
+};
 
-    // let roleToSave: Role = role;
+export const upsertAuthInfo = async (role: Role, authInfo: User) => {
+  console.log('authInfo:', authInfo);
+  try {
+    const commonFields = {
+      avatar: authInfo.user_metadata?.avatar_url ?? null,
+      created_at: authInfo.created_at ?? new Date().toISOString(),
+      email: authInfo.email ?? '',
+      favorites: [],
+      nickname: null,
+      password: '',
+      social_name: authInfo.user_metadata?.name ?? '',
+      updated_at: authInfo.updated_at ?? new Date().toISOString()
+    };
 
-    // 현재 유저가 DB에 있는지 체크
-    // const { data: dbUser, error: dbUserError } = await supabase
-    //   .from(tableTmp)
-    //   .select('*')
-    //   .eq('user_id', user.id)
-    //   .single();
-    // if (dbUserError) {
-    //   console.error('DB에서 유저의 role 조회 에러:', dbUserError.message);
-    // }
-    // 저장된 유저의 role 값으로 덮어쓰기
-    // if (dbUser && dbUser.role !== role) {
-    //   roleToSave = dbUser.role as Role;
-    //   console.log(`기존에 ${roleToSave}로 저장된 USER입니다.`);
-    // }
-
-    let userData: BuyerInsert | SellerInsert | undefined;
-
+    let newUserData: BuyerUpdate | SellerUpdate | undefined;
     if (role === 'BUYER') {
-      userData = await upsertBuyer({
-        avatar: user.user_metadata?.avatar_url ?? null,
-        buyer_id: user.id,
-        email: user.email ?? '',
-        favorites: [],
-        nickname: null,
-        created_at: user.created_at ?? new Date().toISOString(),
-        password: '',
-        point: 0,
-        social_name: user.user_metadata?.name ?? '',
-        updated_at: user.updated_at ?? new Date().toISOString()
+      newUserData = await upsertBuyer({
+        ...commonFields,
+        point: 100,
+        buyer_id: authInfo.id
       });
     } else if (role === 'SELLER') {
-      userData = await upsertSeller({
-        avatar: user.user_metadata?.avatar_url ?? null,
-        seller_id: user.id,
-        email: user.email ?? '',
-        favorites: [],
-        nickname: null,
-        created_at: user.created_at ?? new Date().toISOString(),
-        password: '',
+      newUserData = await upsertSeller({
+        ...commonFields,
         point: 0,
-        social_name: user.user_metadata?.name ?? '',
-        updated_at: user.updated_at ?? new Date().toISOString()
+        seller_id: authInfo.id
       });
     }
-    if (userData) {
-      console.log(`${userData.social_name} 님, ${role}로 사용자 정보 저장 성공`);
-    } else {
-      throw new Error('사용자 정보 저장 실패');
-    }
+
+    return newUserData;
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error(error + error.message);
-    } else {
-      console.error('알 수 없는 오류가 발생: ', error);
+      throw new Error(error.message);
     }
   }
 };

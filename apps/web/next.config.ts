@@ -6,10 +6,10 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'api.dicebear.com' },
       { protocol: 'https', hostname: 'i.namu.wiki' },
       { protocol: 'https', hostname: 'psszbhuartnhkzomgxmq.supabase.co' },
-      { protocol: 'https', hostname: 'lh3.googleusercontent.com' } //
+      { protocol: 'https', hostname: 'lh3.googleusercontent.com' },
+      { protocol: 'http', hostname: 'img1.kakaocdn.net' }
     ]
   }
 };
 
 export default nextConfig;
-//FIXME - i.namu.wiki 삭제하기 (테스트용)

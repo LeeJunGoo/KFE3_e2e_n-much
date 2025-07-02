@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
+import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { fetchDeleteAuction } from 'src/lib/queries/auctions';
 import { AuctionRow } from 'src/lib/supabase/type';
@@ -19,28 +20,22 @@ const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] 
       const result = await fetchDeleteAuction(auctionId);
       if (result === 'success') {
         router.push('/');
+        toast.success('정상적으로 삭제 되었습니다.');
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);
+        toast.error('경매 물품을  삭제하지 못했습니다. 다시 시도해주세요.');
+        router.refresh();
       }
     }
   };
 
   return (
     <div className="space-x-2">
-      <Button
-        variant="secondary"
-        className="px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors"
-        onClick={() => router.push(`/auctions/write?auction_id=${auctionId}`)}
-      >
+      <Button variant="inActive" onClick={() => router.push(`/auctions/write?auction_id=${auctionId}`)}>
         수정
       </Button>
-      <Button
-        variant="destructive"
-        onClick={handleAuctionDelete}
-        className=" px-4 py-2 text-sm font-semibold rounded-md hover:bg-[#C6C7D1] transition-colors"
-      >
+      <Button variant="outline" onClick={handleAuctionDelete}>
         삭제
       </Button>
     </div>
