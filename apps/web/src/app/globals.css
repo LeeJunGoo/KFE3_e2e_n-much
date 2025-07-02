@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @import '@repo/ui/styles.css';
-@import "@repo/tailwind-config";
+@import '@repo/tailwind-config';
 
 html {
   scrollbar-width: none;
@@ -16,4 +16,8 @@ button {
 
 body {
   color: var(--color-text-base);
+}
+
+input::selection {
+  @apply bg-(--color-primary) text-white;
 }

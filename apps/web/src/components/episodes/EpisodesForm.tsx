@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import { fetchCreateEpisode, fetchEditEpisode } from 'src/lib/queries/episodes';
 import { User } from '@supabase/supabase-js';
+import ListCard from '../common/ui/ListCard';
+import { Input } from '@repo/ui/components/ui/input';
 
 const EpisodesForm = ({
   initialEpisodeInfo,
@@ -52,26 +54,24 @@ const EpisodesForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-3 border-2 rounded-lg p-4">
-      <div className="space-y-4">
-        <div>
-          <h3 className="text-2xl font-bold">{isEditMode ? '사연 수정' : '사연 등록'}</h3>
-          <span className="text-sm text-[#C6C7D1]">
-            {isEditMode ? '사연의 내용을 수정해주세요.' : ' 경매에 참여할 사연을 입력해주세요'}
-          </span>
-        </div>
-        <label htmlFor="title" className="text-sm text-gray-500">
-          제목
+    <form onSubmit={handleSubmit} className="mt-6">
+      <div className="space-y-2">
+        <label htmlFor="title" className="text-md block font-medium text-(--color-text-base)">
+          사연 제목&nbsp;
+          <span className="text-(--color-red)">*</span>
         </label>
-        <input
-          type="text"
-          id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full mt-1 p-3 rounded-md border border-[#F4F4F7] text-gray-500 "
-          placeholder="경매 상품의 제목을 입력하세요"
-          required
-        />
+        <div className="relative">
+          <Input
+            type="text"
+            id="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="h-11 bg-white focus:border-0"
+            placeholder="경매 상품의 제목을 입력하세요"
+            required
+          />
+          <div className="absolute right-3 bottom-3 text-xs text-[#B8B8B8]">0/40</div>
+        </div>
         {/* 상세 내용 */}
         <div>
           <label htmlFor="description" className="text-sm text-gray-500">
@@ -82,7 +82,7 @@ const EpisodesForm = ({
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={4}
-            className="w-full mt-1 p-3 rounded-md border border-[#F4F4F7]  text-gray-500 resize-none "
+            className="mt-1 w-full resize-none rounded-md border border-[#F4F4F7] p-3 text-gray-500"
             placeholder="상품에 대한 자세한 설명을 입력하세요"
             required
           ></textarea>
@@ -91,7 +91,7 @@ const EpisodesForm = ({
             <Button
               variant="outline"
               type="button"
-              className="bg- hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg- focus:shadow-outline rounded px-4 py-2 font-semibold text-gray-700 hover:bg-gray-300 focus:outline-none"
               onClick={handleReset}
             >
               초기화
@@ -99,7 +99,7 @@ const EpisodesForm = ({
             <Button
               variant="default"
               type="submit"
-              className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="focus:shadow-outline rounded bg-indigo-600 px-4 py-2 font-semibold text-white hover:bg-indigo-700 focus:outline-none"
             >
               {isEditMode ? '수정 완료' : '사연 등록'}
             </Button>
