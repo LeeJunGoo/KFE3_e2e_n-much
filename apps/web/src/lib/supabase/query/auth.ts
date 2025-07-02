@@ -45,7 +45,7 @@ export const getExistsUser = async (id: string) => {
   }
 };
 
-export const upserAuthInfo = async (role: Role, authInfo: User) => {
+export const upsertAuthInfo = async (role: Role, authInfo: User) => {
   console.log('authInfo:', authInfo);
   try {
     const commonFields = {
@@ -55,7 +55,6 @@ export const upserAuthInfo = async (role: Role, authInfo: User) => {
       favorites: [],
       nickname: null,
       password: '',
-      point: 0,
       social_name: authInfo.user_metadata?.name ?? '',
       updated_at: authInfo.updated_at ?? new Date().toISOString()
     };
@@ -64,11 +63,13 @@ export const upserAuthInfo = async (role: Role, authInfo: User) => {
     if (role === 'BUYER') {
       newUserData = await upsertBuyer({
         ...commonFields,
+        point: 100,
         buyer_id: authInfo.id
       });
     } else if (role === 'SELLER') {
       newUserData = await upsertSeller({
         ...commonFields,
+        point: 0,
         seller_id: authInfo.id
       });
     }
