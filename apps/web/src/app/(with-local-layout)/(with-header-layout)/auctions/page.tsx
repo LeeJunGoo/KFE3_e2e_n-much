@@ -5,6 +5,11 @@ import AuctionList from 'src/components/auctions/AuctionList';
 import SelectOrder from 'src/components/auctions/SelectOrder';
 import PageContainer from 'src/components/layout/PageContainer';
 import { fetchAllAuctionWithEpisodeCount } from 'src/lib/queries/auctions';
+import { AuctionRow } from 'src/lib/supabase/type';
+
+interface EpisodeCount {
+  episodes: [{ count: number }];
+}
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   const queryClient = new QueryClient();
@@ -16,12 +21,15 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   }
 
   if (!page) {
-    page = '1';
+    page = '0';
   }
 
-  await queryClient.prefetchQuery({
-    queryKey: ['auctions', order, page],
-    queryFn: await fetchAllAuctionWithEpisodeCount({ order, page: Number(page) })
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: ['auctions', order],
+    queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: AuctionRow & EpisodeCount; nextId: number }> =>
+      fetchAllAuctionWithEpisodeCount({ order, pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: { data: AuctionRow & EpisodeCount; nextId: number }) => lastPage.nextId
   });
 
   return (
