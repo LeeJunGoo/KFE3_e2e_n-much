@@ -4,20 +4,21 @@ import { Button } from '@repo/ui/components/ui/button';
 import { AuctionRow, EpisodeRow } from 'src/lib/supabase/type';
 
 import { Input } from '@repo/ui/components/ui/input';
+import { toast } from '@repo/ui/components/ui/sonner';
 import { Textarea } from '@repo/ui/components/ui/textarea';
-import { User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { EPISODE_TIP } from 'src/constants/episodes';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
+import { EPISODE_TIP, MAX_DESC_LENGTH, MAX_TITLE_LENGTH } from 'src/constants/episodes';
 import { fetchCreateEpisode, fetchEditEpisode } from 'src/lib/queries/episodes';
 
 const EpisodesForm = ({
   initialEpisodeInfo,
-  initialUserInfo,
+  userInfo,
   episode_id,
   auction_id
 }: {
-  initialUserInfo: User | null | undefined;
+  userInfo: UserInfoType;
   initialEpisodeInfo: EpisodeRow | undefined;
   episode_id: EpisodeRow['episode_id'] | undefined;
   auction_id: AuctionRow['auction_id'];
@@ -27,19 +28,22 @@ const EpisodesForm = ({
   const router = useRouter();
 
   const isEditMode = !!initialEpisodeInfo;
-  const buyer_id = isEditMode ? initialEpisodeInfo.buyer_id : 'a2aafe6d-d5cb-4cdf-bde3-80349795c787';
-  // const buyer_id = isEditMode ? initialEpisodeInfo.buyer_id : initialUserInfo?.id; // 로그인
+  const buyer_id = isEditMode ? initialEpisodeInfo.buyer_id : userInfo.buyer_id;
+
+  const titleTextColor = title.length === MAX_TITLE_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
+  const descriptionTextColor =
+    description.length === MAX_DESC_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const result = isEditMode
-        ? await fetchEditEpisode({ episode_id, title, description })
-        : await fetchCreateEpisode({ auction_id, buyer_id, title, description });
+        ? await fetchEditEpisode({ episode_id, title, description }) // NOTE - 수정 모드
+        : await fetchCreateEpisode({ auction_id, buyer_id, title, description }); // NOTE - 등록 모드
       if (result === 'success') {
         const alertContent = isEditMode ? '사연을 수정하였습니다.' : '사연을 등록하였습니다.';
-        alert(alertContent);
+        toast.success(alertContent);
         router.push(`/auctions/${auction_id}`);
       }
     } catch (error) {
@@ -70,8 +74,9 @@ const EpisodesForm = ({
             className="h-11 bg-white p-3.5"
             placeholder="경매 상품의 제목을 입력하세요."
             required
+            maxLength={MAX_TITLE_LENGTH}
           />
-          <div className="absolute right-3 bottom-3 text-xs text-[#B8B8B8]">0/40</div>
+          <div className={`absolute right-3 bottom-3 text-xs font-semibold ${titleTextColor}`}>{title.length}/40</div>
         </div>
       </div>
       {/* 상세 내용 */}
@@ -88,8 +93,11 @@ const EpisodesForm = ({
           className="h-51 w-full resize-none bg-white p-3.5"
           placeholder="이 경험이 당신에게 왜 특별한지 적어주세요...."
           required
+          maxLength={MAX_DESC_LENGTH}
         ></Textarea>
-        <div className="absolute right-3 bottom-3 text-xs text-[#B8B8B8]">0/1000</div>
+        <div className={`absolute right-3 bottom-3 text-xs font-semibold ${descriptionTextColor}`}>
+          {description.length}/1000
+        </div>
       </div>
 
       <div className="my-6 rounded-lg bg-[#EEF2FB] p-4">

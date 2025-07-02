@@ -1,32 +1,36 @@
-import { User } from '@supabase/supabase-js';
 import PageHeader from 'src/components/common/ui/PageHeader';
 import EpisodesForm from 'src/components/episodes/EpisodesForm';
 import PageContainer from 'src/components/layout/PageContainer';
 
-import EpisodesAuctionCard from 'src/components/episodes/EpisodesAuctionCard';
-import { fetchEpisodeById } from 'src/lib/queries/episodes';
-import { getAuthInfo } from 'src/lib/supabase/query/auth';
-import { EpisodeRow } from 'src/lib/supabase/type';
-import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
 import { Suspense } from 'react';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
+import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
+import LoginPrompt from 'src/components/common/LoginPrompt';
+import EpisodesAuctionCard from 'src/components/episodes/EpisodesAuctionCard';
+import { fetchDetailPageUserInfo } from 'src/lib/queries/auth';
+import { fetchEpisodeById } from 'src/lib/queries/episodes';
+import { createClient } from 'src/lib/supabase/client/server';
+import { EpisodeRow } from 'src/lib/supabase/type';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auction_id, episode_id] = (await params).id;
   let initialEpisodeInfo: EpisodeRow | undefined;
-  let initialUserInfo: User | null | undefined;
 
   if (episode_id) {
-    try {
-      initialEpisodeInfo = await fetchEpisodeById(episode_id);
-    } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message);
-      }
-    }
-  } else {
-    // NOTE - 로그인 정보
-    initialUserInfo = await getAuthInfo();
+    initialEpisodeInfo = await fetchEpisodeById(episode_id);
   }
+
+  const supabase = await createClient();
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return <LoginPrompt />;
+  }
+
+  //NOTE - 로그인된 유저 정보
+  const userInfo: UserInfoType = await fetchDetailPageUserInfo(user.id);
 
   return (
     <>
@@ -53,7 +57,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
           auction_id={auction_id!}
           episode_id={episode_id}
           initialEpisodeInfo={initialEpisodeInfo}
-          initialUserInfo={initialUserInfo}
+          userInfo={userInfo}
         />
       </PageContainer>
     </>
