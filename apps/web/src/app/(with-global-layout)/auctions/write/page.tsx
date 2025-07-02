@@ -1,10 +1,11 @@
-import { Suspense } from 'react';
 import AuctionForm from 'src/components/auctions/AuctionForm';
+import PageContainer from 'src/components/layout/PageContainer';
 
-export default function Page() {
+export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+  const { auction_id } = await searchParams;
   return (
-    <Suspense fallback={<p>Loading...(useSearchParams)</p>}>
-      <AuctionForm />
-    </Suspense>
+    <PageContainer>
+      <AuctionForm auctionIdParam={auction_id} />;
+    </PageContainer>
   );
 }

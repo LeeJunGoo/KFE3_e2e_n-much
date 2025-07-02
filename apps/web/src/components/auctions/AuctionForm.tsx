@@ -32,10 +32,7 @@ import PageTitle from '../common/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import PageContainer from '../layout/PageContainer';
 
-export default function AuctionForm() {
-  const searchParams = useSearchParams();
-  const auctionIdParam = searchParams.get('auction_id');
-
+export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
   const isEditing: boolean = auctionIdParam ? true : false;
   const [isLoading, setIsLoading] = useState<boolean>(isEditing);
 
@@ -97,7 +94,7 @@ export default function AuctionForm() {
     defaultValues: formDefaultValues()
   });
 
-  async function getAuction(auctionId: string | null) {
+  async function getAuction(auctionId: string | undefined) {
     const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
     const data = await fetch(fetchUrl);
     const result = await data.json();
@@ -106,7 +103,7 @@ export default function AuctionForm() {
   }
 
   useEffect(() => {
-    async function setFormDefaultValues(auctionId: string | null) {
+    async function setFormDefaultValues(auctionId: string | undefined) {
       if (!isEditing) {
         return;
       }

@@ -84,8 +84,7 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
   const data = await fetch(fetchUrl);
   const result = await data.json();
 
-  if (result.status === 'success' && result.data) {
-    console.log(result.data);
+  if (result.status === 'success') {
     return result.data;
   } else {
     throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
