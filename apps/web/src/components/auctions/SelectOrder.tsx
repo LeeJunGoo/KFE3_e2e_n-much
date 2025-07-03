@@ -20,7 +20,9 @@ export default function SelectOrder({ order }: SelectOrderProp) {
 
   return (
     <Select
-      onValueChange={(changedOrder) => router.push(`http://localhost:3001/auctions?order=${changedOrder}`)}
+      onValueChange={(changedOrder) =>
+        router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auctions?order=${changedOrder}`)
+      }
       value={order}
     >
       <SelectTrigger className="w-[180px]">

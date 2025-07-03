@@ -80,7 +80,7 @@ export const fetchSellerAuctions = async () => {
 
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
 export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { order: string; pageParam: number }) {
-  const fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}&page=${pageParam}`;
+  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count?order=${order}&page=${pageParam}`;
   const data = await fetch(fetchUrl);
   const result = await data.json();
 
@@ -92,7 +92,7 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
 }
 
 export async function fetchAuctionById(auctionId: string | undefined) {
-  const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
+  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions?auction_id=${auctionId}`;
   const data = await fetch(fetchUrl);
   const result = await data.json();
 
