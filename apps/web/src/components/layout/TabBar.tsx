@@ -15,9 +15,7 @@ export default function TabBar() {
     setIsSearchOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    console.log('userRole:', userRole);
-  }, [userRole]);
+  useEffect(() => {}, [userRole]);
 
   return (
     <>

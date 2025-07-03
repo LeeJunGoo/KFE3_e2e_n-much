@@ -17,7 +17,7 @@ const HighestBuyerInfoSection = async ({
 }) => {
   // NOTE - 최고 입찰자의 정보
   const highestBuyer = await fetchHighestBidder(auctionId);
-  const userNickname = highestBuyer.buyer.nickname ?? userInfo.social_name;
+  const userNickname = highestBuyer?.buyer.nickname ?? userInfo.social_name;
 
   return (
     <Card className="mb-4 p-5 shadow-sm">

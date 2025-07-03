@@ -243,7 +243,11 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     console.log(values);
     console.log('결과', result);
     console.log('옥션아이디', auctionId);
-    // router.push(`/auctions/${auctionId}`);
+    if (isEditing) {
+      router.push(`/auctions/${auctionIdParam}`);
+    } else {
+      router.push(`/auctions/${auctionId}`);
+    }
   }
 
   const handlePostCodeSearch = (data: Address) => {
