@@ -7,7 +7,7 @@ import {
 
 // NOTE - 경매 상품 및 경매 업체 정보
 export const fetchAuctionWithSellerInfo = async (auctionId: string) => {
-  const res = await fetch(`http://localhost:3001/api/auctions/${auctionId}?type=auction`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction`);
 
   if (!res.ok) {
     throw new Error(`경매 상품에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
@@ -19,7 +19,7 @@ export const fetchAuctionWithSellerInfo = async (auctionId: string) => {
 
 //NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수
 export const fetchSellerAuctionCount = async (seller_id: string) => {
-  const res = await fetch(`http://localhost:3001/api/auctions/${seller_id}?type=seller`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${seller_id}?type=seller`);
 
   if (!res.ok) {
     throw new Error(`경매 상품에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
@@ -32,7 +32,7 @@ export const fetchSellerAuctionCount = async (seller_id: string) => {
 
 // NOTE - 최고 입찰자의 정보
 export const fetchHighestBidder = async (auction_id: string) => {
-  const res = await fetch(`http://localhost:3001/api/auctions/${auction_id}?type=buyer`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=buyer`);
 
   if (!res.ok) {
     throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
@@ -45,7 +45,7 @@ export const fetchHighestBidder = async (auction_id: string) => {
 
 //NOTE - 경매 데이터 삭제
 export const fetchDeleteAuction = async (auction_id: string) => {
-  const res = await fetch(`http://localhost:3001/api/auctions`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -70,7 +70,7 @@ export const fetchDeleteAuction = async (auction_id: string) => {
 
 //NOTE - 셀러가 등록한 경매 목록 조회
 export const fetchSellerAuctions = async () => {
-  const res = await fetch('http://localhost:3001/api/auctions?type=sellerAuctions');
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions?type=sellerAuctions`);
   if (!res.ok) {
     throw new Error('셀러 경매 목록을 가져오는 과정에서 네트워크 에러가 발생했습니다.');
   }
