@@ -22,7 +22,7 @@ const AuctionDetailICarousel = ({ imageUrls }: { imageUrls: ImageArrayProps }) =
       ]}
     >
       <CarouselContent>
-        {isImage && imageUrls.length > 0 ? (
+        {isImage ? (
           imageUrls.map((url, index) => (
             <CarouselItem key={`${url}-${index}`} className="h-64 w-full">
               <div className="relative h-full w-full">
