@@ -13,16 +13,16 @@ const AuctionTimer = ({ startTime, endTime, className }: AuctionTimeProps) => {
 
   switch (status) {
     case 'upcoming':
-      timerTextColor = 'text-[--color-red]';
+      timerTextColor = 'text-(--color-red)';
       break;
     case 'ongoing':
-      timerTextColor = 'text-[--color-blue]';
+      timerTextColor = 'text-(--color-accent)';
       break;
     case 'ended':
-      timerTextColor = 'text-[--color-gray]';
+      timerTextColor = 'text-(--color-warm-gray)';
       break;
     default:
-      timerTextColor = 'text-[--color-default]';
+      timerTextColor = 'text-(--color-accent)';
       break;
   }
 

@@ -1,5 +1,6 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { FaRegCommentDots } from 'react-icons/fa6';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import UserAvatar from 'src/components/common/UserAvatar';
 import { fetchHighestBidder } from 'src/lib/queries/auctions';
 import { AuctionRow } from 'src/lib/supabase/type';
@@ -7,9 +8,16 @@ import { formatNumber } from 'src/utils/formatNumber';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
 import { maskEmail } from 'src/utils/maskEmail';
 
-const HighestBuyerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+const HighestBuyerInfoSection = async ({
+  auctionId,
+  userInfo
+}: {
+  auctionId: AuctionRow['auction_id'];
+  userInfo: UserInfoType;
+}) => {
   // NOTE - 최고 입찰자의 정보
   const highestBuyer = await fetchHighestBidder(auctionId);
+  const userNickname = highestBuyer.buyer.nickname ?? userInfo.social_name;
 
   return (
     <Card className="mb-4 p-5 shadow-sm">
@@ -17,10 +25,10 @@ const HighestBuyerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['a
       {highestBuyer ? (
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <UserAvatar src={highestBuyer.buyer.avatar!} alt={highestBuyer.buyer.nickname!} size="sm" />
+            <UserAvatar src={highestBuyer.buyer.avatar!} alt={userNickname!} size="sm" />
             <div>
               <div className="flex items-center gap-1">
-                <p className="font-medium text-(--color-text-base)">{highestBuyer.buyer.nickname}</p>
+                <p className="text-sm font-medium text-(--color-text-base)">{userNickname}</p>
                 <p className="text-xs text-(--color-warm-gray)">&#40;{maskEmail(highestBuyer.buyer.email)}&#41;</p>
               </div>
               <p className="text-xs text-(--color-warm-gray)">{formatToKoreanDateTime(highestBuyer.bid_time)}</p>

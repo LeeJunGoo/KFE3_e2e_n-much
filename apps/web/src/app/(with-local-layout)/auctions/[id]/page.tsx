@@ -46,7 +46,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
           <AuctionDetail auctionInfo={auctionInfo} userInfo={userInfo} />
 
           {/* 판매자 정보 */}
-          <SellerInfoSection seller={seller} address={address} />
+          <SellerInfoSection seller={seller} address={address} userInfo={userInfo} />
           {/* 최고 입찰자 정보 */}
           <AuctionErrorBoundary
             fallback={
@@ -62,7 +62,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
                 </div>
               }
             >
-              <HighestBuyerInfoSection auctionId={auctionId} />
+              <HighestBuyerInfoSection auctionId={auctionId} userInfo={userInfo} />
             </Suspense>
           </AuctionErrorBoundary>
           {/* 사연 섹션 */}
