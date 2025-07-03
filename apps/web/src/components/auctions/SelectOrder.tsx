@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Select,
   SelectContent,
@@ -7,16 +9,22 @@ import {
   SelectTrigger,
   SelectValue
 } from '@repo/ui/components/ui/select';
-import { Dispatch, SetStateAction } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface SelectOrderProp {
   order: string;
-  setOrder: Dispatch<SetStateAction<string>>;
 }
 
-export default function SelectOrder({ order, setOrder }: SelectOrderProp) {
+export default function SelectOrder({ order }: SelectOrderProp) {
+  const router = useRouter();
+
   return (
-    <Select onValueChange={setOrder} defaultValue={order}>
+    <Select
+      onValueChange={(changedOrder) =>
+        router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auctions?order=${changedOrder}`)
+      }
+      value={order}
+    >
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="정렬 순서 선택" />
       </SelectTrigger>
