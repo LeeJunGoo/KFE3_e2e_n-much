@@ -23,9 +23,9 @@ export default function AuctionList() {
   async function getAllAuction(order: string | null) {
     let fetchUrl = null;
     if (!order) {
-      fetchUrl = `http://localhost:3001/api/auctions_with_episode_count`;
+      fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count`;
     } else {
-      fetchUrl = `http://localhost:3001/api/auctions_with_episode_count?order=${order}`;
+      fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count?order=${order}`;
     }
     const data = await fetch(fetchUrl);
     const result = await data.json();
