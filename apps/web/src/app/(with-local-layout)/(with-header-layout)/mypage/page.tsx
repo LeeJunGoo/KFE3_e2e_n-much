@@ -1,3 +1,4 @@
+'use client';
 import UserProfileCard from 'src/components/mypage/shared/main/UserProfileCard';
 import MyPageMenuList from 'src/components/mypage/shared/main/MyPageMenuList';
 import MyPageNotification from 'src/components/mypage/shared/main/MyPageNotification';
@@ -11,7 +12,6 @@ const MyPage = () => {
 
   if (isLoading) return <div>로딩 중...</div>;
   if (error) <div>사용자 정보를 찾을 수 없습니다.</div>;
-
   if (!userInfo) return <div>사용자 정보가 없습니다.</div>;
 
   if (userInfo.role === 'BUYER') {
