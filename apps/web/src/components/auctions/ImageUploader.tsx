@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { v4 as uuidv4 } from 'uuid';
-import { MdOutlineFileUpload } from 'react-icons/md';
+import { FaCloudUploadAlt } from 'react-icons/fa';
 
 export default function ImageUploader({
   onPreviewImages
@@ -34,13 +34,13 @@ export default function ImageUploader({
 
   return (
     <div
-      className="w-full h-2xl border-dotted border-2 rounded-sm flex justify-center align-middle"
+      className="h-2xl flex w-full justify-center rounded-sm border-2 border-dashed bg-white align-middle"
       {...getRootProps()}
     >
-      <div className="flex-col justify-center align-middle mx-auto my-auto pt-8 pb-8">
-        <MdOutlineFileUpload className="w-14 h-14 mx-auto mb-4" />
-        <p className="text-xl mb-4 text-center">이미지를 드래그하거나 클릭하여 업로드</p>
-        <p className="text-sm text-gray-500 text-center">PNG, JPG, GIF 파일을 지원합니다.</p>
+      <div className="mx-auto my-auto flex-col justify-center pt-8 pb-8 align-middle">
+        <FaCloudUploadAlt color="blue" className="mx-auto mb-4 h-14 w-14" />
+        <p className="mb-4 text-center text-xl">이미지를 끌어다 놓거나</p>
+        <p className="bg-gray-300 p-1 text-center text-sm text-blue-400">파일 선택하기</p>
       </div>
       <input {...getInputProps()} />
       {/* {isDragActive ? (
