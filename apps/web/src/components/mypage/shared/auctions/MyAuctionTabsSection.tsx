@@ -6,12 +6,17 @@ import MyAuctionListItem from './MyAuctionListItem';
 import { useState } from 'react';
 import { filterByTabKey } from 'src/utils/mypage/auctionFilters';
 import { TAB_LABELS } from 'src/constants/mypage';
-import { useGetSellerAuctions } from 'src/hooks/queries/useAuctions';
+import { useMyPageGetSellerAuctions } from 'src/hooks/queries/useAuctions';
 import type { TabKey } from 'src/types/mypage';
+import useSellerId from 'src/hooks/useSellerId';
 
 const MyAuctionTabsSection = () => {
   const [tabValue, setTabValue] = useState<TabKey>('ongoing');
-  const { data: sellerAuctions = [] } = useGetSellerAuctions();
+  const seller_id = useSellerId();
+  const { data: sellerAuctions = [], isLoading } = useMyPageGetSellerAuctions(seller_id ?? '');
+  if (!seller_id || isLoading) {
+    return <div className="py-8 text-center text-gray-400">경매 목록 불러오는 중...</div>;
+  }
 
   const filteredAuctions = filterByTabKey(sellerAuctions, tabValue);
 
