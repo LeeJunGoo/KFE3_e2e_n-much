@@ -3,14 +3,17 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/ui/dialog';
 import { useState } from 'react';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import UserAvatar from 'src/components/common/UserAvatar';
 import { EpisodeItemProps } from 'src/types/episodes';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
 import { maskEmail } from 'src/utils/maskEmail';
 
-const EpisodeMoreButton = ({ episode }: { episode: EpisodeItemProps }) => {
+const EpisodeMoreButton = ({ episode, userInfo }: { episode: EpisodeItemProps; userInfo: UserInfoType }) => {
   const [showStoryModal, setShowStoryModal] = useState<boolean>(false);
   const [selectedEpisodes, setSelectedEpisodes] = useState<EpisodeItemProps>();
+  const userNickname = episode.buyer.nickname ?? userInfo.social_name;
+
   return (
     <>
       <button
@@ -32,10 +35,10 @@ const EpisodeMoreButton = ({ episode }: { episode: EpisodeItemProps }) => {
           {selectedEpisodes && (
             <div className="py-4">
               <div className="mb-4 flex items-center">
-                <UserAvatar src={episode.buyer.avatar!} alt={episode.buyer.nickname!} size="sm" />
+                <UserAvatar src={episode.buyer.avatar!} alt={userNickname} size="sm" />
                 <div>
                   <div className="flex items-center gap-1">
-                    <p className="font-medium text-(--color-text-base)">{episode.buyer.nickname}</p>
+                    <p className="text-sm text-(--color-text-base)">{userNickname}</p>
                     <p className="text-xs text-(--color-warm-gray)">&#40;{maskEmail(episode.buyer.email)}&#41;</p>
                   </div>
                   <p className="text-xs text-(--color-warm-gray)">{formatToKoreanDateTime(episode.created_at)}</p>
