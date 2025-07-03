@@ -8,7 +8,7 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 export default function ImageUploader({
   onPreviewImages
 }: {
-  onPreviewImages: Dispatch<SetStateAction<{ id: string; data: string }[]>>;
+  onPreviewImages: Dispatch<SetStateAction<{ id: string; data: string; isUrl: boolean }[]>>;
 }) {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -19,7 +19,7 @@ export default function ImageUploader({
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-          onPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string }]);
+          onPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false }]);
         };
       });
     },

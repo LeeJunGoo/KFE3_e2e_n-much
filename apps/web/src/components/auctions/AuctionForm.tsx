@@ -7,7 +7,7 @@
 //NOTE - 달력 아이콘 앞으로 이동시키면 가운데 정렬됨
 //TODO - 색 물어보고 수정하기
 //TODO - 업체명 물어보기
-//TODO - 로그인 정보 가져와서 적용 (seller_id)
+//TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함)
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,7 +42,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(isEditing);
 
-  const [previewImages, setPreviewImages] = useState<{ id: string; data: string }[]>([]);
+  const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
   const router = useRouter();
 
   const {
@@ -138,7 +138,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
         });
 
         if (image_urls) {
-          setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image })));
+          setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image, isUrl: true })));
         }
 
         setIsFormLoading(false);
@@ -157,6 +157,21 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     }
   }, [confirmPostCode, form]);
 
+  const fetchDetailPageUserInfo = async (userId: string | null) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auth/user-info?user_id=${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || '사용자 정보 조회 중 오류가 발생했습니다.');
+    }
+    const data = await res.json();
+    return data.data;
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     let imageUrls: string[] = [];
     const {
@@ -174,9 +189,11 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
 
     try {
       const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
-        const data = await uploadImage(prevImage.data);
-
-        return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/` + data.fullPath;
+        if (!prevImage.isUrl) {
+          const data = await uploadImage(prevImage.data);
+          return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/` + data.fullPath;
+        }
+        return prevImage.data;
       });
 
       imageUrls = await Promise.all(imageUploadPromise);
@@ -201,12 +218,14 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     });
     const utcEndDate = new TZDate(korEndDate, 'utc');
     const auctionId = uuidv4();
+    const { seller_id: sellerId } = await fetchDetailPageUserInfo('');
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
+    console.log('셀러', sellerId);
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
         auction_id: isEditing ? auctionIdParam : auctionId,
-        seller_id: auction.seller_id,
+        seller_id: sellerId,
         title,
         address: [address, detailAddress],
         start_time: utcStartDate,
