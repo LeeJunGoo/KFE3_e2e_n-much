@@ -1,6 +1,7 @@
 import { Role } from 'src/types/auth';
 import { createClient } from '../client/client';
 import { BuyerInsert, SellerInsert } from '../type';
+import { UserRoleDataProps } from 'src/types/mypage';
 
 const supabase = createClient();
 
@@ -197,5 +198,62 @@ export const getSellerById = async (userId: string) => {
     if (error instanceof Error) {
       throw new Error('DB: SELLER 정보를 가져오지 못했습니다.');
     }
+  }
+};
+
+// 삭제 예정
+export const getUserInfoClient = async (): Promise<UserRoleDataProps> => {
+  const supabase = createClient();
+
+  try {
+    const {
+      data: { user }
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      throw new Error('로그인된 사용자가 없습니다');
+    }
+
+    const userId = user.id;
+
+    // 바이어 정보 확인
+    const { data: buyerData } = await supabase.from('buyers').select('*').eq('buyer_id', userId).maybeSingle();
+
+    if (buyerData) {
+      return {
+        role: 'BUYER' as const,
+        userInfo: buyerData
+      };
+    }
+
+    // 셀러 정보 확인
+    const { data: sellerData } = await supabase.from('sellers').select('*').eq('seller_id', userId).maybeSingle();
+
+    if (sellerData) {
+      return {
+        role: 'SELLER' as const,
+        userInfo: sellerData
+      };
+    }
+
+    // 기본 데이터 반환
+    return {
+      role: 'BUYER' as const,
+      userInfo: {
+        buyer_id: userId,
+        email: user.email || '',
+        nickname: null,
+        password: '',
+        avatar: user.user_metadata?.avatar_url || null,
+        social_name: user.user_metadata?.name || '',
+        point: 0,
+        favorites: [],
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }
+    };
+  } catch (error) {
+    console.error('사용자 정보 조회 실패:', error);
+    throw error;
   }
 };

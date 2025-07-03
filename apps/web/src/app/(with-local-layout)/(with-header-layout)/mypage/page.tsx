@@ -14,17 +14,26 @@ const MyPage = () => {
   if (error) return <div>사용자 정보를 찾을 수 없습니다.</div>;
   if (!userInfo) return <div>사용자 정보가 없습니다.</div>;
 
-  const { role, userInfo: userData } = userInfo;
-
-  return (
-    <PageContainer>
-      <UserProfileCard role={role} userInfo={userData} />
-      <MyPageMenuList role={role} />
-      <MyPageNotification role={role} />
-      <ActivityList />
-      <LogoutButton />
-    </PageContainer>
-  );
+  if (userInfo.role === 'BUYER') {
+    return (
+      <PageContainer>
+        <UserProfileCard role="BUYER" userInfo={userInfo.userInfo} />
+        <MyPageMenuList role="BUYER" />
+        <MyPageNotification role="BUYER" />
+        <ActivityList />
+        <LogoutButton />
+      </PageContainer>
+    );
+  } else {
+    return (
+      <PageContainer>
+        <UserProfileCard role="SELLER" userInfo={userInfo.userInfo} />
+        <MyPageMenuList role="SELLER" />
+        <MyPageNotification role="SELLER" />
+        <ActivityList />
+        <LogoutButton />
+      </PageContainer>
+    );
+  }
 };
-
 export default MyPage;

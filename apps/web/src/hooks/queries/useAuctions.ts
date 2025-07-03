@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { auctionQueryKeys } from './keys/auctions';
 import { fetchSellerAuctions } from 'src/lib/queries/auctions';
+import { getSellerAuctions } from 'src/lib/supabase/query/auctions';
 
 // 경매 데이터 리스트 불러오기
 export const useGetAuctions = () => {
@@ -29,5 +30,13 @@ export const useGetSellerAuctions = () => {
   return useQuery({
     queryKey: auctionQueryKeys.sellerAuctions(),
     queryFn: fetchSellerAuctions
+  });
+};
+
+export const useMyPageGetSellerAuctions = (seller_id: string) => {
+  return useQuery({
+    queryKey: auctionQueryKeys.sellerMypageAuctions(seller_id),
+    queryFn: ({ queryKey }) => getSellerAuctions(queryKey[2] as string),
+    enabled: !!seller_id
   });
 };

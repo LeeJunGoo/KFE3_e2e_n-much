@@ -73,7 +73,7 @@ export const TAB_LABELS = {
   closed: '종료됨'
 } as const;
 
-export const TAB_STATUS_VALUES = ['ongoing', 'closed'] as const;
+export const TAB_STATUS_VALUES = ['bidding', 'closed'] as const;
 export type TabStatus = (typeof TAB_STATUS_VALUES)[number];
 
 // =====================================================

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { episodeQueryKeys } from './keys/episodes';
-import { fetchUserBiddingCount, fetchUserStories } from 'src/lib/queries/episodes';
+import { fetchUserBiddingCount } from 'src/lib/queries/episodes';
+import { getUserStoriesClient } from 'src/lib/supabase/query/episodes';
 
 export const useGetUserBiddingCount = () => {
   return useQuery({
@@ -12,6 +13,6 @@ export const useGetUserBiddingCount = () => {
 export const useGetUserStories = () => {
   return useQuery({
     queryKey: episodeQueryKeys.userStories(),
-    queryFn: fetchUserStories
+    queryFn: getUserStoriesClient
   });
 };
