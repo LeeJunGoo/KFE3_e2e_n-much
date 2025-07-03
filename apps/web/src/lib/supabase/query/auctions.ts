@@ -161,8 +161,13 @@ export const getAllAuctionsWithEpisodeCountByOrder = async (orderParam: string, 
     return data;
   }
 };
+
 //NOTE -  특정 경매와 경매의 사연 개수를 불러오기
-export const getAuctionsWithEpisodeCountByOrder = async (orderParam: string, isAscending: boolean, count: number) => {
+export const getAuctionsWithEpisodeCountByOrderMainPage = async (
+  orderParam: string,
+  isAscending: boolean,
+  count: number
+) => {
   if (orderParam) {
     const { data, error } = await supabase
       .from('auctions')
