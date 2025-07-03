@@ -32,7 +32,6 @@ import { cn } from '@repo/ui/lib/utils';
 import { uploadImage } from 'src/lib/supabase/query/bucket';
 import PageTitle from '../common/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
-import PageContainer from '../layout/PageContainer';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAuctionById } from 'src/lib/queries/auctions';
 
@@ -45,6 +44,21 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
 
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string }[]>([]);
   const router = useRouter();
+
+  const fetchDetailPageUserInfo = async (userId: string | null) => {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auth/user-info?user_id=${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!res.ok) {
+      const errorData = await res.json();
+      throw new Error(errorData.error || '사용자 정보 조회 중 오류가 발생했습니다.');
+    }
+    const data = await res.json();
+    return data.data;
+  };
 
   const {
     data: auction,
@@ -172,6 +186,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
       startingPoint,
       maxPoint
     } = values;
+
     try {
       const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
         const data = await uploadImage(prevImage.data);
@@ -180,6 +195,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
       });
 
       imageUrls = await Promise.all(imageUploadPromise);
+      console.log(imageUrls);
     } catch (error) {
       console.log(error);
     }
@@ -199,14 +215,14 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
       seconds: Number(korEndTime[2])
     });
     const utcEndDate = new TZDate(korEndDate, 'utc');
-
+    const sellerId = await fetchDetailPageUserInfo(null);
     const auctionId = uuidv4();
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
         auction_id: isEditing ? auctionIdParam : auctionId,
-        seller_id: '8e085b32-e33d-4d0e-9189-1119836b74d2',
+        seller_id: sellerId,
         title,
         address: [address, detailAddress],
         start_time: utcStartDate,
@@ -255,7 +271,6 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
 
   return (
     <>
-      {' '}
       <PageTitle className="pb-10 text-left">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -265,7 +280,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  사업체 주소 <span className="text-red-500">&#42;</span>
+                  사업체 주소 <span className="text-(--color-red)">&#42;</span>
                 </FormLabel>
                 <FormControl>
                   <Input placeholder="상품 위치 또는 주소를 입력하세요." disabled={true} {...field} />
@@ -304,7 +319,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
               render={({ field }) => (
                 <FormItem className="w-1/2">
                   <FormLabel>
-                    경매 시작일 <span className="text-red-500">&#42;</span>
+                    경매 시작일 <span className="text-(--color-red)">&#42;</span>
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -314,7 +329,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                           className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                         >
                           {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
-                          <FaCalendarAlt color="blue" className="ml-auto h-4 w-4 opacity-50" />
+                          <FaCalendarAlt className="ml-auto h-4 w-4 text-(--color-accent) opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
@@ -345,7 +360,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
               render={({ field }) => (
                 <FormItem className="w-1/2">
                   <FormLabel>
-                    경매 시작 시간<span className="text-red-500">&#42;</span>
+                    경매 시작 시간<span className="text-(--color-red)">&#42;</span>
                   </FormLabel>
                   <FormControl>
                     <Input className="bg-white" type="time" step="1" {...field} />
@@ -361,7 +376,9 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
               name="endDay"
               render={({ field }) => (
                 <FormItem className="flex w-1/2 flex-col">
-                  <FormLabel>경매 종료일&#42;</FormLabel>
+                  <FormLabel>
+                    경매 종료일<span className="text-(--color-red)">&#42;</span>
+                  </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
@@ -370,7 +387,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                           className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
                         >
                           {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
-                          <FaCalendarAlt color="blue" className="ml-auto h-4 w-4 opacity-50" />
+                          <FaCalendarAlt className="ml-auto h-4 w-4 text-(--color-accent) opacity-50" />
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
@@ -398,7 +415,9 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
               name="endTime"
               render={({ field }) => (
                 <FormItem className="w-1/2">
-                  <FormLabel>경매 종료 시간&#42;</FormLabel>
+                  <FormLabel>
+                    경매 종료 시간<span className="text-(--color-red)">&#42;</span>
+                  </FormLabel>
                   <FormControl>
                     <Input className="bg-white" type="time" step="1" {...field} />
                   </FormControl>
@@ -413,7 +432,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  제목<span className="text-red-500">&#42;</span>
+                  제목<span className="text-(--color-red)">&#42;</span>
                 </FormLabel>
                 <FormControl>
                   <Input className="bg-white" placeholder="경매 상품의 제목을 입력하세요." {...field} />
@@ -429,7 +448,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  상세 내용 <span className="text-red-500">&#42;</span>{' '}
+                  상세 내용 <span className="text-(--color-red)">&#42;</span>
                 </FormLabel>
                 <FormControl>
                   <Textarea
@@ -449,7 +468,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  경매 시작 포인트 <span className="text-red-500"> &#42;</span>
+                  경매 시작 포인트 <span className="text-(--color-red)"> &#42;</span>
                 </FormLabel>
                 <FormControl>
                   <Input className="bg-white" type="number" placeholder="경매의 시작 포인트를 입력하세요." {...field} />
@@ -464,7 +483,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
             render={({ field }) => (
               <FormItem>
                 <FormLabel>
-                  경매 상한 포인트 <span className="text-red-500"> &#42;</span>
+                  경매 상한 포인트 <span className="text-(--color-red)"> &#42;</span>
                 </FormLabel>
                 <FormControl>
                   <Input className="bg-white" type="number" placeholder="경매의 상한 포인트를 입력하세요." {...field} />
