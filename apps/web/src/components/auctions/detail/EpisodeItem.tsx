@@ -21,16 +21,17 @@ const EpisodeItem = ({
   const episodeTime = formatToKoreanDateTime(episode.created_at);
   const isEpisodeBid = userInfo.seller_id === sellerId || episode.buyer_id === userInfo.buyer_id;
   const isEpisodeEditDelete = episode.buyer_id === userInfo.buyer_id;
+  const userNickname = episode.buyer.nickname ?? userInfo.social_name;
 
   return (
     <li className="list-none space-y-1 pb-4">
       <div className="mb-5 flex items-center justify-between">
         {/* 작성자 정보 */}
         <div className="flex items-center">
-          <UserAvatar src={episode.buyer.avatar!} alt={episode.buyer.nickname!} size="sm" />
+          <UserAvatar src={episode.buyer.avatar!} alt={userNickname} size="sm" />
           <div>
             <div className="flex items-center gap-1">
-              <p className="font-medium text-(--color-text-base)">{episode.buyer.nickname}</p>
+              <p className="text-sm font-medium text-(--color-text-base)">{userNickname}</p>
               <p className="text-xs text-(--color-warm-gray)">&#40;{maskEmail(episode.buyer.email)}&#41;</p>
             </div>
             <p className="text-xs text-(--color-warm-gray)">{episodeTime}</p>
@@ -43,7 +44,7 @@ const EpisodeItem = ({
         <p className="text-md line-clamp-2 leading-relaxed text-(--color-warm-gray)">{episode.description}</p>
       </div>
       <div className="flex items-center justify-between">
-        <EpisodeMoreButton episode={episode} />
+        <EpisodeMoreButton episode={episode} userInfo={userInfo} />
         {isEpisodeEditDelete && <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />}
       </div>
     </li>
