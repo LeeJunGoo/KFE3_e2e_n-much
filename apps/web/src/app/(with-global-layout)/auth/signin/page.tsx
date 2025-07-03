@@ -26,7 +26,7 @@ export default function SigninPage() {
   };
 
   const handleSocialSignin = async (provider: Provider) => {
-    await socialSignin({ provider: provider, redirectTo: 'http://localhost:3001/auth/signin' });
+    await socialSignin({ provider: provider, redirectTo: `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/signin` });
   };
 
   useEffect(() => {

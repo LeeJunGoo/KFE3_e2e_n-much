@@ -175,7 +175,8 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     try {
       const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
         const data = await uploadImage(prevImage.data);
-        return 'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/' + data.fullPath;
+
+        return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/` + data.fullPath;
       });
 
       imageUrls = await Promise.all(imageUploadPromise);
@@ -200,7 +201,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     const utcEndDate = new TZDate(korEndDate, 'utc');
 
     const auctionId = uuidv4();
-    const fetchUrl = `http://localhost:3001/api/auctions`;
+    const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
@@ -222,7 +223,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     console.log(values);
     console.log('결과', result);
     console.log('옥션아이디', auctionId);
-    router.push(`http://localhost:3001/auctions/${auctionId}`);
+    router.push(`/auctions/${auctionId}`);
   }
 
   const handlePostCodeSearch = (data: Address) => {

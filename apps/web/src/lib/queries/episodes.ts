@@ -3,7 +3,7 @@ import { EpisodeInsert, EpisodeRow } from '../supabase/type';
 
 // NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
 export const fetchEpisodesById = async (auction_id: string) => {
-  const res = await fetch(`http://localhost:3001/api/episodes/?auctionId=${auction_id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/?auctionId=${auction_id}`);
 
   if (!res.ok) {
     throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.`);
@@ -16,7 +16,7 @@ export const fetchEpisodesById = async (auction_id: string) => {
 
 //NOTE - 톡정 에피소드 정보
 export const fetchEpisodeById = async (episode_id: EpisodeRow['episode_id']) => {
-  const res = await fetch(`http://localhost:3001/api/episodes/?episodeId=${episode_id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/?episodeId=${episode_id}`);
 
   if (!res.ok) {
     const errorData = await res.json();
@@ -39,7 +39,7 @@ export const fetchCreateEpisode = async ({
   title,
   description
 }: Pick<EpisodeInsert, 'auction_id' | 'buyer_id' | 'title' | 'description'>) => {
-  const res = await fetch('http://localhost:3001/api/episodes', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
     body: JSON.stringify({
@@ -70,7 +70,7 @@ export const fetchEditEpisode = async ({
   title,
   description
 }: Pick<EpisodeInsert, 'episode_id' | 'title' | 'description'>) => {
-  const res = await fetch('http://localhost:3001/api/episodes?type=updateEpisode', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes?type=updateEpisode`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'PATCH',
     body: JSON.stringify({
@@ -96,7 +96,7 @@ export const fetchEditEpisode = async ({
 
 //NOTE - 톡정 에피소드 삭제
 export const fetchDeleteEpisode = async (episode_id: string) => {
-  const res = await fetch('http://localhost:3001/api/episodes', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes`, {
     headers: {
       'Content-Type': 'application/json'
     },
@@ -118,7 +118,7 @@ export const fetchDeleteEpisode = async (episode_id: string) => {
 
 //NOTE - 특정 에피소드 입찰
 export const fetchUpdateEpisodeBid = async (auction_id: string, episode_id: string, bid_point: number) => {
-  const res = await fetch('http://localhost:3001/api/episodes/bid', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/bid`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'PATCH',
     body: JSON.stringify({
@@ -140,7 +140,7 @@ export const fetchUpdateEpisodeBid = async (auction_id: string, episode_id: stri
 
 //NOTE - 특정 에피소드 낙찰
 export const fetchUpdateEpisodeWinning = async (episode_id: string, winning_bid: boolean) => {
-  const res = await fetch('http://localhost:3001/api/episodes?type=winningEpisode', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes?type=winningEpisode`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'PATCH',
     body: JSON.stringify({
@@ -161,7 +161,7 @@ export const fetchUpdateEpisodeWinning = async (episode_id: string, winning_bid:
 
 //NOTE - 사용자 참여 중인 경매 개수 조회
 export const fetchUserBiddingCount = async () => {
-  const res = await fetch('http://localhost:3001/api/episodes?type=biddingCount');
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes?type=biddingCount`);
   if (!res.ok) {
     throw new Error('참여 중인 경매 개수를 가져오는 과정에서 네트워크 에러가 발생했습니다.');
   }
@@ -171,7 +171,7 @@ export const fetchUserBiddingCount = async () => {
 
 //NOTE - 사용자가 작성한 스토리 목록 조회
 export const fetchUserStories = async () => {
-  const res = await fetch('http://localhost:3001/api/episodes?type=userStories');
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes?type=userStories`);
   if (!res.ok) {
     throw new Error('사용자 스토리 목록을 가져오는 과정에서 네트워크 에러가 발생했습니다.');
   }
