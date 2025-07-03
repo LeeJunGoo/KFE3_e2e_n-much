@@ -253,7 +253,8 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
   }
 
   return (
-    <PageContainer>
+    <>
+      {' '}
       <PageTitle className="pb-10 text-left">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -495,6 +496,6 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
             );
           })}
       </ul>
-    </PageContainer>
+    </>
   );
 }
