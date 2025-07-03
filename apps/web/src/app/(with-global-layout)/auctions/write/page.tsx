@@ -15,7 +15,7 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
   return (
     <PageContainer>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <AuctionForm auctionIdParam={auction_id} />;
+        <AuctionForm auctionIdParam={auction_id} />
       </HydrationBoundary>
     </PageContainer>
   );
