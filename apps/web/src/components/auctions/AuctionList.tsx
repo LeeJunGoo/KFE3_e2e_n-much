@@ -8,6 +8,7 @@ import AuctionCard from '../common/AuctionCard';
 import { AuctionRow } from 'src/lib/supabase/type';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
+import { LoadingSpinner } from '../auth/LoadingSpinner';
 
 interface EpisodeCount {
   episodes: [{ count: number }];
@@ -19,10 +20,8 @@ export default function AuctionList({ order }: { order: string }) {
     data: auctions,
     isError,
     isLoading,
-    isFetching,
     isFetchingNextPage,
-    fetchNextPage,
-    hasNextPage
+    fetchNextPage
   } = useInfiniteQuery({
     queryKey: ['auctions', order],
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
@@ -80,11 +79,10 @@ export default function AuctionList({ order }: { order: string }) {
             })
           )}
         <div>
-          <button ref={ref} onClick={() => fetchNextPage()} disabled={!hasNextPage || isFetchingNextPage}>
-            {isFetchingNextPage ? 'Loading more...' : hasNextPage ? 'Load Newer' : 'Nothing more to load'}
-          </button>
+          <div ref={ref} onClick={() => fetchNextPage()}>
+            {isFetchingNextPage && <LoadingSpinner />}
+          </div>
         </div>
-        <div>{isFetching && !isFetchingNextPage ? 'Background Updating...' : null}</div>
       </ul>
     </div>
   );

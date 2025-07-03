@@ -33,7 +33,7 @@ import { uploadImage } from 'src/lib/supabase/query/bucket';
 import PageTitle from '../common/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import PageContainer from '../layout/PageContainer';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { fetchAuctionById } from 'src/lib/queries/auctions';
 
 export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
@@ -55,11 +55,6 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     queryFn: () => fetchAuctionById(auctionIdParam),
     enabled: !!auctionIdParam
   });
-
-  // const postMutation = useMutation({
-  //   mutationFn:
-  //   }
-  // );
 
   const formSchema = z.object({
     title: z
