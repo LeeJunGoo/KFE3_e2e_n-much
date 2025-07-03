@@ -11,7 +11,7 @@ const MyPage = () => {
   const { data: userInfo, isLoading, error } = useGetUserInfo();
 
   if (isLoading) return <div>로딩 중...</div>;
-  if (error) <div>사용자 정보를 찾을 수 없습니다.</div>;
+  if (error) return <div>사용자 정보를 찾을 수 없습니다.</div>;
   if (!userInfo) return <div>사용자 정보가 없습니다.</div>;
 
   if (userInfo.role === 'BUYER') {
