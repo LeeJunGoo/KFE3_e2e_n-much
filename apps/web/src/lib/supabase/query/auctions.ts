@@ -134,6 +134,32 @@ export const getAllAuctionsCount = async () => {
   return data.count;
 };
 
+export const getAuctionsWithEpisodeCountByOrderMainPage = async (
+  orderParam: string,
+  isAscending: boolean,
+  count: number
+) => {
+  if (orderParam) {
+    const { data, error } = await supabase
+      .from('auctions')
+      .select(
+        `
+    *,episodes(count)
+  `
+      )
+      .order(orderParam, { ascending: isAscending })
+      .eq('status', 'OPEN')
+      .limit(count);
+
+    if (error) {
+      console.error(error);
+      throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
+    }
+
+    return data;
+  }
+};
+
 // 모든 경매와 경매의 사연 갯수를 불러오기
 export const getAllAuctionsWithEpisodeCountByOrder = async (
   orderParam: string | null,
