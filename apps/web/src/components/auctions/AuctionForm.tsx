@@ -45,21 +45,6 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string }[]>([]);
   const router = useRouter();
 
-  const fetchDetailPageUserInfo = async (userId: string | null) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auth/user-info?user_id=${userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.error || '사용자 정보 조회 중 오류가 발생했습니다.');
-    }
-    const data = await res.json();
-    return data.data;
-  };
-
   const {
     data: auction,
     isLoading: isDataLoading,
@@ -128,7 +113,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
         return;
       }
 
-      console.log('first', auction);
+      console.log('auctions', auction);
 
       if (auction) {
         const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } = auction;
@@ -195,7 +180,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
       });
 
       imageUrls = await Promise.all(imageUploadPromise);
-      console.log(imageUrls);
+      console.log('image url', imageUrls);
     } catch (error) {
       console.log(error);
     }
@@ -215,14 +200,13 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
       seconds: Number(korEndTime[2])
     });
     const utcEndDate = new TZDate(korEndDate, 'utc');
-    const sellerId = await fetchDetailPageUserInfo(null);
     const auctionId = uuidv4();
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
         auction_id: isEditing ? auctionIdParam : auctionId,
-        seller_id: sellerId,
+        seller_id: auction.seller_id,
         title,
         address: [address, detailAddress],
         start_time: utcStartDate,
@@ -239,7 +223,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     console.log(values);
     console.log('결과', result);
     console.log('옥션아이디', auctionId);
-    router.push(`/auctions/${auctionId}`);
+    // router.push(`/auctions/${auctionId}`);
   }
 
   const handlePostCodeSearch = (data: Address) => {
