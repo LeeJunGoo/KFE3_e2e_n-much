@@ -8,6 +8,7 @@
 //TODO - 색 물어보고 수정하기
 //TODO - 업체명 물어보기
 //TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함)
+//TODO - 날짜 유효성 검사 수정하기
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -341,14 +342,14 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => {
-                          const todayDate = subDays(new TZDate(new Date(), 'Asia/Seoul'), 1);
-                          const endDate = new TZDate(form.getValues('endDay'), 'Asia/Seoul');
-                          const compareTodayDate = compareAsc(date, todayDate);
-                          const compareEndDate = compareAsc(date, endDate);
+                        // disabled={(date) => {
+                        //   const todayDate = subDays(new TZDate(new Date(), 'Asia/Seoul'), 1);
+                        //   const endDate = new TZDate(form.getValues('endDay'), 'Asia/Seoul');
+                        //   const compareTodayDate = compareAsc(date, todayDate);
+                        //   const compareEndDate = compareAsc(date, endDate);
 
-                          return compareTodayDate === -1 || compareEndDate === 1;
-                        }}
+                        //   return compareTodayDate === -1 || compareEndDate === 1;
+                        // }}
                         captionLayout="dropdown"
                       />
                     </PopoverContent>
@@ -399,12 +400,12 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) => {
-                          const startDate = new TZDate(form.getValues('startDay'), 'Asia/Seoul');
-                          const compareEndDate = compareAsc(date, startDate);
+                        // disabled={(date) => {
+                        //   const startDate = new TZDate(form.getValues('startDay'), 'Asia/Seoul');
+                        //   const compareEndDate = compareAsc(date, startDate);
 
-                          return compareEndDate === -1;
-                        }}
+                        //   return compareEndDate === -1;
+                        // }}
                         captionLayout="dropdown"
                       />
                     </PopoverContent>
