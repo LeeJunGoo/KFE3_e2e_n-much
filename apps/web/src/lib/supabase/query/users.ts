@@ -5,7 +5,11 @@ import { BuyerInsert, SellerInsert } from '../type';
 const supabase = createClient();
 
 export async function upsertBuyer(userData: BuyerInsert) {
-  const { data: user, error } = await supabase.from('buyers').upsert([userData]).select().single();
+  const { data: user, error } = await supabase
+    .from('buyers')
+    .upsert([userData])
+    .select('buyer_id, email, nickname')
+    .single();
 
   if (error) {
     throw new Error('DB: 유저 추가/수정 에러');
@@ -14,7 +18,11 @@ export async function upsertBuyer(userData: BuyerInsert) {
 }
 
 export async function upsertSeller(userData: SellerInsert) {
-  const { data: user, error } = await supabase.from('sellers').upsert([userData]).select().single();
+  const { data: user, error } = await supabase
+    .from('sellers')
+    .upsert([userData])
+    .select('seller_id, email, nickname')
+    .single();
 
   if (error) {
     throw new Error('DB: 유저 추가/수정 에러');
@@ -159,5 +167,35 @@ export const getUserInfo = async () => {
   } catch (error) {
     console.error('사용자 정보 조회 실패:', error);
     throw error;
+  }
+};
+
+export const getBuyerById = async (userId: string) => {
+  try {
+    const { data } = await supabase
+      .from('buyers')
+      .select('buyer_id, email, nickname')
+      .eq('buyer_id', userId)
+      .maybeSingle();
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error('DB: BUYER 정보를 가져오지 못했습니다.');
+    }
+  }
+};
+
+export const getSellerById = async (userId: string) => {
+  try {
+    const { data } = await supabase
+      .from('sellers')
+      .select('seller_id,email, nickname')
+      .eq('seller_id', userId)
+      .maybeSingle();
+    return data;
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error('DB: SELLER 정보를 가져오지 못했습니다.');
+    }
   }
 };

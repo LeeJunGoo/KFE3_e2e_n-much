@@ -11,10 +11,10 @@ const UserProfileCard = ({ role, userInfo }: UserRoleDataProps) => {
       <div className="flex items-start justify-between">
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
-            <h2 className="text-xl font-bold">{userInfo.nickname || userInfo.social_name || '사용자'}</h2>
+            <h2 className="text-xl font-bold">{userInfo?.nickname || userInfo?.social_name || '사용자'}</h2>
             <RoleBadge role={role === 'BUYER' ? ROLE_LABEL.BUYER : ROLE_LABEL.SELLER} />
           </div>
-          <p className="text-sm text-(--color-warm-gray)">{userInfo.email}</p>
+          <p className="text-sm text-(--color-warm-gray)">{userInfo?.email}</p>
           {role === 'SELLER' && (
             <p className="mt-0.5 text-sm text-(--color-warm-gray)">
               {/* 나중에 실제 주소 필드로 변경 */}
@@ -23,8 +23,8 @@ const UserProfileCard = ({ role, userInfo }: UserRoleDataProps) => {
           )}
         </div>
         <div className="relative flex size-14 shrink-0 overflow-hidden rounded-full bg-(--color-primary) text-white">
-          {userInfo.avatar ? (
-            <Image src={userInfo.avatar} alt="프로필" width={56} height={56} className="h-full w-full object-cover" />
+          {userInfo?.avatar ? (
+            <Image src={userInfo?.avatar} alt="프로필" width={56} height={56} className="h-full w-full object-cover" />
           ) : (
             <span className="text-lg font-medium">아바타</span>
           )}
@@ -34,13 +34,13 @@ const UserProfileCard = ({ role, userInfo }: UserRoleDataProps) => {
         <div className="flex items-center justify-between">
           <p className="text-sm">보유 포인트</p>
           <div className="flex items-baseline gap-1">
-            <span className="text-lg font-bold text-(--color-accent)">{formatNumber(userInfo.point ?? 0)}</span>
+            <span className="text-lg font-bold text-(--color-accent)">{formatNumber(userInfo?.point ?? 0)}</span>
             <span className="font-medium text-(--color-accent)">P</span>
           </div>
         </div>
         <p className="mt-1 text-xs text-(--color-warm-gray)">
           마지막 업데이트:
-          {userInfo.updated_at ? new Date(userInfo.updated_at).toLocaleDateString('ko-KR') : '정보 없음'}
+          {userInfo?.updated_at ? new Date(userInfo?.updated_at).toLocaleDateString('ko-KR') : '정보 없음'}
         </p>
       </div>
     </SectionCard>

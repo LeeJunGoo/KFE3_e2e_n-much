@@ -1,28 +1,35 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useCountdown } from 'src/hooks/useCountDown';
-import { fetchUpdateEpisodeWinning } from 'src/lib/queries/episodes';
+import { IoMdTime } from 'react-icons/io';
+
 import { AuctionTimeProps } from 'src/types/auctions/detail';
+import { formatRemainingTime } from 'src/utils/formatRemainingTime';
+import { twMerge } from 'tailwind-merge';
 
-const AuctionTimer = ({ highestBuyer, start_time, end_time }: AuctionTimeProps) => {
-  const { remainingTime, status } = useCountdown(start_time, end_time);
-  const timerTextColor = status === 'ongoing' ? 'text-blue-600' : 'text-red-600 animate-pulse';
+const AuctionTimer = ({ startTime, endTime, className }: AuctionTimeProps) => {
+  const { status, remainTime } = formatRemainingTime(startTime, endTime);
 
-  // 데이터 처리
-  useEffect(() => {
-    if (status === 'ended' && highestBuyer?.episode_id) {
-      const endedAction = async () => {
-        const data = await fetchUpdateEpisodeWinning(highestBuyer.episode_id, (highestBuyer.winning_bid = true));
-      };
-      endedAction();
-    }
-  }, [status, highestBuyer]);
+  let timerTextColor = '';
+
+  switch (status) {
+    case 'upcoming':
+      timerTextColor = 'text-[--color-red]';
+      break;
+    case 'ongoing':
+      timerTextColor = 'text-[--color-blue]';
+      break;
+    case 'ended':
+      timerTextColor = 'text-[--color-gray]';
+      break;
+    default:
+      timerTextColor = 'text-[--color-default]';
+      break;
+  }
 
   return (
-    <div>
-      <p className="text-sm text-[#6B7280]">경매 남은 시간</p>
-      <p className={`text-lg font-semibold ${timerTextColor}`}>{remainingTime}</p>
+    <div className={twMerge('mb-3 flex items-center gap-1 text-(--color-accent)', className)}>
+      <IoMdTime />
+      <span className={`text-sm font-semibold ${timerTextColor}`}>{remainTime}</span>
     </div>
   );
 };

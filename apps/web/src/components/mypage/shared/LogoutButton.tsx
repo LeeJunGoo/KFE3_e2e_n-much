@@ -25,7 +25,7 @@ const LogoutButton = ({ className }: LogoutButtonProps) => {
   };
 
   return (
-    <div className={twMerge('my-4 flex items-center justify-center text-(--color-warm-gray)', className)}>
+    <div className={twMerge('text-(--color-warm-gray) my-4 flex items-center justify-center', className)}>
       <ConfirmDialog title="로그아웃 확인" description="정말로 로그아웃하시겠습니까?" onConfirm={handleLogout}>
         <Button variant="ghost" className="hover:bg-transparent">
           로그아웃

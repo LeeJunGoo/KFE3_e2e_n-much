@@ -3,8 +3,7 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { EpisodeRow } from 'src/lib/supabase/type';
 
-import { notFound, useRouter } from 'next/navigation';
-import { FiEdit, FiTrash2 } from 'react-icons/fi';
+import { useRouter } from 'next/navigation';
 import { fetchDeleteEpisode } from 'src/lib/queries/episodes';
 
 const EditDeleteEpisodes = ({
@@ -41,16 +40,14 @@ const EditDeleteEpisodes = ({
     }
   };
   return (
-    <>
-      <Button onClick={handleEdit} variant="default" size="sm" className="gap-1.5">
-        <FiEdit />
+    <div className="flex space-x-2">
+      <Button onClick={handleEdit} variant="text" size="sm" className="-px-3 text-xs text-(--color-light-gray)">
         수정
       </Button>
-      <Button onClick={handleDelete} variant="destructive" size="sm" className="gap-1.5">
-        <FiTrash2 />
+      <Button onClick={handleDelete} variant="text" size="sm" className="text-xs text-(--color-red)">
         삭제
       </Button>
-    </>
+    </div>
   );
 };
 

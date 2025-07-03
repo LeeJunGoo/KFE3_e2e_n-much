@@ -8,16 +8,25 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
-import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { FaRegCommentDots } from 'react-icons/fa';
 import { fetchEpisodesById } from 'src/lib/queries/episodes';
 import { EpisodeItemProps } from 'src/types/episodes';
 import EpisodeItem from './EpisodeItem';
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
+import { SellerRow } from 'src/lib/supabase/type';
 
 const EPISODES_PER_PAGE = 5;
 
-const EpisodeList = ({ auction_id }: { auction_id: string }) => {
+const EpisodeList = ({
+  auction_id,
+  userInfo,
+  sellerId
+}: {
+  auction_id: string;
+  userInfo: UserInfoType;
+  sellerId: SellerRow['seller_id'];
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
   const [episodesCount, setEpisodesCount] = useState(0);
@@ -69,19 +78,6 @@ const EpisodeList = ({ auction_id }: { auction_id: string }) => {
 
   return (
     <>
-      {/* 사연 */}
-      <div className="px-6 py-4" ref={listHeaderRef}>
-        <h2 className="text-xl font-bold">
-          <span>사연</span>
-          <span className="ml-1 text-blue-600">({episodesCount})</span>
-        </h2>
-
-        <p className="mt-1 text-sm text-gray-500">다양한 사연을 확인하고 입찰에 참여해보세요.</p>
-        <Link href={`/episode/${auction_id}`} className="mt-5 inline-block rounded-sm border bg-amber-300 p-1">
-          사연 등록
-        </Link>
-      </div>
-
       {/* 사연 목록 */}
       {episodesCount === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 rounded-b-lg bg-slate-50 px-6 py-10 text-center">
@@ -92,14 +88,14 @@ const EpisodeList = ({ auction_id }: { auction_id: string }) => {
           </div>
         </div>
       ) : (
-        <ul className="divide-y border-t">
+        <ul className="space-y-5 divide-y">
           {currentEpisodes.map((episode: EpisodeItemProps) => (
-            <EpisodeItem key={episode.episode_id} episode={episode} />
+            <EpisodeItem key={episode.episode_id} episode={episode} userInfo={userInfo} sellerId={sellerId} />
           ))}
         </ul>
       )}
 
-      <div className="border-t px-6 py-4">
+      <div className="px-6 py-4">
         <Pagination>
           <PaginationContent>
             <PaginationItem>

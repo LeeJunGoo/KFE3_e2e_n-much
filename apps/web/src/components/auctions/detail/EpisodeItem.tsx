@@ -1,70 +1,53 @@
-'use client';
-
-import { Button } from '@repo/ui/components/ui/button';
-
-import { useState } from 'react';
-import { FiAward } from 'react-icons/fi';
-import { IoMdTime } from 'react-icons/io';
-
-import { BiddingForm } from './BiddingForm';
-import EditDeleteEpisodes from './EditDeleteEpisodes';
+import UserAvatar from 'src/components/common/UserAvatar';
 import { EpisodeItemProps } from 'src/types/episodes';
 import { formatToKoreanDateTime } from 'src/utils/formatToKoreanDateTime';
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@repo/ui/components/ui/collapsible';
+import { maskEmail } from 'src/utils/maskEmail';
+import EditDeleteEpisodes from './EditDeleteEpisodes';
+import EpisodeBidButton from './EpisodeBidButton';
+import EpisodeMoreButton from './EpisodeMoreButton';
 
-const EpisodeItem = ({ episode }: { episode: EpisodeItemProps }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [isBiddingOpen, setIsBiddingOpen] = useState(false);
+import { UserInfoType } from 'src/app/api/auth/user-info/route';
+import { SellerRow } from 'src/lib/supabase/type';
+
+const EpisodeItem = ({
+  episode,
+  userInfo,
+  sellerId
+}: {
+  episode: EpisodeItemProps;
+  userInfo: UserInfoType;
+  sellerId: SellerRow['seller_id'];
+}) => {
   const episodeTime = formatToKoreanDateTime(episode.created_at);
+  const isEpisodeBid = userInfo.seller_id === sellerId || episode.buyer_id === userInfo.buyer_id;
+  const isEpisodeEditDelete = episode.buyer_id === userInfo.buyer_id;
 
   return (
-    <li className="list-none px-6 py-5">
-      {/* 작성자 정보 */}
-      <div>
-        <div>
-          <p className="font-semibold text-gray-800">{episode.buyer.nickname}</p>
-          <div className="flex items-center gap-1 text-xs text-gray-500">
-            <IoMdTime />
-            <time>{episodeTime}</time>
+    <li className="list-none space-y-1 pb-4">
+      <div className="mb-5 flex items-center justify-between">
+        {/* 작성자 정보 */}
+        <div className="flex items-center">
+          <UserAvatar src={episode.buyer.avatar!} alt={episode.buyer.nickname!} size="sm" />
+          <div>
+            <div className="flex items-center gap-1">
+              <p className="font-medium text-(--color-text-base)">{episode.buyer.nickname}</p>
+              <p className="text-xs text-(--color-warm-gray)">&#40;{maskEmail(episode.buyer.email)}&#41;</p>
+            </div>
+            <p className="text-xs text-(--color-warm-gray)">{episodeTime}</p>
           </div>
         </div>
-        <div className="mt-4">
-          <h3 className="text-lg font-bold text-gray-900">{episode.title}</h3>
-          <p className="mt-2 leading-relaxed whitespace-pre-wrap text-gray-700">{isExpanded && episode.description}</p>
-        </div>
+        {isEpisodeBid && <EpisodeBidButton episode={episode} userInfo={userInfo} />}
       </div>
-
-      <Collapsible open={isBiddingOpen} defaultOpen={false} onOpenChange={setIsBiddingOpen} className="mt-4">
-        <div className="flex justify-between">
-          {/* 더보기 버튼 */}
-          <Button variant="link" className="p-0 text-sm text-blue-600" onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? '접기' : '더보기'}
-          </Button>
-
-          {/* 오른쪽 버튼 그룹 */}
-          <div className="flex items-center gap-2">
-            {/* 에피소드 수정 및 삭제 버튼 */}
-            <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />
-
-            <CollapsibleTrigger asChild>
-              <Button size="sm" className="gap-1.5 bg-[#8E74F9] hover:bg-[#3f3562]">
-                <FiAward />
-                입찰하기
-              </Button>
-            </CollapsibleTrigger>
-          </div>
-        </div>
-        {/*  펼쳐질 콘텐츠 영역 - 버튼 그룹과 완전히 분리 */}
-        <CollapsibleContent className="CollapsibleContent mt-2 w-full space-y-4 rounded-lg bg-[#F4F4F7] p-4">
-          <BiddingForm
-            auction_id={episode.auction_id}
-            episode_id={episode.episode_id}
-            currentBid={episode.bid_point}
-            userPoint={1000000}
-          />
-        </CollapsibleContent>
-      </Collapsible>
+      <div>
+        <h4 className="text-(((--color-text-base))) mb-1 font-medium">{episode.title}</h4>
+        <p className="text-md line-clamp-2 leading-relaxed text-(--color-warm-gray)">{episode.description}</p>
+      </div>
+      <div className="flex items-center justify-between">
+        <EpisodeMoreButton episode={episode} />
+        {isEpisodeEditDelete && <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />}
+      </div>
     </li>
   );
 };
+
 export default EpisodeItem;
