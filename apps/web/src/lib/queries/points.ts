@@ -1,6 +1,6 @@
 //NOTE - 사용자 포인트 거래 내역 조회
 export const fetchUserPointTransactions = async () => {
-  const res = await fetch('http://localhost:3001/api/points');
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/points`);
   if (!res.ok) {
     throw new Error('포인트 거래 내역을 가져오는 과정에서 네트워크 에러가 발생했습니다.');
   }
@@ -22,7 +22,7 @@ export const fetchCreatePointTransaction = async ({
   title: string;
   description?: string;
 }) => {
-  const res = await fetch('http://localhost:3001/api/points', {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/points`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
     body: JSON.stringify({

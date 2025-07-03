@@ -1,24 +1,26 @@
 //TODO - 모달 창 ui 깨지는 거 물어보기 => 리팩토링할 때 답변(박서영)
-//TODO - 시간이 남거나 리팩토링할 때, tanstack query 도입
 
 //TODO - 폼 유효성 검사 상의
 //TODO - 날짜, 시간 유효성 검사 고려 (경매 최소 기간 상의)
 //TODO - 날짜 시간 업로드 리팩토링하기
-//TODO - 찜하기(favorites) 빈 배열로 초기화
 //FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기
+//NOTE - 달력 아이콘 앞으로 이동시키면 가운데 정렬됨
+//TODO - 색 물어보고 수정하기
+//TODO - 업체명 물어보기
+//TODO - 로그인 정보 가져와서 적용 (seller_id)
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
 import ImageUploader from './ImageUploader';
 import Image from 'next/image';
 import { addHours, compareAsc, format, set, subDays } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { FaCalendarAlt } from 'react-icons/fa';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Calendar } from '@repo/ui/components/ui/calendar';
 import { ko } from 'date-fns/locale';
@@ -30,19 +32,29 @@ import { cn } from '@repo/ui/lib/utils';
 import { uploadImage } from 'src/lib/supabase/query/bucket';
 import PageTitle from '../common/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
+import PageContainer from '../layout/PageContainer';
+import { useQuery } from '@tanstack/react-query';
+import { fetchAuctionById } from 'src/lib/queries/auctions';
 
-export default function AuctionForm() {
-  const searchParams = useSearchParams();
-  const auctionIdParam = searchParams.get('auction_id');
-
+export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
   const isEditing: boolean = auctionIdParam ? true : false;
-  const [isLoading, setIsLoading] = useState<boolean>(isEditing);
+  const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string }[]>([]);
   const router = useRouter();
+
+  const {
+    data: auction,
+    isLoading: isDataLoading,
+    isError
+  } = useQuery({
+    queryKey: ['auctionForm'],
+    queryFn: () => fetchAuctionById(auctionIdParam),
+    enabled: !!auctionIdParam
+  });
 
   const formSchema = z.object({
     title: z
@@ -69,10 +81,10 @@ export default function AuctionForm() {
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
   });
 
-  const formDefaultValues = useCallback(() => {
+  const getFormDefaultValues = useCallback(() => {
     const today = new Date();
     const startDay = new TZDate(today, 'Asia/Seoul');
-    const endDay = addHours(startDay, 25);
+    const endDay = addHours(startDay, 25); //NOTE - 임시로 설정한 기본 값
 
     const startTime = format(startDay, 'HH:mm:ss');
     const endTime = format(endDay, 'HH:mm:ss');
@@ -93,28 +105,19 @@ export default function AuctionForm() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: formDefaultValues()
+    defaultValues: getFormDefaultValues()
   });
 
-  async function getAuction(auctionId: string | null) {
-    const fetchUrl = `http://localhost:3001/api/auctions?auction_id=${auctionId}`;
-    const data = await fetch(fetchUrl);
-    const result = await data.json();
-
-    return result;
-  }
-
   useEffect(() => {
-    async function setFormDefaultValues(auctionId: string | null) {
+    async function setFormDefaultValues() {
       if (!isEditing) {
         return;
       }
 
-      const result = await getAuction(auctionId);
+      console.log('first', auction);
 
-      if (result.status === 'success' && result.data) {
-        const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } =
-          result.data;
+      if (auction) {
+        const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } = auction;
 
         const startDay = new TZDate(start_time, 'Asia/Seoul');
         const startTime = format(startDay, 'HH:mm:ss');
@@ -134,19 +137,20 @@ export default function AuctionForm() {
           startingPoint: String(starting_point),
           maxPoint: String(max_point)
         });
+
         if (image_urls) {
           setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image })));
         }
 
-        setIsLoading(false);
+        setIsFormLoading(false);
       } else {
-        form.reset(formDefaultValues);
-        setIsLoading(false);
+        form.reset(getFormDefaultValues());
+        setIsFormLoading(false);
       }
     }
 
-    setFormDefaultValues(auctionIdParam);
-  }, [auctionIdParam, form, formDefaultValues, isEditing]);
+    setFormDefaultValues();
+  }, [auctionIdParam, form, getFormDefaultValues, isEditing, auction]);
 
   useEffect(() => {
     if (confirmPostCode) {
@@ -171,7 +175,8 @@ export default function AuctionForm() {
     try {
       const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
         const data = await uploadImage(prevImage.data);
-        return 'https://psszbhuartnhkzomgxmq.supabase.co/storage/v1/object/public/' + data.fullPath;
+
+        return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/` + data.fullPath;
       });
 
       imageUrls = await Promise.all(imageUploadPromise);
@@ -196,7 +201,7 @@ export default function AuctionForm() {
     const utcEndDate = new TZDate(korEndDate, 'utc');
 
     const auctionId = uuidv4();
-    const fetchUrl = `http://localhost:3001/api/auctions`;
+    const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
@@ -218,7 +223,7 @@ export default function AuctionForm() {
     console.log(values);
     console.log('결과', result);
     console.log('옥션아이디', auctionId);
-    router.push(`http://localhost:3001/auctions/${auctionId}`);
+    router.push(`/auctions/${auctionId}`);
   }
 
   const handlePostCodeSearch = (data: Address) => {
@@ -240,34 +245,28 @@ export default function AuctionForm() {
     setShowPostCodeSearch(false);
   };
 
-  if (isLoading) {
+  if (isError) {
+    return <p>에러 발생</p>;
+  }
+
+  if (isFormLoading || isDataLoading) {
     return <p>Loading...</p>;
   }
 
   return (
     <>
+      {' '}
       <PageTitle className="pb-10 text-left">{isEditing ? '경매 수정' : '경매 등록'}</PageTitle>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>제목&#42;</FormLabel>
-                <FormControl>
-                  <Input placeholder="경매 상품의 제목을 입력하세요." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
             name="address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>주소&#42;</FormLabel>
+                <FormLabel>
+                  사업체 주소 <span className="text-red-500">&#42;</span>
+                </FormLabel>
                 <FormControl>
                   <Input placeholder="상품 위치 또는 주소를 입력하세요." disabled={true} {...field} />
                 </FormControl>
@@ -282,7 +281,7 @@ export default function AuctionForm() {
               <FormItem>
                 <FormLabel>상세 주소</FormLabel>
                 <FormControl>
-                  <Input placeholder="상품의 상세 위치 또는 상세 주소를 입력하세요." {...field} />
+                  <Input placeholder="상품의 상세 위치 또는 상세 주소를 입력하세요." className="bg-white" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -298,116 +297,147 @@ export default function AuctionForm() {
             {showPostCodeSearch ? '주소 검색 닫기' : '주소 검색'}
           </Button>
           {showPostCodeSearch && <DaumPostcodeEmbed onComplete={handlePostCodeSearch} />}
-          <FormField
-            control={form.control}
-            name="startDay"
-            render={({ field }) => (
-              <FormItem className="flex w-1/2 flex-col">
-                <FormLabel>경매 시작일&#42;</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={'outline'}
-                        className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
-                      >
-                        {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => {
-                        const todayDate = subDays(new TZDate(new Date(), 'Asia/Seoul'), 1);
-                        const endDate = new TZDate(form.getValues('endDay'), 'Asia/Seoul');
-                        const compareTodayDate = compareAsc(date, todayDate);
-                        const compareEndDate = compareAsc(date, endDate);
+          <div className="flex w-full gap-2">
+            <FormField
+              control={form.control}
+              name="startDay"
+              render={({ field }) => (
+                <FormItem className="w-1/2">
+                  <FormLabel>
+                    경매 시작일 <span className="text-red-500">&#42;</span>
+                  </FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                        >
+                          {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
+                          <FaCalendarAlt color="blue" className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) => {
+                          const todayDate = subDays(new TZDate(new Date(), 'Asia/Seoul'), 1);
+                          const endDate = new TZDate(form.getValues('endDay'), 'Asia/Seoul');
+                          const compareTodayDate = compareAsc(date, todayDate);
+                          const compareEndDate = compareAsc(date, endDate);
 
-                        return compareTodayDate === -1 || compareEndDate === 1;
-                      }}
-                      captionLayout="dropdown"
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                          return compareTodayDate === -1 || compareEndDate === 1;
+                        }}
+                        captionLayout="dropdown"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="startTime"
+              render={({ field }) => (
+                <FormItem className="w-1/2">
+                  <FormLabel>
+                    경매 시작 시간<span className="text-red-500">&#42;</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input className="bg-white" type="time" step="1" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <div className="flex w-full gap-2">
+            <FormField
+              control={form.control}
+              name="endDay"
+              render={({ field }) => (
+                <FormItem className="flex w-1/2 flex-col">
+                  <FormLabel>경매 종료일&#42;</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
+                        >
+                          {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
+                          <FaCalendarAlt color="blue" className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        disabled={(date) => {
+                          const startDate = new TZDate(form.getValues('startDay'), 'Asia/Seoul');
+                          const compareEndDate = compareAsc(date, startDate);
+
+                          return compareEndDate === -1;
+                        }}
+                        captionLayout="dropdown"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="endTime"
+              render={({ field }) => (
+                <FormItem className="w-1/2">
+                  <FormLabel>경매 종료 시간&#42;</FormLabel>
+                  <FormControl>
+                    <Input className="bg-white" type="time" step="1" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <FormField
             control={form.control}
-            name="startTime"
+            name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>경매 시작 시간&#42;</FormLabel>
+                <FormLabel>
+                  제목<span className="text-red-500">&#42;</span>
+                </FormLabel>
                 <FormControl>
-                  <Input className="w-1/2" type="time" step="1" {...field} />
+                  <Input className="bg-white" placeholder="경매 상품의 제목을 입력하세요." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="endDay"
-            render={({ field }) => (
-              <FormItem className="flex w-1/2 flex-col">
-                <FormLabel>경매 종료일&#42;</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={'outline'}
-                        className={cn('w-full pl-3 text-left font-normal', !field.value && 'text-muted-foreground')}
-                      >
-                        {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) => {
-                        const startDate = new TZDate(form.getValues('startDay'), 'Asia/Seoul');
-                        const compareEndDate = compareAsc(date, startDate);
 
-                        return compareEndDate === -1;
-                      }}
-                      captionLayout="dropdown"
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="endTime"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>경매 종료 시간&#42;</FormLabel>
-                <FormControl>
-                  <Input className="w-1/2" type="time" step="1" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>상세 내용&#42;</FormLabel>
+                <FormLabel>
+                  상세 내용 <span className="text-red-500">&#42;</span>{' '}
+                </FormLabel>
                 <FormControl>
-                  <Textarea rows={5} placeholder="상품에 대한 자세한 설명을 입력하세요." {...field} />
+                  <Textarea
+                    className="bg-white"
+                    rows={5}
+                    placeholder="상품에 대한 자세한 설명을 입력하세요."
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -418,9 +448,11 @@ export default function AuctionForm() {
             name="startingPoint"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>경매 시작 포인트&#42;</FormLabel>
+                <FormLabel>
+                  경매 시작 포인트 <span className="text-red-500"> &#42;</span>
+                </FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="경매의 시작 포인트를 입력하세요." {...field} />
+                  <Input className="bg-white" type="number" placeholder="경매의 시작 포인트를 입력하세요." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -431,9 +463,11 @@ export default function AuctionForm() {
             name="maxPoint"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>경매 상한 포인트&#42;</FormLabel>
+                <FormLabel>
+                  경매 상한 포인트 <span className="text-red-500"> &#42;</span>
+                </FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="경매의 상한 포인트를 입력하세요." {...field} />
+                  <Input className="bg-white" type="number" placeholder="경매의 상한 포인트를 입력하세요." {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -441,18 +475,8 @@ export default function AuctionForm() {
           />
           <FormLabel>상품 이미지</FormLabel>
           <ImageUploader onPreviewImages={setPreviewImages} />
-          <Button
-            variant="outline"
-            type="reset"
-            onClick={() => {
-              form.reset(formDefaultValues());
-              setPreviewImages([]);
-            }}
-            className="w-1/2"
-          >
-            초기화
-          </Button>
-          <Button type="submit" className="w-1/2">
+
+          <Button type="submit" className="h-12 w-full">
             {isEditing ? '수정하기' : '등록하기'}
           </Button>
         </form>

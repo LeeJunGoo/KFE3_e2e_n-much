@@ -121,48 +121,24 @@ export const getSellerAuctionCount = async (sellerId: string) => {
   };
 };
 
-// 모든 경매와 경매의 사연 갯수를 불러오기
-export const getAllAuctionsWithEpisodeCount = async () => {
-  const { data, error } = await supabase
-    .from('auctions')
-    .select(
-      `
-    *,episodes(count)
-  `
-    )
-    .eq('status', 'OPEN');
+export const getAllAuctionsCount = async () => {
+  const { data, error } = await supabase.from('auctions').select('count').eq('status', 'OPEN').maybeSingle();
 
   if (error) {
     console.error(error);
-    throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
+    throw new Error('DB: 경매의 총 갯수 가져오기 에러');
   }
 
-  return data;
+  if (!data) return 0;
+
+  return data.count;
 };
 
-// 모든 경매와 경매의 사연 갯수를 불러오기
-export const getAllAuctionsWithEpisodeCountByOrder = async (orderParam: string, isAscending: boolean) => {
-  if (orderParam) {
-    const { data, error } = await supabase
-      .from('auctions')
-      .select(
-        `
-    *,episodes(count)
-  `
-      )
-      .order(orderParam, { ascending: isAscending })
-      .eq('status', 'OPEN');
-
-    if (error) {
-      console.error(error);
-      throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
-    }
-
-    return data;
-  }
-};
-//NOTE -  특정 경매와 경매의 사연 개수를 불러오기
-export const getAuctionsWithEpisodeCountByOrder = async (orderParam: string, isAscending: boolean, count: number) => {
+export const getAuctionsWithEpisodeCountByOrderMainPage = async (
+  orderParam: string,
+  isAscending: boolean,
+  count: number
+) => {
   if (orderParam) {
     const { data, error } = await supabase
       .from('auctions')
@@ -182,6 +158,44 @@ export const getAuctionsWithEpisodeCountByOrder = async (orderParam: string, isA
 
     return data;
   }
+};
+
+// 모든 경매와 경매의 사연 갯수를 불러오기
+export const getAllAuctionsWithEpisodeCountByOrder = async (
+  orderParam: string | null,
+  isAscending: boolean,
+  pageParam: number | null
+) => {
+  const itemsPerPage = 5;
+  const auctionsCount = await getAllAuctionsCount();
+
+  if (!orderParam) {
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(순서 파라미터가 없습니다.)');
+  }
+
+  if (!pageParam && pageParam !== 0) {
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(페이지 파라미터가 없습니다.)');
+  }
+
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(
+      `
+    *,episodes(count)
+  `
+    )
+    .order(orderParam, { ascending: isAscending })
+    .eq('status', 'OPEN')
+    .range(pageParam, pageParam + itemsPerPage);
+
+  if (error) {
+    console.error(error);
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
+  }
+
+  const nextId = pageParam < auctionsCount - itemsPerPage ? pageParam + itemsPerPage + 1 : null;
+
+  return { data, nextId };
 };
 
 // 키워드가 타이틀에 포함되는 경매리스트를 불러오기

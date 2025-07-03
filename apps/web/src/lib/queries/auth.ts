@@ -1,5 +1,7 @@
+const serverUrl = process.env.NEXT_PUBLIC_API_SERVER_URL;
+
 export const fetchLogout = async () => {
-  const res = await fetch('http://localhost:3001/api/auth/logout', {
+  const res = await fetch(`${serverUrl}/auth/logout`, {
     method: 'POST'
   });
   if (!res.ok) {
@@ -11,7 +13,7 @@ export const fetchLogout = async () => {
 };
 
 export const fetchStoreUser = async (role: string) => {
-  const res = await fetch('http://localhost:3001/api/auth/store-user', {
+  const res = await fetch(`${serverUrl}/auth/store-user`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -27,7 +29,7 @@ export const fetchStoreUser = async (role: string) => {
 };
 
 export const fetchUserRole = async () => {
-  const res = await fetch('http://localhost:3001/api/auth/user-role', {
+  const res = await fetch(`${serverUrl}/auth/user-role`, {
     method: 'GET'
   });
   if (!res.ok) {
@@ -40,7 +42,7 @@ export const fetchUserRole = async () => {
 
 //전체 유저 정보 가져오기
 export const fetchUserInfo = async () => {
-  const res = await fetch(`http://localhost:3001/api/auth/user-info`, {
+  const res = await fetch(`${serverUrl}/auth/user-info`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -56,7 +58,7 @@ export const fetchUserInfo = async () => {
 
 //NOTE - 임시 로그인 정보 가져오기
 export const fetchDetailPageUserInfo = async (userId: string) => {
-  const res = await fetch(`http://localhost:3001/api/auth/user-info?user_id=${userId}`, {
+  const res = await fetch(`${serverUrl}/auth/user-info?user_id=${userId}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

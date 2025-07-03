@@ -12,6 +12,7 @@ import { TZDate } from 'react-day-picker';
 import { FaHeart } from 'react-icons/fa';
 import { FaBookOpen } from 'react-icons/fa6';
 import { formatNumber } from 'src/utils/formatNumber';
+import noAuctionImage from '../../../assets/images/noAuctionImage.png';
 
 interface AuctionCardProp {
   auction_id: string;
@@ -56,7 +57,7 @@ export default function AuctionCard({
                 sizes="(min-width: 768px) 400px, 100vw"
               />
             ) : (
-              <p>이미지 없음</p>
+              <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
             )}
           </div>
 
