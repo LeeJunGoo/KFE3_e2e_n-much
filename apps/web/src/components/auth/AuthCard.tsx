@@ -16,7 +16,7 @@ interface AuthCardProps {
 
 export function AuthCard({ title, role, onTabChange, onSocialSignin }: AuthCardProps) {
   return (
-    <Card className="max-w-sm gap-0 overflow-hidden rounded-2xl border-3 border-neutral-950 p-0 shadow-none">
+    <Card className="w-full gap-0 overflow-hidden p-0 shadow-none">
       <Tabs
         value={role}
         onValueChange={(v: string) => {

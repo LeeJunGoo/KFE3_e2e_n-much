@@ -17,7 +17,7 @@ const LatestListSection = async () => {
   }
 
   return (
-    <div className="mt-8 px-4">
+    <div className="mt-8">
       <div className="mb-4 flex items-center justify-between">
         <PageTitle>최신 경매</PageTitle>
         <Link href="/auctions?order=created_at" className="cursor-pointer text-sm text-(--color-accent)">

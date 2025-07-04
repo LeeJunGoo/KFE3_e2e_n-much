@@ -39,8 +39,10 @@ export default function ImageUploader({
     >
       <div className="mx-auto my-auto flex-col justify-center pt-8 pb-8 align-middle">
         <FaCloudUploadAlt className="mx-auto mb-4 h-14 w-14 text-(--color-accent)" />
-        <p className="mb-4 text-center text-xl">이미지를 끌어다 놓거나</p>
-        <p className="rounded-sm bg-gray-300 p-1 text-center text-sm text-(--color-accent)">파일 선택하기</p>
+        <p className="text-md mb-4 text-center">이미지를 끌어다 놓거나</p>
+        <p className="rounded-sm bg-(--color-secondary) p-2 text-center text-sm text-(--color-primary)">
+          파일 선택하기
+        </p>
       </div>
       <input {...getInputProps()} />
       {/* {isDragActive ? (

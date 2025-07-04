@@ -46,8 +46,8 @@ export default function AuctionList({ order }: { order: string }) {
   }
 
   return (
-    <div className="rounded-md bg-gray-300 px-2 py-2">
-      <p className="pt-1 pb-2 text-sm">{`총 ${auctions?.pages.reduce((total, page) => total + page.data.length, 0)}개의 경매가 있습니다`}</p>
+    <div>
+      <h3 className="pt-1 pb-2 text-sm">{`총 ${auctions?.pages.reduce((total, page) => total + page.data.length, 0)}개의 경매가 있습니다`}</h3>
       <ul className="grid grid-cols-2 gap-3">
         {auctions &&
           auctions.pages.map((page) =>
