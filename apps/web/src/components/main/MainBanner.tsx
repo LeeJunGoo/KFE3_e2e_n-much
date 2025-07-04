@@ -55,7 +55,7 @@ const MainBanner = () => {
         <CarouselContent>
           {imageArray.map((url, index) => (
             <CarouselItem key={`${url.src}-${index}`}>
-              <div className="relative h-64 w-full overflow-hidden rounded-lg">
+              <div className="relative h-64 w-full overflow-hidden">
                 <Image
                   src={url}
                   alt={`메인 배너 이미지 ${index + 1}`}

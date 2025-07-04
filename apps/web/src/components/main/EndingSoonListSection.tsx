@@ -15,7 +15,7 @@ const EndingSoonListSection = async () => {
   }
 
   return (
-    <div className="mt-8 px-4">
+    <div>
       <div className="mb-4 flex items-center justify-between">
         <PageTitle>곧 종료되는 경매</PageTitle>
         <Link href="/auctions?order=end_time" className="cursor-pointer text-sm text-(--color-accent)">
