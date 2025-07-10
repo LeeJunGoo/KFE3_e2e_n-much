@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuctionWithSellerInfo, getSellerAuctionCount } from 'src/lib/supabase/query/auctions';
-import { getHighestBidder } from 'src/lib/supabase/query/episodes';
+import { getAuctionWithSellerInfo, getSellerAuctionCount } from 'src/entities/auction/supabase';
+import { getHighestBidder } from 'src/entities/episode/supabase';
 
 type ParamsType = {
   params: Promise<{ id: string }>;

@@ -7,9 +7,9 @@ import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
 import LoginPrompt from 'src/components/common/LoginPrompt';
 import EpisodesAuctionCard from 'src/components/episodes/EpisodesAuctionCard';
 import { fetchDetailPageUserInfo } from 'src/lib/queries/auth';
-import { fetchEpisodeById } from 'src/lib/queries/episodes';
-import { createClient } from 'src/lib/supabase/client/server';
-import { EpisodeRow } from 'src/lib/supabase/type';
+import { fetchEpisodeById } from 'src/entities/episode/api';
+import { createClient } from 'src/shared/supabase/client/server';
+import { EpisodeRow } from 'src/shared/supabase/types';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auction_id, episode_id] = (await params).id;

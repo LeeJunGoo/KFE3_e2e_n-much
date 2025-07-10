@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllAuctionsWithEpisodeCountByOrder } from 'src/lib/supabase/query/auctions';
+import { getAllAuctionsWithEpisodeCountByOrder } from 'src/entities/auction/supabase';
 
 //TODO - 팀원들과 정렬순을 의논해서 수정할 것
 export async function GET(request: NextRequest) {

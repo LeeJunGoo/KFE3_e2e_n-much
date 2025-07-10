@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { auctionQueryKeys } from './keys/auctions';
-import { fetchSellerAuctions } from 'src/lib/queries/auctions';
-import { getSellerAuctions } from 'src/lib/supabase/query/auctions';
+import { fetchSellerAuctions } from 'src/entities/auction/api';
+import { getSellerAuctions } from 'src/entities/auction/supabase';
 
 // 경매 데이터 리스트 불러오기
 export const useGetAuctions = () => {

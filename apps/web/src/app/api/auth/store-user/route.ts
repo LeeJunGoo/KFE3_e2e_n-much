@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { storeUserInfo } from 'src/lib/supabase/query/users';
+import { storeUserInfo } from 'src/shared/supabase/query/users';
 
 export async function POST(request: Request) {
   try {

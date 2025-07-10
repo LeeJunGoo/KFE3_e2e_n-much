@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { userQueryKeys } from './keys/users';
 import { fetchUserRole } from 'src/lib/queries/auth';
-import { getUserInfoClient } from 'src/lib/supabase/query/users';
+import { getUserInfoClient } from 'src/shared/supabase/query/users';
 import { UserRoleDataProps } from 'src/types/mypage';
 
 // 유저 역할 불러오기

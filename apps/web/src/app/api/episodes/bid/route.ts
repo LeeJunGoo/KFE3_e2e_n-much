@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuction, updateAuction } from 'src/lib/supabase/query/auctions';
-import { updateEpisodeBidPoint } from 'src/lib/supabase/query/episodes';
+import { getAuction, updateAuction } from 'src/entities/auction/supabase';
+import { updateEpisodeBidPoint } from 'src/entities/episode/supabase';
 
 export async function PATCH(request: NextRequest) {
   const { auction_id, episode_id, bid_point } = await request.json();

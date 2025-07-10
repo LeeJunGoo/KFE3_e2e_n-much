@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAuthLogout } from 'src/lib/supabase/query/auth';
+import { getAuthLogout } from 'src/entities/auth/supabase';
 
 export async function POST() {
   try {
