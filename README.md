@@ -1,58 +1,167 @@
-# Turborepo Tailwind CSS starter
+# 🧿 Vidding
 
-This Turborepo starter is maintained by the Turborepo core team.
+> "가치를 비딩하다" - 화폐가 아닌 가치 중심의 새로운 경매 방식
 
-## Using this example
+---
 
-Run the following command:
+## 🌐 배포 정보
 
-```sh
-npx create-turbo@latest -e with-tailwind
-```
+- **배포 도메인**: [https://kfe-3-e2e-n-much-web.vercel.app/](https://kfe-3-e2e-n-much-web.vercel.app/)
+- **배포 문서 (Storybook)**: [https://n-much-docs.vercel.app](https://n-much-docs.vercel.app/?path=/docs/components-atoms-badge--docs)
+- **팀 노션**: [https://www.notion.so/2-n-210a3f519ab880ae8a51d0a23ae905aa](https://www.notion.so/2-n-210a3f519ab880ae8a51d0a23ae905aa)
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## 📆 프로젝트 기간
 
-### Apps and Packages
+- **E2E**: 2025.06.16 ~ 2025.07.04
 
-- `docs`: a [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `web`: another [Next.js](https://nextjs.org/) app with [Tailwind CSS](https://tailwindcss.com/)
-- `ui`: a stub React component library with [Tailwind CSS](https://tailwindcss.com/) shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+---
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## 📖 프로젝트 소개
 
-### Building packages/ui
+**Vidding**은 전통적인 화폐 경매 방식이 아닌, **사연과 가치 중심의 입찰**을 통해 경매를 진행하는 플랫폼입니다. 테마 기반 경매 이벤트와 스토리텔링 기반의 참여 방식으로 색다른 경험을 제공합니다.
 
-This example is set up to produce compiled styles for `ui` components into the `dist` directory. The component `.tsx` files are consumed by the Next.js apps directly using `transpilePackages` in `next.config.ts`. This was chosen for several reasons:
+---
 
-- Make sharing one `tailwind.config.ts` to apps and packages as easy as possible.
-- Make package compilation simple by only depending on the Next.js Compiler and `tailwindcss`.
-- Ensure Tailwind classes do not overwrite each other. The `ui` package uses a `ui-` prefix for it's classes.
-- Maintain clear package export boundaries.
+## 👥 팀원 소개
 
-Another option is to consume `packages/ui` directly from source without building. If using this option, you will need to update the `tailwind.config.ts` in your apps to be aware of your package locations, so it can find all usages of the `tailwindcss` class names for CSS compilation.
+| 이름 | 역할 |
+|------|------|
+| 이준구 | 팀장 |
+| 김명환 | 팀원 |
+| 김승현 | 팀원 |
+| 박서영 | 팀원 |
+| 안주원 | 팀원 |
 
-For example, in [tailwind.config.ts](packages/tailwind-config/tailwind.config.ts):
+---
 
-```js
-  content: [
-    // app content
-    `src/**/*.{js,ts,jsx,tsx}`,
-    // include packages if not transpiling
-    "../../packages/ui/*.{js,ts,jsx,tsx}",
-  ],
-```
+## 🧭 페이지별 기능 요약
 
-If you choose this strategy, you can remove the `tailwindcss` and `autoprefixer` dependencies from the `ui` package.
+### 🔐 로그인 / 회원가입
 
-### Utilities
+- 관리자 / 참여자 구분 로그인
+- OAuth 기반 소셜 로그인 (Supabase)
+- 신규/기존 사용자 정보 Zustand에 저장
 
-This Turborepo has some additional tools already setup for you:
+---
 
-- [Tailwind CSS](https://tailwindcss.com/) for styles
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### 🏠 메인 페이지
+
+- 슬라이드 영역: 공지, 이벤트, CI 카드
+- 경매 목록 정렬
+  - 마감 임박순 (남은 시간 기준)
+  - 인기순 (좋아요 수)
+  - 최신순 (등록일 기준)
+
+---
+
+### 📱 탭바 기능
+
+- 홈: 메인 페이지 이동
+- 검색: 검색바 활성화, 최근/인기 검색어 제공
+- 현황: 사용자 유형에 따라 경매/입찰 현황 분기
+- 마이페이지: 개인 페이지 이동
+
+---
+
+### 💰 경매 페이지
+
+- 전체 경매 리스트 (무한 스크롤 구현)
+- 정렬: 마감 임박순 / 인기순 / 최신순
+- 구성:
+  - 이미지, 제목, 남은 시간, 상태, 주소
+  - 현재 포인트, 좋아요 수, 사연 수
+
+---
+
+### 📄 경매 상세 페이지 (입찰 참여자)
+
+- 경매 정보 상세 노출
+- 사연 작성 / 입찰 기능
+- 조건별 기능 활성화
+  - 본인 경매일 경우 수정/삭제 가능
+  - 본인 사연일 경우 수정/삭제 가능
+  - 사연에 대한 입찰 가능 조건 명확화
+- 비딩 포인트 입력 → 최고 입찰 실시간 반영
+
+---
+
+### ✍️ 사연 등록 페이지
+
+- 제목 (최대 40자), 내용 (최대 1000자)
+- 제출 후 상세 페이지에 자동 등록
+
+---
+
+### 📝 경매 등록 페이지 (경매 관리자)
+
+- 사용 라이브러리
+  - Form: React Hook Form
+  - Validation: Zod
+  - UI: Shadcn
+- 주소 입력: `react-daum-postcode`
+- 날짜 입력: `date-fns`
+- 이미지 업로드: `react-dropzone`
+
+#### 등록 항목
+- 주소/상세주소
+- 경매 시작일/시간, 종료일/시간
+- 제목, 상세 내용
+- 시작/상한 포인트
+- 이미지
+
+---
+
+### 📋 경매 리스트 페이지
+
+- `tanstack query`로 무한 스크롤 구현
+- 정렬: 마감 임박순 / 인기순 / 최신순
+- 구성:
+  - 이미지, 제목, 남은 시간/상태, 주소
+  - 포인트, 좋아요 수, 사연 수
+
+---
+
+### 👤 마이페이지
+
+#### 입찰 참여자
+- 보유 포인트
+- 내 경매 현황
+- 포인트 사용 내역
+- 내가 쓴 사연
+
+#### 경매 관리자
+- 보유 포인트
+- 등록 경매 현황 (확장 예정)
+- 포인트 사용 내역
+
+---
+
+## 🛠 기술 스택
+
+### 💬 Communication
+- GitHub
+- Discord
+- Figma
+- Zoom
+
+### ⚙️ 개발 환경
+- Next.js
+- Turborepo (Monorepo)
+- Tailwind CSS
+- Shadcn/UI
+- Zustand
+- Storybook
+- Supabase
+- Prettier
+- ESLint
+- TanStack Query
+
+---
+
+## 🔀 Git 브랜치 전략 (Git Flow)
+
+- `main` : 운영/배포 브랜치
+- `dev` : 기능 통합 브랜치
+- `fork` : 개인 저장소에서 기능 개발 → PR 방식
