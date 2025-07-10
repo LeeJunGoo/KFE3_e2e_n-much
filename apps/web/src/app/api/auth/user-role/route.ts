@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getUserRole } from 'src/lib/supabase/query/users';
+import { getUserRole } from 'src/shared/supabase/query/users';
 
 export async function GET() {
   try {

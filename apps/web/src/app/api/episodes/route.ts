@@ -8,8 +8,8 @@ import {
   getUserStories,
   selectWinningEpisode,
   updateEpisode
-} from '../../../lib/supabase/query/episodes';
-import { createClient } from 'src/lib/supabase/client/server';
+} from '../../../entities/episode/supabase';
+import { createClient } from 'src/shared/supabase/client/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;

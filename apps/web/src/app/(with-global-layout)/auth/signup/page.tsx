@@ -2,12 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import { getAuthInfo, socialSignin, upsertAuthInfo, getExistsUser, getAuthLogout } from 'src/lib/supabase/query/auth';
+import { getAuthInfo, socialSignin, upsertAuthInfo, getExistsUser, getAuthLogout } from 'src/entities/auth/supabase';
 import { AuthCard } from 'src/components/auth/AuthCard';
-import { useUserStore } from 'src/store/UserStore';
+import { useUserStore } from 'src/entities/auth/stores/UserStore';
 import { LoadingSpinner } from 'src/components/auth/LoadingSpinner';
 import { toast } from '@repo/ui/components/ui/sonner';
-import type { Role, Provider } from '../../../../types/auth/index';
+import type { Role, Provider } from '../../../../entities/auth/types';
 
 export default function SignupPage() {
   const searchParams = useSearchParams();

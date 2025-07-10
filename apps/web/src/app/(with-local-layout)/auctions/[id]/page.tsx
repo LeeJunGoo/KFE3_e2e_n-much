@@ -1,3 +1,4 @@
+import { fetchAuctionWithSellerInfo } from 'src/entities/auction/api';
 import { Suspense } from 'react';
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import AuctionDetail from 'src/components/auctions/detail/AuctionDetail';
@@ -9,9 +10,8 @@ import SellerInfoSection from 'src/components/auctions/detail/SellerInfoSection'
 import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
 import LoginPrompt from 'src/components/common/LoginPrompt';
 import PageContainer from 'src/components/layout/PageContainer';
-import { fetchAuctionWithSellerInfo } from 'src/lib/queries/auctions';
 import { fetchDetailPageUserInfo } from 'src/lib/queries/auth';
-import { createClient } from 'src/lib/supabase/client/server';
+import { createClient } from 'src/shared/supabase/client/server';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;

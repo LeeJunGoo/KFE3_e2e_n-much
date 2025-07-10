@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from 'src/lib/supabase/client/server';
-import { BuyerRow, SellerRow } from 'src/lib/supabase/type';
+import { createClient } from 'src/shared/supabase/client/server';
+import { BuyerRow, SellerRow } from 'src/shared/supabase/types';
 
 export type UserInfoType = SellerRow & BuyerRow & { role: string };
 

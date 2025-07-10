@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { AuctionInsert, AuctionUpdate } from 'src/lib/supabase/type';
+import { AuctionInsert, AuctionUpdate } from 'src/shared/supabase/types';
 import {
   addAuction,
   deleteAuction,
@@ -7,8 +7,8 @@ import {
   getAuction,
   getSellerAuctions,
   updateAuction
-} from '../../../lib/supabase/query/auctions';
-import { createClient } from 'src/lib/supabase/client/server';
+} from '../../../entities/auction/supabase';
+import { createClient } from 'src/shared/supabase/client/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;

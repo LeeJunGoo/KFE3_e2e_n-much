@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getUserPointTransactions, createPointTransaction } from '../../../lib/supabase/query/points';
-import { createClient } from 'src/lib/supabase/client/server';
+import { getUserPointTransactions, createPointTransaction } from '../../../shared/supabase/query/points';
+import { createClient } from 'src/shared/supabase/client/server';
 
 export async function GET() {
   try {

@@ -7,7 +7,7 @@ import SectionCard from 'src/components/common/ui/SectionCard';
 import TransactionSection from 'src/components/mypage/points/TransactionSection';
 import MyPointFiltersSection from 'src/components/mypage/points/MyPointFiltersSection';
 import PointOverview from 'src/components/mypage/shared/points/PointOverview';
-import { filterActivities } from 'src/utils/mypage/pointFilters';
+import { filterActivities } from 'src/shared/utils/mypage/pointFilters';
 import { useGetUserPointTransactions } from 'src/hooks/queries/usePoints';
 
 const MyPoints = () => {
