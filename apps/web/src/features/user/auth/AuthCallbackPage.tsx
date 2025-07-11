@@ -51,10 +51,10 @@ const AuthCallbackPage = () => {
   }, [user, loading, router]);
 
   return (
-    <div>
+    <section className="flex flex-col items-center justify-center gap-1">
       <LoadingSpinner size="lg" className="mb-4" />
       <p>로그인 처리 중입니다.</p>
-    </div>
+    </section>
   );
 };
 
