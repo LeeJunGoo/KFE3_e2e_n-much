@@ -1,23 +1,23 @@
-import { fetchAuctionWithSellerInfo } from 'src/entities/auction/api';
 import { Suspense } from 'react';
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import AuctionDetail from 'src/components/auctions/detail/AuctionDetail';
-import AuctionDetailICarousel from 'src/components/auctions/detail/AuctionDetailICarousel';
-import AuctionDetailNavbar from 'src/components/auctions/detail/AuctionDetailNavbar';
-import EpisodeDetailSection from 'src/components/auctions/detail/EpisodeDetailSection';
-import HighestBuyerInfoSection from 'src/components/auctions/detail/HighestBuyerInfoSection';
-import SellerInfoSection from 'src/components/auctions/detail/SellerInfoSection';
-import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
-import LoginPrompt from 'src/components/common/LoginPrompt';
+import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';
+
 import PageContainer from 'src/components/layout/PageContainer';
 import { fetchDetailPageUserInfo } from 'src/lib/queries/auth';
+import AuctionDetailICarousel from 'src/features/auction/AuctionDetailICarousel';
+import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import { createClient } from 'src/shared/supabase/client/server';
+import AuctionDetail from 'src/features/auction/AuctionDetail';
+import SellerInfoSection from 'src/features/auction/SellerInfoSection';
+import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
+import HighestBuyerInfoSection from 'src/features/auction/HighestBuyerInfoSection';
+import LoginPrompt from 'src/__components/common/LoginPrompt';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
 
   // NOTE - 경매 상품 및 경매 업체 정보
-  const auctionInfo = await fetchAuctionWithSellerInfo(auctionId);
+  const auctionInfo = await selectAuctionWithSellerInfo(auctionId);
   const { image_urls, address, seller } = auctionInfo;
 
   const supabase = await createClient();

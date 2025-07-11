@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuctionWithSellerInfo, getSellerAuctionCount } from 'src/entities/auction/supabase';
-import { getHighestBidder } from 'src/entities/episode/supabase';
+import { selectAuctionWithSellerInfo, selectSellerAuctionCount } from 'src/entities/auction/supabase';
+import { selectHighestBidder } from 'src/entities/episode/supabase';
 
 type ParamsType = {
   params: Promise<{ id: string }>;
@@ -14,11 +14,11 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
   try {
     if (type === 'auction') {
-      res = await getAuctionWithSellerInfo(id);
+      res = await selectAuctionWithSellerInfo(id);
     } else if (type === 'seller') {
-      res = await getSellerAuctionCount(id);
+      res = await selectSellerAuctionCount(id);
     } else if (type === 'buyer') {
-      res = await getHighestBidder(id);
+      res = await selectHighestBidder(id);
     } else {
       return NextResponse.json(
         { status: 'error', message: '잘못된 정보를 전달하였습니다.', id, type },
