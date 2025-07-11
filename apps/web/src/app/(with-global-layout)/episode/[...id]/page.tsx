@@ -1,15 +1,15 @@
-import PageHeader from 'src/components/common/ui/PageHeader';
-import EpisodesForm from 'src/components/episodes/EpisodesForm';
-import PageContainer from 'src/components/layout/PageContainer';
 import { Suspense } from 'react';
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import AuctionErrorBoundary from 'src/components/common/AuctionErrorBoundary';
 import LoginPrompt from 'src/components/common/LoginPrompt';
-import EpisodesAuctionCard from 'src/components/episodes/EpisodesAuctionCard';
-import { fetchDetailPageUserInfo } from 'src/lib/queries/auth';
+import { fetchDetailPageUserInfo } from 'src/entities/auth/api';
 import { fetchEpisodeById } from 'src/entities/episode/api';
+import EpisodesAuctionCard from 'src/features/episode/EpisodesAuctionCard';
+import EpisodesForm from 'src/features/episode/EpisodesForm';
+import PageContainer from 'src/shared/PageContainer';
 import { createClient } from 'src/shared/supabase/client/server';
 import { EpisodeRow } from 'src/shared/supabase/types';
+import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
+import PageHeader from 'src/widgets/PageHeader';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auction_id, episode_id] = (await params).id;
