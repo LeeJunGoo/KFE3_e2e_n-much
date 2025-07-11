@@ -36,6 +36,7 @@ const AuthCallbackPage = () => {
               role: 'buyer'
             });
           }
+          toast.success('로그인 되었습니다!');
           router.push('/main');
         } catch (error) {
           console.error('사용자 설정 오류:', error);

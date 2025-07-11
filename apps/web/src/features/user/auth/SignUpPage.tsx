@@ -16,9 +16,9 @@ const SignUpPage = () => {
           <p className="text-sm opacity-60">소셜 계정으로 회원가입 및 로그인</p>
         </div>
       </div>
-      <BaseCard as="div" className="my-5 w-full p-20 px-4 pb-10">
+      <BaseCard as="div" className="p-15 my-8 w-full px-4 pb-10">
         <PageTitle className="text-2xl font-semibold">환영합니다! 👋</PageTitle>
-        <p className="mb-6 mt-3 text-sm opacity-60">아래 계정으로 빠르게 시작해 보세요</p>
+        <p className="mb-8 mt-2 text-sm opacity-60">아래 계정으로 빠르게 시작해 보세요</p>
         <SocialAuthSignUp />
         <div className="mt-6 flex items-start justify-center gap-3 rounded-xl p-4">
           <RiShieldCheckLine size={20} className="text-(--color-green) translate-y-0.5" />
@@ -29,7 +29,7 @@ const SignUpPage = () => {
         </div>
       </BaseCard>
       <div>
-        <p className="mb-3 flex items-center justify-center gap-2 text-sm">
+        <p className="mb-1 flex items-center justify-center gap-2 text-sm">
           <MdOutlineInfo size={15} className="text-(--color-accent)" />
           로그인 시 자동으로 회원가입됩니다
         </p>
