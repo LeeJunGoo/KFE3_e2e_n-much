@@ -19,7 +19,7 @@ const SocialAuthSignUp = () => {
     }
   };
 
-  const buttonStyle = 'flex w-full items-center justify-center gap-2 rounded-md border py-3';
+  const buttonStyle = 'flex w-full items-center justify-center gap-3 rounded-md border py-3';
 
   return (
     <ul className="flex flex-col gap-3">
@@ -29,7 +29,7 @@ const SocialAuthSignUp = () => {
           onClick={() => handleSocialSignUp('google')}
           aria-label="google로 로그인 하기 버튼"
         >
-          <FcGoogle size={20} />
+          <FcGoogle size={25} />
           <span>Google 계정으로 시작</span>
           <LuArrowRight size={18} className="absolute right-4" />
         </SocialAuthButton>
@@ -40,7 +40,7 @@ const SocialAuthSignUp = () => {
           onClick={() => handleSocialSignUp('kakao')}
           aria-label="kakao로 로그인 하기 버튼"
         >
-          <IoChatbubble size={20} />
+          <IoChatbubble size={20} className="-translate-y-0.5" />
           <span>카카오톡으로 시작</span>
           <LuArrowRight size={18} className="absolute right-4" />
         </SocialAuthButton>
