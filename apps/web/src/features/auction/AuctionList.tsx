@@ -4,11 +4,11 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchAllAuctionWithEpisodeCount } from 'src/entities/auction/api';
-import AuctionCard from '../common/AuctionCard';
 import { AuctionRow } from 'src/shared/supabase/types';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
-import { LoadingSpinner } from '../../features/auth/LoadingSpinner';
+// import { LoadingSpinner } from '../../features/auth/LoadingSpinner';
+import AuctionCard from './shared/AuctionCard';
 
 interface EpisodeCount {
   episodes: [{ count: number }];
@@ -80,7 +80,7 @@ export default function AuctionList({ order }: { order: string }) {
           )}
         <div>
           <div ref={ref} onClick={() => fetchNextPage()}>
-            {isFetchingNextPage && <LoadingSpinner />}
+            {/* {isFetchingNextPage && <LoadingSpinner />} */}
           </div>
         </div>
       </ul>
