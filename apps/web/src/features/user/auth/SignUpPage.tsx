@@ -9,8 +9,8 @@ import PageContainer from 'src/shared/ui/PageContainer';
 
 const SignUpPage = () => {
   return (
-    <PageContainer className="h-screen w-full text-center">
-      <section>
+    <PageContainer className="flex h-screen items-center justify-center py-0 text-center">
+      <section className="w-full">
         <div>
           <Image src={Logo} alt="logo" className="mx-auto block size-20" />
           <div className="flex -translate-y-2 flex-col gap-1">
