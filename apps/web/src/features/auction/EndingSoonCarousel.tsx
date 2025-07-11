@@ -1,6 +1,6 @@
 'use client';
 import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
-import NotAuctionImage from 'assets/images/auctionDefault.png';
+import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 
 import { SortedAuctionItemType } from 'src/entities/auction/types';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';

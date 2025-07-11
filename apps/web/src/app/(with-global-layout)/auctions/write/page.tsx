@@ -1,7 +1,7 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { fetchAuctionById } from 'src/entities/auction/api';
 import AuctionForm from 'src/features/auction/AuctionForm';
-import PageHeader from 'src/shared/PageHeader';
+import PageHeader from 'src/widgets/PageHeader';
 
 export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
   const { auction_id } = await searchParams;

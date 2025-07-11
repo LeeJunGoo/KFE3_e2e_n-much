@@ -1,4 +1,4 @@
-import { pretendard } from 'assets/fonts';
+import { pretendard } from 'src/assets/fonts';
 
 import './globals.css';
 import { home } from 'src/entities/layout/metaData';

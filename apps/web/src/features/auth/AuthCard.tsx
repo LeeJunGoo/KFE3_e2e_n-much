@@ -1,5 +1,5 @@
-import GoogleLogo from 'assets/logos/google_logo.png';
-import KakaoLogo from 'assets/logos/kakao_logo.png';
+import GoogleLogo from 'src/assets/images/google_logo.png';
+import KakaoLogo from 'src/assets/images/kakao_logo.png';
 import Image from 'next/image';
 import { Button } from '@repo/ui/components/ui/button';
 import { Card, CardContent } from '@repo/ui/components/ui/card';

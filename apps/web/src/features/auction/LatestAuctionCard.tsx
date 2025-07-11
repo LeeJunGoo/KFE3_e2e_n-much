@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import { Badge } from '@repo/ui/components/ui/badge';
-import NotAuctionImage from 'assets/images/auctionDefault.png';
+import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import { differenceInHours, formatDistanceToNow, setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Link from 'next/link';

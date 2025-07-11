@@ -1,9 +1,10 @@
 import { Suspense } from 'react';
-import PageContainer from 'src/components/layout/PageContainer';
+
 import EndingSoonListSection from 'src/features/auction/EndingSoonListSection';
 import LatestListSection from 'src/features/auction/LatestListSection';
 import PopularListSection from 'src/features/auction/PopularListSection';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
+import PageContainer from 'src/shared/ui/PageContainer';
 import MainBanner from 'src/widgets/MainBanner';
 
 const MainPage = async () => {

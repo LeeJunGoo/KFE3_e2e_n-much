@@ -2,7 +2,7 @@
 
 import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
 import { Autoplay } from '@repo/ui/lib/utils';
-import NotAuctionImage from 'assets/images/auctionDefault.png';
+import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import Image from 'next/image';
 import { AuctionRow } from 'src/shared/supabase/types';
 

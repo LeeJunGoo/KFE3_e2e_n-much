@@ -1,4 +1,4 @@
-import NotAuctionImage from 'assets/images/auctionDefault.png';
+import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaBookOpen, FaHeart } from 'react-icons/fa6';
