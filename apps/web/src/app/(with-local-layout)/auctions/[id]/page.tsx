@@ -3,7 +3,6 @@ import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';
 
 import PageContainer from 'src/components/layout/PageContainer';
-import { fetchDetailPageUserInfo } from 'src/lib/queries/auth';
 import AuctionDetailICarousel from 'src/features/auction/AuctionDetailICarousel';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import { createClient } from 'src/shared/supabase/client/server';
@@ -12,6 +11,7 @@ import SellerInfoSection from 'src/features/auction/SellerInfoSection';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import HighestBuyerInfoSection from 'src/features/auction/HighestBuyerInfoSection';
 import LoginPrompt from 'src/__components/common/LoginPrompt';
+import { fetchDetailPageUserInfo } from 'src/entities/auth/api';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
