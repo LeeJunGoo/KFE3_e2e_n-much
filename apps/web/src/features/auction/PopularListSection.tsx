@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { fetchSortedAuctions } from 'src/entities/auction/serverActions';
-import { SortedAuctionItemType } from 'src/entities/auction/types';
-import PageTitle from '../common/ui/PageTitle';
 import PopularAuctionCard from './PopularAuctionCard';
+import PageTitle from '../../shared/ui/PageTitle';
+import { SortedAuctionItemType } from 'src/entities/auction/types';
 
 const PopularListSection = async () => {
   const popularAuctions = await fetchSortedAuctions('favorites', false, 4);
