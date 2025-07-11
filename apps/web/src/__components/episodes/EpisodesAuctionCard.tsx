@@ -1,7 +1,7 @@
 import React from 'react';
 import ListCard from '../common/ui/ListCard';
 import Image from 'next/image';
-import AuctionTimer from '../auctions/detail/AuctionTimer';
+import AuctionTimer from '../../features/auction/AuctionTimer';
 import { fetchAuctionWithSellerInfo } from 'src/entities/auction/api';
 import { AuctionRow } from 'src/shared/supabase/types';
 import NotAuctionImage from 'assets/images/auctionDefault.png';

@@ -1,8 +1,8 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { FaRegCommentDots } from 'react-icons/fa6';
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import UserAvatar from 'src/components/common/UserAvatar';
 import { fetchHighestBidder } from 'src/entities/auction/api';
+import UserAvatar from 'src/shared/ui/UserAvatar';
 
 import { AuctionRow } from 'src/shared/supabase/types';
 import { formatNumber } from 'src/shared/utils/formatNumber';

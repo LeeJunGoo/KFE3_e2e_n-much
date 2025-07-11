@@ -4,7 +4,7 @@
 
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { fetchAllAuctionWithEpisodeCount } from 'src/entities/auction/api';
-import AuctionCard from '../common/AuctionCard';
+import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { AuctionRow } from 'src/shared/supabase/types';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
