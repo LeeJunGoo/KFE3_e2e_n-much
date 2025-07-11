@@ -2,16 +2,16 @@ import { Suspense } from 'react';
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';
 
-import PageContainer from 'src/components/layout/PageContainer';
+import { fetchDetailPageUserInfo } from 'src/entities/auth/api';
+import AuctionDetail from 'src/features/auction/AuctionDetail';
 import AuctionDetailICarousel from 'src/features/auction/AuctionDetailICarousel';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
-import { createClient } from 'src/shared/supabase/client/server';
-import AuctionDetail from 'src/features/auction/AuctionDetail';
-import SellerInfoSection from 'src/features/auction/SellerInfoSection';
-import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import HighestBuyerInfoSection from 'src/features/auction/HighestBuyerInfoSection';
-import LoginPrompt from 'src/__components/common/LoginPrompt';
-import { fetchDetailPageUserInfo } from 'src/entities/auth/api';
+import SellerInfoSection from 'src/features/auction/SellerInfoSection';
+import EpisodeDetailSection from 'src/features/episode/EpisodeDetailSection';
+import { createClient } from 'src/shared/supabase/client/server';
+import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
+import PageContainer from 'src/shared/ui/PageContainer';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
@@ -26,7 +26,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <LoginPrompt />;
+    return;
   }
 
   //NOTE - 로그인된 유저 정보

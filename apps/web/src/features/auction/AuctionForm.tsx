@@ -33,7 +33,7 @@ import { cn } from '@repo/ui/lib/utils';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAuctionById } from 'src/entities/auction/api';
-import PageContainer from 'src/shared/PageContainer';
+import PageContainer from 'src/shared/ui/PageContainer';
 import { uploadImage } from 'src/entities/auction/supabase';
 
 export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {

@@ -8,7 +8,7 @@ import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { AuctionRow } from 'src/shared/supabase/types';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
-import { LoadingSpinner } from '../../features/auth/LoadingSpinner';
+// import { LoadingSpinner } from '../../features/auth/LoadingSpinner';
 
 interface EpisodeCount {
   episodes: [{ count: number }];
@@ -80,7 +80,7 @@ export default function AuctionList({ order }: { order: string }) {
           )}
         <div>
           <div ref={ref} onClick={() => fetchNextPage()}>
-            {isFetchingNextPage && <LoadingSpinner />}
+            {/* {isFetchingNextPage && <LoadingSpinner />} */}
           </div>
         </div>
       </ul>

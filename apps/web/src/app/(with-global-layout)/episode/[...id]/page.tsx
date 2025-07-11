@@ -1,11 +1,10 @@
 import { Suspense } from 'react';
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import LoginPrompt from 'src/components/common/LoginPrompt';
 import { fetchDetailPageUserInfo } from 'src/entities/auth/api';
 import { fetchEpisodeById } from 'src/entities/episode/api';
 import EpisodesAuctionCard from 'src/features/episode/EpisodesAuctionCard';
 import EpisodesForm from 'src/features/episode/EpisodesForm';
-import PageContainer from 'src/shared/PageContainer';
+import PageContainer from 'src/shared/ui/PageContainer';
 import { createClient } from 'src/shared/supabase/client/server';
 import { EpisodeRow } from 'src/shared/supabase/types';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
@@ -25,7 +24,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return <LoginPrompt />;
+    return;
   }
 
   //NOTE - 로그인된 유저 정보

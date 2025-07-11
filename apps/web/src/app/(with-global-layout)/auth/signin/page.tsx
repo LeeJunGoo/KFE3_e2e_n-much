@@ -7,7 +7,7 @@ import { useUserStore } from 'src/entities/auth/stores/UserStore';
 import { toast } from '@repo/ui/components/ui/sonner';
 import type { Role, Provider } from '../../../../entities/auth/types';
 import { AuthCard } from 'src/features/auth/AuthCard';
-import { LoadingSpinner } from 'src/features/auth/LoadingSpinner';
+// import { LoadingSpinner } from 'src/features/auth/LoadingSpinner';
 
 export default function SigninPage() {
   const searchParams = useSearchParams();
@@ -99,7 +99,8 @@ export default function SigninPage() {
           <AuthCard title="로그인" role={role} onTabChange={handleTabChange} onSocialSignin={handleSocialSignin} />
         )
       ) : (
-        <LoadingSpinner size={48} color="#8E74F9" />
+        // <LoadingSpinner size={48} color="#8E74F9" />
+        <div>로딩</div>
       )}
     </>
   );
