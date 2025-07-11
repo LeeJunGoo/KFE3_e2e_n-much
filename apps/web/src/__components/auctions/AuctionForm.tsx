@@ -31,11 +31,11 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Button } from '@repo/ui/components/ui/button';
 import { cn } from '@repo/ui/lib/utils';
 import { uploadImage } from 'src/entities/auction/bucket';
-import PageTitle from '../common/ui/PageTitle';
+import PageTitle from '../../shared/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAuctionById } from 'src/entities/auction/api';
-import PageHeader from '../common/ui/PageHeader';
+import PageHeader from '../../widgets/PageHeader';
 import PageContainer from '../layout/PageContainer';
 
 export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
@@ -346,7 +346,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                               !field.value && 'text-muted-foreground'
                             )}
                           >
-                            <FaCalendarAlt className="h-4 w-4 text-(--color-accent) opacity-50" />
+                            <FaCalendarAlt className="text-(--color-accent) h-4 w-4 opacity-50" />
                             {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
                           </Button>
                         </FormControl>
@@ -407,7 +407,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                               !field.value && 'text-muted-foreground'
                             )}
                           >
-                            <FaCalendarAlt className="h-4 w-4 text-(--color-accent) opacity-50" />
+                            <FaCalendarAlt className="text-(--color-accent) h-4 w-4 opacity-50" />
                             {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
                           </Button>
                         </FormControl>
@@ -538,7 +538,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                 <li key={previewImage.id} className="relative">
                   <Button
                     onClick={() => setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id))}
-                    className="absolute top-1 left-72"
+                    className="absolute left-72 top-1"
                   >
                     X
                   </Button>
