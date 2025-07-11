@@ -129,7 +129,7 @@ export async function updateEpisode(episode_id: string, title: string, descripti
 }
 
 // NOTE - 최고 입찰자의 정보
-export const getHighestBidder = async (auction_id: string) => {
+export const selectHighestBidder = async (auction_id: string) => {
   const { data, error } = await supabase
     .from('episodes')
     .select(

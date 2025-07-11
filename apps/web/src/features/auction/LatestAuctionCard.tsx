@@ -1,13 +1,12 @@
 import Image from 'next/image';
-import React from 'react';
 
-import NotAuctionImage from 'assets/images/auctionDefault.png';
+import { Badge } from '@repo/ui/components/ui/badge';
+import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import { differenceInHours, formatDistanceToNow, setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { TZDate } from 'react-day-picker';
-import { Badge } from '@repo/ui/components/ui/badge';
-import { FaBookOpen, FaHeart } from 'react-icons/fa6';
 import Link from 'next/link';
+import { TZDate } from 'react-day-picker';
+import { FaBookOpen, FaHeart } from 'react-icons/fa6';
 import { SortedAuctionItemType } from 'src/entities/auction/types';
 
 const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
@@ -28,10 +27,10 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
     : 'bg-[var(--color-accent)] hover:bg-[var(--color-accent)]';
 
   return (
-    <li className="border-b border-(--color-warm-gray)/30 last:border-b-0">
+    <li className="border-(--color-warm-gray)/30 border-b last:border-b-0">
       <Link
         href={`/auctions/${auction.auction_id}`}
-        className="flex cursor-pointer items-center p-3 transition-colors hover:bg-(--color-secondary)"
+        className="hover:bg-(--color-secondary) flex cursor-pointer items-center p-3 transition-colors"
       >
         <div className="relative mr-3 h-20 w-20 flex-shrink-0">
           <Image src={auctionImage!} alt={auction.title} fill sizes="80px" className="rounded-lg object-contain" />
@@ -44,14 +43,14 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
             </div>
             <Badge className={`${badgeColor} px-2 py-1 font-normal`}>{remainTime}</Badge>
           </div>
-          <div className="mt-2 flex items-center gap-3 text-sm text-(--color-warm-gray)">
+          <div className="text-(--color-warm-gray) mt-2 flex items-center gap-3 text-sm">
             <div className="flex items-center gap-3">
               <i className="flex items-center gap-1">
-                <FaHeart className="mr-1 text-sm text-(--color-red)" />
+                <FaHeart className="text-(--color-red) mr-1 text-sm" />
                 <span>{favoritesCount}</span>
               </i>
               <i className="flex items-center gap-1">
-                <FaBookOpen className="text-sm text-(--color-primary)" />
+                <FaBookOpen className="text-(--color-primary) text-sm" />
                 <span>{episodesCount}</span>
               </i>
             </div>

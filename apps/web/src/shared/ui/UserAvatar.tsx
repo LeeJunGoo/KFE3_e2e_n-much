@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import Image from 'next/image';
 import React from 'react';
-import DefaultAvatar from 'assets/images/avatarDefault.svg';
+import DefaultAvatar from 'src/assets/images/avatarDefault.svg';
 import { twMerge } from 'tailwind-merge';
 
 type UserAvatarType = {

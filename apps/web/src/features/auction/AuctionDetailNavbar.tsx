@@ -1,7 +1,7 @@
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import GoBackButton from 'src/components/common/GoBackButton';
+import EditDeleteActions from 'src/features/auction/EditDeleteActions';
 import { AuctionRow } from 'src/shared/supabase/types';
-import EditDeleteActions from './EditDeleteActions';
+import GoBackButton from 'src/shared/ui/GoBackButton';
 
 const AuctionDetailNavbar = async ({
   auctionId,

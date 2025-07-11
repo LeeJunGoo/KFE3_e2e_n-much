@@ -6,7 +6,7 @@ import {
 } from 'src/entities/auction/types';
 
 // NOTE - 경매 상품 및 경매 업체 정보
-export const fetchAuctionWithSellerInfo = async (auctionId: string) => {
+export const selectAuctionWithSellerInfo = async (auctionId: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction`);
 
   if (!res.ok) {

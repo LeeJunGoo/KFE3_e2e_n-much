@@ -10,8 +10,8 @@ const GoBackButton = ({ className }: { className?: string }) => {
   };
 
   return (
-    <button onClick={handleGoBack} className={`absolute top-2/4 left-5 -translate-y-2/4 ${className}`}>
-      <FaArrowLeft className="size-4 hover:text-(--color-accent)" />
+    <button onClick={handleGoBack} className={`absolute left-5 top-2/4 -translate-y-2/4 ${className}`}>
+      <FaArrowLeft className="hover:text-(--color-accent) size-4" />
     </button>
   );
 };

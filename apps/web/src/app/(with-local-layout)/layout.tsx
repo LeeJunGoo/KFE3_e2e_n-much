@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import TabBar from 'src/components/layout/TabBar';
+import TabBar from 'src/widgets/TabBar';
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (

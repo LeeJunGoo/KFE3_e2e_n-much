@@ -30,7 +30,7 @@ export const getAuction = async (auction_id: string) => {
 };
 
 //NOTE - 특정 상품 정보 및 판매자 정보
-export const getAuctionWithSellerInfo = async (auction_id: string) => {
+export const selectAuctionWithSellerInfo = async (auction_id: string) => {
   const { data, error } = await supabase
     .from('auctions')
     .select(
@@ -96,7 +96,7 @@ export const deleteAuction = async (auction_id: string) => {
 };
 
 //NOTE - 판매자의 총 경매 수 및 현재 진행 중인 갱며 수
-export const getSellerAuctionCount = async (sellerId: string) => {
+export const selectSellerAuctionCount = async (sellerId: string) => {
   const { count: totalCount, error: totalError } = await supabase
     .from('auctions')
     .select('*', { count: 'exact', head: true })

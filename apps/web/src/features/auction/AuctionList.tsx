@@ -7,8 +7,8 @@ import { fetchAllAuctionWithEpisodeCount } from 'src/entities/auction/api';
 import { AuctionRow } from 'src/shared/supabase/types';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
+import AuctionCard from 'src/features/auction/shared/AuctionCard';
 // import { LoadingSpinner } from '../../features/auth/LoadingSpinner';
-import AuctionCard from './shared/AuctionCard';
 
 interface EpisodeCount {
   episodes: [{ count: number }];

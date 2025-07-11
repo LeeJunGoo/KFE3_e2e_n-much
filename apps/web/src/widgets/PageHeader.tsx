@@ -1,5 +1,5 @@
-import GoBackButton from 'src/shared/GoBackButton';
-import PageTitle from 'src/shared/PageTitle';
+import GoBackButton from 'src/shared/ui/GoBackButton';
+import PageTitle from 'src/shared/ui/PageTitle';
 
 interface PageHeaderProps {
   children: React.ReactNode;

@@ -4,8 +4,8 @@ import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/ui/dialog';
 import { useState } from 'react';
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import UserAvatar from 'src/components/common/UserAvatar';
 import { EpisodeItemProps } from 'src/entities/episode/types';
+import UserAvatar from 'src/shared/ui/UserAvatar';
 import { formatToKoreanDateTime } from 'src/shared/utils/formatToKoreanDateTime';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 

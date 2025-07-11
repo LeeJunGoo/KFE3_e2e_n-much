@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import Header from 'src/components/layout/Header';
+import Header from 'src/widgets/Header';
 
 const HeaderLayout = ({ children }: { children: ReactNode }) => {
   return (

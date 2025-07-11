@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { fetchSortedAuctions } from 'src/entities/auction/serverActions';
-
 import PopularAuctionCard from './PopularAuctionCard';
 import PageTitle from '../../shared/ui/PageTitle';
 import { SortedAuctionItemType } from 'src/entities/auction/types';

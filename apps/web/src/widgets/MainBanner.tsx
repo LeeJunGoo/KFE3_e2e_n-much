@@ -3,9 +3,9 @@
 import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
 import { Autoplay } from '@repo/ui/lib/utils';
 
-import Banner_1 from 'assets/images/banner_1.png';
-import Banner_2 from 'assets/images/banner_2.png';
-import Banner_3 from 'assets/images/banner_3.png';
+import Banner_1 from 'src/assets/images/banner_1.png';
+import Banner_2 from 'src/assets/images/banner_2.png';
+import Banner_3 from 'src/assets/images/banner_3.png';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -76,7 +76,7 @@ const MainBanner = () => {
             key={index}
             onClick={() => api!.scrollTo(index)}
             className={`h-2 rounded-full transition-all duration-300 ${
-              current === index ? 'w-4 bg-white' : 'w-2 bg-(--color-light-gray)'
+              current === index ? 'w-4 bg-white' : 'bg-(--color-light-gray) w-2'
             }`}
             aria-label={`슬라이드 ${index + 1}로 이동`}
           />

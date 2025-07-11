@@ -2,9 +2,9 @@
 import { Dispatch, SetStateAction } from 'react';
 import { usePathname } from 'next/navigation';
 
-import TabNavItem from './TabNavItem';
 import { TabMenuItem } from 'src/entities/layout/types';
 import { TAB_MENUS } from 'src/entities/layout/constants';
+import TabNavItem from 'src/widgets/TabNavItem';
 
 interface TabNavigationProps {
   isSearchOpen: boolean;

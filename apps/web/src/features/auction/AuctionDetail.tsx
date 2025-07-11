@@ -2,9 +2,10 @@ import { Badge } from '@repo/ui/components/ui/badge';
 import { Card } from '@repo/ui/components/ui/card';
 import Link from 'next/link';
 import { AuctionRow } from 'src/shared/supabase/types';
-import AuctionTimer from './AuctionTimer';
-import { SellerInfoType } from 'src/entities/auction/types';
+
 import { UserInfoType } from 'src/app/api/auth/user-info/route';
+import { SellerInfoType } from 'src/entities/auction/types';
+import AuctionTimer from 'src/features/auction/AuctionTimer';
 
 const AuctionDetail = ({
   auctionInfo,
