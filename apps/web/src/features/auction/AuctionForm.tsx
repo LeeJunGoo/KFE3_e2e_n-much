@@ -18,7 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-import ImageUploader from './ImageUploader';
+import ImageUploader from 'src/features/auction/ImageUploader';
 import Image from 'next/image';
 import { addHours, compareAsc, format, set, subDays } from 'date-fns';
 import { FaCalendarAlt } from 'react-icons/fa';
@@ -30,13 +30,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { Input } from '@repo/ui/components/ui/input';
 import { Button } from '@repo/ui/components/ui/button';
 import { cn } from '@repo/ui/lib/utils';
-import { uploadImage } from 'src/entities/auction/bucket';
-import PageTitle from '../../shared/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAuctionById } from 'src/entities/auction/api';
-import PageHeader from '../../widgets/PageHeader';
-import PageContainer from '../layout/PageContainer';
+import PageContainer from 'src/shared/PageContainer';
+import { uploadImage } from 'src/entities/auction/supabase';
 
 export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
   const isEditing: boolean = auctionIdParam ? true : false;
@@ -281,7 +279,6 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
 
   return (
     <>
-      <PageHeader>{isEditing ? '경매 수정' : '경매 등록'}</PageHeader>
       <PageContainer>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-8">

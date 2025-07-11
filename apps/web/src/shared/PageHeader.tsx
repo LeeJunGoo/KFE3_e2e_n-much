@@ -1,5 +1,10 @@
+<<<<<<<< HEAD:apps/web/src/widgets/PageHeader.tsx
+import GoBackButton from './GoBackButton';
+import PageTitle from '../shared/ui/PageTitle';
+========
 import GoBackButton from 'src/shared/GoBackButton';
 import PageTitle from 'src/shared/PageTitle';
+>>>>>>>> 129a3e62a9dc4842dad9be4f7960e017183f623d:apps/web/src/shared/PageHeader.tsx
 
 interface PageHeaderProps {
   children: React.ReactNode;
