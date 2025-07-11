@@ -18,7 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-import ImageUploader from './ImageUploader';
+import ImageUploader from 'src/features/auction/ImageUploader';
 import Image from 'next/image';
 import { addHours, compareAsc, format, set, subDays } from 'date-fns';
 import { FaCalendarAlt } from 'react-icons/fa';
@@ -30,13 +30,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { Input } from '@repo/ui/components/ui/input';
 import { Button } from '@repo/ui/components/ui/button';
 import { cn } from '@repo/ui/lib/utils';
-import { uploadImage } from 'src/entities/auction/bucket';
-import PageTitle from '../common/ui/PageTitle';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useQuery } from '@tanstack/react-query';
 import { fetchAuctionById } from 'src/entities/auction/api';
-import PageHeader from '../common/ui/PageHeader';
-import PageContainer from '../layout/PageContainer';
+import PageContainer from 'src/shared/PageContainer';
+import { uploadImage } from 'src/entities/auction/supabase';
 
 export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
   const isEditing: boolean = auctionIdParam ? true : false;
@@ -281,7 +279,6 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
 
   return (
     <>
-      <PageHeader>{isEditing ? '경매 수정' : '경매 등록'}</PageHeader>
       <PageContainer>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-8">
@@ -346,7 +343,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                               !field.value && 'text-muted-foreground'
                             )}
                           >
-                            <FaCalendarAlt className="h-4 w-4 text-(--color-accent) opacity-50" />
+                            <FaCalendarAlt className="text-(--color-accent) h-4 w-4 opacity-50" />
                             {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
                           </Button>
                         </FormControl>
@@ -407,7 +404,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                               !field.value && 'text-muted-foreground'
                             )}
                           >
-                            <FaCalendarAlt className="h-4 w-4 text-(--color-accent) opacity-50" />
+                            <FaCalendarAlt className="text-(--color-accent) h-4 w-4 opacity-50" />
                             {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
                           </Button>
                         </FormControl>
@@ -538,7 +535,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
                 <li key={previewImage.id} className="relative">
                   <Button
                     onClick={() => setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id))}
-                    className="absolute top-1 left-72"
+                    className="absolute left-72 top-1"
                   >
                     X
                   </Button>
