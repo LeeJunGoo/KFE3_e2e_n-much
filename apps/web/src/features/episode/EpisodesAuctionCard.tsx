@@ -1,5 +1,5 @@
 import React from 'react';
-import ListCard from '../../widgets/ListCard';
+import ListCard from '../../widgets/BaseCard';
 import Image from 'next/image';
 import AuctionTimer from '../auction/AuctionTimer';
 import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';

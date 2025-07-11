@@ -7,6 +7,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instanciate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "12.2.3 (519615d)"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -34,299 +39,235 @@ export type Database = {
   }
   public: {
     Tables: {
+      addresses: {
+        Row: {
+          address_id: string
+          business_name: string
+          created_at: string
+          detail_address: string | null
+          is_default: boolean
+          phone_number: string
+          postal_code: string
+          road_address: string
+          user_id: string | null
+        }
+        Insert: {
+          address_id?: string
+          business_name: string
+          created_at?: string
+          detail_address?: string | null
+          is_default: boolean
+          phone_number: string
+          postal_code: string
+          road_address: string
+          user_id?: string | null
+        }
+        Update: {
+          address_id?: string
+          business_name?: string
+          created_at?: string
+          detail_address?: string | null
+          is_default?: boolean
+          phone_number?: string
+          postal_code?: string
+          road_address?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "addresses_address_id_fkey"
+            columns: ["address_id"]
+            isOneToOne: true
+            referencedRelation: "addresses"
+            referencedColumns: ["address_id"]
+          },
+          {
+            foreignKeyName: "addresses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       auctions: {
         Row: {
-          address: string[]
           auction_id: string
           created_at: string
           current_point: number
           description: string
-          end_time: string
+          end_date: string
           favorites: string[] | null
-          image_urls: string[] | null
+          image_urls: string[]
           max_point: number
-          seller_id: string
-          start_time: string
           starting_point: number
           status: string
           title: string
           updated_at: string | null
+          user_id: string
         }
         Insert: {
-          address: string[]
           auction_id?: string
           created_at?: string
-          current_point?: number
+          current_point: number
           description: string
-          end_time: string
+          end_date: string
           favorites?: string[] | null
-          image_urls?: string[] | null
+          image_urls: string[]
           max_point: number
-          seller_id: string
-          start_time: string
           starting_point: number
-          status?: string
+          status: string
           title: string
           updated_at?: string | null
+          user_id?: string
         }
         Update: {
-          address?: string[]
           auction_id?: string
           created_at?: string
           current_point?: number
           description?: string
-          end_time?: string
+          end_date?: string
           favorites?: string[] | null
-          image_urls?: string[] | null
+          image_urls?: string[]
           max_point?: number
-          seller_id?: string
-          start_time?: string
           starting_point?: number
           status?: string
           title?: string
           updated_at?: string | null
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "auctions_seller_id_fkey"
-            columns: ["seller_id"]
-            isOneToOne: false
-            referencedRelation: "sellers"
-            referencedColumns: ["seller_id"]
+            foreignKeyName: "auctions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           },
         ]
       }
-      buyers: {
-        Row: {
-          avatar: string | null
-          buyer_id: string
-          created_at: string
-          email: string
-          favorites: string[] | null
-          nickname: string | null
-          password: string
-          point: number
-          social_name: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          avatar?: string | null
-          buyer_id?: string
-          created_at?: string
-          email?: string
-          favorites?: string[] | null
-          nickname?: string | null
-          password?: string
-          point?: number
-          social_name?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          avatar?: string | null
-          buyer_id?: string
-          created_at?: string
-          email?: string
-          favorites?: string[] | null
-          nickname?: string | null
-          password?: string
-          point?: number
-          social_name?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       episodes: {
         Row: {
-          auction_id: string
-          bid_point: number
-          bid_time: string
-          buyer_id: string
+          auction_id: string | null
+          bid_date: string | null
+          bid_point: number | null
           created_at: string
           description: string
           episode_id: string
-          likes: string[] | null
-          status: string | null
+          likes: string[]
           title: string
           updated_at: string | null
-          winning_bid: boolean
+          user_id: string | null
+          winning_bid: boolean | null
         }
         Insert: {
-          auction_id: string
-          bid_point?: number
-          bid_time?: string
-          buyer_id: string
+          auction_id?: string | null
+          bid_date?: string | null
+          bid_point?: number | null
           created_at?: string
-          description?: string
+          description: string
           episode_id?: string
-          likes?: string[] | null
-          status?: string | null
-          title?: string
+          likes?: string[]
+          title: string
           updated_at?: string | null
-          winning_bid?: boolean
+          user_id?: string | null
+          winning_bid?: boolean | null
         }
         Update: {
-          auction_id?: string
-          bid_point?: number
-          bid_time?: string
-          buyer_id?: string
+          auction_id?: string | null
+          bid_date?: string | null
+          bid_point?: number | null
           created_at?: string
           description?: string
           episode_id?: string
-          likes?: string[] | null
-          status?: string | null
+          likes?: string[]
           title?: string
           updated_at?: string | null
-          winning_bid?: boolean
+          user_id?: string | null
+          winning_bid?: boolean | null
         }
         Relationships: [
           {
-            foreignKeyName: "episodes_buyer_id_fkey"
-            columns: ["buyer_id"]
-            isOneToOne: false
-            referencedRelation: "buyers"
-            referencedColumns: ["buyer_id"]
-          },
-          {
-            foreignKeyName: "fk_episodes_auction"
+            foreignKeyName: "episodes_auction_id_fkey"
             columns: ["auction_id"]
             isOneToOne: false
             referencedRelation: "auctions"
             referencedColumns: ["auction_id"]
           },
+          {
+            foreignKeyName: "episodes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
         ]
-      }
-      keywords: {
-        Row: {
-          count: number
-          created_at: string
-          id: string
-          keyword: string
-          updated_at: string | null
-        }
-        Insert: {
-          count?: number
-          created_at?: string
-          id?: string
-          keyword: string
-          updated_at?: string | null
-        }
-        Update: {
-          count?: number
-          created_at?: string
-          id?: string
-          keyword?: string
-          updated_at?: string | null
-        }
-        Relationships: []
       }
       points: {
         Row: {
           amount: number
-          balance: number
-          created_at: string | null
-          description: string | null
-          title: string
-          transaction_id: string
-          type: string
-          user_id: string | null
-        }
-        Insert: {
-          amount: number
-          balance: number
-          created_at?: string | null
-          description?: string | null
-          title: string
-          transaction_id?: string
-          type: string
-          user_id?: string | null
-        }
-        Update: {
-          amount?: number
-          balance?: number
-          created_at?: string | null
-          description?: string | null
-          title?: string
-          transaction_id?: string
-          type?: string
-          user_id?: string | null
-        }
-        Relationships: []
-      }
-      sellers: {
-        Row: {
-          avatar: string | null
+          balance_after: number
           created_at: string
-          email: string
-          favorites: string[] | null
-          nickname: string | null
-          password: string
-          point: number
-          seller_id: string
-          social_name: string | null
-          updated_at: string | null
-        }
-        Insert: {
-          avatar?: string | null
-          created_at?: string
-          email?: string
-          favorites?: string[] | null
-          nickname?: string | null
-          password?: string
-          point?: number
-          seller_id?: string
-          social_name?: string | null
-          updated_at?: string | null
-        }
-        Update: {
-          avatar?: string | null
-          created_at?: string
-          email?: string
-          favorites?: string[] | null
-          nickname?: string | null
-          password?: string
-          point?: number
-          seller_id?: string
-          social_name?: string | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      users: {
-        Row: {
-          avatar: string | null
-          created_at: string
-          email: string
-          favorites: string[] | null
-          nickname: string
-          password: string
-          point: number
-          role: string
-          updated_at: string | null
+          description: string
+          point_id: string
+          source: string
+          type: string
           user_id: string
         }
         Insert: {
-          avatar?: string | null
+          amount: number
+          balance_after: number
           created_at?: string
-          email: string
-          favorites?: string[] | null
-          nickname: string
-          password: string
-          point?: number
-          role: string
-          updated_at?: string | null
-          user_id?: string
+          description: string
+          point_id?: string
+          source: string
+          type: string
+          user_id: string
         }
         Update: {
-          avatar?: string | null
+          amount?: number
+          balance_after?: number
+          created_at?: string
+          description?: string
+          point_id?: string
+          source?: string
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "points_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          address_id: string | null
+          created_at: string
+          email: string
+          id: string
+          nick_name: string
+          role: string
+        }
+        Insert: {
+          address_id?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          nick_name: string
+          role: string
+        }
+        Update: {
+          address_id?: string | null
           created_at?: string
           email?: string
-          favorites?: string[] | null
-          nickname?: string
-          password?: string
-          point?: number
+          id?: string
+          nick_name?: string
           role?: string
-          updated_at?: string | null
-          user_id?: string
         }
         Relationships: []
       }
@@ -346,21 +287,25 @@ export type Database = {
   }
 }
 
-type DefaultSchema = Database[Extract<keyof Database, "public">]
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-        Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
-      Database[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
       Row: infer R
     }
     ? R
@@ -378,14 +323,16 @@ export type Tables<
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Insert: infer I
     }
     ? I
@@ -401,14 +348,16 @@ export type TablesInsert<
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
     | keyof DefaultSchema["Tables"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends DefaultSchemaTableNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never = never,
-> = DefaultSchemaTableNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
@@ -424,14 +373,16 @@ export type TablesUpdate<
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
     | keyof DefaultSchema["Enums"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never = never,
-> = DefaultSchemaEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
     : never
@@ -439,14 +390,16 @@ export type Enums<
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
-    | { schema: keyof Database },
+    | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof DatabaseWithoutInternals
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
-> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
