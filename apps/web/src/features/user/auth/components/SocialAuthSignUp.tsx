@@ -19,13 +19,13 @@ const SocialAuthSignUp = () => {
     }
   };
 
-  const buttonStyle = 'flex w-full items-center justify-center gap-3 rounded-md border py-3';
+  const buttonStyle = 'flex w-full items-center justify-center gap-3 rounded-md py-3';
 
   return (
     <ul className="flex flex-col gap-3">
       <li className="relative">
         <SocialAuthButton
-          className={`${buttonStyle} hover:bg-(--color-light-gray)/30`}
+          className={`${buttonStyle} hover:bg-(--color-light-gray)/30 border`}
           onClick={() => handleSocialSignUp('google')}
           aria-label="google로 로그인 하기 버튼"
         >
