@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import PageTitle from 'src/shared/ui/PageTitle';
 import BaseCard from 'src/widgets/BaseCard';
 import SocialAuthSignUp from 'src/features/user/auth/components/SocialAuthSignUp';
 import Logo from 'src/assets/images/logo.svg';
@@ -11,14 +10,11 @@ const SignUpPage = () => {
     <section className="w-full">
       <div>
         <Image src={Logo} alt="logo" className="mx-auto block size-20" />
-        <div className="flex -translate-y-2 flex-col gap-1">
-          <p>간편하게 시작하세요</p>
-          <p className="text-sm opacity-60">소셜 계정으로 회원가입 및 로그인</p>
-        </div>
+        <h2 className="text-xl">당신의 가치를 Vidding</h2>
       </div>
-      <BaseCard as="div" className="p-15 my-8 w-full px-4 pb-10">
-        <PageTitle className="text-2xl font-semibold">환영합니다! 👋</PageTitle>
-        <p className="mb-8 mt-2 text-sm opacity-60">아래 계정으로 빠르게 시작해 보세요</p>
+      <BaseCard as="div" className="p-15 mb-8 mt-10 w-full px-4 pb-10">
+        <p className="text-2xl font-semibold">환영합니다! 👋</p>
+        <p className="mb-8 mt-2 text-sm opacity-60">소셜 계정으로 빠르게 시작해 보세요</p>
         <SocialAuthSignUp />
         <div className="mt-6 flex items-start justify-center gap-3 rounded-xl p-4">
           <RiShieldCheckLine size={20} className="text-(--color-green) translate-y-0.5" />
