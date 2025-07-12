@@ -2,14 +2,14 @@ import type { ElementType, ReactNode } from 'react';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
-interface ListCardProps {
+type BaseCardProps = {
   as?: ElementType;
   href?: string;
   className?: string;
   children: ReactNode;
-}
+};
 
-const ListCard = ({ as: el = 'div', href, className = '', children }: ListCardProps) => {
+const BaseCard = ({ as: el = 'div', href, className = '', children }: BaseCardProps) => {
   const baseClass = 'rounded-xl bg-white p-4 shadow-sm';
 
   if (el === Link && href) {
@@ -24,4 +24,4 @@ const ListCard = ({ as: el = 'div', href, className = '', children }: ListCardPr
   return <Tag className={twMerge(baseClass, className)}>{children}</Tag>;
 };
 
-export default ListCard;
+export default BaseCard;

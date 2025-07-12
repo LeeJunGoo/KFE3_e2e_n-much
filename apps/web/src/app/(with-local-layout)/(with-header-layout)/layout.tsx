@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
-import Header from 'src/widgets/Header';
+// import Header from 'src/widgets/layout/Header';
 
 const HeaderLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div>{children}</div>
     </>
   );

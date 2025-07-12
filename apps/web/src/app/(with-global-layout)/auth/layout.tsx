@@ -1,12 +1,12 @@
-import React, { Suspense } from 'react';
+import { ReactNode } from 'react';
 import PageContainer from 'src/shared/ui/PageContainer';
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+const layout = ({ children }: { children: ReactNode }) => {
   return (
-    <PageContainer>
-      <Suspense fallback={<div>Loading...</div>}>
-        <section className="flex min-h-screen items-center justify-center">{children}</section>
-      </Suspense>
+    <PageContainer className="flex h-screen w-full items-center justify-center py-0 text-center">
+      {children}
     </PageContainer>
   );
-}
+};
+
+export default layout;
