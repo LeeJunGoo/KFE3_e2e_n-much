@@ -1,6 +1,6 @@
-import { badgeVariants } from '@repo/ui/components/ui/badge';
-import { VariantProps } from 'class-variance-authority';
-import { AuctionRow, BuyerInsert, BuyerRow, EpisodeRow, SellerInsert, SellerRow } from 'src/shared/supabase/types';
+import type { badgeVariants } from '@repo/ui/components/ui/badge';
+import type { VariantProps } from 'class-variance-authority';
+import type { AuctionRow, BuyerInsert, BuyerRow, EpisodeRow, SellerInsert, SellerRow } from 'src/shared/supabase/types';
 
 // =====================================================
 // 🏷️ 기본 타입들

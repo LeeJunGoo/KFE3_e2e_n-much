@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { selectAuctionWithSellerInfo, selectSellerAuctionCount } from 'src/entities/auction/supabase';
 import { selectHighestBidder } from 'src/entities/episode/supabase';
+import type { NextRequest} from 'next/server';
 
 type ParamsType = {
   params: Promise<{ id: string }>;
@@ -8,7 +9,7 @@ type ParamsType = {
 
 export async function GET(request: NextRequest, { params }: ParamsType) {
   const { id } = await params;
-  const searchParams = request.nextUrl.searchParams;
+  const {searchParams} = request.nextUrl;
   const type = searchParams.get('type');
   let res;
 
@@ -28,6 +29,6 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
   }
 }

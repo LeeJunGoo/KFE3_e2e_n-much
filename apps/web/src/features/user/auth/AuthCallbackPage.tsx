@@ -1,10 +1,10 @@
 'use client';
-import { createClient } from 'src/shared/supabase/client/client';
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from '@repo/ui/components/ui/sonner';
-import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
+import { useRouter } from 'next/navigation';
 import useAuth from 'src/shared/hooks/useAuth';
+import { createClient } from 'src/shared/supabase/client/client';
+import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 
 const AuthCallbackPage = () => {
   const router = useRouter();

@@ -2,12 +2,12 @@
 
 //TODO - 스피너 적용하기
 
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchAllAuctionWithEpisodeCount } from 'src/entities/auction/api';
-import { AuctionRow } from 'src/shared/supabase/types';
-import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
+import { fetchAllAuctionWithEpisodeCount } from 'src/entities/auction/api';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
+import type { AuctionRow } from 'src/shared/supabase/types';
 // import { LoadingSpinner } from '../../features/auth/LoadingSpinner';
 
 interface EpisodeCount {

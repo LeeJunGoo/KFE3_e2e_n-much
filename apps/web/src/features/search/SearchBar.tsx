@@ -1,12 +1,12 @@
 'use client';
 import React, { useState } from 'react';
-import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
-import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
+import { Button } from '@repo/ui/components/ui/button';
+import { FaSearch } from 'react-icons/fa';
+import { IoCloseOutline } from 'react-icons/io5';
 import { useAuctionsStore } from 'src/entities/auction/stores/AuctionsStore';
 import { getAuctionsByKeyword } from 'src/entities/auction/supabase';
-import { Button } from '@repo/ui/components/ui/button';
-import { IoCloseOutline } from 'react-icons/io5';
-import { FaSearch } from 'react-icons/fa';
+import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
+import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
 // import { FaCaretUp } from 'react-icons/fa';
 // import { FaCaretDown } from 'react-icons/fa';
 

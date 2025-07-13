@@ -1,9 +1,10 @@
 //NOTE - 업로드할 이미지를 드래그하면 UI에 효과줄 수 있음 (isDragActive)
 
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import type { Dispatch, SetStateAction} from 'react';
+import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { v4 as uuidv4 } from 'uuid';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ImageUploader({
   onPreviewImages

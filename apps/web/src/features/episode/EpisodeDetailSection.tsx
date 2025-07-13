@@ -1,8 +1,8 @@
 import { Card } from '@repo/ui/components/ui/card';
-import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import { fetchEpisodesById } from 'src/entities/episode/api';
-import { AuctionRow, SellerRow } from 'src/shared/supabase/types';
 import EpisodeList from 'src/features/episode/EpisodeList';
+import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+import type { AuctionRow, SellerRow } from 'src/shared/supabase/types';
 
 const EpisodeDetailSection = async ({
   auctionId,

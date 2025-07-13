@@ -1,16 +1,15 @@
 'use client';
 
-import { Button } from '@repo/ui/components/ui/button';
 import React, { useEffect, useState } from 'react';
-import { FiAward } from 'react-icons/fi';
-
+import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/ui/dialog';
 import { Input } from '@repo/ui/components/ui/input';
 import { toast } from '@repo/ui/components/ui/sonner';
+import { FiAward } from 'react-icons/fi';
 import { fetchUpdateEpisodeBid } from 'src/entities/episode/api';
-import { EpisodeItemProps } from 'src/entities/episode/types';
 import { formatNumber } from 'src/shared/utils/formatNumber';
-import { UserInfoType } from 'src/app/api/auth/user-info/route';
+import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeBidButton = ({ episode, userInfo }: { episode: EpisodeItemProps; userInfo: UserInfoType }) => {
   const [showEpisodeModal, setShowEpisodeModal] = useState<boolean>(false);

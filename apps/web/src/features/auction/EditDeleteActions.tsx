@@ -4,7 +4,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { fetchDeleteAuction } from 'src/entities/auction/api';
-import { AuctionRow } from 'src/shared/supabase/types';
+import type { AuctionRow } from 'src/shared/supabase/types';
 
 const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const router = useRouter();

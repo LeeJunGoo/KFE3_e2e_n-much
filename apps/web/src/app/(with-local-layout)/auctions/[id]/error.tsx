@@ -1,8 +1,8 @@
 'use client';
 
+import { startTransition, useEffect } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { startTransition, useEffect } from 'react';
 
 const Error = ({ error, reset }: { error: Error; reset: () => void }) => {
   const router = useRouter();

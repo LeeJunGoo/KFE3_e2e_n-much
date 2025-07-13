@@ -1,10 +1,9 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
-import { EpisodeRow } from 'src/shared/supabase/types';
-
 import { useRouter } from 'next/navigation';
 import { fetchDeleteEpisode } from 'src/entities/episode/api';
+import type { EpisodeRow } from 'src/shared/supabase/types';
 
 const EditDeleteEpisodes = ({
   auction_id,

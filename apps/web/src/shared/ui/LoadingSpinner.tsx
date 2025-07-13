@@ -1,14 +1,14 @@
-import { twMerge } from 'tailwind-merge';
 import { LuLoaderCircle } from 'react-icons/lu';
+import { twMerge } from 'tailwind-merge';
 
-type size = 'sm' | 'md' | 'lg' | 'xl';
+type Size = 'sm' | 'md' | 'lg' | 'xl';
 
 interface LoadingSpinnerProps {
-  size?: size;
+  size?: Size;
   className?: string;
 }
 
-export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerProps) {
+export const LoadingSpinner = ({ size = 'md', className = '' }: LoadingSpinnerProps) => {
   const sizeStyle = {
     sm: 'size-4',
     md: 'size-6',
@@ -21,4 +21,4 @@ export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerPr
       <LuLoaderCircle className={twMerge('text-(--color-accent) animate-spin', sizeStyle[size], className)} />
     </div>
   );
-}
+};

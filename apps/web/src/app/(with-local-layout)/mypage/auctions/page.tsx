@@ -2,23 +2,16 @@
 // import PageContainer from 'src/components/layout/PageContainer';
 // import AuctionTabsSection from 'src/components/mypage/shared/auctions/MyAuctionTabsSection';
 
-// const MyAuctions = () => {
-//   return (
-//     <>
-//       <PageHeader>내 경매 현황</PageHeader>
-//       <PageContainer className="pt-2">
-//         <AuctionTabsSection />
-//       </PageContainer>
-//     </>
-//   );
-// };
-
-// export default MyAuctions;
-
-import React from 'react';
-
-const page = () => {
-  return <div>page</div>;
+const MyAuctions = () => {
+  return (
+    <>
+      {/* <PageHeader>내 경매 현황</PageHeader>
+      <PageContainer className="pt-2">
+        <AuctionTabsSection />
+      </PageContainer> */}
+      <div>페이지</div>
+    </>
+  );
 };
 
-export default page;
+export default MyAuctions;

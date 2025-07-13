@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 
 const AuctionErrorBoundary = ({ fallback, children }: { fallback: ReactNode; children: ReactNode }) => {

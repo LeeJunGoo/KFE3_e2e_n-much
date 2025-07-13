@@ -1,6 +1,6 @@
-import { twMerge } from 'tailwind-merge';
 import GoBackButton from 'src/shared/ui/GoBackButton';
 import PageTitle from 'src/shared/ui/PageTitle';
+import { twMerge } from 'tailwind-merge';
 
 interface PageHeaderProps {
   children: React.ReactNode;

@@ -1,8 +1,8 @@
-import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaBookOpen, FaHeart } from 'react-icons/fa6';
-import { SortedAuctionItemType } from 'src/entities/auction/types';
+import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
 const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
   const isImage = auction.image_urls && auction.image_urls.length > 0;

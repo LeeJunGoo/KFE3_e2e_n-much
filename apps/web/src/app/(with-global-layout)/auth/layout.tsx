@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import PageContainer from 'src/shared/ui/PageContainer';
 
 const layout = ({ children }: { children: ReactNode }) => {

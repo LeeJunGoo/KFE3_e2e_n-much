@@ -1,10 +1,10 @@
 'use client';
-import SocialAuthButton from 'src/features/user/auth/components/SocialAuthButton';
-import { selectSignUp } from 'src/entities/user/auth/supabase';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { FcGoogle } from 'react-icons/fc';
 import { IoChatbubble } from 'react-icons/io5';
 import { LuArrowRight } from 'react-icons/lu';
+import { selectSignUp } from 'src/entities/user/auth/supabase';
+import SocialAuthButton from 'src/features/user/auth/components/SocialAuthButton';
 import type { SocialAuthProvider } from 'src/entities/user/auth/types';
 
 const SocialAuthSignUp = () => {
