@@ -1,10 +1,10 @@
 'use client';
-import { createClient } from 'src/shared/supabase/client/client';
 import { useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from '@repo/ui/components/ui/sonner';
-import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
+import { useRouter } from 'next/navigation';
 import useAuth from 'src/shared/hooks/useAuth';
+import { createClient } from 'src/shared/supabase/client/client';
+import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 
 const AuthCallbackPage = () => {
   const router = useRouter();
@@ -54,7 +54,7 @@ const AuthCallbackPage = () => {
   return (
     <section className="flex flex-col items-center justify-center gap-1">
       <LoadingSpinner size="lg" className="mb-4" />
-      <p>로그인 처리 중입니다.</p>
+      <p>Nice to VID You!</p>
     </section>
   );
 };

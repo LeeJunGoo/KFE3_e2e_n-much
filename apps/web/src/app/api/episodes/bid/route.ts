@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getAuction, updateAuction } from 'src/entities/auction/supabase';
 import { updateEpisodeBidPoint } from 'src/entities/episode/supabase';
+import type { NextRequest} from 'next/server';
 
 export async function PATCH(request: NextRequest) {
   const { auction_id, episode_id, bid_point } = await request.json();
@@ -17,6 +18,6 @@ export async function PATCH(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: episodeInfo });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
   }
 }

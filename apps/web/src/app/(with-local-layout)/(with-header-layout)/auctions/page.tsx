@@ -4,8 +4,8 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { fetchAllAuctionWithEpisodeCount } from 'src/entities/auction/api';
 import AuctionList from 'src/features/auction/AuctionList';
 import SelectOrder from 'src/features/auction/SelectOrder';
-import { AuctionRow } from 'src/shared/supabase/types';
 import PageContainer from 'src/shared/ui/PageContainer';
+import type { AuctionRow } from 'src/shared/supabase/types';
 
 interface EpisodeCount {
   episodes: [{ count: number }];

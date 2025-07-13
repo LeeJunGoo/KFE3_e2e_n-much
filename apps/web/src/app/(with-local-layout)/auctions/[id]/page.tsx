@@ -1,7 +1,5 @@
 import { Suspense } from 'react';
-import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';
-
 import { fetchDetailPageUserInfo } from 'src/entities/auth/api';
 import AuctionDetail from 'src/features/auction/AuctionDetail';
 import AuctionDetailICarousel from 'src/features/auction/AuctionDetailICarousel';
@@ -12,6 +10,7 @@ import EpisodeDetailSection from 'src/features/episode/EpisodeDetailSection';
 import { createClient } from 'src/shared/supabase/client/server';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import PageContainer from 'src/shared/ui/PageContainer';
+import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;

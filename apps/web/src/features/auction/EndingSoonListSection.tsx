@@ -1,6 +1,6 @@
+import Link from 'next/link';
 import { fetchSortedAuctions } from 'src/entities/auction/serverActions';
 import EndingSoonCarousel from './EndingSoonCarousel';
-import Link from 'next/link';
 import PageTitle from '../../shared/ui/PageTitle';
 
 const EndingSoonListSection = async () => {

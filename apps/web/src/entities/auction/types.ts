@@ -1,4 +1,4 @@
-import { AuctionRow, BuyerRow, EpisodeRow, SellerRow } from 'src/shared/supabase/types';
+import type { AuctionRow, BuyerRow, EpisodeRow, SellerRow } from 'src/shared/supabase/types';
 
 export type BuyerInfoType = {
   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;

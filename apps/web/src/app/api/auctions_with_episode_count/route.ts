@@ -1,9 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { getAllAuctionsWithEpisodeCountByOrder } from 'src/entities/auction/supabase';
+import type { NextRequest} from 'next/server';
 
 //TODO - 팀원들과 정렬순을 의논해서 수정할 것
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
+  const {searchParams} = request.nextUrl;
   const orderParam = searchParams.get('order');
   const pageParam = searchParams.get('page');
 
@@ -20,6 +21,6 @@ export async function GET(request: NextRequest) {
     }
     throw new Error('경매와 사연 갯수 불러오기 에러(잘못된 정렬 순서)');
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
   }
 }

@@ -1,9 +1,8 @@
 'use client';
 import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
-
-import { SortedAuctionItemType } from 'src/entities/auction/types';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
+import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
 const EndingSoonCarousel = ({ endingSoonAuctions }: { endingSoonAuctions: SortedAuctionItemType[] }) => {
   return (

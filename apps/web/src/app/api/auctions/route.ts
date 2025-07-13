@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { AuctionInsert, AuctionUpdate } from 'src/shared/supabase/types';
+import { NextResponse } from 'next/server';
+import { createClient } from 'src/shared/supabase/client/server';
 import {
   addAuction,
   deleteAuction,
@@ -8,10 +8,11 @@ import {
   getSellerAuctions,
   updateAuction
 } from '../../../entities/auction/supabase';
-import { createClient } from 'src/shared/supabase/client/server';
+import type { NextRequest} from 'next/server';
+import type { AuctionInsert, AuctionUpdate } from 'src/shared/supabase/types';
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
+  const {searchParams} = request.nextUrl;
   const auctionId = searchParams.get('auction_id');
   const type = searchParams.get('type');
 
@@ -39,7 +40,7 @@ export async function GET(request: NextRequest) {
     const res = await getAllAuctions();
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
   }
 }
 

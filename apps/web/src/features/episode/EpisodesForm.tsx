@@ -1,16 +1,16 @@
 'use client';
 
-import { Button } from '@repo/ui/components/ui/button';
-import { AuctionRow, EpisodeRow } from 'src/shared/supabase/types';
 
+import React, { useState } from 'react';
+import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
-import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import { EPISODE_TIP, MAX_DESC_LENGTH, MAX_TITLE_LENGTH } from 'src/entities/episode/constants';
 import { fetchCreateEpisode, fetchEditEpisode } from 'src/entities/episode/api';
+import { EPISODE_TIP, MAX_DESC_LENGTH, MAX_TITLE_LENGTH } from 'src/entities/episode/constants';
+import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+import type { AuctionRow, EpisodeRow } from 'src/shared/supabase/types';
 
 const EpisodesForm = ({
   initialEpisodeInfo,

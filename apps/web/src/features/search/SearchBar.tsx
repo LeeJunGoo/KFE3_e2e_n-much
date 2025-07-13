@@ -1,12 +1,12 @@
 'use client';
 import React, { useState } from 'react';
-import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
-import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
+import { Button } from '@repo/ui/components/ui/button';
+import { FaSearch } from 'react-icons/fa';
+import { IoCloseOutline } from 'react-icons/io5';
 import { useAuctionsStore } from 'src/entities/auction/stores/AuctionsStore';
 import { getAuctionsByKeyword } from 'src/entities/auction/supabase';
-import { Button } from '@repo/ui/components/ui/button';
-import { IoCloseOutline } from 'react-icons/io5';
-import { FaSearch } from 'react-icons/fa';
+import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
+import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
 // import { FaCaretUp } from 'react-icons/fa';
 // import { FaCaretDown } from 'react-icons/fa';
 
@@ -54,7 +54,7 @@ const SearchBar = () => {
 
   return (
     // 임시 모달
-    <div className="fixed right-0 bottom-16 left-0 z-50 m-auto max-w-2xl bg-white">
+    <div className="fixed bottom-16 left-0 right-0 z-50 m-auto max-w-2xl bg-white">
       {/* 여기서부터 모달에 보내는 영역 */}
       <div data-role="search_box" className="p-4">
         <div data-role="input_section" className="mb-6">
@@ -67,13 +67,13 @@ const SearchBar = () => {
             >
               <input
                 type="text"
-                className="peer placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full rounded-lg border border-[#C6C7D1] bg-[#EEF2FB] px-3 py-1 pr-9 text-sm shadow-none transition-colors focus:ring-1 focus:ring-[#5B80C2] focus:outline-none focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                className="placeholder:text-muted-foreground focus-visible:ring-ring peer flex h-12 w-full rounded-lg border border-[#C6C7D1] bg-[#EEF2FB] px-3 py-1 pr-9 text-sm shadow-none transition-colors focus:outline-none focus:ring-1 focus:ring-[#5B80C2] focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
                 placeholder="검색어를 입력하세요"
                 value={keyword || ''}
                 onChange={(e) => setKeyword(e.target.value)}
               />
               <button
-                className="absolute top-1/2 right-3 -translate-y-1/2 transform text-[#B8B8B8] peer-focus:text-[#5B80C2]"
+                className="absolute right-3 top-1/2 -translate-y-1/2 transform text-[#B8B8B8] peer-focus:text-[#5B80C2]"
                 type="submit"
               >
                 <FaSearch />

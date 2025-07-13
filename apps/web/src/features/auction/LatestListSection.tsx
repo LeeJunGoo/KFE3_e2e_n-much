@@ -1,10 +1,9 @@
-import Link from 'next/link';
 import React from 'react';
+import Link from 'next/link';
 import { fetchSortedAuctions } from 'src/entities/auction/serverActions';
-
 import LatestAuctionCard from './LatestAuctionCard';
 import PageTitle from '../../shared/ui/PageTitle';
-import { SortedAuctionItemType } from 'src/entities/auction/types';
+import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
 const LatestListSection = async () => {
   const latestAuctions = await fetchSortedAuctions('created_at', true, 10);

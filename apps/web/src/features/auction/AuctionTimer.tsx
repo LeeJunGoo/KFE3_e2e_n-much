@@ -1,10 +1,9 @@
 'use client';
 
 import { IoMdTime } from 'react-icons/io';
-
-import { AuctionTimeProps } from 'src/entities/auction/types';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 import { twMerge } from 'tailwind-merge';
+import type { AuctionTimeProps } from 'src/entities/auction/types';
 
 const AuctionTimer = ({ startTime, endTime, className }: AuctionTimeProps) => {
   const { status, remainTime } = formatRemainingTime(startTime, endTime);

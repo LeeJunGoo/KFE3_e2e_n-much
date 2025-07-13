@@ -1,7 +1,7 @@
-import { createClient } from '../../shared/supabase/client/client';
-import { AuctionInsert, AuctionUpdate } from '../../shared/supabase/types';
 import { decode } from 'base64-arraybuffer';
 import { v4 as uuidv4 } from 'uuid';
+import { createClient } from '../../shared/supabase/client/client';
+import type { AuctionInsert, AuctionUpdate } from '../../shared/supabase/types';
 
 const supabase = createClient();
 

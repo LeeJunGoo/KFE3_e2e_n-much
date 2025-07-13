@@ -1,4 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { createClient } from 'src/shared/supabase/client/server';
 import {
   createEpisode,
   deleteEpisode,
@@ -9,10 +10,10 @@ import {
   selectWinningEpisode,
   updateEpisode
 } from '../../../entities/episode/supabase';
-import { createClient } from 'src/shared/supabase/client/server';
+import type { NextRequest} from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
+  const {searchParams} = request.nextUrl;
   const auctionId = searchParams.get('auctionId');
   const episodeId = searchParams.get('episodeId');
   const type = searchParams.get('type');
@@ -52,7 +53,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
   }
 }
 export async function POST(request: NextRequest) {
@@ -67,13 +68,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
   }
 }
 
 export async function PATCH(request: NextRequest) {
   const { episode_id, title, description, winning_bid } = await request.json();
-  const searchParams = request.nextUrl.searchParams;
+  const {searchParams} = request.nextUrl;
   const type = searchParams.get('type');
   let res;
 
@@ -92,7 +93,7 @@ export async function PATCH(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
   }
 }
 
@@ -102,6 +103,6 @@ export async function DELETE(request: NextRequest) {
     const res = await deleteEpisode(episode_id);
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: 'Server Error' + error }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
   }
 }
