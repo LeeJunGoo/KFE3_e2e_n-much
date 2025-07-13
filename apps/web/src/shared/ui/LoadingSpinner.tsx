@@ -18,7 +18,7 @@ export function LoadingSpinner({ size = 'md', className = '' }: LoadingSpinnerPr
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <LuLoaderCircle className={twMerge('animate-spin text-(--color-accent)', sizeStyle[size], className)} />
+      <LuLoaderCircle className={twMerge('text-(--color-accent) animate-spin', sizeStyle[size], className)} />
     </div>
   );
 }

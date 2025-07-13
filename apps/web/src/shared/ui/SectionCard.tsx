@@ -5,7 +5,7 @@ interface SectionCardProps {
 
 const SectionCard = ({ children, className = '' }: SectionCardProps) => {
   return (
-    <section className={`w-full rounded-2xl bg-(--color-secondary) p-5 shadow-sm ${className}`}>{children}</section>
+    <section className={`bg-(--color-secondary) w-full rounded-2xl p-5 shadow-sm ${className}`}>{children}</section>
   );
 };
 

@@ -7,7 +7,7 @@ interface PageContainerProps {
 
 const PageContainer = ({ children, className = '' }: PageContainerProps) => {
   return (
-    <main className={twMerge('min-h-[calc(100vh-4rem)] bg-(--color-background) px-5 pt-8 pb-20', className)}>
+    <main className={twMerge('bg-(--color-background) min-h-[calc(100vh-4rem)] px-5 pb-20 pt-8', className)}>
       {children}
     </main>
   );

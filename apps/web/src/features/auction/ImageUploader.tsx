@@ -37,10 +37,10 @@ export default function ImageUploader({
       className="h-2xl flex w-full justify-center rounded-sm border-2 border-dashed bg-white align-middle"
       {...getRootProps()}
     >
-      <div className="mx-auto my-auto flex-col justify-center pt-8 pb-8 align-middle">
-        <FaCloudUploadAlt className="mx-auto mb-4 h-14 w-14 text-(--color-accent)" />
+      <div className="mx-auto my-auto flex-col justify-center pb-8 pt-8 align-middle">
+        <FaCloudUploadAlt className="text-(--color-accent) mx-auto mb-4 h-14 w-14" />
         <p className="text-md mb-4 text-center">이미지를 끌어다 놓거나</p>
-        <p className="rounded-sm bg-(--color-secondary) p-2 text-center text-sm text-(--color-primary)">
+        <p className="bg-(--color-secondary) text-(--color-primary) rounded-sm p-2 text-center text-sm">
           파일 선택하기
         </p>
       </div>
