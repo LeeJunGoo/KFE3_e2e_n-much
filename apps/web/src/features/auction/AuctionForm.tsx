@@ -37,7 +37,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import type { Address } from 'react-daum-postcode';
 
-export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | null }) {
+const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   const isEditing: boolean = auctionIdParam ? true : false;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
@@ -110,7 +110,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
   });
 
   useEffect(() => {
-    async function setFormDefaultValues() {
+    const setFormDefaultValues = async () => {
       if (!isEditing) {
         return;
       }
@@ -148,7 +148,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
         form.reset(getFormDefaultValues());
         setIsFormLoading(false);
       }
-    }
+    };
 
     setFormDefaultValues();
   }, [auctionIdParam, form, getFormDefaultValues, isEditing, auction]);
@@ -174,7 +174,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     return data.data;
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     let imageUrls: string[] = [];
     const {
       title,
@@ -249,7 +249,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
     } else {
       router.push(`/auctions/${auctionId}`);
     }
-  }
+  };
 
   const handlePostCodeSearch = (data: Address) => {
     let fullAddress = data.address;
@@ -548,4 +548,6 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
       </PageContainer>
     </>
   );
-}
+};
+
+export default AuctionForm;
