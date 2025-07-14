@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import { Button } from '@repo/ui/components/ui/button';
 import { IoCloseOutline } from 'react-icons/io5';
 
 interface RecentKeywordsProps {
@@ -16,7 +15,7 @@ const RecentKeywords = ({ keywords, handleKeywordClick, handleRemoveClick, handl
     <div data-role="recent_keywords_section" className="mb-6">
       <div className="mb-3 flex items-center justify-between">
         <h3 className="text-base font-medium">최근 검색어</h3>
-        <button className="p-0 text-xs text-[var(--color-warm-gray)]" onClick={handleClearClick}>
+        <button className="text-(--color-warm-gray) p-0 text-xs" onClick={handleClearClick}>
           전체 삭제
         </button>
       </div>
@@ -25,12 +24,12 @@ const RecentKeywords = ({ keywords, handleKeywordClick, handleRemoveClick, handl
           keywords.map((k, idx) => (
             <div
               key={`recent-${k}-${idx}`}
-              className="flex cursor-pointer items-center rounded-full bg-[var(--color-secondary)] px-3 py-2"
+              className="bg-(--color-secondary) flex cursor-pointer items-center rounded-full px-3 py-2"
               onClick={() => handleKeywordClick(k)}
             >
               <span className="flex-1 truncate text-sm">{k}</span>
               <button
-                className="ml-1 text-[var(--color-warm-gray)]"
+                className="text-(--color-warm-gray) ml-1"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleRemoveClick(k);
@@ -41,7 +40,7 @@ const RecentKeywords = ({ keywords, handleKeywordClick, handleRemoveClick, handl
             </div>
           ))
         ) : (
-          <p className="col-span-2 text-sm text-[var(--color-light-gray)]">최근 검색 기록이 없습니다.</p>
+          <p className="text-(--color-light-gray) col-span-2 text-sm">최근 검색 기록이 없습니다.</p>
         )}
       </div>
     </div>

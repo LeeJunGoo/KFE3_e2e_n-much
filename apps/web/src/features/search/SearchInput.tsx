@@ -32,7 +32,7 @@ const SearchInput = ({ keyword, setKeyword, handleSearch, isFocused = false, isL
     >
       <input
         type="text"
-        className="placeholder:text-muted-foreground peer flex h-12 w-full rounded-lg border border-[var(--color-light-gray)] bg-[var(--color-secondary)] px-3 py-1 pr-9 text-sm shadow-none transition-colors focus:border-[var(--color-accent)] focus:outline-none focus:ring-1 focus:ring-[var(--color-accent)] focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+        className="placeholder:text-muted-foreground border-(--color-light-gray) bg-(--color-secondary) focus:border-(--color-accent) focus:ring-(--color-accent) peer flex h-12 w-full rounded-lg border px-3 py-1 pr-9 text-sm shadow-none transition-colors focus:outline-none focus:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
         placeholder="검색어를 입력하세요"
         value={keyword || ''}
         onChange={(e) => setKeyword(e.target.value)}
@@ -40,7 +40,7 @@ const SearchInput = ({ keyword, setKeyword, handleSearch, isFocused = false, isL
         disabled={isLoading}
       />
       <button
-        className="absolute right-3 top-1/2 -translate-y-1/2 transform text-[var(--color-warm-gray)] disabled:cursor-not-allowed disabled:opacity-50 peer-focus:text-[var(--color-accent)]"
+        className="text-(--color-warm-gray) peer-focus:text-(--color-accent) absolute right-3 top-1/2 -translate-y-1/2 transform disabled:cursor-not-allowed disabled:opacity-50"
         type="submit"
         aria-label="검색"
         disabled={isLoading}
