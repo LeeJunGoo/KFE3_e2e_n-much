@@ -1,10 +1,14 @@
 'use client';
 import { Toaster } from '@repo/ui/components/ui/sonner';
+import AuthProvider from './AuthProvider';
 
-const AppProvider = () => {
+const AppProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <Toaster position="top-center"></Toaster>
+      <AuthProvider>
+        {children}
+        <Toaster position="top-center" />
+      </AuthProvider>
     </>
   );
 };

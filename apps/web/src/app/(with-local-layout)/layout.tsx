@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import React from 'react';
-// import TabBar from 'src/widgets/TabBar';
+// import TabBar from 'src/widgets/Tabar';
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (

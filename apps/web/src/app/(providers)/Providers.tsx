@@ -5,8 +5,7 @@ import QueryProvider from './QueryProvider';
 const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <QueryProvider>
-      <AppProvider />
-      {children}
+      <AppProvider>{children}</AppProvider>
     </QueryProvider>
   );
 };
