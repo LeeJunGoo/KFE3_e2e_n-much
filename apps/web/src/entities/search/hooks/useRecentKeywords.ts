@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 const STORAGE_KEY = 'recentKeywords';
 const MAX_LENGTH = 6;
 
-export default function useRecentKeywords() {
+const useRecentKeywords = () => {
   const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
 
   useEffect(() => {
@@ -33,4 +33,6 @@ export default function useRecentKeywords() {
   };
 
   return { recentKeywords, insert, remove, clear };
-}
+};
+
+export default useRecentKeywords;

@@ -9,7 +9,7 @@ interface PopularKeyword {
   keyword: string;
 }
 
-export default function usePopularKeywords() {
+const usePopularKeywords = () => {
   const [popularKeywords, setPopularKeywords] = useState<PopularKeyword[]>([]);
 
   /**
@@ -39,4 +39,6 @@ export default function usePopularKeywords() {
   }, [popularKeywords]);
 
   return { popularKeywords };
-}
+};
+
+export default usePopularKeywords;
