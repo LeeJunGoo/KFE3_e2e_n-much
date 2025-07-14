@@ -11,7 +11,7 @@ const AuctionWritePage = async ({ searchParams }: { searchParams: Promise<{ [key
   const { auction_id } = await searchParams;
 
   if (!auction_id) {
-    return <AuctionForm auctionIdParam={undefined} />;
+    return <AuctionForm auctionIdParam={null} />;
   } else {
     const queryClient = new QueryClient();
 

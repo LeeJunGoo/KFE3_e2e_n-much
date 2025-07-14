@@ -37,7 +37,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import type { Address } from 'react-daum-postcode';
 
-export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
+export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | null }) {
   const isEditing: boolean = auctionIdParam ? true : false;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
@@ -193,7 +193,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
       const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
         if (!prevImage.isUrl) {
           const data = await uploadImage(prevImage.data);
-          return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${  data.fullPath}`;
+          return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
         }
         return prevImage.data;
       });
