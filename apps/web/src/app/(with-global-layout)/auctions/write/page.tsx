@@ -1,9 +1,9 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { fetchAuctionById } from 'src/entities/auction/api';
 import AuctionForm from 'src/features/auction/AuctionForm';
-import PageHeader from 'src/widgets/PageHeader';
+// import PageHeader from 'src/widgets/PageHeader';
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+const Page = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
   const { auction_id } = await searchParams;
   const queryClient = new QueryClient();
 
@@ -14,8 +14,10 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <PageHeader>{auction_id ? '경매 수정' : '경매 등록'}</PageHeader>
+      {/* <PageHeader>{auction_id ? '경매 수정' : '경매 등록'}</PageHeader> */}
       <AuctionForm auctionIdParam={auction_id} />
     </HydrationBoundary>
   );
-}
+};
+
+export default Page;
