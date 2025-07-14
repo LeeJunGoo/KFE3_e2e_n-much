@@ -27,18 +27,18 @@ const PopularKeywords = ({ keywords, handleKeywordClick }: PopularKeywordsProps)
               onClick={() => handleKeywordClick(k.keyword)}
             >
               <div className="flex items-center">
-                <span className="w-6 font-medium text-[#5B80C2]">{k.rank}</span>
+                <span className="w-6 font-medium text-[var(--color-accent)]">{k.rank}</span>
                 <span className="truncate text-sm">{k.keyword}</span>
               </div>
               {/* TODO: 순위 변동 상태에 따른 아이콘 표시 로직 추가 */}
               <div className="flex items-center">
-                <FaCaretUp className="mr-1 text-[#65BA84]" />
-                <FaCaretDown className="text-[#D84A5F]" />
+                <FaCaretUp className="mr-1 text-[var(--color-green)]" />
+                <FaCaretDown className="text-[var(--color-red)]" />
               </div>
             </div>
           ))
         ) : (
-          <p className="col-span-2 text-sm text-gray-500">인기 검색어가 없습니다.</p>
+          <p className="col-span-2 text-sm text-[var(--color-light-gray)]">인기 검색어가 없습니다.</p>
         )}
       </div>
     </div>
