@@ -1,12 +1,11 @@
 import { pretendard } from 'src/assets/fonts';
-
 import './globals.css';
 import { home } from 'src/entities/layout/metaData';
 import Providers from './(providers)/Providers';
 
 export const metadata = home;
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="ko">
       <body className={`${pretendard.className}`}>
@@ -16,4 +15,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;

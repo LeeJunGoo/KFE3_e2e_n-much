@@ -11,30 +11,31 @@
 //TODO - 날짜 유효성 검사 수정하기
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
-import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
-import DaumPostcodeEmbed, { Address } from 'react-daum-postcode';
-import ImageUploader from 'src/features/auction/ImageUploader';
-import Image from 'next/image';
-import { addHours, compareAsc, format, set, subDays } from 'date-fns';
-import { FaCalendarAlt } from 'react-icons/fa';
-import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
-import { Calendar } from '@repo/ui/components/ui/calendar';
-import { ko } from 'date-fns/locale';
-import { TZDate } from 'react-day-picker';
-import { v4 as uuidv4 } from 'uuid';
-import { Input } from '@repo/ui/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
-import { cn } from '@repo/ui/lib/utils';
+import { Calendar } from '@repo/ui/components/ui/calendar';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
+import { Input } from '@repo/ui/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Textarea } from '@repo/ui/components/ui/textarea';
+import { cn } from '@repo/ui/lib/utils';
 import { useQuery } from '@tanstack/react-query';
+import { addHours, compareAsc, format, set, subDays } from 'date-fns';
+import { ko } from 'date-fns/locale';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import DaumPostcodeEmbed from 'react-daum-postcode';
+import { TZDate } from 'react-day-picker';
+import { useForm } from 'react-hook-form';
+import { FaCalendarAlt } from 'react-icons/fa';
 import { fetchAuctionById } from 'src/entities/auction/api';
-import PageContainer from 'src/shared/ui/PageContainer';
 import { uploadImage } from 'src/entities/auction/supabase';
+import ImageUploader from 'src/features/auction/ImageUploader';
+import PageContainer from 'src/shared/ui/PageContainer';
+import { v4 as uuidv4 } from 'uuid';
+import { z } from 'zod';
+import type { Address } from 'react-daum-postcode';
 
 export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string | undefined }) {
   const isEditing: boolean = auctionIdParam ? true : false;
@@ -192,7 +193,7 @@ export default function AuctionForm({ auctionIdParam }: { auctionIdParam: string
       const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
         if (!prevImage.isUrl) {
           const data = await uploadImage(prevImage.data);
-          return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/` + data.fullPath;
+          return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${  data.fullPath}`;
         }
         return prevImage.data;
       });

@@ -1,13 +1,13 @@
 'use client';
 
-import { Carousel, CarouselApi, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
+import { useEffect, useState } from 'react';
+import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
 import { Autoplay } from '@repo/ui/lib/utils';
-
+import Image from 'next/image';
 import Banner_1 from 'src/assets/images/banner_1.png';
 import Banner_2 from 'src/assets/images/banner_2.png';
 import Banner_3 from 'src/assets/images/banner_3.png';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import type { CarouselApi } from '@repo/ui/components/ui/carousel';
 
 const MainBanner = () => {
   const [api, setApi] = useState<CarouselApi>();
@@ -31,7 +31,7 @@ const MainBanner = () => {
 
     api.on('select', updateState);
 
-    // 컴포넌트 언마운트 시 모든 이벤트 리스너를 확실하게 제거합니다.
+    // eslint-disable-next-line consistent-return
     return () => {
       api.off('select', updateState);
     };

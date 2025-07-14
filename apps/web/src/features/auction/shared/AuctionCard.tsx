@@ -11,8 +11,8 @@ import Link from 'next/link';
 import { TZDate } from 'react-day-picker';
 import { FaHeart } from 'react-icons/fa';
 import { FaBookOpen } from 'react-icons/fa6';
-import { formatNumber } from 'src/shared/utils/formatNumber';
 import noAuctionImage from 'src/assets/images/noAuctionImage.png';
+import { formatNumber } from 'src/shared/utils/formatNumber';
 
 interface AuctionCardProp {
   auction_id: string;

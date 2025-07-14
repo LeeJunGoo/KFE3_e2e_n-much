@@ -1,10 +1,10 @@
 'use client';
-import SocialAuthButton from 'src/features/user/auth/components/SocialAuthButton';
-import { selectSignUp } from 'src/entities/user/auth/supabase';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { FcGoogle } from 'react-icons/fc';
 import { IoChatbubble } from 'react-icons/io5';
 import { LuArrowRight } from 'react-icons/lu';
+import { selectSignUp } from 'src/entities/user/auth/supabase';
+import SocialAuthButton from 'src/features/user/auth/components/SocialAuthButton';
 import type { SocialAuthProvider } from 'src/entities/user/auth/types';
 
 const SocialAuthSignUp = () => {
@@ -19,13 +19,13 @@ const SocialAuthSignUp = () => {
     }
   };
 
-  const buttonStyle = 'flex w-full items-center justify-center gap-3 rounded-md border py-3';
+  const buttonStyle = 'flex w-full items-center justify-center gap-3 rounded-md py-3';
 
   return (
     <ul className="flex flex-col gap-3">
       <li className="relative">
         <SocialAuthButton
-          className={`${buttonStyle} hover:bg-(--color-light-gray)/30`}
+          className={`${buttonStyle} hover:bg-(--color-light-gray)/30 border`}
           onClick={() => handleSocialSignUp('google')}
           aria-label="google로 로그인 하기 버튼"
         >

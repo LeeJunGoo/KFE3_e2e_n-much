@@ -1,5 +1,5 @@
-import { Badge } from '@repo/ui/components/ui/badge';
-import { badgeVariants } from '@repo/ui/components/ui/badge';
+import { Badge  } from '@repo/ui/components/ui/badge';
+import type { badgeVariants } from '@repo/ui/components/ui/badge';
 import type { VariantProps } from 'class-variance-authority';
 
 type BadgeVariant = VariantProps<typeof badgeVariants>['variant'];

@@ -1,5 +1,5 @@
-import { EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
-import { EpisodeInsert, EpisodeRow } from '../../shared/supabase/types';
+import type { EpisodeInsert, EpisodeRow } from '../../shared/supabase/types';
+import type { EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
 
 // NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
 export const fetchEpisodesById = async (auction_id: string) => {

@@ -1,8 +1,8 @@
 import { Card } from '@repo/ui/components/ui/card';
-import { UserInfoType } from 'src/app/api/auth/user-info/route';
 import { fetchSellerAuctionCount } from 'src/entities/auction/api';
-import { SellerInfoType } from 'src/entities/auction/types';
 import UserAvatar from 'src/shared/ui/UserAvatar';
+import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+import type { SellerInfoType } from 'src/entities/auction/types';
 
 type SellerInfoSectionProps = SellerInfoType & { userInfo: UserInfoType } & { address: string[] };
 

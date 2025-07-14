@@ -2,9 +2,9 @@
 
 import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
 import { Autoplay } from '@repo/ui/lib/utils';
-import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import Image from 'next/image';
-import { AuctionRow } from 'src/shared/supabase/types';
+import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import type { AuctionRow } from 'src/shared/supabase/types';
 
 type ImageArrayProps = AuctionRow['image_urls'];
 

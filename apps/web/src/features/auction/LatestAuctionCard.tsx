@@ -1,13 +1,13 @@
-import Image from 'next/image';
 
 import { Badge } from '@repo/ui/components/ui/badge';
-import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import { differenceInHours, formatDistanceToNow, setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import Image from 'next/image';
 import Link from 'next/link';
 import { TZDate } from 'react-day-picker';
 import { FaBookOpen, FaHeart } from 'react-icons/fa6';
-import { SortedAuctionItemType } from 'src/entities/auction/types';
+import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
 const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
   const auctionImage = auction.image_urls && auction.image_urls.length > 0 ? auction.image_urls[0] : NotAuctionImage;

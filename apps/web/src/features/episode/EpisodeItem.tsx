@@ -1,13 +1,12 @@
-import { EpisodeItemProps } from 'src/entities/episode/types';
 import EditDeleteEpisodes from 'src/features/episode/EditDeleteEpisodes';
 import EpisodeBidButton from 'src/features/episode/EpisodeBidButton';
 import EpisodeMoreButton from 'src/features/episode/EpisodeMoreButton';
+import UserAvatar from 'src/shared/ui/UserAvatar';
 import { formatToKoreanDateTime } from 'src/shared/utils/formatToKoreanDateTime';
 import { maskEmail } from 'src/shared/utils/maskEmail';
-
-import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import { SellerRow } from 'src/shared/supabase/types';
-import UserAvatar from 'src/shared/ui/UserAvatar';
+import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
+import type { SellerRow } from 'src/shared/supabase/types';
 
 const EpisodeItem = ({
   episode,

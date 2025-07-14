@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { AuctionRow } from 'src/shared/supabase/types';
+import type { AuctionRow } from 'src/shared/supabase/types';
 
 interface AuctionsStore {
   auctions: AuctionRow[];

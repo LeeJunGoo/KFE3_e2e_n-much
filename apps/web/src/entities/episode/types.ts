@@ -1,4 +1,4 @@
-import { EpisodeRow } from 'src/shared/supabase/types';
+import type { EpisodeRow } from 'src/shared/supabase/types';
 
 //NOTE - 경매 사연, 등록, 수정 타입 지정
 export type EpisodeItemProps = EpisodeRow & {

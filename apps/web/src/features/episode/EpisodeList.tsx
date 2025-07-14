@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useState } from 'react';
 import {
   Pagination,
   PaginationContent,
@@ -8,13 +9,12 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
-import { useEffect, useRef, useState } from 'react';
 import { FaRegCommentDots } from 'react-icons/fa';
 import { fetchEpisodesById } from 'src/entities/episode/api';
-import { EpisodeItemProps } from 'src/entities/episode/types';
 import EpisodeItem from './EpisodeItem';
-import { UserInfoType } from 'src/app/api/auth/user-info/route';
-import { SellerRow } from 'src/shared/supabase/types';
+import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
+import type { SellerRow } from 'src/shared/supabase/types';
 
 const EPISODES_PER_PAGE = 5;
 

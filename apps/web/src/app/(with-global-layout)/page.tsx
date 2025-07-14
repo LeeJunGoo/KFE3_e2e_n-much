@@ -1,19 +1,27 @@
 'use client';
 
 import { useState } from 'react';
-import { ChevronRight, Heart, Star, Trophy, Users, PenTool, X } from 'lucide-react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Card } from '@repo/ui/components/ui/card';
-import { LuGift } from 'react-icons/lu';
+import { ChevronRight, Heart, Star, Trophy, Users, PenTool, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { LuGift } from 'react-icons/lu';
+
+// 상수 정의
+const TOTAL_SLIDES = 3;
+const LAST_SLIDE_INDEX = TOTAL_SLIDES - 1;
+const FIRST_SLIDE_INDEX = 0;
+const REDIRECT_DELAY_MS = 2000;
+const ANIMATION_DELAY_MULTIPLIER = 0.1;
+const PROGRESS_INDICATOR_COUNT = TOTAL_SLIDES;
 
 const OnboardingFlow = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(FIRST_SLIDE_INDEX);
   const [isSkipped, setIsSkipped] = useState(false);
   const router = useRouter();
 
   const nextSlide = () => {
-    if (currentSlide < 2) {
+    if (currentSlide < LAST_SLIDE_INDEX) {
       setCurrentSlide(currentSlide + 1);
     } else {
       setIsSkipped(true);
@@ -21,7 +29,7 @@ const OnboardingFlow = () => {
   };
 
   const prevSlide = () => {
-    if (currentSlide > 0) {
+    if (currentSlide > FIRST_SLIDE_INDEX) {
       setCurrentSlide(currentSlide - 1);
     }
   };
@@ -33,7 +41,7 @@ const OnboardingFlow = () => {
   if (isSkipped) {
     setTimeout(() => {
       router.push('/auth/signup');
-    }, 2000);
+    }, REDIRECT_DELAY_MS);
 
     return (
       <div className="via-background from-(--color-secondary) to-(--color-primary)/20 flex min-h-screen items-center justify-center bg-gradient-to-br px-6">
@@ -72,7 +80,7 @@ const OnboardingFlow = () => {
       {/* Progress Indicator */}
       <div className="flex justify-center pb-4">
         <div className="flex space-x-2">
-          {[0, 1, 2].map((index) => (
+          {Array.from({ length: PROGRESS_INDICATOR_COUNT }, (_, index) => (
             <div
               key={index}
               className={`h-2 rounded-full transition-all duration-300 ${
@@ -88,9 +96,9 @@ const OnboardingFlow = () => {
       </div>
 
       <div className="flex flex-1 flex-col">
-        {currentSlide === 0 && <SlideOne />}
+        {currentSlide === FIRST_SLIDE_INDEX && <SlideOne />}
         {currentSlide === 1 && <SlideTwo />}
-        {currentSlide === 2 && <SlideThree />}
+        {currentSlide === LAST_SLIDE_INDEX && <SlideThree />}
       </div>
 
       {/* Navigation */}
@@ -98,7 +106,7 @@ const OnboardingFlow = () => {
         <Button
           variant="ghost"
           onClick={prevSlide}
-          disabled={currentSlide === 0}
+          disabled={currentSlide === FIRST_SLIDE_INDEX}
           className="text-(--color-warm-gray) hover:text-(--color-accent) disabled:opacity-30"
         >
           이전
@@ -107,7 +115,7 @@ const OnboardingFlow = () => {
           onClick={nextSlide}
           className="bg-(--color-accent) hover:bg-(--color-accent)/90 rounded-xl px-8 py-3 text-white shadow-lg"
         >
-          {currentSlide === 2 ? '시작하기' : '다음'} <ChevronRight className="ml-2 h-4 w-4" />
+          {currentSlide === LAST_SLIDE_INDEX ? '시작하기' : '다음'} <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
     </div>
@@ -179,7 +187,7 @@ const SlideTwo = () => (
         <Card
           key={index}
           className={`animate-fade-in-scale border-0 bg-white/80 p-4 shadow-lg backdrop-blur-sm`}
-          style={{ animationDelay: `${index * 0.1}s` }}
+          style={{ animationDelay: `${index * ANIMATION_DELAY_MULTIPLIER}s` }}
         >
           <p className="text-text-base mb-3 text-sm leading-relaxed">{item.story}</p>
           <div className="flex items-center justify-between">

@@ -1,10 +1,10 @@
 import React from 'react';
-import ListCard from '../../widgets/BaseCard';
 import Image from 'next/image';
-import AuctionTimer from '../auction/AuctionTimer';
-import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';
-import { AuctionRow } from 'src/shared/supabase/types';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';
+import ListCard from '../../widgets/BaseCard';
+import AuctionTimer from '../auction/AuctionTimer';
+import type { AuctionRow } from 'src/shared/supabase/types';
 
 const EpisodesAuctionCard = async ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) => {
   // NOTE - 경매 상품 및 경매 업체 정보
