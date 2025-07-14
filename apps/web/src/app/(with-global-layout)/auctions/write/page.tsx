@@ -3,7 +3,7 @@ import { fetchAuctionById } from 'src/entities/auction/api';
 import AuctionForm from 'src/features/auction/AuctionForm';
 // import PageHeader from 'src/widgets/PageHeader';
 
-const Page = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
+const AuctionWritePage = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
   const { auction_id } = await searchParams;
   const queryClient = new QueryClient();
 
@@ -20,4 +20,4 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ [key: string]: s
   );
 };
 
-export default Page;
+export default AuctionWritePage;
