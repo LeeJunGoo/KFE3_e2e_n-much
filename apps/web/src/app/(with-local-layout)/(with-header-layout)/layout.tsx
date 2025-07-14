@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react';
 import React from 'react';
-// import Header from 'src/widgets/layout/Header';
+import Header from 'src/widgets/layout/Header';
 
 const HeaderLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      {/* <Header /> */}
+      <Header />
       <div>{children}</div>
     </>
   );
