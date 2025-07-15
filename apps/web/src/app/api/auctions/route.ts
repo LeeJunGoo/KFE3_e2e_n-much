@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { createClient } from 'src/shared/supabase/client/server';
 import {
   addAuction,
   deleteAuction,
@@ -7,7 +6,8 @@ import {
   getAuction,
   getSellerAuctions,
   updateAuction
-} from '../../../entities/auction/supabase';
+} from 'src/entities/auction/supabase';
+import { createClient } from 'src/shared/supabase/client/server';
 import type { NextRequest } from 'next/server';
 import type { AuctionInsert, AuctionUpdate } from 'src/shared/supabase/types';
 

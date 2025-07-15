@@ -59,7 +59,7 @@ export const addAuction = async (auctionData: AuctionInsert) => {
   const { data, error } = await supabase.from('auctions').insert([auctionData]).select().single();
 
   if (error) {
-    console.log('🚀 ~ addAuction ~ error:', error.message);
+    console.error('addAuction', error);
     throw new Error('DB: 경매 추가 에러');
   }
 
@@ -249,8 +249,8 @@ export const getAuctionWithAddress = async (id: string) => {
   const { data, error } = await supabase.rpc('get_auction_form', { auction_id_param: id }).single();
 
   if (error) {
-    console.error(error); //FIXME - 디버깅용
-    throw new Error('DB : auction과 address 불러오기 실패');
+    console.error('getAuctionWithAddress', error); //FIXME - 디버깅용
+    throw new Error('DB: auction과 address 불러오기 실패');
   }
 
   return data;

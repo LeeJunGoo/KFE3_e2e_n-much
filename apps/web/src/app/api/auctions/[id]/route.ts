@@ -29,6 +29,8 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
     return NextResponse.json({ status: 'success', data: res }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
+    }
   }
 }
