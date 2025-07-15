@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
-import useSearchAction from 'src/entities/search/hooks/useSearchAction';
-import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
 import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
-import SearchInput from 'src/features/search/SearchInput';
-import RecentKeywords from 'src/features/search/RecentKeywords';
+import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
+import useSearchAction from 'src/entities/search/hooks/useSearchAction';
 import PopularKeywords from 'src/features/search/PopularKeywords';
+import RecentKeywords from 'src/features/search/RecentKeywords';
+import SearchInput from 'src/features/search/SearchInput';
 
 interface SearchViewProps {
   open: boolean;
