@@ -6,7 +6,7 @@ const supabase = createClient();
 /**
  * DB에서 특정 키워드를 조회합니다.
  * @param keyword - 조회할 검색어
- * @returns {Promise<KeywordRow | null>} 키워드 데이터 또는 null
+ * @returns {Promise<KeywordRow | null>}
  */
 export const selectKeyword = async (keyword: string): Promise<KeywordRow | null> => {
   const { data, error } = await supabase.from('keywords').select('*').eq('keyword', keyword).single();
@@ -21,7 +21,7 @@ export const selectKeyword = async (keyword: string): Promise<KeywordRow | null>
 };
 
 /**
- * 기존 키워드의 정보를 업데이트합니다. (예: count)
+ * 기존 키워드의 정보를 업데이트합니다.
  * @param keywordId - 업데이트할 키워드의 ID
  * @param updates - 업데이트할 필드 객체
  */
@@ -53,14 +53,18 @@ export const insertKeyword = async (keyword: string) => {
  * @param limit - 가져올 검색어 개수 (기본값: 10)
  * @returns count가 높은 순서대로 정렬된 KeywordRow 배열
  */
-export const selectPopularKeywords = async (limit = 10) => {
-  console.log('쿼리');
-  const { data, error } = await supabase.from('keywords').select('*').order('count', { ascending: false }).limit(limit);
+const defaultLimit = 10;
+
+export const selectPopularKeywords = async (limit = defaultLimit) => {
+  const { data, error } = await supabase
+    .from('keywords')
+    .select('keyword')
+    .order('count', { ascending: false })
+    .limit(limit);
 
   if (error) {
     console.error('Error fetching popular keywords:', error);
     throw new Error('인기 검색어 조회에 실패했습니다.');
   }
-  console.log('data:', data);
   return data || [];
 };
