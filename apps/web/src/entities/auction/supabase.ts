@@ -30,29 +30,29 @@ export const getAuction = async (auction_id: string) => {
 };
 
 //NOTE - 특정 상품 정보 및 판매자 정보
-export const selectAuctionWithSellerInfo = async (auction_id: string) => {
-  const { data, error } = await supabase
-    .from('auctions')
-    .select(
-      `
-      *,
-      seller:seller_id (
-        seller_id,
-        nickname,
-        avatar
-      )
-    `
-    )
-    .eq('auction_id', auction_id)
-    .maybeSingle();
+// export const selectAuctionWithSellerInfo = async (auction_id: string) => {
+//   const { data, error } = await supabase
+//     .from('auctions')
+//     .select(
+//       `
+//       *,
+//       seller:seller_id (
+//         seller_id,
+//         nickname,
+//         avatar
+//       )
+//     `
+//     )
+//     .eq('auction_id', auction_id)
+//     .maybeSingle();
 
-  if (error) {
-    console.error('🚀 ~ getAuctionWithSellerInfo:', error.message);
-    throw new Error('DB: 특정 경매 정보 불러오기 에러');
-  }
+//   if (error) {
+//     console.error('🚀 ~ getAuctionWithSellerInfo:', error.message);
+//     throw new Error('DB: 특정 경매 정보 불러오기 에러');
+//   }
 
-  return data;
-};
+//   return data;
+// };
 
 //NOTE - 경매 물품 추가
 export const addAuction = async (auctionData: AuctionInsert) => {
@@ -244,3 +244,14 @@ export async function uploadImage(imageData: string) {
 
   return data;
 }
+
+export const getAuctionWithAddress = async (id: string) => {
+  const { data, error } = await supabase.rpc('get_auction_form', { auction_id_param: id }).single();
+
+  if (error) {
+    console.error(error); //FIXME - 디버깅용
+    throw new Error('DB : auction과 address 불러오기 실패');
+  }
+
+  return data;
+};

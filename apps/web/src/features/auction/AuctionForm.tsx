@@ -1,14 +1,7 @@
-//TODO - 모달 창 ui 깨지는 거 물어보기 => 리팩토링할 때 답변(박서영)
-
 //TODO - 폼 유효성 검사 상의
-//TODO - 날짜, 시간 유효성 검사 고려 (경매 최소 기간 상의)
-//TODO - 날짜 시간 업로드 리팩토링하기
 //FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기
-//NOTE - 달력 아이콘 앞으로 이동시키면 가운데 정렬됨
-//TODO - 색 물어보고 수정하기
-//TODO - 업체명 물어보기
 //TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함)
-//TODO - 날짜 유효성 검사 수정하기
+
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -41,12 +34,14 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   const isEditing: boolean = auctionIdParam ? true : false;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
+  //FIXME - 주소 검색 안씀 지우기
   const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
   const [confirmPostCode, setConfirmPostCode] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
   const router = useRouter();
 
+  //FIXME - 분리하기
   const {
     data: auction,
     isLoading: isDataLoading,
@@ -57,6 +52,10 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     enabled: !!auctionIdParam
   });
 
+  //FIXME - schema로 분리
+  //FIXME - 업체명 추가
+  //FIXME - 경매 시작일 제거
+  //FIXME - 주소는 불러오기만 하고, 수정은 안함
   const formSchema = z.object({
     title: z
       .string()
