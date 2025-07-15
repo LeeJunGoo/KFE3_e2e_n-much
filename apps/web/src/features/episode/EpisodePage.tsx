@@ -9,6 +9,7 @@ import PageContainer from 'src/shared/ui/PageContainer';
 import PageTitle from 'src/shared/ui/PageTitle';
 import EpisodesAuctionCard from './EpisodesAuctionCard';
 import EpisodesForm from './EpisodesForm';
+import DetailPageHeader from 'src/widgets/DetailPageHeader';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auctionId, episodeId] = (await params).id;
@@ -33,10 +34,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
 
   return (
     <>
-      <header className="border-b-(--color-warm-gray)/30 relative border-b py-5 text-center">
-        <GoBackButton />
-        <PageTitle>{initialEpisodeInfo ? '사연 수정하기' : '사연 등록하기'}</PageTitle>
-      </header>
+      <DetailPageHeader>{initialEpisodeInfo ? '사연 수정하기' : '사연 등록하기'}</DetailPageHeader>
       <PageContainer>
         <AuctionErrorBoundary
           fallback={
