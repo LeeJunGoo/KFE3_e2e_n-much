@@ -1,29 +1,25 @@
-import React, { Suspense } from 'react';
 import { notFound } from 'next/navigation';
-import { fetchEpisodeById } from 'src/entities/episode/api';
+import { Suspense } from 'react';
+
 import { createClient } from 'src/shared/supabase/client/server';
 import { type EpisodeRow } from 'src/shared/supabase/types';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
-import GoBackButton from 'src/shared/ui/GoBackButton';
 import PageContainer from 'src/shared/ui/PageContainer';
-import PageTitle from 'src/shared/ui/PageTitle';
+import DetailPageHeader from 'src/widgets/DetailPageHeader';
 import EpisodesAuctionCard from './EpisodesAuctionCard';
 import EpisodesForm from './EpisodesForm';
-import DetailPageHeader from 'src/widgets/DetailPageHeader';
+import { getEpisodeById } from 'src/entities/episode/api';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auctionId, episodeId] = (await params).id;
-  let initialEpisodeInfo: EpisodeRow | undefined;
+  let initialEpisodeInfo: EpisodeRow | null = null; // 조건부에 따라 수정 및 등록 페이지로 나누기
 
-  //NOTE - 조건부에 따라 수정 및 등록 페이지로 나누기
-  // episodeId true: 수정
-  // episodeId false: 등록
+  //NOTE - episodeId true: 수정, false: 등록
   if (episodeId) {
-    initialEpisodeInfo = await fetchEpisodeById(episodeId);
+    initialEpisodeInfo = await getEpisodeById(episodeId);
   }
 
   const supabase = await createClient();
-
   const {
     data: { user }
   } = await supabase.auth.getUser();
@@ -53,7 +49,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
             <EpisodesAuctionCard auctionId={auctionId!} userId={user.id} />
           </Suspense>
         </AuctionErrorBoundary>
-        <EpisodesForm auction_id={auctionId!} episode_id={episodeId} initialEpisodeInfo={initialEpisodeInfo} />
+        <EpisodesForm auction_id={auctionId!} initialEpisodeInfo={initialEpisodeInfo} />
       </PageContainer>
     </>
   );

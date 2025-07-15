@@ -16,8 +16,13 @@ const EpisodesAuctionCard = async ({
   const testAuctionId = '86d7b736-a3c1-4a5f-857f-fc551b0d8282';
   const auctionInfo = await getAuctionInfoForEpisode(testAuctionId);
 
-  const { image_urls, title, end_date, users } = auctionInfo;
-  const auctionImage = image_urls && image_urls.length > 0 ? image_urls[0] : NotAuctionImage;
+  //NOTE - 속성 값
+  const imageUrls = auctionInfo.image_urls;
+  const auctionTitle = auctionInfo.title;
+  const endDate = auctionInfo.end_date;
+  const auctionUser = auctionInfo.users;
+
+  const auctionImage = imageUrls && imageUrls.length > 0 ? imageUrls[0] : NotAuctionImage;
 
   return (
     <BaseCard>
@@ -35,12 +40,14 @@ const EpisodesAuctionCard = async ({
 
         <div className="flex w-full flex-col justify-between">
           <div>
-            <p className="font-medium">{title}</p>
+            <p className="font-medium">{auctionTitle}</p>
             <div className="flex items-center">
-              <address className="max-w-[45%] truncate text-sm text-[--color-warm-gray]">{users.address_id}</address>
+              <address className="max-w-[45%] truncate text-sm text-[--color-warm-gray]">
+                {auctionUser.address_id}
+              </address>
             </div>
           </div>
-          <AuctionTimer endDate={end_date} />
+          <AuctionTimer endDate={endDate} />
         </div>
       </div>
     </BaseCard>

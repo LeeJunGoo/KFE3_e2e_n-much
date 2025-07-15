@@ -3,19 +3,20 @@ import { createClient } from 'src/shared/supabase/client/server';
 import {
   createEpisode,
   deleteEpisode,
-  getEpisode,
   getEpisodesByAuctionId,
   getUserBiddingCount,
   getUserStories,
+  selectEpisodeById,
   selectWinningEpisode,
-  updateEpisode
+  updateEpisodeById
 } from '../../../entities/episode/supabase';
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  const {searchParams} = request.nextUrl;
-  const auctionId = searchParams.get('auctionId');
+  const { searchParams } = request.nextUrl;
   const episodeId = searchParams.get('episodeId');
+  const auctionId = searchParams.get('auctionId');
+
   const type = searchParams.get('type');
 
   let res;
@@ -27,8 +28,9 @@ export async function GET(request: NextRequest) {
     if (auctionId) {
       res = await getEpisodesByAuctionId(auctionId);
     }
+    //ANCHOR - 리팩토링 완료
     if (episodeId) {
-      res = await getEpisode(episodeId);
+      res = await selectEpisodeById(episodeId);
     }
     if (type === 'biddingCount') {
       const supabase = await createClient();
@@ -53,7 +55,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
   }
 }
 export async function POST(request: NextRequest) {
@@ -68,32 +70,32 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
   }
 }
 
 export async function PATCH(request: NextRequest) {
-  const { episode_id, title, description, winning_bid } = await request.json();
-  const {searchParams} = request.nextUrl;
+  const { episodeId, title, description, winning_bid } = await request.json();
+  const { searchParams } = request.nextUrl;
   const type = searchParams.get('type');
   let res;
 
-  if (!episode_id) {
+  if (!episodeId) {
     return NextResponse.json({ error: 'id 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
   try {
     if (type === 'updateEpisode') {
-      res = await updateEpisode(episode_id, title, description);
+      res = await updateEpisodeById({ episodeId, title, description });
     }
 
     if (type === 'winningEpisode') {
-      res = await selectWinningEpisode(episode_id, winning_bid);
+      res = await selectWinningEpisode(episodeId, winning_bid);
     }
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
   }
 }
 
@@ -103,6 +105,6 @@ export async function DELETE(request: NextRequest) {
     const res = await deleteEpisode(episode_id);
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
   }
 }
