@@ -4,9 +4,7 @@ import type { NextRequest } from 'next/server';
 
 export async function GET() {
   try {
-    console.log('라우트');
     const popularKeywords = await selectPopularKeywords();
-    console.log('popularKeywords:', popularKeywords);
     return NextResponse.json({ status: 'success', data: popularKeywords });
   } catch (error) {
     const message = error instanceof Error ? error.message : '서버 오류가 발생했습니다.';

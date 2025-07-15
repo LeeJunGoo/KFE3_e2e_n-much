@@ -34,8 +34,6 @@ const usePopularKeywords = () => {
         setPopularKeywords(getVerticalList(data));
       } catch (error) {
         console.error('인기 검색어 로딩 실패:', error);
-        // 에러 발생 시 빈 배열로 설정하거나, 기본 데이터를 보여줄 수 있습니다.
-        setPopularKeywords([]);
       }
     };
 
