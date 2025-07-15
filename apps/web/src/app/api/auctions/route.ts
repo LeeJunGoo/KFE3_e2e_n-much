@@ -62,7 +62,7 @@ export async function PATCH(request: NextRequest) {
 
   try {
     const res = await updateAuction(auctionData.auction_id, auctionData);
-    return NextResponse.json({ status: 'success', data: res });
+    return NextResponse.json({ status: 'success', data: res }, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ status: 'error', error: error.message });

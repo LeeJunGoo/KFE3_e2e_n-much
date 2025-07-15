@@ -67,18 +67,19 @@ export const addAuction = async (auctionData: AuctionInsert) => {
 };
 
 //NOTE -  경매 물품 수정
-export const updateAuction = async (auction_id: string | undefined, editData: AuctionUpdate) => {
-  if (!auction_id) {
+export const updateAuction = async (auctionId: string | undefined, editData: AuctionUpdate) => {
+  if (!auctionId) {
     throw new Error('DB: 경매 수정 에러(auctionId가 없습니다.)');
   }
   const { data, error } = await supabase
     .from('auctions')
     .update({ ...editData })
-    .eq('auction_id', auction_id)
-    .select();
+    .eq('auction_id', auctionId)
+    .select()
+    .single();
 
   if (error) {
-    console.log('🚀 ~ updateAuction ~ updateAuction:', error.message);
+    console.error('updateAuction', error);
     throw new Error('DB: 경매 수정 에러');
   }
   return data;
