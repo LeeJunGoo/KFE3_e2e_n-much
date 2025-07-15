@@ -1,5 +1,5 @@
 import { createClient } from '../../shared/supabase/client/client';
-import { EpisodeEditType } from './types';
+import type { EpisodeCreateType, EpisodeEditType } from './types';
 
 const supabase = createClient();
 
@@ -92,13 +92,13 @@ export async function deleteEpisode(episode_id: string) {
 }
 
 //NOTE - 특정 에피소드 등록
-export const createEpisode = async (auction_id: string, buyer_id: string, title: string, description: string) => {
+export const createEpisode = async ({ auctionId, userId, title, description }: EpisodeCreateType) => {
   const { data, error } = await supabase
     .from('episodes')
     .insert([
       {
-        auction_id,
-        buyer_id,
+        auction_id: auctionId,
+        user_id: userId,
         title,
         description
       }
@@ -107,7 +107,7 @@ export const createEpisode = async (auction_id: string, buyer_id: string, title:
     .single();
 
   if (error) {
-    console.log('🚀 ~ createEpisode ~ error:', error.message);
+    console.error('🚀 ~ createEpisode ~ error:', error.message);
     throw new Error(error.message);
   }
   return data;

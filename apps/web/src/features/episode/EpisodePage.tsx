@@ -1,6 +1,6 @@
-import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
-
+import { notFound } from 'next/navigation';
+import { getEpisodeInfo } from 'src/entities/episode/api';
 import { createClient } from 'src/shared/supabase/client/server';
 import { type EpisodeRow } from 'src/shared/supabase/types';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
@@ -8,7 +8,6 @@ import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 import EpisodesAuctionCard from './EpisodesAuctionCard';
 import EpisodesForm from './EpisodesForm';
-import { getEpisodeById } from 'src/entities/episode/api';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auctionId, episodeId] = (await params).id;
@@ -16,7 +15,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
 
   //NOTE - episodeId true: 수정, false: 등록
   if (episodeId) {
-    initialEpisodeInfo = await getEpisodeById(episodeId);
+    initialEpisodeInfo = await getEpisodeInfo(episodeId);
   }
 
   const supabase = await createClient();
@@ -49,7 +48,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
             <EpisodesAuctionCard auctionId={auctionId!} userId={user.id} />
           </Suspense>
         </AuctionErrorBoundary>
-        <EpisodesForm auction_id={auctionId!} initialEpisodeInfo={initialEpisodeInfo} />
+        <EpisodesForm auctionId={auctionId!} initialEpisodeInfo={initialEpisodeInfo} userId={user.id} />
       </PageContainer>
     </>
   );

@@ -59,14 +59,14 @@ export async function GET(request: NextRequest) {
   }
 }
 export async function POST(request: NextRequest) {
-  const { auction_id, buyer_id, title, description } = await request.json();
+  const { auctionId, userId, title, description } = await request.json();
 
-  if (!auction_id || !buyer_id || !title || !description) {
+  if (!auctionId || !userId || !title || !description) {
     return NextResponse.json({ message: 'id, title, description 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
   try {
-    const res = await createEpisode(auction_id, buyer_id, title, description);
+    const res = await createEpisode({ auctionId, userId, title, description });
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {

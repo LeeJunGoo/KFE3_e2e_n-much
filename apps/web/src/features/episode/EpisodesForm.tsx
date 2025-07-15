@@ -6,16 +6,18 @@ import { Input } from '@repo/ui/components/ui/input';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useRouter } from 'next/navigation';
-import { fetchCreateEpisode, patchEpisodeInfo } from 'src/entities/episode/api';
+import { patchEpisodeInfo, postEpisodeInfo } from 'src/entities/episode/api';
 import { EPISODE_TIP, MAX_DESC_LENGTH, MAX_TITLE_LENGTH } from 'src/entities/episode/constants';
-import type { AuctionRow, EpisodeRow } from 'src/shared/supabase/types';
+import type { AuctionRow, EpisodeRow, UserRow } from 'src/shared/supabase/types';
 
 const EpisodesForm = ({
   initialEpisodeInfo,
-  auction_id
+  auctionId,
+  userId
 }: {
   initialEpisodeInfo: EpisodeRow | null;
-  auction_id: AuctionRow['auction_id'];
+  auctionId: AuctionRow['auction_id'];
+  userId: UserRow['id'];
 }) => {
   const router = useRouter();
   const [title, setTitle] = useState(initialEpisodeInfo?.title || '');
@@ -23,7 +25,6 @@ const EpisodesForm = ({
   const isEditMode = !!initialEpisodeInfo?.episode_id;
 
   const episodeId = isEditMode ? initialEpisodeInfo.episode_id : null;
-  const userId = isEditMode ? initialEpisodeInfo.user_id : null;
 
   const titleTextColor = title.length === MAX_TITLE_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
   const descriptionTextColor =
@@ -34,13 +35,13 @@ const EpisodesForm = ({
 
     try {
       const result = isEditMode
-        ? await patchEpisodeInfo({ episodeId, title, description }) // NOTE - 수정 모드
-        : await fetchCreateEpisode({ auction_id, userId, title, description }); // NOTE - 등록 모드
+        ? await patchEpisodeInfo({ episodeId, title, description }) //NOTE - 수정 모드
+        : await postEpisodeInfo({ auctionId, userId, title, description }); //NOTE - 등록 모드
 
       if (result === 'success') {
         const alertContent = isEditMode ? '사연을 수정하였습니다.' : '사연을 등록하였습니다.';
         toast.success(alertContent);
-        router.push(`/auctions/${auction_id}`);
+        router.push(`/auctions/${auctionId}`);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -68,7 +69,7 @@ const EpisodesForm = ({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             className="h-11 bg-white p-3.5"
-            placeholder="경매 상품의 제목을 입력하세요."
+            placeholder="사연 제목을 입력하세요."
             required
             maxLength={MAX_TITLE_LENGTH}
           />

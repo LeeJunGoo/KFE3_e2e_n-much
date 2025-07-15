@@ -1,6 +1,4 @@
 import { Suspense } from 'react';
-import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';
-import { fetchDetailPageUserInfo } from 'src/entities/auth/api';
 import AuctionDetail from 'src/features/auction/AuctionDetail';
 import AuctionDetailICarousel from 'src/features/auction/AuctionDetailICarousel';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';

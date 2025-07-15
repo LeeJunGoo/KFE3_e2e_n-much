@@ -47,6 +47,7 @@ const EpisodesAuctionCard = async ({
               </address>
             </div>
           </div>
+
           <AuctionTimer endDate={endDate} />
         </div>
       </div>
