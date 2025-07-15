@@ -8,11 +8,11 @@ import {
   getSellerAuctions,
   updateAuction
 } from '../../../entities/auction/supabase';
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server';
 import type { AuctionInsert, AuctionUpdate } from 'src/shared/supabase/types';
 
 export async function GET(request: NextRequest) {
-  const {searchParams} = request.nextUrl;
+  const { searchParams } = request.nextUrl;
   const auctionId = searchParams.get('auction_id');
   const type = searchParams.get('type');
 
@@ -40,7 +40,7 @@ export async function GET(request: NextRequest) {
     const res = await getAllAuctions();
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
   }
 }
 
@@ -49,10 +49,10 @@ export async function POST(request: NextRequest) {
 
   try {
     const res = await addAuction(auctionData);
-    return NextResponse.json({ status: 'success', data: res });
+    return NextResponse.json({ status: 'success', data: res }, { status: 201 });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ status: 'error', error: error.message });
+      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
     }
   }
 }

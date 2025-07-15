@@ -1,4 +1,4 @@
-import type { Database } from './supabase';
+import type { Database } from 'src/shared/supabase/types/supabase';
 
 //NOTE - supabase Auction type
 export type AuctionRow = Database['public']['Tables']['auctions']['Row']; // 데이터 조회(GET)
