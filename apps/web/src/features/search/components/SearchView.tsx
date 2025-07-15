@@ -3,9 +3,9 @@ import React from 'react';
 import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
 import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
 import useSearchAction from 'src/entities/search/hooks/useSearchAction';
-import PopularKeywords from 'src/features/search/PopularKeywords';
-import RecentKeywords from 'src/features/search/RecentKeywords';
-import SearchInput from 'src/features/search/SearchInput';
+import PopularKeywords from 'src/features/search/components/PopularKeywords';
+import RecentKeywords from 'src/features/search/components/RecentKeywords';
+import SearchInput from 'src/features/search/components/SearchInput';
 
 interface SearchViewProps {
   open: boolean;
