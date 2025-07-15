@@ -1,12 +1,11 @@
-export const fetchPopularKeywords = async () => {
+export const getPopularKeywords = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/keywords`);
 
   if (!res.ok) {
     throw new Error('인기 검색어를 불러오는 데 실패했습니다.');
   }
-  console.log('res:', res);
   const result = await res.json();
-  return result.data;
+  return result.data.map((item: { keyword: string }) => item.keyword);
 };
 
 export const postKeyword = async (keyword: string) => {
