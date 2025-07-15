@@ -1,6 +1,5 @@
 'use client';
 
-
 import React, { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
@@ -9,16 +8,14 @@ import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import { fetchCreateEpisode, fetchEditEpisode } from 'src/entities/episode/api';
 import { EPISODE_TIP, MAX_DESC_LENGTH, MAX_TITLE_LENGTH } from 'src/entities/episode/constants';
-import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+// import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 import type { AuctionRow, EpisodeRow } from 'src/shared/supabase/types';
 
 const EpisodesForm = ({
   initialEpisodeInfo,
-  userInfo,
   episode_id,
   auction_id
 }: {
-  userInfo: UserInfoType;
   initialEpisodeInfo: EpisodeRow | undefined;
   episode_id: EpisodeRow['episode_id'] | undefined;
   auction_id: AuctionRow['auction_id'];
@@ -28,7 +25,8 @@ const EpisodesForm = ({
   const router = useRouter();
 
   const isEditMode = !!initialEpisodeInfo;
-  const buyer_id = isEditMode ? initialEpisodeInfo.buyer_id : userInfo.buyer_id;
+  // const buyer_id = isEditMode ? initialEpisodeInfo.buyer_id : null;
+  const buyer_id = 'd10d4649-a034-4a0f-aba7-1665527087af';
 
   const titleTextColor = title.length === MAX_TITLE_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
   const descriptionTextColor =

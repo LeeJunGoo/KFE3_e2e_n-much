@@ -8,8 +8,8 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 
 const EpisodesAuctionCard = async ({ auction_id }: { auction_id: AuctionRow['auction_id'] }) => {
   // NOTE - 경매 상품 및 경매 업체 정보
-  const auctionInfo = await selectAuctionWithSellerInfo(auction_id!);
-  const { image_urls, address, title, start_time, end_time } = auctionInfo;
+  const auctionInfo = await selectAuctionWithSellerInfo('86d7b736-a3c1-4a5f-857f-fc551b0d8282'!);
+  const { image_urls, title } = auctionInfo;
   const auctionImage = image_urls && image_urls.length > 0 ? image_urls[0] : NotAuctionImage;
 
   return (
@@ -23,10 +23,10 @@ const EpisodesAuctionCard = async ({ auction_id }: { auction_id: AuctionRow['auc
           <div>
             <p className="font-medium">{title}</p>
             <div className="flex items-center">
-              <address className="max-w-[45%] truncate text-sm text-[--color-warm-gray]">{address}</address>
+              {/* <address className="max-w-[45%] truncate text-sm text-[--color-warm-gray]">{address}</address> */}
             </div>
           </div>
-          <AuctionTimer startTime={start_time} endTime={end_time} />
+          {/* <AuctionTimer startTime={start_time} endTime={end_time} /> */}
         </div>
       </div>
     </ListCard>
