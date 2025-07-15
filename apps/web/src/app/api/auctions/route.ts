@@ -65,7 +65,7 @@ export async function PATCH(request: NextRequest) {
     return NextResponse.json({ status: 'success', data: res }, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ status: 'error', error: error.message });
+      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
     }
   }
 }
