@@ -1,3 +1,6 @@
+//FIXME - type 하드 코딩 수정하기
+//FIXME - status 하드 코딩 수정하기
+
 import { NextResponse } from 'next/server';
 import { getAuctionWithAddress, selectSellerAuctionCount } from 'src/entities/auction/supabase';
 import { selectHighestBidder } from 'src/entities/episode/supabase';

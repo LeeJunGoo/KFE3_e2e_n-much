@@ -1,3 +1,5 @@
+//FIXME - status 하드 코딩 수정하기
+
 import { NextResponse } from 'next/server';
 import {
   addAuction,
@@ -71,18 +73,18 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const { auction_id } = await request.json();
+  const { auction_id: auctionId } = await request.json();
 
-  if (!auction_id) {
-    return NextResponse.json({ message: 'id 값이 존재하지 않습니다.' }, { status: 400 });
+  if (!auctionId) {
+    return NextResponse.json({ status: 'error', message: 'auction_id 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
   try {
-    const res = await deleteAuction(auction_id);
-    return NextResponse.json({ status: 'success', data: res });
+    const res = await deleteAuction(auctionId);
+    return NextResponse.json({ status: 'success', data: res }, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
-      throw new Error(error.message);
+      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
     }
   }
 }

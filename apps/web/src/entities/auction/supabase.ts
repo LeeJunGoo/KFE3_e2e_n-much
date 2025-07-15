@@ -86,11 +86,11 @@ export const updateAuction = async (auctionId: string | undefined, editData: Auc
 };
 
 //NOTE - 경매 물품 삭제
-export const deleteAuction = async (auction_id: string) => {
-  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auction_id).select();
+export const deleteAuction = async (auctionId: string) => {
+  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auctionId).select().single();
 
   if (error) {
-    console.log('🚀 ~ deleteAuction ~ deleteAuction:', error.message);
+    console.error('deleteAuction', error);
     throw new Error('DB: 경매 삭제 에러');
   }
   return data;
