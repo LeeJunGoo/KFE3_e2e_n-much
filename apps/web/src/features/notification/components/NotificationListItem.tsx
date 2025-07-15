@@ -13,11 +13,13 @@ const NotificationListItem = ({ type }: NotificationListItemProps) => {
   const popoverStyle =
     'px-4 border-b-(--color-warm-gray)/30 hover:bg-(--color-secondary) border-b py-4 last:border-b-0';
   const fullStyle =
-    'border-l-(--color-red) group relative rounded-xl border-l-4 bg-white p-4 mb-4 shadow-sm transition-all hover:shadow-md';
+    'border-l-(--color-red) group rounded-xl border-l-4 bg-white p-4 mb-4 shadow-sm transition-all hover:shadow-md';
+
+  const itemStyle = type === 'popover' ? popoverStyle : fullStyle;
 
   return (
     <>
-      <li className={`${baseStyle} ${type === 'popover' ? popoverStyle : fullStyle}`}>
+      <li className={`${baseStyle} ${itemStyle}`}>
         <div className="bg-(--color-green) flex size-8 shrink-0 items-center justify-center rounded-full">
           <FaStar className="text-white" />
         </div>
@@ -30,7 +32,7 @@ const NotificationListItem = ({ type }: NotificationListItemProps) => {
           <FaChevronRight className="text-(--color-warm-gray) group-hover:text-(--text-base) absolute right-4 top-2/4 -translate-y-2/4" />
         )}
       </li>
-      <li className={`${baseStyle} ${type === 'popover' ? popoverStyle : fullStyle}`}>
+      <li className={`${baseStyle} ${itemStyle}`}>
         <div className="bg-(--color-red) flex size-8 shrink-0 items-center justify-center rounded-full">
           <FaArrowUp className="text-white" />
         </div>
@@ -43,7 +45,7 @@ const NotificationListItem = ({ type }: NotificationListItemProps) => {
           <FaChevronRight className="text-(--color-warm-gray) group-hover:text-(--text-base) absolute right-4 top-2/4 -translate-y-2/4" />
         )}
       </li>
-      <li className={`${baseStyle} ${type === 'popover' ? popoverStyle : fullStyle}`}>
+      <li className={`${baseStyle} ${itemStyle}`}>
         <div className="bg-(--color-accent) flex size-8 shrink-0 items-center justify-center rounded-full">
           <RiThumbUpFill className="text-white" />
         </div>
@@ -58,7 +60,7 @@ const NotificationListItem = ({ type }: NotificationListItemProps) => {
           <FaChevronRight className="text-(--color-warm-gray) group-hover:text-(--text-base) absolute right-4 top-2/4 -translate-y-2/4" />
         )}
       </li>
-      <li className={`${baseStyle} ${type === 'popover' ? popoverStyle : fullStyle}`}>
+      <li className={`${baseStyle} ${itemStyle}`}>
         <div className="bg-(--color-red) flex size-8 shrink-0 items-center justify-center rounded-full">
           <FaHeart className="text-white" />
         </div>
