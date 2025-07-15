@@ -1,4 +1,4 @@
-import type { Database } from './supabase';
+import { type Database } from 'src/shared/supabase/types/supabase';
 
 //NOTE - supabase Auction type
 export type AuctionRow = Database['public']['Tables']['auctions']['Row']; // 데이터 조회(GET)
@@ -13,3 +13,8 @@ export type EpisodeUpdate = Database['public']['Tables']['episodes']['Update']; 
 
 //NOTE - supabase Point type
 export type PointRow = Database['public']['Tables']['points']['Row'];
+
+//NOTE - supabase Address type
+export type AddressRow = Database['public']['Tables']['addresses']['Row'];
+
+export type UserRow = Database['public']['Tables']['users']['Row'];

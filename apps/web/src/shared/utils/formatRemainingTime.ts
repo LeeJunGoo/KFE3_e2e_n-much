@@ -1,43 +1,37 @@
-import { differenceInMinutes } from 'date-fns';
+import { useEffect, useRef, useState } from 'react';
+import { formatDuration, intervalToDuration } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { TZDate } from 'react-day-picker';
 
-type AuctionStatus = 'upcoming' | 'ongoing' | 'ended';
+type AuctionStatus = 'ongoing' | 'ended' | null;
 
 interface RemainingInfo {
   status: AuctionStatus;
   remainTime: string;
 }
 
-export const formatRemainingTime = (startTime: string, endTime: string): RemainingInfo => {
-  const now = new TZDate(new Date(), 'Asia/Seoul');
-  const start = new TZDate(startTime, 'Asia/Seoul');
-  const end = new TZDate(endTime, 'Asia/Seoul');
+export const useFormatRemainingTime = (endDate: string): RemainingInfo => {
+  const [remainTime, setRemainTime] = useState('');
+  const statusRef = useRef<AuctionStatus>(null);
 
-  let status: AuctionStatus;
-  let remainTime = '';
+  useEffect(() => {
+    const now = new TZDate(new Date(), 'Asia/Seoul');
+    const end = new TZDate(endDate, 'Asia/Seoul');
 
-  if (now < start) {
-    // 경매 시작 전
-    status = 'upcoming';
-    const minutes = differenceInMinutes(start, now);
-    const days = Math.floor(minutes / (60 * 24));
-    const hours = Math.floor((minutes % (60 * 24)) / 60);
-    const mins = minutes % 60;
-    remainTime = `경매 시작까지: ${days}일 ${hours}시간 ${mins}분`;
-  } else if (now >= start && now < end) {
-    // 경매 진행 중
-    status = 'ongoing';
-    const minutes = differenceInMinutes(end, now);
-    const days = Math.floor(minutes / (60 * 24));
-    const hours = Math.floor((minutes % (60 * 24)) / 60);
-    const mins = minutes % 60;
+    const duration = intervalToDuration({ start: now, end });
+    const formatted = formatDuration(duration, {
+      format: ['days', 'hours', 'minutes'],
+      locale: ko
+    });
+    if (now < end) {
+      statusRef.current = 'ongoing';
+    }
+    if (now > end) {
+      statusRef.current = 'ended';
+    }
 
-    remainTime = `남은 시간: ${days}일 ${hours}시간 ${mins}분`;
-  } else {
-    // 경매 종료
-    status = 'ended';
-    remainTime = '경매가 종료되었습니다.';
-  }
+    setRemainTime(`남은 시간: ${formatted}`);
+  }, [endDate]);
 
-  return { status, remainTime };
+  return { status: statusRef.current, remainTime };
 };

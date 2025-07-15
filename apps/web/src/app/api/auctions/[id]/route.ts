@@ -1,24 +1,28 @@
 import { NextResponse } from 'next/server';
-import { selectAuctionWithSellerInfo, selectSellerAuctionCount } from 'src/entities/auction/supabase';
+import { selectAuctionInfoForEpisode, selectAuctionWithSellerInfo } from 'src/entities/auction/supabase';
 import { selectHighestBidder } from 'src/entities/episode/supabase';
-import type { NextRequest} from 'next/server';
+import type { NextRequest } from 'next/server';
 
 type ParamsType = {
   params: Promise<{ id: string }>;
 };
 
+// auction_form
+// episode_form
+// auction_detail
+
 export async function GET(request: NextRequest, { params }: ParamsType) {
   const { id } = await params;
-  const {searchParams} = request.nextUrl;
+  const { searchParams } = request.nextUrl;
   const type = searchParams.get('type');
   let res;
 
   try {
-    if (type === 'auction') {
+    if (type === 'auction_form') {
       res = await selectAuctionWithSellerInfo(id);
-    } else if (type === 'seller') {
-      res = await selectSellerAuctionCount(id);
-    } else if (type === 'buyer') {
+    } else if (type === 'episode_form') {
+      res = await selectAuctionInfoForEpisode(id);
+    } else if (type === 'auction') {
       res = await selectHighestBidder(id);
     } else {
       return NextResponse.json(
@@ -29,6 +33,6 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
     return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${  error}` }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
   }
 }

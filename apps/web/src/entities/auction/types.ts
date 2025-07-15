@@ -1,18 +1,16 @@
-import type { AuctionRow, BuyerRow, EpisodeRow, SellerRow } from 'src/shared/supabase/types';
+import type { AddressRow, AuctionRow, EpisodeRow, UserRow } from 'src/shared/supabase/types';
 
-export type BuyerInfoType = {
-  buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
-};
+// export type BuyerInfoType = {
+//   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
+// };
 
-export type SellerInfoType = {
-  seller: Pick<SellerRow, 'seller_id' | 'avatar' | 'nickname'>;
-};
+export type UserType = { users: Pick<UserRow, 'address_id' | 'email' | 'id'> };
 
 export type AuctionInfoType = { status: string; data: AuctionRow };
 
-export type AuctionWithSellerInfo = { status: string; data: AuctionRow & SellerInfoType };
+export type AuctionInfoForEpisodeType = { status: string; data: AuctionRow & UserType };
 
-export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
+// export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
 
 export type SellerAuctionCountType = {
   status: string;
@@ -23,8 +21,7 @@ export type SellerAuctionCountType = {
 };
 
 export type AuctionTimeProps = {
-  startTime: AuctionRow['start_time'];
-  endTime: AuctionRow['end_time'];
+  endDate: AuctionRow['end_date'];
   className?: string;
 };
 
@@ -37,4 +34,11 @@ export type SortedAuctionItemType = AuctionRow & {
 export type SortedAuctionsType = {
   data: SortedAuctionItemType[];
   status: string;
+};
+
+export type AddressType = {
+  business_name: AddressRow['business_name'];
+  road_address: AddressRow['road_address'];
+  detail_address: AddressRow['detail_address'];
+  is_default: AddressRow['is_default'];
 };

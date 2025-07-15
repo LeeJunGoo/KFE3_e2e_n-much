@@ -1,19 +1,15 @@
 'use client';
 
 import { IoMdTime } from 'react-icons/io';
-import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
+import { useFormatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 import { twMerge } from 'tailwind-merge';
 import type { AuctionTimeProps } from 'src/entities/auction/types';
 
-const AuctionTimer = ({ startTime, endTime, className }: AuctionTimeProps) => {
-  const { status, remainTime } = formatRemainingTime(startTime, endTime);
-
+const AuctionTimer = ({ endDate, className }: AuctionTimeProps) => {
+  const { status, remainTime } = useFormatRemainingTime(endDate);
   let timerTextColor = '';
 
   switch (status) {
-    case 'upcoming':
-      timerTextColor = 'text-(--color-red)';
-      break;
     case 'ongoing':
       timerTextColor = 'text-(--color-accent)';
       break;

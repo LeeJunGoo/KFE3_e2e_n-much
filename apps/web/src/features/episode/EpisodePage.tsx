@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import { notFound } from 'next/navigation';
 import { fetchEpisodeById } from 'src/entities/episode/api';
 import { createClient } from 'src/shared/supabase/client/server';
 import { type EpisodeRow } from 'src/shared/supabase/types';
@@ -14,17 +15,20 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
   let initialEpisodeInfo: EpisodeRow | undefined;
 
   //NOTE - 조건부에 따라 수정 및 등록 페이지로 나누기
+  // episodeId true: 수정
+  // episodeId false: 등록
   if (episodeId) {
     initialEpisodeInfo = await fetchEpisodeById(episodeId);
   }
 
   const supabase = await createClient();
+
   const {
     data: { user }
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return null;
+    return notFound();
   }
 
   return (
@@ -48,7 +52,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
               </div>
             }
           >
-            <EpisodesAuctionCard auction_id={auctionId!} />
+            <EpisodesAuctionCard auctionId={auctionId!} userId={user.id} />
           </Suspense>
         </AuctionErrorBoundary>
         <EpisodesForm auction_id={auctionId!} episode_id={episodeId} initialEpisodeInfo={initialEpisodeInfo} />

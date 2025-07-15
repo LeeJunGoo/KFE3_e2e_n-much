@@ -1,7 +1,7 @@
 import { useState } from 'react';
+import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
-import { toast } from '@repo/ui/components/ui/sonner';
 // import { postKeyword } from 'src/entities/search/api';
 
 const useSearchAction = () => {
