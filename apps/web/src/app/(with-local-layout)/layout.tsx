@@ -1,12 +1,11 @@
 import type { ReactNode } from 'react';
-import React from 'react';
-// import TabBar from 'src/widgets/Tabar';
+import MobileNavigation from 'src/widgets/layout/MobileNavigation';
 
 const layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
-      <div>{children}</div>
-      {/* <TabBar /> */}
+      {children}
+      <MobileNavigation />
     </>
   );
 };
