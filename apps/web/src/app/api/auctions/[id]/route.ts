@@ -27,7 +27,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
       );
     }
 
-    return NextResponse.json({ status: 'success', data: res });
+    return NextResponse.json({ status: 'success', data: res }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
   }
