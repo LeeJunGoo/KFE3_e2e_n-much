@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from 'src/assets/images/logo.svg';
-import NotificationButton from 'src/features/notification/NotificationButton';
+import NotificationButton from 'src/features/notification/components/NotificationButton';
 
 const Header = () => {
   return (

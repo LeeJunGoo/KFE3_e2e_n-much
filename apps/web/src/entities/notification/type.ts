@@ -1,1 +1,1 @@
-//type
+export type NotificationListType = 'popover' | 'full';

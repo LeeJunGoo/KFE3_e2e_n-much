@@ -6,7 +6,7 @@ const HeaderLayout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       <Header />
-      <div>{children}</div>
+      <>{children}</>
     </>
   );
 };

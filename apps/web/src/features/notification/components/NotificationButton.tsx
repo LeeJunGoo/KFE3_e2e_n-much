@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { IoNotifications } from 'react-icons/io5';
-import NotificationPopover from 'src/features/notification/NotificationPopover';
+import NotificationPopover from 'src/features/notification/components/NotificationPopover';
 
 const NotificationButton = () => {
   const [isOpen, setIsOpen] = useState(false);
