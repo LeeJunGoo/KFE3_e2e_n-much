@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
 import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
 import useSearchAction from 'src/entities/search/hooks/useSearchAction';
@@ -9,12 +9,18 @@ import SearchInput from 'src/features/search/components/SearchInput';
 
 interface SearchViewProps {
   open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
-const SearchView = ({ open }: SearchViewProps) => {
-  const { keyword, setKeyword, handleSearch, isLoading } = useSearchAction();
+const SearchView = ({ open, setOpen }: SearchViewProps) => {
+  const { keyword, setKeyword, handleSearch: searchClick, isLoading } = useSearchAction();
   const { recentKeywords, remove: removeRecentKeyword, clear: clearRecentKeywords } = useRecentKeywords();
   const { popularKeywords } = usePopularKeywords();
+
+  const handleSearch = (searchKeyword: string) => {
+    searchClick(searchKeyword);
+    setOpen(false);
+  };
 
   return (
     <section data-role="search_box" aria-label="검색창" className="p-4">
