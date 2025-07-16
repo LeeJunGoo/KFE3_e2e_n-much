@@ -218,10 +218,12 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     }
   };
 
+  //FIXME - toss로 에러를 알리고, 에러 처리하기
   if (isError) {
     return <p>에러 발생</p>;
   }
 
+  //FIXME - 스켈레톤 UI 사용
   if (isFormLoading || isDataLoading) {
     return <p>Loading...</p>;
   }
@@ -233,33 +235,33 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-8">
             <FormField
               control={form.control}
-              name="address"
+              name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>사업체 주소</FormLabel>
+                  <FormLabel>
+                    제목<span className="text-(--color-red)">&#42;</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="상품 위치 또는 주소를 입력하세요."
-                      disabled={true}
-                      className="bg-white"
-                      {...field}
-                    />
+                    <Input className="bg-white" placeholder="경매 상품의 제목을 입력하세요." {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="detailAddress"
+              name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>상세 주소</FormLabel>
+                  <FormLabel>
+                    상세 내용 <span className="text-(--color-red)">&#42;</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="상품의 상세 위치 또는 상세 주소를 입력하세요."
-                      className="bg-white"
-                      disabled={true}
+                    <Textarea
+                      className="resize-none bg-white"
+                      rows={5}
+                      placeholder="상품에 대한 자세한 설명을 입력하세요."
                       {...field}
                     />
                   </FormControl>
@@ -267,77 +269,6 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
                 </FormItem>
               )}
             />
-            <Button
-              type="button"
-              variant="base"
-              onClick={() => {
-                setShowPostCodeSearch((prev) => !prev);
-              }}
-            >
-              {showPostCodeSearch ? '주소 검색 닫기' : '주소 검색'}
-            </Button>
-            {showPostCodeSearch && <DaumPostcodeEmbed onComplete={handlePostCodeSearch} />}
-            <div className="flex w-full gap-2">
-              <FormField
-                control={form.control}
-                name="startDay"
-                render={({ field }) => (
-                  <FormItem className="w-1/2">
-                    <FormLabel>
-                      경매 시작일 <span className="text-(--color-red)">&#42;</span>
-                    </FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={'outline'}
-                            className={cn(
-                              'w-full justify-start pl-3 text-left font-normal',
-                              !field.value && 'text-muted-foreground'
-                            )}
-                          >
-                            <FaCalendarAlt className="text-(--color-accent) h-4 w-4 opacity-50" />
-                            {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          // disabled={(date) => {
-                          //   const todayDate = subDays(new TZDate(new Date(), 'Asia/Seoul'), 1);
-                          //   const endDate = new TZDate(form.getValues('endDay'), 'Asia/Seoul');
-                          //   const compareTodayDate = compareAsc(date, todayDate);
-                          //   const compareEndDate = compareAsc(date, endDate);
-
-                          //   return compareTodayDate === -1 || compareEndDate === 1;
-                          // }}
-                          captionLayout="dropdown"
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="startTime"
-                render={({ field }) => (
-                  <FormItem className="w-1/2">
-                    <FormLabel>
-                      경매 시작 시간<span className="text-(--color-red)">&#42;</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input className="bg-white" type="time" step="1" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
             <div className="flex w-full gap-2">
               <FormField
                 control={form.control}
@@ -397,42 +328,6 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    제목<span className="text-(--color-red)">&#42;</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input className="bg-white" placeholder="경매 상품의 제목을 입력하세요." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    상세 내용 <span className="text-(--color-red)">&#42;</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="resize-none bg-white"
-                      rows={5}
-                      placeholder="상품에 대한 자세한 설명을 입력하세요."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <FormField
               control={form.control}
               name="startingPoint"
