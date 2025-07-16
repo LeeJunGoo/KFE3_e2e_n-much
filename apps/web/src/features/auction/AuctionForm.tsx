@@ -142,13 +142,6 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     setFormDefaultValues();
   }, [auctionIdParam, form, getFormDefaultValues, isEditing, auction]);
 
-  //FIXME - 주소 안씀 지우기
-  useEffect(() => {
-    if (confirmPostCode) {
-      form.trigger('address');
-    }
-  }, [confirmPostCode, form]);
-
   //FIXME - 로그인한 유저 정복 가져오는 임시 함수 (수정 또는 삭제하기)
   const fetchDetailPageUserInfo = async (userId: string | null) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auth/user-info?user_id=${userId}`, {
