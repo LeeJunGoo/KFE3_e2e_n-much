@@ -1,14 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { patchEpisodeInfo, postEpisodeInfo } from 'src/entities/episode/api';
 import { EPISODE_TIP, MAX_DESC_LENGTH, MAX_TITLE_LENGTH } from 'src/entities/episode/constants';
+import { episodeFormSchema, EpisodeFormType } from 'src/entities/episode/schemas';
 import type { AuctionRow, EpisodeRow, UserRow } from 'src/shared/supabase/types';
+import FormActionsButton from './FormActionsButton';
 
 const EpisodesForm = ({
   initialEpisodeInfo,
@@ -20,19 +24,24 @@ const EpisodesForm = ({
   userId: UserRow['id'];
 }) => {
   const router = useRouter();
-  const [title, setTitle] = useState(initialEpisodeInfo?.title || '');
-  const [description, setDescription] = useState(initialEpisodeInfo?.description || '');
   const isEditMode = !!initialEpisodeInfo?.episode_id;
-
   const episodeId = isEditMode ? initialEpisodeInfo.episode_id : null;
 
-  const titleTextColor = title.length === MAX_TITLE_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
-  const descriptionTextColor =
-    description.length === MAX_DESC_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
+  const form = useForm<EpisodeFormType>({
+    resolver: zodResolver(episodeFormSchema),
+    defaultValues: {
+      title: initialEpisodeInfo?.title || '',
+      description: initialEpisodeInfo?.description || ''
+    }
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [title, description] = form.watch(['title', 'description']);
 
+  const titleTextColor = title.length >= MAX_TITLE_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
+  const descTextColor = description.length >= MAX_DESC_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
+
+  const handleEpisodeUpsert = async (values: EpisodeFormType) => {
+    console.log('🚀 ~ handleEpisodeUpsert ~ values:', values);
     try {
       const result = isEditMode
         ? await patchEpisodeInfo({ episodeId, title, description }) //NOTE - 수정 모드
@@ -51,73 +60,80 @@ const EpisodesForm = ({
   };
 
   const handleReset = () => {
-    setTitle('');
-    setDescription('');
+    form.reset();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6">
-      <div className="mb-4">
-        <label htmlFor="title" className="text-md text-(--color-text-base) block font-medium">
-          사연 제목&nbsp;
-          <span className="text-(--color-red)">*</span>
-        </label>
-        <div className="relative mt-2">
-          <Input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="h-11 bg-white p-3.5"
-            placeholder="사연 제목을 입력하세요."
-            required
-            maxLength={MAX_TITLE_LENGTH}
-          />
-          <div className={`absolute bottom-3 right-3 text-xs font-semibold ${titleTextColor}`}>{title.length}/40</div>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleEpisodeUpsert)} className="mt-6">
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field, fieldState, formState }) => (
+            <FormItem className="mb-8">
+              <FormLabel className="flex gap-0.5">
+                <p>사연 제목</p>
+                <span className="translate-y-0.5">&#42;</span>
+              </FormLabel>
+              <div className="relative mt-2">
+                <FormControl>
+                  <Input type="text" {...field} className="h-11 bg-white p-3.5" placeholder="사연 제목을 입력하세요." />
+                </FormControl>
+              </div>
+              <div className="relative">
+                {formState.isSubmitted && fieldState.error && <FormMessage />}
+                <p className={`absolute right-0 top-0 text-xs font-semibold ${titleTextColor}`}>
+                  {title.length}/{MAX_TITLE_LENGTH}
+                </p>
+              </div>
+            </FormItem>
+          )}
+        ></FormField>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field, fieldState, formState }) => (
+            <FormItem className="">
+              <FormLabel className="flex gap-0.5">
+                <p>상세 내용</p>
+                <span className="translate-y-0.5">&#42;</span>
+              </FormLabel>
+              <div className="relative mt-2">
+                <FormControl>
+                  <Textarea
+                    {...field}
+                    className="h-51 w-full resize-none break-all bg-white p-3.5"
+                    placeholder="이 경험이 당신에게 왜 특별한지 적어주세요...."
+                    rows={4}
+                  ></Textarea>
+                </FormControl>
+              </div>
+              <div className="relative">
+                {formState.isSubmitted && fieldState.error && <FormMessage />}
+                <p className={`absolute right-0 top-0 text-xs font-semibold ${descTextColor}`}>
+                  {description.length}/{MAX_DESC_LENGTH}
+                </p>
+              </div>
+            </FormItem>
+          )}
+        ></FormField>
+        <div className="bg-(--color-secondary) my-10 rounded-lg p-4">
+          <h3 className="text-(--color-accent) mb-4 text-sm font-medium">
+            <i className="fas fa-lightbulb mr-2"></i>좋은 사연을 위한 팁
+          </h3>
+          <ul className="text-(--color-warm-gray) space-y-2 text-sm">
+            {EPISODE_TIP.map((text, index) => (
+              <li key={index}>&bull;&nbsp;{text}&#46;</li>
+            ))}
+          </ul>
         </div>
-      </div>
-      {/* 상세 내용 */}
-      <label htmlFor="description" className="text-md text-(--color-text-base) block font-medium">
-        상세 내용&nbsp;
-        <span className="text-(--color-red)">*</span>
-      </label>
-      <div className="relative mt-2">
-        <Textarea
-          id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={4}
-          className="h-51 w-full resize-none bg-white p-3.5"
-          placeholder="이 경험이 당신에게 왜 특별한지 적어주세요...."
-          required
-          maxLength={MAX_DESC_LENGTH}
-        ></Textarea>
-        <div className={`absolute bottom-3 right-3 text-xs font-semibold ${descriptionTextColor}`}>
-          {description.length}/1000
-        </div>
-      </div>
-
-      <div className="my-6 rounded-lg bg-[#EEF2FB] p-4">
-        <h3 className="mb-2 text-sm font-medium text-[#5B80C2]">
-          <i className="fas fa-lightbulb mr-2"></i>좋은 사연을 위한 팁
-        </h3>
-        <ul className="text-(--color-warm-gray) space-y-2 text-sm">
-          {EPISODE_TIP.map((text, index) => (
-            <li key={index}>&bull;&nbsp;{text}&#46;</li>
-          ))}
-        </ul>
-      </div>
-
-      {/* 초기화, 등록 버튼 */}
-      <div className="flex justify-end space-x-2">
-        <Button variant="outline" type="button" onClick={handleReset} className="h-10 flex-1">
-          초기화
-        </Button>
-        <Button variant="inActive" type="submit" className="h-10 flex-1">
-          {isEditMode ? '수정 완료' : '사연 등록'}
-        </Button>
-      </div>
-    </form>
+        <FormActionsButton
+          resetOnClick={handleReset}
+          resetLabel="초기화"
+          submitLabel={isEditMode ? '수정 완료' : '사연 등록'}
+        />
+      </form>
+    </Form>
   );
 };
 
