@@ -35,13 +35,14 @@ const EpisodesForm = ({
     }
   });
 
-  const [title, description] = form.watch(['title', 'description']);
+  // const [title, description] = form.watch(['title', 'description']);
 
-  const titleTextColor = title.length >= MAX_TITLE_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
-  const descTextColor = description.length >= MAX_DESC_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
+  // const titleTextColor = title.length >= MAX_TITLE_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
+  // const descTextColor = description.length >= MAX_DESC_LENGTH ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
 
   const handleEpisodeUpsert = async (values: EpisodeFormType) => {
-    console.log('🚀 ~ handleEpisodeUpsert ~ values:', values);
+    const { title, description } = values;
+
     try {
       const result = isEditMode
         ? await patchEpisodeInfo({ episodeId, title, description }) //NOTE - 수정 모드

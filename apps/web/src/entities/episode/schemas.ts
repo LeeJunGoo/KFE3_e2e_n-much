@@ -12,4 +12,4 @@ export const episodeFormSchema = z.object({
     .max(MAX_DESC_LENGTH, { message: '사연은 최대 1000글자 이하이어야 합니다.' })
 });
 
-export type EpisodeFormType = z.infer<typeof episodeFormSchema>;
+export type DetailFormType = z.infer<typeof episodeFormSchema>;
