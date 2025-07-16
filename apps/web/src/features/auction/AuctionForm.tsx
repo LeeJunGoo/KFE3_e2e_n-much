@@ -81,6 +81,8 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
   });
 
+  //FIXME - 날짜 세팅 지우기
+  //FIXME - 시간 세팅 지우기
   const getFormDefaultValues = useCallback(() => {
     const today = new Date();
     const startDay = new TZDate(today, 'Asia/Seoul');
@@ -109,6 +111,8 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   });
 
   useEffect(() => {
+    //FIXME - 시작일 지우기
+    //NOTE - 주소 표현 어떡해 할지 물어보기
     const setFormDefaultValues = async () => {
       if (!isEditing) {
         return;
@@ -152,12 +156,14 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     setFormDefaultValues();
   }, [auctionIdParam, form, getFormDefaultValues, isEditing, auction]);
 
+  //FIXME - 주소 안씀 지우기
   useEffect(() => {
     if (confirmPostCode) {
       form.trigger('address');
     }
   }, [confirmPostCode, form]);
 
+  //FIXME - 로그인한 유저 정복 가져오는 임시 함수 (수정 또는 삭제하기)
   const fetchDetailPageUserInfo = async (userId: string | null) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auth/user-info?user_id=${userId}`, {
       method: 'GET',
@@ -250,6 +256,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     }
   };
 
+  //FIXME - 주소 안씀 지우기
   const handlePostCodeSearch = (data: Address) => {
     let fullAddress = data.address;
     let extraAddress = '';

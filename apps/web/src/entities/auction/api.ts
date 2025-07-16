@@ -91,8 +91,8 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
   }
 }
 
-export async function fetchAuctionById(auctionId: string | null) {
-  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions?auction_id=${auctionId}`;
+export const getAuctionWIthAddress = async (auctionId: string | null) => {
+  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/${auctionId}`;
   const data = await fetch(fetchUrl);
   const result = await data.json();
 
@@ -101,4 +101,4 @@ export async function fetchAuctionById(auctionId: string | null) {
   } else {
     throw new Error('auction_id로 경매 fetch 실패');
   }
-}
+};

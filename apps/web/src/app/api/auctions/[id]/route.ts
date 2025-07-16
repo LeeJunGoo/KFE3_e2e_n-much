@@ -1,8 +1,9 @@
 //FIXME - type 하드 코딩 수정하기
 //FIXME - status 하드 코딩 수정하기
+//FIXME - GET 메서드 타입 에러 수정하기
 
 import { NextResponse } from 'next/server';
-import { getAuctionWithAddress, selectSellerAuctionCount } from 'src/entities/auction/supabase';
+import { selectAuctionWithAddress, selectSellerAuctionCount } from 'src/entities/auction/supabase';
 import { selectHighestBidder } from 'src/entities/episode/supabase';
 import type { NextRequest } from 'next/server';
 
@@ -18,7 +19,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
   try {
     if (type === 'auction_form') {
-      res = await getAuctionWithAddress(id);
+      res = await selectAuctionWithAddress(id);
     } else if (type === 'episode_form') {
       res = await selectSellerAuctionCount(id);
     } else if (type === 'auction_detail') {

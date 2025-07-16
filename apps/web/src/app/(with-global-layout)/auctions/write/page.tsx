@@ -2,7 +2,7 @@
 //NOTE - 서영님 PageHeader import해서 사용하기
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { fetchAuctionById } from 'src/entities/auction/api';
+import { getAuctionWIthAddress } from 'src/entities/auction/api';
 import AuctionForm from 'src/features/auction/AuctionForm';
 // import PageHeader from 'src/widgets/PageHeader';
 
@@ -16,7 +16,7 @@ const AuctionWritePage = async ({ searchParams }: { searchParams: Promise<{ [key
 
     await queryClient.prefetchQuery({
       queryKey: ['auctionForm'],
-      queryFn: () => fetchAuctionById(auctionId)
+      queryFn: () => getAuctionWIthAddress(auctionId)
     });
 
     return (

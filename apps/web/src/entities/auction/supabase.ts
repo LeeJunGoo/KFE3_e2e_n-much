@@ -246,7 +246,7 @@ export async function uploadImage(imageData: string) {
   return data;
 }
 
-export const getAuctionWithAddress = async (id: string) => {
+export const selectAuctionWithAddress = async (id: string) => {
   const { data, error } = await supabase.rpc('get_auction_form', { auction_id_param: id }).single();
 
   if (error) {

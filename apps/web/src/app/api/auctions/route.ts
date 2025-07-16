@@ -1,4 +1,5 @@
 //FIXME - status 하드 코딩 수정하기
+//NOTE - status 빼는 것 의논해보기, 만약 뺀다면 DB 데이터만 보내도 좋을 것 같음
 
 import { NextResponse } from 'next/server';
 import {
