@@ -135,26 +135,24 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     setFormDefaultValues();
   }, [auctionIdParam, form, getFormDefaultValues, isEditing, auction]);
 
-  //FIXME - 로그인한 유저 정복 가져오는 임시 함수 (수정 또는 삭제하기)
-  const fetchDetailPageUserInfo = async (userId: string | null) => {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auth/user-info?user_id=${userId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-    if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData.error || '사용자 정보 조회 중 오류가 발생했습니다.');
-    }
-    const data = await res.json();
-    return data.data;
-  };
-
   //FIXME - uploadImage 리팩토링
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    let imageUrls: string[] = [];
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
+
+    //FIXME - 타임존을 바꾸는 함수 만들어서 분리하기
+    const korEndTime = endTime.split(':');
+    const korEndDate = set(endDay, {
+      hours: Number(korEndTime[0]),
+      minutes: Number(korEndTime[1]),
+      seconds: Number(korEndTime[2])
+    });
+    const utcEndDate = new TZDate(korEndDate, 'utc');
+
+    const auctionId = uuidv4();
+
+    const userId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기
+
+    let imageUrls: string[] = [];
 
     try {
       const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
@@ -172,24 +170,14 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
       console.log(error);
     }
 
-    //FIXME - 타임존을 바꾸는 함수 만들어서 분리하기
-    const korEndTime = endTime.split(':');
-    const korEndDate = set(endDay, {
-      hours: Number(korEndTime[0]),
-      minutes: Number(korEndTime[1]),
-      seconds: Number(korEndTime[2])
-    });
-    const utcEndDate = new TZDate(korEndDate, 'utc');
-    const auctionId = uuidv4();
-    const { seller_id: sellerId } = await fetchDetailPageUserInfo(''); //FIXME - 임시 함수임 수정하거나 삭제해야 함
     //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
-    console.log('셀러', sellerId);
+    console.log('유저', userId);
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
         auction_id: isEditing ? auctionIdParam : auctionId,
-        user_id: sellerId,
+        user_id: userId,
         title,
         description,
         end_time: utcEndDate,
