@@ -32,10 +32,6 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   const isEditing: boolean = auctionIdParam ? true : false;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
-  //FIXME - 주소 검색 안씀 지우기
-  const [showPostCodeSearch, setShowPostCodeSearch] = useState<boolean>(false);
-  const [confirmPostCode, setConfirmPostCode] = useState<boolean>(isEditing);
-
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
   const router = useRouter();
 
