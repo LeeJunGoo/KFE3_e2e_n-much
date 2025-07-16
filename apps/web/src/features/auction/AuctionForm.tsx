@@ -180,7 +180,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
         user_id: userId,
         title,
         description,
-        end_time: utcEndDate,
+        end_date: utcEndDate,
         starting_point: startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls,
@@ -193,9 +193,11 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     console.log('결과', result);
     console.log('옥션아이디', auctionId);
     if (isEditing) {
-      router.push(`/auctions/${auctionIdParam}`);
+      //FIXME - 테스트 끝나면 주석 제거하기
+      // router.push(`/auctions/${auctionIdParam}`);
     } else {
-      router.push(`/auctions/${auctionId}`);
+      //FIXME - 테스트 끝나면 주석 제거하기
+      // router.push(`/auctions/${auctionId}`);
     }
   };
 
