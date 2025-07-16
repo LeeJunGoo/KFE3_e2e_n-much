@@ -250,7 +250,7 @@ export const selectAuctionWithAddress = async (id: string) => {
   const { data, error } = await supabase.rpc('get_auction_form', { auction_id_param: id }).single();
 
   if (error) {
-    console.error('getAuctionWithAddress', error); //FIXME - 디버깅용
+    console.error('getAuctionWithAddress', error);
     throw new Error('DB: auction과 address 불러오기 실패');
   }
 

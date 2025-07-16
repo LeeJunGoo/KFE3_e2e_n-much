@@ -1,6 +1,5 @@
 //FIXME - type 하드 코딩 수정하기
 //FIXME - status 하드 코딩 수정하기
-//FIXME - GET 메서드 타입 에러 수정하기
 
 import { NextResponse } from 'next/server';
 import { selectAuctionWithAddress, selectSellerAuctionCount } from 'src/entities/auction/supabase';

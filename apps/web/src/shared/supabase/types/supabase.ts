@@ -105,7 +105,7 @@ export type Database = {
           end_date: string
           favorites?: string[] | null
           highest_bidder_id?: string | null
-          image_urls: string[]
+          image_urls?: string[]
           max_point: number
           starting_point: number
           status: string
@@ -258,6 +258,21 @@ export type Database = {
           },
         ]
       }
+      ranking: {
+        Row: {
+          created_at: string
+          id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+        }
+        Relationships: []
+      }
       users: {
         Row: {
           address_id: string | null
@@ -266,6 +281,7 @@ export type Database = {
           id: string
           nick_name: string
           role: string
+          user_avatar: string | null
         }
         Insert: {
           address_id?: string | null
@@ -274,6 +290,7 @@ export type Database = {
           id?: string
           nick_name: string
           role: string
+          user_avatar?: string | null
         }
         Update: {
           address_id?: string | null
@@ -282,6 +299,7 @@ export type Database = {
           id?: string
           nick_name?: string
           role?: string
+          user_avatar?: string | null
         }
         Relationships: [
           {
@@ -321,6 +339,39 @@ export type Database = {
       }
     }
     Functions: {
+      get_auction_details: {
+        Args:
+          | { auction_id: string }
+          | { auction_id_param: string }
+          | { user_id: number }
+        Returns: {
+          title: string
+          description: string
+          starting_point: number
+          max_point: number
+          image_urls: string[]
+          end_date: string
+          business_name: string
+          postal_code: string
+          road_address: string
+          detail_address: string
+        }[]
+      }
+      get_auction_form: {
+        Args: { auction_id_param: string }
+        Returns: {
+          title: string
+          description: string
+          starting_point: number
+          max_point: number
+          image_urls: string[]
+          end_date: string
+          business_name: string
+          postal_code: string
+          road_address: string
+          detail_address: string
+        }[]
+      }
       set_winning_bid: {
         Args: Record<PropertyKey, never>
         Returns: undefined
