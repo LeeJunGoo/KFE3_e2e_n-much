@@ -14,11 +14,10 @@ import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { cn } from '@repo/ui/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { addHours, compareAsc, format, set, subDays } from 'date-fns';
+import { addHours, format, set } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import DaumPostcodeEmbed from 'react-daum-postcode';
 import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
@@ -28,8 +27,6 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import type { Address } from 'react-daum-postcode';
-import { $ZodCheckGreaterThan } from 'zod/v4/core';
 
 const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   const isEditing: boolean = auctionIdParam ? true : false;
