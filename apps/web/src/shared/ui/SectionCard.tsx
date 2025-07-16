@@ -1,3 +1,5 @@
+//삭제 예정, BaseCard컴포넌트 대체 예정
+
 interface SectionCardProps {
   children: React.ReactNode;
   className?: string;

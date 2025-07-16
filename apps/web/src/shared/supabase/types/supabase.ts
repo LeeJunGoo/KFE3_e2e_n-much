@@ -5,6 +5,13 @@ export type Json =
   | null
   | { [key: string]: Json | undefined }
   | Json[]
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   // Allows to automatically instanciate createClient with right options
@@ -12,8 +19,12 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
   }
+    PostgrestVersion: "12.2.3 (519615d)"
+  }
   graphql_public: {
     Tables: {
+      [_ in never]: never
+    }
       [_ in never]: never
     }
     Views: {
