@@ -14,7 +14,7 @@ export const getAuctionInfoForEpisode = async (auctionId: string) => {
   }
   const result: AuctionInfoForEpisodeType = await res.json();
 
-  return result.data;
+  return result;
 };
 
 //NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수

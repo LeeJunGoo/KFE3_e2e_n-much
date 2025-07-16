@@ -8,7 +8,7 @@ export type UserType = { users: Pick<UserRow, 'address_id' | 'email' | 'id'> };
 
 export type AuctionInfoType = { status: string; data: AuctionRow };
 
-export type AuctionInfoForEpisodeType = { status: string; data: AuctionRow & UserType };
+export type AuctionInfoForEpisodeType = AuctionRow & UserType;
 
 // export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
 

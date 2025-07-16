@@ -1,44 +1,44 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
-import { Input } from '@repo/ui/components/ui/input';
+import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useWatch } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
 import type { DetailFormType } from 'src/entities/episode/schemas';
 
-type FormTitleType = {
+type FormDescriptionType = {
   control: Control<DetailFormType>;
-  titleLabel: string;
+  descriptionLabel: string;
   placeholder: string;
-  maxTitleLength: number;
+  maxDescLength: number;
 };
 
-const FormTitle = ({ control, titleLabel, placeholder, maxTitleLength }: FormTitleType) => {
-  const title = useWatch({ control, name: 'title' });
-  const titleTextColor = title.length >= maxTitleLength ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
+const FormDescription = ({ control, descriptionLabel, placeholder, maxDescLength }: FormDescriptionType) => {
+  const description = useWatch({ control, name: 'description' });
+  const descTextColor = description.length >= maxDescLength ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
 
   return (
     <FormField
       control={control}
-      name="title"
+      name="description"
       render={({ field, fieldState, formState }) => (
-        <FormItem className="mb-8">
+        <FormItem className="">
           <FormLabel className="flex gap-0.5">
-            <p className="text-black">{titleLabel}</p>
+            <p className="text-black">{descriptionLabel}</p>
             <span className="text-(--color-red) translate-y-0.5">&#42;</span>
           </FormLabel>
           <div className="relative mt-2">
             <FormControl>
-              <Input
-                type="text"
+              <Textarea
                 {...field}
-                className="aria-invalid:border-1 aria-invalid:border-(--color-red) h-11 bg-white p-3.5"
+                className="h-51 aria-invalid:border-1 aria-invalid:border-(--color-red) w-full resize-none break-all bg-white p-3.5"
                 placeholder={placeholder}
-              />
+                rows={4}
+              ></Textarea>
             </FormControl>
           </div>
           <div className="relative">
             {formState.isSubmitted && fieldState.error && <FormMessage />}
-            <p className={`absolute right-0 top-0 text-xs font-semibold ${titleTextColor}`}>
-              {title.length}/{maxTitleLength}
+            <p className={`absolute right-0 top-0 text-xs font-semibold ${descTextColor}`}>
+              {description.length}/{maxDescLength}
             </p>
           </div>
         </FormItem>
@@ -47,4 +47,4 @@ const FormTitle = ({ control, titleLabel, placeholder, maxTitleLength }: FormTit
   );
 };
 
-export default FormTitle;
+export default FormDescription;

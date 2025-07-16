@@ -1,21 +1,10 @@
 import Image from 'next/image';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
-import { getAuctionInfoForEpisode } from 'src/entities/auction/api';
 import BaseCard from '../../widgets/BaseCard';
 import AuctionTimer from '../auction/AuctionTimer';
-import type { AuctionRow, UserRow } from 'src/shared/supabase/types';
+import type { AuctionInfoForEpisodeType } from 'src/entities/auction/types';
 
-const EpisodesAuctionCard = async ({
-  auctionId,
-  userId
-}: {
-  auctionId: AuctionRow['auction_id'];
-  userId: UserRow['id'];
-}) => {
-  // NOTE - 경매 상품 및 판매자 정보
-  const testAuctionId = '86d7b736-a3c1-4a5f-857f-fc551b0d8282';
-  const auctionInfo = await getAuctionInfoForEpisode(testAuctionId);
-
+const EpisodesAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionInfoForEpisodeType }) => {
   //NOTE - 속성 값
   const imageUrls = auctionInfo.image_urls;
   const auctionTitle = auctionInfo.title;

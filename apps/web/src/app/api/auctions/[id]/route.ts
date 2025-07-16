@@ -7,10 +7,6 @@ type ParamsType = {
   params: Promise<{ id: string }>;
 };
 
-// auction_form
-// episode_form
-// auction_detail
-
 export async function GET(request: NextRequest, { params }: ParamsType) {
   const { id } = await params;
   const { searchParams } = request.nextUrl;
@@ -31,8 +27,8 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
       );
     }
 
-    return NextResponse.json({ status: 'success', data: res });
+    return NextResponse.json(res);
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
+    return NextResponse.json({ error: `Server Error${error}` });
   }
 }

@@ -1,9 +1,9 @@
-import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
+import { getAuctionInfoForEpisode } from 'src/entities/auction/api';
 import { getEpisodeInfo } from 'src/entities/episode/api';
+import { EPISODE_TIP } from 'src/entities/episode/constants';
 import { createClient } from 'src/shared/supabase/client/server';
 import { type EpisodeRow } from 'src/shared/supabase/types';
-import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 import EpisodesAuctionCard from './EpisodesAuctionCard';
@@ -13,11 +13,15 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
   const [auctionId, episodeId] = (await params).id;
   let initialEpisodeInfo: EpisodeRow | null = null; // 조건부에 따라 수정 및 등록 페이지로 나누기
 
+  // NOTE - 경매 상품 및 판매자 정보
+  const auctionInfo = await getAuctionInfoForEpisode(auctionId!);
+
   //NOTE - episodeId true: 수정, false: 등록
   if (episodeId) {
     initialEpisodeInfo = await getEpisodeInfo(episodeId);
   }
 
+  //NOTE - 로그인된 유저 정보
   const supabase = await createClient();
   const {
     data: { user }
@@ -31,24 +35,19 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
     <>
       <DetailPageHeader>{initialEpisodeInfo ? '사연 수정하기' : '사연 등록하기'}</DetailPageHeader>
       <PageContainer>
-        <AuctionErrorBoundary
-          fallback={
-            <div className="flex h-[120px] items-center justify-center border-2">
-              <h3 className="text-[22px]">⚠️ 경매 물품 정보 섹션에서 오류가 발생했습니다.</h3>
-            </div>
-          }
-        >
-          <Suspense
-            fallback={
-              <div className="flex h-[120px] items-center justify-center">
-                <span className="animate-pulse text-lg text-gray-500">{'🚚 경매 데이터를 불러오는 중입니다...'}</span>
-              </div>
-            }
-          >
-            <EpisodesAuctionCard auctionId={auctionId!} userId={user.id} />
-          </Suspense>
-        </AuctionErrorBoundary>
-        <EpisodesForm auctionId={auctionId!} initialEpisodeInfo={initialEpisodeInfo} userId={user.id} />
+        <EpisodesAuctionCard auctionInfo={auctionInfo} />
+        <EpisodesForm auctionId={auctionId!} initialEpisodeInfo={initialEpisodeInfo} userId={user.id}>
+          <div className="bg-(--color-secondary) my-10 rounded-lg p-4">
+            <h3 className="text-(--color-accent) mb-4 text-sm font-medium">
+              <i className="fas fa-lightbulb mr-2"></i>좋은 사연을 위한 팁
+            </h3>
+            <ul className="text-(--color-warm-gray) space-y-2 text-sm">
+              {EPISODE_TIP.map((text, index) => (
+                <li key={index}>&bull;&nbsp;{text}&#46;</li>
+              ))}
+            </ul>
+          </div>
+        </EpisodesForm>
       </PageContainer>
     </>
   );
