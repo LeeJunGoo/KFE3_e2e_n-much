@@ -10,6 +10,7 @@ type ParamsType = {
   params: Promise<{ id: string }>;
 };
 
+//FIXME - GET 타입 에러 고치기
 export async function GET(request: NextRequest, { params }: ParamsType) {
   const { id } = await params;
   const { searchParams } = request.nextUrl;

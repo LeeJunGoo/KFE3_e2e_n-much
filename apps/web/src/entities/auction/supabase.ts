@@ -226,28 +226,28 @@ export async function getSellerAuctions(seller_id: string) {
   return data;
 }
 
-//FIXME - supabase 보고 url 맞게 수정하기
-//LINK - https://pukmjrqqelymnkzflppa.supabase.co/storage/v1/object/public/auction-images/images/logo.png
+//TODO - 테스트 해보기
 //FIXME - webp로 최적화하기
-export async function uploadImage(imageData: string) {
+export const uploadImage = async (imageData: string) => {
   const base64 = imageData.split(',')[1];
+
   if (!base64) {
     throw new Error('업로드할 이미지를 잘못 선택하였습니다.');
   }
 
   const { data, error } = await supabase.storage
     .from('vidding')
-    .upload(`auctions_images/${uuidv4()}.png`, decode(base64), {
+    .upload(`auction-images/images/${uuidv4()}.png`, decode(base64), {
       contentType: 'image/png'
     });
 
   if (error) {
-    console.log(error);
-    throw new Error('이미지 업로드 에러');
+    console.error('uploadImage', error);
+    throw new Error('이미지 업로드에 실패했습니다.');
   }
 
   return data;
-}
+};
 
 export const selectAuctionWithAddress = async (id: string) => {
   const { data, error } = await supabase.rpc('get_auction_form', { auction_id_param: id }).maybeSingle();
