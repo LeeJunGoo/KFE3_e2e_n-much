@@ -55,9 +55,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   console.log('first', auction);
 
   //FIXME - schema로 분리
-  //FIXME - 업체명 추가
-  //FIXME - 경매 시작일 제거
-  //FIXME - 주소는 불러오기만 하고, 수정은 안함
+  //FIXME - 스키마 제한 글자 숫자 리터럴 상수화 하기
   const formSchema = z.object({
     title: z
       .string()
@@ -76,25 +74,19 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야 합니다.' })
   });
 
-  //FIXME - 날짜 세팅 지우기
-  //FIXME - 시간 세팅 지우기
+  //FIXME - 날짜, 시간 기능 함수로 분리하기
+  //FIXME - 24 매직 넘버 수정
   const getFormDefaultValues = useCallback(() => {
     const today = new Date();
-    const startDay = new TZDate(today, 'Asia/Seoul');
-    const endDay = addHours(startDay, 25); //NOTE - 임시로 설정한 기본 값
-
-    const startTime = format(startDay, 'HH:mm:ss');
+    const korToday = new TZDate(today, 'Asia/Seoul');
+    const endDay = addHours(korToday, 24);
     const endTime = format(endDay, 'HH:mm:ss');
 
     return {
       title: '',
-      address: '',
-      startDay,
-      startTime,
+      description: '',
       endDay,
       endTime,
-      detailAddress: '',
-      description: '',
       startingPoint: '0',
       maxPoint: '0'
     };
