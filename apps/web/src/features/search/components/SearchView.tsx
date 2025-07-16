@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+
 import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
 import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
 import useSearchAction from 'src/entities/search/hooks/useSearchAction';
@@ -13,12 +13,12 @@ interface SearchViewProps {
 }
 
 const SearchView = ({ open, setOpen }: SearchViewProps) => {
-  const { keyword, setKeyword, handleSearch: searchClick, isLoading } = useSearchAction();
+  const { keyword, setKeyword, handleSearch, isLoading: isSearchLoading } = useSearchAction();
   const { recentKeywords, remove: removeRecentKeyword, clear: clearRecentKeywords } = useRecentKeywords();
-  const { popularKeywords } = usePopularKeywords();
+  const { popularKeywords, isLoading: isPopularLoading } = usePopularKeywords();
 
-  const handleSearch = (searchKeyword: string) => {
-    searchClick(searchKeyword);
+  const handleSearchClick = (searchKeyword: string) => {
+    handleSearch(searchKeyword);
     setOpen(false);
   };
 
@@ -27,17 +27,17 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
       <SearchInput
         keyword={keyword}
         setKeyword={setKeyword}
-        handleSearch={handleSearch}
+        handleSearchClick={handleSearchClick}
         isFocused={open}
-        isLoading={isLoading}
+        isLoading={isSearchLoading}
       />
       <RecentKeywords
         keywords={recentKeywords}
-        handleKeywordClick={handleSearch}
+        handleKeywordClick={handleSearchClick}
         handleRemoveClick={removeRecentKeyword}
         handleClearClick={clearRecentKeywords}
       />
-      <PopularKeywords keywords={popularKeywords} handleKeywordClick={handleSearch} />
+      <PopularKeywords keywords={popularKeywords} handleKeywordClick={handleSearchClick} isLoading={isPopularLoading} />
     </section>
   );
 };

@@ -1,3 +1,4 @@
+import { DEFAULT_POPULAR_LIMIT } from 'src/entities/search/constants';
 import { createClient } from 'src/shared/supabase/client/client';
 import type { KeywordInsert, KeywordRow, keywordUpdate } from 'src/shared/supabase/types';
 
@@ -9,10 +10,9 @@ const supabase = createClient();
  * @returns {Promise<KeywordRow | null>}
  */
 export const selectKeyword = async (keyword: string): Promise<KeywordRow | null> => {
-  const { data, error } = await supabase.from('keywords').select('*').eq('keyword', keyword).single();
+  const { data, error } = await supabase.from('keywords').select('*').eq('keyword', keyword).maybeSingle();
 
-  // .single()은 결과가 없을 때 에러를 반환하므로, 이는 정상적인 경우로 처리합니다. (에러 코드: PGRST116)
-  if (error && error.code !== 'PGRST116') {
+  if (error) {
     console.error('Error fetching keyword:', error);
     throw new Error('키워드 조회에 실패했습니다.');
   }
@@ -53,9 +53,7 @@ export const insertKeyword = async (keyword: string) => {
  * @param limit - 가져올 검색어 개수 (기본값: 10)
  * @returns count가 높은 순서대로 정렬된 KeywordRow 배열
  */
-const defaultLimit = 10;
-
-export const selectPopularKeywords = async (limit = defaultLimit) => {
+export const selectPopularKeywords = async (limit = DEFAULT_POPULAR_LIMIT) => {
   const { data, error } = await supabase
     .from('keywords')
     .select('keyword')
