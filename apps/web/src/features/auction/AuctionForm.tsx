@@ -218,26 +218,6 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     }
   };
 
-  //FIXME - 주소 안씀 지우기
-  const handlePostCodeSearch = (data: Address) => {
-    let fullAddress = data.address;
-    let extraAddress = '';
-
-    if (data.addressType === 'R') {
-      if (data.bname !== '') {
-        extraAddress += data.bname;
-      }
-      if (data.buildingName !== '') {
-        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
-    }
-    form.setValue('address', fullAddress);
-    form.trigger('address');
-    setConfirmPostCode(true);
-    setShowPostCodeSearch(false);
-  };
-
   if (isError) {
     return <p>에러 발생</p>;
   }
