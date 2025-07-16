@@ -1,3 +1,5 @@
+//TODO - 업체명, 주소 등록 페이지에서 삭제하는지 물어보기
+//TODO - 상세 정보에서 수정하기 누르면 자기 계정만 가능하게 할 것인지 물어보기
 //TODO - 폼 유효성 검사 상의
 //FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기
 //TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함)
@@ -35,6 +37,8 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
   const router = useRouter();
 
+  console.log('auction_id', auctionIdParam);
+
   //FIXME - 분리하기
   //FIXME - auction 변수명 구체적으로 바꾸기
   const {
@@ -47,7 +51,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     enabled: !!auctionIdParam
   });
 
-  console.log('first', auction);
+  console.log('fetchedAuction', auction);
 
   //FIXME - schema로 분리
   //FIXME - 스키마 제한 글자 숫자 리터럴 상수화 하기
@@ -186,7 +190,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
         max_point: maxPoint,
         image_urls: imageUrls,
         status: isEditing ? auction.status : 'OPEN',
-        updated_at: new TZDate(new Date(), 'utc') //FIXME - 수정일 경우에만 추가하도록 수정
+        updated_at: isEditing ? new TZDate(new Date(), 'utc') : null
       })
     });
     const result = await data.json();
