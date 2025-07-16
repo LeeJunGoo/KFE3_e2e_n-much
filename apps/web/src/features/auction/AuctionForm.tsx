@@ -22,13 +22,14 @@ import DaumPostcodeEmbed from 'react-daum-postcode';
 import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { fetchAuctionById } from 'src/entities/auction/api';
+import { getAuctionWIthAddress } from 'src/entities/auction/api';
 import { uploadImage } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import type { Address } from 'react-daum-postcode';
+import { $ZodCheckGreaterThan } from 'zod/v4/core';
 
 const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   const isEditing: boolean = auctionIdParam ? true : false;
@@ -48,9 +49,10 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     isError
   } = useQuery({
     queryKey: ['auctionForm'],
-    queryFn: () => fetchAuctionById(auctionIdParam),
+    queryFn: () => getAuctionWIthAddress(auctionIdParam),
     enabled: !!auctionIdParam
   });
+  console.log('first', auction);
 
   //FIXME - schema로 분리
   //FIXME - 업체명 추가
@@ -294,11 +296,14 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    사업체 주소 <span className="text-(--color-red)">&#42;</span>
-                  </FormLabel>
+                  <FormLabel>사업체 주소</FormLabel>
                   <FormControl>
-                    <Input placeholder="상품 위치 또는 주소를 입력하세요." disabled={true} {...field} />
+                    <Input
+                      placeholder="상품 위치 또는 주소를 입력하세요."
+                      disabled={true}
+                      className="bg-white"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -314,6 +319,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
                     <Input
                       placeholder="상품의 상세 위치 또는 상세 주소를 입력하세요."
                       className="bg-white"
+                      disabled={true}
                       {...field}
                     />
                   </FormControl>

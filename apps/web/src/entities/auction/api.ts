@@ -92,7 +92,7 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
 }
 
 export const getAuctionWIthAddress = async (auctionId: string | null) => {
-  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/${auctionId}`;
+  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction_form`;
   const data = await fetch(fetchUrl);
   const result = await data.json();
 

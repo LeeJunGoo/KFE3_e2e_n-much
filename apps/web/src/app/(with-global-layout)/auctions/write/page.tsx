@@ -8,7 +8,6 @@ import AuctionForm from 'src/features/auction/AuctionForm';
 
 const AuctionWritePage = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
   const { auction_id: auctionId } = await searchParams;
-
   if (!auctionId) {
     return <AuctionForm auctionIdParam={null} />;
   } else {
