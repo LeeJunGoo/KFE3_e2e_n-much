@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
+import { getPopularKeywords } from 'src/entities/search/api';
+import { COL_COUNT } from '../constants';
 
-const colCount = 2;
-const initData = ['연인', '기념일', '결혼기념일', '부모님', '어버이날', '생일', '100일', '친구', '졸업', '이벤트'];
-
-// 1위~10위 처럼 1번부터 시작하는 순위 매김
 interface PopularKeyword {
   rank: number;
   keyword: string;
@@ -11,16 +9,16 @@ interface PopularKeyword {
 
 const usePopularKeywords = () => {
   const [popularKeywords, setPopularKeywords] = useState<PopularKeyword[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  /**
-   * 세로 우선으로 데이터 재정렬!
-   */
-  const getVerticalList = (rowCount: number, dataList: string[]): PopularKeyword[] => {
+  // 랭킹순 데이터 재정렬
+  const getVerticalList = (dataList: string[]): PopularKeyword[] => {
     const verticalOrdered: PopularKeyword[] = [];
+    const rowCount = Math.ceil(dataList.length / COL_COUNT);
     for (let row = 0; row < rowCount; row++) {
-      for (let col = 0; col < colCount; col++) {
+      for (let col = 0; col < COL_COUNT; col++) {
         const idx = row + col * rowCount;
-        if (dataList[idx] !== undefined) {
+        if (dataList[idx]) {
           verticalOrdered.push({ rank: idx + 1, keyword: dataList[idx] });
         }
       }
@@ -29,16 +27,22 @@ const usePopularKeywords = () => {
   };
 
   useEffect(() => {
-    // 추후에 여기, DB 데이터 fetch
-    const rowCount = Math.ceil(initData.length / colCount);
-    setPopularKeywords(getVerticalList(rowCount, initData));
+    const fetchKeywords = async () => {
+      setIsLoading(true);
+      try {
+        const data = await getPopularKeywords();
+        setPopularKeywords(getVerticalList(data));
+      } catch (error) {
+        console.error('인기 검색어 로딩 실패:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchKeywords();
   }, []);
 
-  useEffect(() => {
-    // console.log(popularKeywords);
-  }, [popularKeywords]);
-
-  return { popularKeywords };
+  return { popularKeywords, isLoading };
 };
 
 export default usePopularKeywords;

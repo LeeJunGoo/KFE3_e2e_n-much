@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import SearchView from 'src/features/search/SearchView';
+import SearchDrawer from 'src/features/search/SearchDrawer';
 import MobileNavigationList from './MobileNavigationList';
 
 const MobileNavigation = () => {
@@ -14,7 +14,7 @@ const MobileNavigation = () => {
 
   return (
     <>
-      {isSearchOpen && <SearchView open={isSearchOpen} />}
+      {isSearchOpen && <SearchDrawer open={isSearchOpen} setOpen={setIsSearchOpen} />}
       <MobileNavigationList isSearchOpen={isSearchOpen} setIsSearchOpen={setIsSearchOpen} />
     </>
   );
