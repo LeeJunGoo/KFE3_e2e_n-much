@@ -12,9 +12,7 @@ const MainBanner = () => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (!api) {
-      return;
-    }
+    if (!api) return;
 
     const updateState = (api: CarouselApi) => {
       setCount(api!.scrollSnapList().length);
@@ -23,7 +21,6 @@ const MainBanner = () => {
 
     // 첫 로드 시 상태를 한 번 설정
     updateState(api);
-
     api.on('select', updateState);
 
     // eslint-disable-next-line consistent-return

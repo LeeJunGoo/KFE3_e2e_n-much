@@ -32,3 +32,8 @@ export const BANNER_DATA = [
     textStyle: 'md:ml-5'
   }
 ];
+
+// OnboardingPage.tsx
+export const TOTAL_SLIDES = 3;
+export const FIRST_SLIDE_INDEX = 0;
+export const LAST_SLIDE_INDEX = TOTAL_SLIDES - 1;
