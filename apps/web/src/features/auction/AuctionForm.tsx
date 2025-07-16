@@ -158,20 +158,10 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     return data.data;
   };
 
+  //FIXME - uploadImage 리팩토링
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     let imageUrls: string[] = [];
-    const {
-      title,
-      address,
-      detailAddress,
-      startDay,
-      startTime,
-      endDay,
-      endTime,
-      description,
-      startingPoint,
-      maxPoint
-    } = values;
+    const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
     try {
       const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
@@ -185,17 +175,11 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
       imageUrls = await Promise.all(imageUploadPromise);
       console.log('image url', imageUrls);
     } catch (error) {
+      //FIXME - 토스로 알림하고 에러 처리하기
       console.log(error);
     }
 
-    const korStartTime = startTime.split(':');
-    const korStartDate = set(startDay, {
-      hours: Number(korStartTime[0]),
-      minutes: Number(korStartTime[1]),
-      seconds: Number(korStartTime[2])
-    });
-    const utcStartDate = new TZDate(korStartDate, 'utc');
-
+    //FIXME - 타임존을 바꾸는 함수 만들어서 분리하기
     const korEndTime = endTime.split(':');
     const korEndDate = set(endDay, {
       hours: Number(korEndTime[0]),
@@ -204,23 +188,22 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     });
     const utcEndDate = new TZDate(korEndDate, 'utc');
     const auctionId = uuidv4();
-    const { seller_id: sellerId } = await fetchDetailPageUserInfo('');
+    const { seller_id: sellerId } = await fetchDetailPageUserInfo(''); //FIXME - 임시 함수임 수정하거나 삭제해야 함
+    //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
     console.log('셀러', sellerId);
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
         auction_id: isEditing ? auctionIdParam : auctionId,
-        seller_id: sellerId,
+        user_id: sellerId,
         title,
-        address: [address, detailAddress],
-        start_time: utcStartDate,
-        end_time: utcEndDate,
         description,
+        end_time: utcEndDate,
         starting_point: startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls,
-        updated_at: new TZDate(new Date(), 'utc')
+        updated_at: new TZDate(new Date(), 'utc') //FIXME - 수정일 경우에만 추가하도록 수정
       })
     });
     const result = await data.json();

@@ -226,6 +226,8 @@ export async function getSellerAuctions(seller_id: string) {
   return data;
 }
 
+//FIXME - supabase 보고 url 맞게 수정하기
+//LINK - https://pukmjrqqelymnkzflppa.supabase.co/storage/v1/object/public/auction-images/images/logo.png
 export async function uploadImage(imageData: string) {
   const base64 = imageData.split(',')[1];
   if (!base64) {
