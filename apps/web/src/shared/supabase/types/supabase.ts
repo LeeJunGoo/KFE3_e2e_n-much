@@ -72,6 +72,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "addresses_address_id_fkey"
+            columns: ["address_id"]
+            isOneToOne: true
+            referencedRelation: "addresses"
+            referencedColumns: ["address_id"]
+          },
+          {
             foreignKeyName: "addresses_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -283,6 +290,7 @@ export type Database = {
           nick_name?: string
           role?: string
         }
+<<<<<<< HEAD
         Relationships: [
           {
             foreignKeyName: "users_address_id_fkey"
@@ -292,6 +300,9 @@ export type Database = {
             referencedColumns: ["address_id"]
           },
         ]
+=======
+        Relationships: []
+>>>>>>> fcfcb01123229188bc76f632882724a373a952c9
       }
     }
     Views: {
