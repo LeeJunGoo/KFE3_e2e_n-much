@@ -3,13 +3,17 @@ import { getAuctionWIthAddress } from 'src/entities/auction/api';
 import AuctionForm from 'src/features/auction/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 
-const AuctionFormPage = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
+interface AuctionFormPageProps {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}
+
+const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
   const { auction_id: auctionId } = await searchParams;
 
   if (!auctionId) {
     return (
       <>
-        <DetailPageHeader>{'경매 등록'}</DetailPageHeader>
+        <DetailPageHeader>{'경매 등록하기'}</DetailPageHeader>
         <AuctionForm auctionIdParam={null} />
       </>
     );
@@ -24,7 +28,7 @@ const AuctionFormPage = async ({ searchParams }: { searchParams: Promise<{ [key:
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <DetailPageHeader>{'경매 등록'}</DetailPageHeader>
+      <DetailPageHeader>{'경매 수정하기'}</DetailPageHeader>
       <AuctionForm auctionIdParam={auctionId} />
     </HydrationBoundary>
   );
