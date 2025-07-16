@@ -9,9 +9,9 @@ import { useForm } from 'react-hook-form';
 import { patchEpisodeInfo, postEpisodeInfo } from 'src/entities/episode/api';
 import { MAX_DESC_LENGTH, MAX_TITLE_LENGTH } from 'src/entities/episode/constants';
 import { episodeFormSchema } from 'src/entities/episode/schemas';
-import FormActionsButton from './FormActionsButton';
-import FormDescription from './FormDescription';
-import FormTitle from './FormTitle';
+import FormActionsButton from 'src/shared/ui/FormActionsButton';
+import FormDescription from 'src/shared/ui/FormDescription';
+import FormTitle from 'src/shared/ui/FormTitle';
 import type { DetailFormType } from 'src/entities/episode/schemas';
 import type { AuctionRow, EpisodeRow, UserRow } from 'src/shared/supabase/types';
 
