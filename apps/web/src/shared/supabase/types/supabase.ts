@@ -1,4 +1,10 @@
-export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
 
 export type Database = {
   // Allows to automatically instanciate createClient with right options
@@ -66,21 +72,14 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: 'addresses_address_id_fkey';
-            columns: ['address_id'];
-            isOneToOne: true;
-            referencedRelation: 'addresses';
-            referencedColumns: ['address_id'];
+            foreignKeyName: "addresses_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
           },
-          {
-            foreignKeyName: 'addresses_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+        ]
+      }
       auctions: {
         Row: {
           auction_id: string
@@ -99,20 +98,21 @@ export type Database = {
           user_id: string
         }
         Insert: {
-          auction_id?: string;
-          created_at?: string;
-          current_point: number;
-          description: string;
-          end_date: string;
-          favorites?: string[] | null;
-          image_urls: string[];
-          max_point: number;
-          starting_point: number;
-          status: string;
-          title: string;
-          updated_at?: string | null;
-          user_id?: string;
-        };
+          auction_id?: string
+          created_at?: string
+          current_point: number
+          description: string
+          end_date: string
+          favorites?: string[] | null
+          highest_bidder_id?: string | null
+          image_urls?: string[]
+          max_point: number
+          starting_point: number
+          status: string
+          title: string
+          updated_at?: string | null
+          user_id?: string
+        }
         Update: {
           auction_id?: string
           created_at?: string
@@ -258,34 +258,90 @@ export type Database = {
           },
         ]
       }
+      ranking: {
+        Row: {
+          auction_id: string
+          bid_amount: number
+          created_at: string
+          id: string
+          rank_position: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auction_id: string
+          bid_amount: number
+          created_at?: string
+          id?: string
+          rank_position: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auction_id?: string
+          bid_amount?: number
+          created_at?: string
+          id?: string
+          rank_position?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ranking_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["auction_id"]
+          },
+          {
+            foreignKeyName: "ranking_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
-          address_id: string | null;
-          created_at: string;
-          email: string;
-          id: string;
-          nick_name: string;
-          role: string;
-        };
+          address_id: string | null
+          created_at: string
+          email: string
+          id: string
+          nick_name: string
+          role: string
+          user_avatar: string | null
+        }
         Insert: {
-          address_id?: string | null;
-          created_at?: string;
-          email: string;
-          id?: string;
-          nick_name: string;
-          role: string;
-        };
+          address_id?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          nick_name: string
+          role: string
+          user_avatar?: string | null
+        }
         Update: {
-          address_id?: string | null;
-          created_at?: string;
-          email?: string;
-          id?: string;
-          nick_name?: string;
-          role?: string;
-        };
-        Relationships: [];
-      };
-    };
+          address_id?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          nick_name?: string
+          role?: string
+          user_avatar?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "users_address_id_fkey"
+            columns: ["address_id"]
+            isOneToOne: false
+            referencedRelation: "addresses"
+            referencedColumns: ["address_id"]
+          },
+        ]
+      }
+    }
     Views: {
       user_bid_totals: {
         Row: {
@@ -313,8 +369,44 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never;
-    };
+      get_auction_details: {
+        Args:
+          | { auction_id: string }
+          | { auction_id_param: string }
+          | { user_id: number }
+        Returns: {
+          title: string
+          description: string
+          starting_point: number
+          max_point: number
+          image_urls: string[]
+          end_date: string
+          business_name: string
+          postal_code: string
+          road_address: string
+          detail_address: string
+        }[]
+      }
+      get_auction_form: {
+        Args: { auction_id_param: string }
+        Returns: {
+          title: string
+          description: string
+          starting_point: number
+          max_point: number
+          image_urls: string[]
+          end_date: string
+          business_name: string
+          postal_code: string
+          road_address: string
+          detail_address: string
+        }[]
+      }
+      set_winning_bid: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+    }
     Enums: {
       [_ in never]: never
     }
