@@ -62,25 +62,18 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     title: z
       .string()
       .min(5, {
-        message: '경매 제목은 최소 5자가 되어야 합니다.'
+        message: '경매 제목은 최소 5글자가 되어야 합니다.'
       })
       .max(50, {
-        message: '경매 제목은 최대 50자가 되어야 합니다.'
+        message: '경매 제목은 최대 50글자가 되어야 합니다.'
       }),
-    address: z
-      .string()
-      .min(5, { message: '주소는 최소 5글자가 되어야 합니다.' })
-      .refine(() => confirmPostCode, { message: '주소 검색을 통해 주소를 입력해야 합니다.' }),
-    detailAddress: z.string().min(5, { message: '상세 주소는 최소 5글자가 되어야 합니다.' }),
-    startDay: z.date({ message: '경매 시작일을 입력해야 합니다.' }),
-    startTime: z.string().min(8, { message: '경매 시작 시간을 입력해야 합니다.' }),
-    endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }),
-    endTime: z.string().min(8, { message: '경매 종료 시간을 입력해야 합니다.' }),
     description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
       message: '상세 내용은 최대 500자가 되어야 합니다.'
     }),
-    startingPoint: z.string().refine((value) => Number(value) > 0, { message: '최소 포인트는 0보다 커야합니다.' }),
-    maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야합니다.' })
+    endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }),
+    endTime: z.string().min(8, { message: '경매 종료 시각을 입력해야 합니다.' }),
+    startingPoint: z.string().refine((value) => Number(value) > 0, { message: '최소 포인트는 0보다 커야 합니다.' }),
+    maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야 합니다.' })
   });
 
   //FIXME - 날짜 세팅 지우기

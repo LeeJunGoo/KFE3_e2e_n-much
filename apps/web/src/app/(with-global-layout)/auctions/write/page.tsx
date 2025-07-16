@@ -1,4 +1,3 @@
-//NOTE - auction_id 빈 값일 경우 null로 처리
 //NOTE - 서영님 PageHeader import해서 사용하기
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
