@@ -20,7 +20,7 @@ const UserAvatar = ({ src, alt, size, className }: UserAvatarType) => {
   };
 
   return (
-    <Avatar className={twMerge('mr-2', sizes[size], className)}>
+    <Avatar className={twMerge(sizes[size], className)}>
       <AvatarImage src={src} alt={alt} />
       <AvatarFallback>
         <Image src={DefaultAvatar} alt="기본 이미지입니다." />
