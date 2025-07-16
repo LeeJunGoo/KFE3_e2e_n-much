@@ -43,6 +43,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
   const router = useRouter();
 
   //FIXME - 분리하기
+  //FIXME - auction 변수명 구체적으로 바꾸기
   const {
     data: auction,
     isLoading: isDataLoading,
@@ -52,6 +53,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     queryFn: () => getAuctionWIthAddress(auctionIdParam),
     enabled: !!auctionIdParam
   });
+
   console.log('first', auction);
 
   //FIXME - schema로 분리
@@ -97,47 +99,44 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     defaultValues: getFormDefaultValues()
   });
 
+  //FIXME - 날짜, 시간 함수로 분리
   useEffect(() => {
-    //FIXME - 시작일 지우기
-    //NOTE - 주소 표현 어떡해 할지 물어보기
     const setFormDefaultValues = async () => {
       if (!isEditing) {
         return;
       }
 
-      console.log('auctions', auction);
-
-      if (auction) {
-        const { title, address, start_time, end_time, description, image_urls, starting_point, max_point } = auction;
-
-        const startDay = new TZDate(start_time, 'Asia/Seoul');
-        const startTime = format(startDay, 'HH:mm:ss');
-
-        const endDay = new TZDate(end_time, 'Asia/Seoul');
-        const endTime = format(endDay, 'HH:mm:ss');
-
-        form.reset({
-          title,
-          address: address[0],
-          detailAddress: address[1],
-          startDay,
-          startTime,
-          endDay,
-          endTime,
-          description,
-          startingPoint: String(starting_point),
-          maxPoint: String(max_point)
-        });
-
-        if (image_urls) {
-          setPreviewImages(image_urls.map((image: string) => ({ id: uuidv4(), data: image, isUrl: true })));
-        }
-
+      if (!auction) {
         setIsFormLoading(false);
-      } else {
-        form.reset(getFormDefaultValues());
-        setIsFormLoading(false);
+        return;
       }
+
+      const {
+        title,
+        description,
+        end_date: endDate,
+        starting_point: startingPoint,
+        max_point: maxPoint,
+        image_urls: imageUrls
+      } = auction;
+
+      const endDay = new TZDate(endDate, 'Asia/Seoul');
+      const endTime = format(endDay, 'HH:mm:ss');
+
+      form.reset({
+        title,
+        description,
+        endDay,
+        endTime,
+        startingPoint: String(startingPoint),
+        maxPoint: String(maxPoint)
+      });
+
+      if (imageUrls) {
+        setPreviewImages(imageUrls.map((imageUrl: string) => ({ id: uuidv4(), data: imageUrl, isUrl: true })));
+      }
+
+      setIsFormLoading(false);
     };
 
     setFormDefaultValues();
