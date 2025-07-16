@@ -23,7 +23,7 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
   };
 
   return (
-    <section data-role="search_box" aria-label="검색창" className="p-4">
+    <section aria-label="검색창" className="p-4">
       <SearchInput
         keyword={keyword}
         setKeyword={setKeyword}

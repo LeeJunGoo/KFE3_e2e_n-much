@@ -12,9 +12,9 @@ interface RecentKeywordsProps {
 
 const RecentKeywords = ({ keywords, handleKeywordClick, handleRemoveClick, handleClearClick }: RecentKeywordsProps) => {
   return (
-    <div data-role="recent_keywords_section" className="mb-6">
+    <div className="mb-6">
       <div className="mb-3 flex items-center justify-between">
-        <h3 className="text-base font-medium">최근 검색어</h3>
+        <h3>최근 검색어</h3>
         <button className="text-(--color-warm-gray) p-0 text-xs" onClick={handleClearClick}>
           전체 삭제
         </button>

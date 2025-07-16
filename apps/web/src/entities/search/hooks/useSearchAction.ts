@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
@@ -26,7 +28,7 @@ const useSearchAction = () => {
       router.push(`/auctions?keyword=${encodeURIComponent(trimmedKeyword)}`);
       // 검색어 저장 (백그라운드)
       postKeyword(trimmedKeyword).catch((error) => {
-        console.error(`[BACKGROUND] 키워드 저장에 실패했습니다:`, error);
+        console.error(`키워드 저장에 실패했습니다:`, error);
       });
     } catch (error) {
       const message = '검색 처리 중 오류가 발생했습니다.';

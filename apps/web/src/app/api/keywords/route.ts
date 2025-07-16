@@ -8,7 +8,6 @@ export async function GET() {
     return NextResponse.json({ status: 'success', data: popularKeywords });
   } catch (error) {
     const message = error instanceof Error ? error.message : '서버 오류가 발생했습니다.';
-    console.error(`[API/KEYWORDS] GET - ${message}`);
     return NextResponse.json({ status: 'error', message }, { status: 500 });
   }
 }
@@ -17,7 +16,7 @@ export async function POST(request: NextRequest) {
   try {
     const { keyword } = await request.json();
 
-    if (!keyword || typeof keyword !== 'string' || keyword.trim().length === 0) {
+    if (!keyword || keyword.trim().length === 0) {
       return NextResponse.json({ status: 'error', message: '유효하지 않은 키워드입니다.' }, { status: 400 });
     }
 
@@ -37,7 +36,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ status: 'success', message: '키워드가 성공적으로 저장되었습니다.' });
   } catch (error) {
     const message = error instanceof Error ? error.message : '서버 오류가 발생했습니다.';
-    console.error(`[API/KEYWORDS] POST - ${message}`);
     return NextResponse.json({ status: 'error', message }, { status: 500 });
   }
 }
