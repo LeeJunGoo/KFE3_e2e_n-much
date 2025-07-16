@@ -182,8 +182,10 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
         description,
         end_date: utcEndDate,
         starting_point: startingPoint,
+        current_point: isEditing ? auction.current_point : startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls,
+        status: isEditing ? auction.status : 'OPEN',
         updated_at: new TZDate(new Date(), 'utc') //FIXME - 수정일 경우에만 추가하도록 수정
       })
     });
