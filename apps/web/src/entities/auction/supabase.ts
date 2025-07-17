@@ -252,7 +252,7 @@ export const uploadImage = async (imageData: string) => {
 export const selectAuction = async (auctionId: string): Promise<AuctionInsert> => {
   const { data, error } = await supabase
     .from('auctions')
-    .select('title, description, end_date, starting_point, max_point, image_urls')
+    .select('user_id, title, description, end_date, starting_point, max_point, image_urls')
     .eq('auction_id', auctionId)
     .maybeSingle();
 

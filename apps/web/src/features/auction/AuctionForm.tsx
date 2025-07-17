@@ -1,7 +1,6 @@
-//TODO - 업체명, 주소 등록 페이지에서 삭제하는지 물어보기 (KMH)
-//TODO - 상세 정보에서 수정하기 누르면 자기 계정만 가능하게 할 것인지 물어보기 (KMH)
+//TODO - 상세 정보에서 수정하기 누르면 자기 계정인지 확인하기 (KMH)
 //TODO - 폼 유효성 검사 상의 (KMH)
-//FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기 (KMH)
+//FIXME - 경매를 등록할 때, userId는 로그인한 유저의 아이디로 변경하기 (KMH)
 //TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함) (KMH)
 //TODO - 잘못된 auction_id가 전달된 경우도 대처하기 (KMH)
 
@@ -30,7 +29,7 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import { AuctionInsert } from 'src/shared/supabase/types';
+import type { AuctionInsert } from 'src/shared/supabase/types';
 
 const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined }) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -38,6 +37,8 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
 
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
   const router = useRouter();
+
+  const loggedInUserId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기 (KMH)
 
   console.log('auction_id', auctionIdParam);
 
@@ -147,8 +148,6 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
 
     const auctionId = uuidv4();
 
-    const userId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기 (KMH)
-
     let imageUrls: string[] = [];
 
     try {
@@ -169,12 +168,12 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
 
     //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기 (KMH)
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
-    console.log('유저', userId);
+    console.log('로그인한 유저 id', loggedInUserId);
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
         auction_id: isEditing ? auctionIdParam : auctionId,
-        user_id: userId,
+        user_id: loggedInUserId,
         title,
         description,
         end_date: utcEndDate,
