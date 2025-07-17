@@ -6,7 +6,7 @@
 
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
 import { Calendar } from '@repo/ui/components/ui/calendar';
@@ -74,69 +74,58 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
 
   //FIXME - 날짜, 시간 기능 함수로 분리하기 (KMH)
   //FIXME - 24 매직 넘버 수정 (KMH)
-  const getFormDefaultValues = useCallback(() => {
-    const today = new Date();
-    const korToday = new TZDate(today, 'Asia/Seoul');
-    const endDay = addHours(korToday, 24);
+  const getFormDefaultValues = useMemo(() => {
+    if (!isEditing || !fetchedAuction) {
+      const today = new Date();
+      const korToday = new TZDate(today, 'Asia/Seoul');
+      const endDay = addHours(korToday, 24);
+      const endTime = format(endDay, 'HH:mm:ss');
+
+      return {
+        title: '',
+        description: '',
+        endDay,
+        endTime,
+        startingPoint: '0',
+        maxPoint: '0'
+      };
+    }
+
+    const {
+      title,
+      description,
+      end_date: endDate,
+      starting_point: startingPoint,
+      max_point: maxPoint
+    } = fetchedAuction;
+
+    const endDay = new TZDate(endDate, 'Asia/Seoul');
     const endTime = format(endDay, 'HH:mm:ss');
 
     return {
-      title: '',
-      description: '',
+      title,
+      description,
       endDay,
       endTime,
-      startingPoint: '0',
-      maxPoint: '0'
+      startingPoint: String(startingPoint),
+      maxPoint: String(maxPoint)
     };
-  }, []);
+  }, [fetchedAuction, isEditing]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: getFormDefaultValues()
+    defaultValues: getFormDefaultValues
   });
 
-  //FIXME - 날짜, 시간 함수로 분리 (KMH)
   useEffect(() => {
-    const setFormDefaultValues = async () => {
-      if (!isEditing) {
-        return;
-      }
+    const imageUrls = fetchedAuction.image_urls;
 
-      if (!fetchedAuction) {
-        setIsFormLoading(false);
-        return;
-      }
+    if (imageUrls) {
+      setPreviewImages(imageUrls.map((imageUrl: string) => ({ id: uuidv4(), data: imageUrl, isUrl: true })));
+    }
 
-      const {
-        title,
-        description,
-        end_date: endDate,
-        starting_point: startingPoint,
-        max_point: maxPoint,
-        image_urls: imageUrls
-      } = fetchedAuction;
-
-      const endDay = new TZDate(endDate, 'Asia/Seoul');
-      const endTime = format(endDay, 'HH:mm:ss');
-
-      form.reset({
-        title,
-        description,
-        endDay,
-        endTime,
-        startingPoint: String(startingPoint),
-        maxPoint: String(maxPoint)
-      });
-
-      if (imageUrls) {
-        setPreviewImages(imageUrls.map((imageUrl: string) => ({ id: uuidv4(), data: imageUrl, isUrl: true })));
-      }
-
-      setIsFormLoading(false);
-    };
-
-    setFormDefaultValues();
-  }, [auctionIdParam, form, getFormDefaultValues, isEditing, fetchedAuction]);
+    setIsFormLoading(false);
+  }, [fetchedAuction.image_urls]);
 
   //FIXME - uploadImage 리팩토링 (KMH)
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
