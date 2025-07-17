@@ -17,9 +17,9 @@
 //   }
 
 //   return (
-//     <div className="text-right">
-//       <span className="text-(--color-accent) font-medium">{activity.amount?.toLocaleString() || '0'}P</span>
-//     </div>
+// <div className="text-right">
+//   <span className="text-(--color-accent) font-medium">{activity.amount?.toLocaleString() || '0'}P</span>
+// </div>
 //   );
 // };
 

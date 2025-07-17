@@ -44,17 +44,17 @@
 //   };
 
 //   return (
-//     <div className={twMerge('flex items-center', styles.gap)}>
-//       <div
-//         className={twMerge('bg-(--color-secondary) flex items-center justify-center rounded-full', styles.container)}
-//       >
-//         <Icon className={twMerge('text-(--color-accent)', styles.icon)} />
-//       </div>
-//       <div className="flex flex-col">
-//         <h4 className="text-sm font-medium">{title}</h4>
-//         <time className="text-(--color-warm-gray) text-xs">{formatDate(created_at)}</time>
-//       </div>
-//     </div>
+// <div className={twMerge('flex items-center', styles.gap)}>
+//   <div
+//     className={twMerge('bg-(--color-secondary) flex items-center justify-center rounded-full', styles.container)}
+//   >
+//     <Icon className={twMerge('text-(--color-accent)', styles.icon)} />
+//   </div>
+//   <div className="flex flex-col">
+//     <h4 className="text-sm font-medium">{title}</h4>
+//     <time className="text-(--color-warm-gray) text-xs">{formatDate(created_at)}</time>
+//   </div>
+// </div>
 //   );
 // };
 

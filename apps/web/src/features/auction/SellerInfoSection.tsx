@@ -1,6 +1,6 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { fetchSellerAuctionCount } from 'src/entities/auction/api';
-import UserAvatar from 'src/shared/ui/UserAvatar';
+import UserAvatar from 'src/shared/ui/BaseAvatar';
 import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 import type { SellerInfoType } from 'src/entities/auction/types';
 

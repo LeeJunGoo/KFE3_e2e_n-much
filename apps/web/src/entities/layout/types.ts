@@ -1,3 +1,5 @@
+import type { Dispatch, SetStateAction } from 'react';
+
 export interface TabMenuItem {
   label: string;
   icon: React.ReactNode;
@@ -10,4 +12,9 @@ export interface TabNavItemProps {
   item: TabMenuItem;
   isActive?: boolean;
   onClick?: () => void;
+}
+
+export interface MobileNavigationListProps {
+  isSearchOpen: boolean;
+  setIsSearchOpen: Dispatch<SetStateAction<boolean>>;
 }
