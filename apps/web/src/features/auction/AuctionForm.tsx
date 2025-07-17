@@ -31,7 +31,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
 const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined }) => {
-  const isEditing: boolean = auctionIdParam ? true : false;
+  const isEditing: boolean = Boolean(auctionIdParam);
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
@@ -42,7 +42,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
   //FIXME - 분리하기 (KMH)
   //FIXME - auction 변수명 구체적으로 바꾸기 (KMH)
   const {
-    data: auction,
+    data: fetchedAuction,
     isLoading: isDataLoading,
     isError
   } = useQuery({
@@ -51,7 +51,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
     enabled: !!auctionIdParam
   });
 
-  console.log('fetchedAuction', auction);
+  console.log('fetchedAuction', fetchedAuction);
 
   //FIXME - schema로 분리 (KMH)
   //FIXME - 스키마 제한 글자 숫자 리터럴 상수화 하기 (KMH)
@@ -103,7 +103,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
         return;
       }
 
-      if (!auction) {
+      if (!fetchedAuction) {
         setIsFormLoading(false);
         return;
       }
@@ -115,7 +115,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
         starting_point: startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls
-      } = auction;
+      } = fetchedAuction;
 
       const endDay = new TZDate(endDate, 'Asia/Seoul');
       const endTime = format(endDay, 'HH:mm:ss');
@@ -137,7 +137,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
     };
 
     setFormDefaultValues();
-  }, [auctionIdParam, form, getFormDefaultValues, isEditing, auction]);
+  }, [auctionIdParam, form, getFormDefaultValues, isEditing, fetchedAuction]);
 
   //FIXME - uploadImage 리팩토링 (KMH)
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -186,10 +186,10 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
         description,
         end_date: utcEndDate,
         starting_point: startingPoint,
-        current_point: isEditing ? auction.current_point : startingPoint,
+        current_point: isEditing ? fetchedAuction.current_point : startingPoint,
         max_point: maxPoint,
         image_urls: imageUrls,
-        status: isEditing ? auction.status : 'OPEN',
+        status: isEditing ? fetchedAuction.status : 'OPEN',
         updated_at: isEditing ? new TZDate(new Date(), 'utc') : null
       })
     });
