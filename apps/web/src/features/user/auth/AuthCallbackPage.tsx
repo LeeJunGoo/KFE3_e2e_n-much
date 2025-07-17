@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
-import useAuth from 'src/entities/auth/hooks/useAuth';
+import useAuth from 'src/entities/user/auth/hooks/useAuth';
 import { createClient } from 'src/shared/supabase/client/client';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 

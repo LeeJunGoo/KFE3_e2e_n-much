@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { MdOutlineInfo } from 'react-icons/md';
 import { RiShieldCheckLine } from 'react-icons/ri';
 import Logo from 'src/assets/images/logo.svg';
-import SocialAuthSignUp from 'src/features/auth/components/SocialAuthSignUp';
+import SocialAuthSignUp from 'src/features/user/auth/components/SocialAuthSignUp';
 import BaseCard from 'src/widgets/BaseCard';
 
 const SignUpPage = () => {
