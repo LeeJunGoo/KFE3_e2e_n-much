@@ -20,12 +20,3 @@ export const selectSignUp = async (provider: Provider) => {
     throw new Error('알 수 없는 오류가 발생했습니다');
   }
 };
-
-export const getServerUser = async () => {
-  const supabase = await createClient();
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
-
-  return user;
-};

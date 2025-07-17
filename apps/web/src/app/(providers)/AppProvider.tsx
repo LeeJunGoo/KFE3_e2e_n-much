@@ -1,15 +1,12 @@
-import { Toaster } from '@repo/ui/components/ui/sonner';
-import AuthProvider from 'src/app/(providers)/AuthProvider';
-import { getServerUser } from 'src/entities/auth/supabase';
+'use client';
 
-const AppProvider = async ({ children }: { children: React.ReactNode }) => {
-  const user = await getServerUser();
+import { Toaster } from '@repo/ui/components/ui/sonner';
+
+const AppProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <AuthProvider user={user}>
-        {children}
-        <Toaster position="top-center" />
-      </AuthProvider>
+      {children}
+      <Toaster position="top-center" />
     </>
   );
 };
