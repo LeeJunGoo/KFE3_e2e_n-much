@@ -4,14 +4,14 @@ import Image from 'next/image';
 import DefaultAvatar from 'src/assets/images/avatarDefault.svg';
 import { twMerge } from 'tailwind-merge';
 
-type UserAvatarType = {
+type BaseAvatarProps = {
   src: string;
   alt: string;
   size: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
 };
 
-const UserAvatar = ({ src, alt, size, className }: UserAvatarType) => {
+const BaseAvatar = ({ src, alt, size, className }: BaseAvatarProps) => {
   const sizes = {
     sm: 'size-8',
     md: 'size-10',
@@ -20,13 +20,13 @@ const UserAvatar = ({ src, alt, size, className }: UserAvatarType) => {
   };
 
   return (
-    <Avatar className={twMerge('mr-2', sizes[size], className)}>
+    <Avatar className={twMerge(sizes[size], className)}>
       <AvatarImage src={src} alt={alt} />
       <AvatarFallback>
-        <Image src={DefaultAvatar} alt="기본 이미지입니다." />
+        <Image src={DefaultAvatar} alt={alt || '유저 이미지'} />
       </AvatarFallback>
     </Avatar>
   );
 };
 
-export default UserAvatar;
+export default BaseAvatar;

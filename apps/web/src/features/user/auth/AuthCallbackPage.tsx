@@ -33,7 +33,8 @@ const AuthCallbackPage = () => {
               id: user.id,
               nick_name: user.user_metadata?.name || user.email.split('@')[0],
               email: user.email,
-              role: 'buyer'
+              role: 'buyer',
+              user_avatar: user.user_metadata?.avatar_url || ''
             });
           }
           toast.success('로그인 되었습니다!');

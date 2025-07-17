@@ -1,12 +1,9 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
 import { Autoplay } from '@repo/ui/lib/utils';
 import Image from 'next/image';
-import Banner_1 from 'src/assets/images/banner_1.png';
-import Banner_2 from 'src/assets/images/banner_2.png';
-import Banner_3 from 'src/assets/images/banner_3.png';
+import { BANNER_DATA } from 'src/entities/layout/constants';
 import type { CarouselApi } from '@repo/ui/components/ui/carousel';
 
 const MainBanner = () => {
@@ -14,12 +11,8 @@ const MainBanner = () => {
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
 
-  const imageArray = [Banner_1, Banner_2, Banner_3];
-
   useEffect(() => {
-    if (!api) {
-      return;
-    }
+    if (!api) return;
 
     const updateState = (api: CarouselApi) => {
       setCount(api!.scrollSnapList().length);
@@ -28,7 +21,6 @@ const MainBanner = () => {
 
     // 첫 로드 시 상태를 한 번 설정
     updateState(api);
-
     api.on('select', updateState);
 
     // eslint-disable-next-line consistent-return
@@ -38,7 +30,7 @@ const MainBanner = () => {
   }, [api]);
 
   return (
-    <div className="relative w-full">
+    <section className="relative w-full">
       <Carousel
         setApi={setApi}
         opts={{
@@ -52,24 +44,24 @@ const MainBanner = () => {
           })
         ]}
       >
-        <CarouselContent>
-          {imageArray.map((url, index) => (
-            <CarouselItem key={`${url.src}-${index}`}>
-              <div className="relative h-64 w-full overflow-hidden">
-                <Image
-                  src={url}
-                  alt={`메인 배너 이미지 ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(min-width: 768px) 672px, 100vw"
-                  priority
-                />
+        <CarouselContent className="-ml-0">
+          {BANNER_DATA.map((item) => (
+            <CarouselItem key={item.alt} className="pl-0">
+              <div
+                className={`flex h-80 w-full flex-col items-center justify-center md:h-64 md:flex-row ${item.backgroundColor}`}
+              >
+                <div className={`my-5 font-semibold md:w-2/4 ${item.textStyle}`}>
+                  <h2 className="text-2xl">{item.title}</h2>
+                  <h3 className="text-xl">{item.subTitle}</h3>
+                </div>
+                <div className={`relative md:w-2/4 ${item.imageStyle}`}>
+                  <Image src={item.src} alt={item.alt} fill className="object-contain" priority />
+                </div>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
-
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 space-x-2 transition-transform">
         {Array.from({ length: count }).map((_, index) => (
           <button
@@ -82,7 +74,7 @@ const MainBanner = () => {
           />
         ))}
       </div>
-    </div>
+    </section>
   );
 };
 
