@@ -1,7 +1,7 @@
 'use client';
 import { createContext } from 'react';
 import type { ReactNode } from 'react';
-import useAuth from 'src/entities/user/auth/hooks/useAuth';
+import useAuth from 'src/entities/auth/hooks/useAuth';
 import type { User } from '@supabase/supabase-js';
 
 interface AuthContextType {

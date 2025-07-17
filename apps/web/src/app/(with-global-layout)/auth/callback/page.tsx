@@ -1,4 +1,4 @@
-import AuthCallbackPage from 'src/features/user/auth/AuthCallbackPage';
+import AuthCallbackPage from 'src/features/auth/AuthCallbackPage';
 
 const AuthCallback = () => {
   return (
