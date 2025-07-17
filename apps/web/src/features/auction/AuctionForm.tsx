@@ -178,7 +178,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
         description,
         end_date: utcEndDate,
         starting_point: startingPoint,
-        current_point: isEditing ? fetchedAuction.current_point : startingPoint,
+        current_point: isEditing ? fetchedAuction.current_point : 0,
         max_point: maxPoint,
         image_urls: imageUrls,
         status: isEditing ? fetchedAuction.status : 'OPEN',
