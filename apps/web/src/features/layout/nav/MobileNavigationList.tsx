@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { AiFillHome, AiOutlineSearch, AiOutlinePlusCircle, AiOutlineUser } from 'react-icons/ai';
+import { AiFillHome, AiOutlineSearch, AiFillPlusCircle } from 'react-icons/ai';
+import { FaUser } from 'react-icons/fa';
 import { RiAuctionFill } from 'react-icons/ri';
 import { useActiveRoute } from 'src/entities/layout/hooks/useActiveRoute';
 import type { MobileNavigationListProps } from 'src/entities/layout/types';
@@ -30,25 +31,25 @@ const MobileNavigationList = ({ isSearchOpen, setIsSearchOpen }: MobileNavigatio
         </li>
         <li className="flex-1" onClick={() => setIsSearchOpen(!isSearchOpen)}>
           <div className={`${baseClass} ${getTextColor(isSearchOpen)}`}>
-            <AiOutlineSearch size={20} />
+            <AiOutlineSearch size={22} />
             <span className="mt-1 text-xs">검색</span>
           </div>
         </li>
         <li className="flex-1">
           <Link href="/auctions/write" className={`${baseClass} ${getTextColor(isAuctionWrite)}`}>
-            <AiOutlinePlusCircle size={20} />
+            <AiFillPlusCircle size={22} />
             <span className="mt-1 text-xs">경매등록</span>
           </Link>
         </li>
         <li className="flex-1">
           <Link href="/auctions" className={`${baseClass} ${getTextColor(isAuctions)}`}>
-            <RiAuctionFill size={20} />
+            <RiAuctionFill size={22} />
             <span className="mt-1 text-xs">경매현황</span>
           </Link>
         </li>
         <li className="flex-1">
           <Link href="/mypage" className={`${baseClass} ${getTextColor(isMypage)}`}>
-            <AiOutlineUser size={20} />
+            <FaUser size={20} />
             <span className="mt-1 text-xs">마이페이지</span>
           </Link>
         </li>

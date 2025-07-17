@@ -1,34 +1,71 @@
-import { formatNumber } from 'src/shared/utils/formatNumber';
+import { useState } from 'react';
+import { Button } from '@repo/ui/components/ui/button';
+import { toast } from '@repo/ui/components/ui/sonner';
+import { FiRepeat } from 'react-icons/fi';
+import AddressStatus from 'src/features/user/mypage/components/main/AddressStatus';
+import BaseAvatar from 'src/shared/ui/BaseAvatar';
+import BaseBadge from 'src/shared/ui/BaseBadge';
 import BaseCard from 'src/widgets/BaseCard';
+import type { User } from '@supabase/supabase-js';
 
-const MyPageUserProfile = () => {
+type MyPageUserProfileProps = {
+  data: User['user_metadata'];
+};
+
+type RoleType = 'buyer' | 'seller';
+
+const ROLE_CONFIG = {
+  buyer: {
+    roleNext: 'seller' as const,
+    display: '입찰 참여자',
+    roleNextToast: '경매 진행자',
+    variant: 'success' as const
+  },
+  seller: {
+    roleNext: 'buyer' as const,
+    display: '경매 진행자',
+    roleNextToast: '입찰 참여자',
+    variant: 'error' as const
+  }
+} as const;
+
+const MyPageUserProfile = ({ data }: MyPageUserProfileProps) => {
+  const { name, email, avatar_url: avatarUrl } = data;
+  const role = 'buyer';
+  const [currentRole, setCurrentRole] = useState<RoleType>(role);
+
+  const currentConfig = ROLE_CONFIG[currentRole];
+  const roleType = currentConfig.display;
+  const badgeVariant = currentConfig.variant;
+
+  const handleRoleToggle = () => {
+    const config = ROLE_CONFIG[currentRole];
+    setCurrentRole(config.roleNext);
+
+    toast.success(`${config.roleNextToast}로 변경 되었습니다.`);
+  };
+
   return (
     <BaseCard as="section" variant="primary">
-      <div className="flex items-start justify-between">
+      <div className="flex items-start justify-between pb-1">
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
-            <h2 className="text-xl font-bold">사용자</h2>
-            {/* <RoleBadge role={role === 'BUYER' ? ROLE_LABEL.BUYER : ROLE_LABEL.SELLER} />
-             */}
-            뱃지
+            <h2 className="text-xl font-bold">{name}</h2>
+            <Button variant="ghost" className="p-0" onClick={handleRoleToggle}>
+              <BaseBadge className="rounded-full px-3 py-1" variant={badgeVariant}>
+                {roleType}
+                <FiRepeat className="ml-1" />
+              </BaseBadge>
+            </Button>
           </div>
-          <p className="text-(--color-warm-gray) text-sm">메일</p>
-          {/* {role === 'SELLER' && ( */}
-          <p className="text-(--color-warm-gray) mt-0.5 text-sm">
-            {/* 나중에 실제 주소 필드로 변경 */}
-            서울특별시 서대문구
-          </p>
-          {/* )} */}
+          <p className="text-(--color-warm-gray) text-sm">{email}</p>
         </div>
         <div className="bg-(--color-primary) relative flex size-14 shrink-0 overflow-hidden rounded-full text-white">
-          {/* {userInfo?.avatar ? (
-            <Image src={userInfo?.avatar} alt="프로필" width={56} height={56} className="h-full w-full object-cover" />
-          ) : ( */}
-          <span className="text-lg font-medium">아바타</span>
-          {/* )} */}
+          <BaseAvatar src={avatarUrl} alt={name} size="xl" />
         </div>
       </div>
-      <div className="border-(--color-warm-gray)/30 mt-4 border-t pt-4">
+      {currentRole === 'seller' && <AddressStatus />}
+      <div className="border-(--color-warm-gray)/30 border-t pt-4">
         <div className="flex items-center justify-between">
           <p className="text-sm">보유 포인트</p>
           <div className="flex items-baseline gap-1">
