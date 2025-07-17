@@ -92,7 +92,7 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
 }
 
 //NOTE - 경매 등록/수정 페이지에서 경매 정보와 주소 정보 가져오기
-export const getAuctionWIthAddress = async (auctionId: string | null) => {
+export const getAuctionWIthAddress = async (auctionId: string | undefined) => {
   const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction_form`;
   const data = await fetch(fetchUrl);
   const result = await data.json();

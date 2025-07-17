@@ -1,8 +1,8 @@
-//TODO - 업체명, 주소 등록 페이지에서 삭제하는지 물어보기
-//TODO - 상세 정보에서 수정하기 누르면 자기 계정만 가능하게 할 것인지 물어보기
-//TODO - 폼 유효성 검사 상의
-//FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기
-//TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함)
+//TODO - 업체명, 주소 등록 페이지에서 삭제하는지 물어보기 (KMH)
+//TODO - 상세 정보에서 수정하기 누르면 자기 계정만 가능하게 할 것인지 물어보기 (KMH)
+//TODO - 폼 유효성 검사 상의 (KMH)
+//FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기 (KMH)
+//TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함) (KMH)
 
 'use client';
 
@@ -30,7 +30,7 @@ import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 
-const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
+const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined }) => {
   const isEditing: boolean = auctionIdParam ? true : false;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
@@ -39,8 +39,8 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
 
   console.log('auction_id', auctionIdParam);
 
-  //FIXME - 분리하기
-  //FIXME - auction 변수명 구체적으로 바꾸기
+  //FIXME - 분리하기 (KMH)
+  //FIXME - auction 변수명 구체적으로 바꾸기 (KMH)
   const {
     data: auction,
     isLoading: isDataLoading,
@@ -53,8 +53,8 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
 
   console.log('fetchedAuction', auction);
 
-  //FIXME - schema로 분리
-  //FIXME - 스키마 제한 글자 숫자 리터럴 상수화 하기
+  //FIXME - schema로 분리 (KMH)
+  //FIXME - 스키마 제한 글자 숫자 리터럴 상수화 하기 (KMH)
   const formSchema = z.object({
     title: z
       .string()
@@ -73,8 +73,8 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야 합니다.' })
   });
 
-  //FIXME - 날짜, 시간 기능 함수로 분리하기
-  //FIXME - 24 매직 넘버 수정
+  //FIXME - 날짜, 시간 기능 함수로 분리하기 (KMH)
+  //FIXME - 24 매직 넘버 수정 (KMH)
   const getFormDefaultValues = useCallback(() => {
     const today = new Date();
     const korToday = new TZDate(today, 'Asia/Seoul');
@@ -96,7 +96,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     defaultValues: getFormDefaultValues()
   });
 
-  //FIXME - 날짜, 시간 함수로 분리
+  //FIXME - 날짜, 시간 함수로 분리 (KMH)
   useEffect(() => {
     const setFormDefaultValues = async () => {
       if (!isEditing) {
@@ -139,11 +139,11 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     setFormDefaultValues();
   }, [auctionIdParam, form, getFormDefaultValues, isEditing, auction]);
 
-  //FIXME - uploadImage 리팩토링
+  //FIXME - uploadImage 리팩토링 (KMH)
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
-    //FIXME - 타임존을 바꾸는 함수 만들어서 분리하기
+    //FIXME - 타임존을 바꾸는 함수 만들어서 분리하기 (KMH)
     const korEndTime = endTime.split(':');
     const korEndDate = set(endDay, {
       hours: Number(korEndTime[0]),
@@ -154,7 +154,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
 
     const auctionId = uuidv4();
 
-    const userId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기
+    const userId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기 (KMH)
 
     let imageUrls: string[] = [];
 
@@ -170,11 +170,11 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
       imageUrls = await Promise.all(imageUploadPromise);
       console.log('image url', imageUrls);
     } catch (error) {
-      //FIXME - 토스로 알림하고 에러 처리하기
+      //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
       console.log(error);
     }
 
-    //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기
+    //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기 (KMH)
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
     console.log('유저', userId);
     const data = await fetch(fetchUrl, {
@@ -199,24 +199,25 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | null }) => {
     console.log('결과', result);
     console.log('옥션아이디', auctionId);
     if (isEditing) {
-      //FIXME - 테스트 끝나면 주석 제거하기
+      //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
       // router.push(`/auctions/${auctionIdParam}`);
     } else {
-      //FIXME - 테스트 끝나면 주석 제거하기
+      //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
       // router.push(`/auctions/${auctionId}`);
     }
   };
 
-  //FIXME - toss로 에러를 알리고, 에러 처리하기
+  //FIXME - toss로 에러를 알리고, 에러 처리하기 (KMH)
   if (isError) {
     return <p>에러 발생</p>;
   }
 
-  //FIXME - 스켈레톤 UI 사용
+  //FIXME - 스켈레톤 UI 사용 (KMH)
   if (isFormLoading || isDataLoading) {
     return <p>Loading...</p>;
   }
 
+  //FIXME - UI 수정하기 (KMH)
   return (
     <>
       <PageContainer>

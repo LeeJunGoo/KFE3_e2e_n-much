@@ -9,16 +9,19 @@ interface AuctionFormPageProps {
 
 const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
   const { auction_id: auctionId } = await searchParams;
+  const isEditing = Boolean(auctionId);
+  const pageTitle = isEditing ? '경매 수정하기' : '경매 등록하기';
 
-  if (!auctionId) {
+  if (!isEditing) {
     return (
       <>
-        <DetailPageHeader>{'경매 등록하기'}</DetailPageHeader>
-        <AuctionForm auctionIdParam={null} />
+        <DetailPageHeader>{pageTitle}</DetailPageHeader>
+        <AuctionForm auctionIdParam={undefined} />
       </>
     );
   }
 
+  //NOTE - 다른 곳에서 사용할 일이 있다면 공통으로 분리하기 (auctionList에서 사용할 것으로 예상) (KMH)
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
@@ -28,7 +31,7 @@ const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <DetailPageHeader>{'경매 수정하기'}</DetailPageHeader>
+      <DetailPageHeader>{pageTitle}</DetailPageHeader>
       <AuctionForm auctionIdParam={auctionId} />
     </HydrationBoundary>
   );
