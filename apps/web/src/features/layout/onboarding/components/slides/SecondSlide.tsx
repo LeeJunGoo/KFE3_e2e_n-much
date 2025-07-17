@@ -14,7 +14,7 @@ const SecondSlide = () => {
         <div className="animate-float from-(--color-accent) to-(--color-primary) flex size-28 items-center justify-center rounded-3xl bg-gradient-to-br shadow-xl md:mb-4 md:size-32">
           <LuPenTool className="size-14 text-white md:size-16" />
         </div>
-        <div className="animate-pulse-heart bg-(--color-primary) absolute -right-2 -top-2 flex size-8 items-center justify-center rounded-full">
+        <div className="animate-pulse-heart bg-(--color-primary) absolute -right-2 -top-4 flex size-8 items-center justify-center rounded-full">
           <span className="text-sm text-white">📝</span>
         </div>
       </div>

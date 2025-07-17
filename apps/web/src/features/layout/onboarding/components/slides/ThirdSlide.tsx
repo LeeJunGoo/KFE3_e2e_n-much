@@ -8,7 +8,7 @@ const ThirdSlide = () => {
         <div className="animate-float from-(--color-green) to-(--color-primary) mb-4 flex size-28 items-center justify-center rounded-3xl bg-gradient-to-br shadow-xl md:size-32">
           <LuTrophy className="md:size-15 size-13 text-white" />
         </div>
-        <div className="animate-pulse-heart bg-(--color-green) absolute -right-2 -top-2 flex size-8 items-center justify-center rounded-full">
+        <div className="animate-pulse-heart bg-(--color-green) absolute -right-2 -top-4 flex size-8 items-center justify-center rounded-full">
           <span className="text-sm text-white">🎉</span>
         </div>
       </div>
