@@ -3,6 +3,7 @@
 //TODO - 폼 유효성 검사 상의 (KMH)
 //FIXME - 경매를 등록할 때, sellerId는 로그인한 유저의 아이디로 변경하기 (KMH)
 //TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함) (KMH)
+//TODO - 잘못된 auction_id가 전달된 경우도 대처하기 (KMH)
 
 'use client';
 
@@ -40,6 +41,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
   console.log('auction_id', auctionIdParam);
 
   //FIXME - 분리하기 (KMH)
+  //FIXME - fetchedAuction 타입 명확하게 작성하기 (KMH)
   const {
     data: fetchedAuction,
     isLoading: isAuctionFetching,
@@ -118,7 +120,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
   });
 
   useEffect(() => {
-    const imageUrls = fetchedAuction.image_urls;
+    const imageUrls = fetchedAuction?.image_urls;
 
     if (imageUrls) {
       setPreviewImages(imageUrls.map((imageUrl: string) => ({ id: uuidv4(), data: imageUrl, isUrl: true })));
@@ -127,7 +129,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
     if (isFormLoading) {
       setIsFormLoading(false);
     }
-  }, [fetchedAuction.image_urls, isFormLoading]);
+  }, [fetchedAuction?.image_urls, isFormLoading]);
 
   //FIXME - uploadImage 리팩토링 (KMH)
   const onSubmit = async (values: z.infer<typeof formSchema>) => {

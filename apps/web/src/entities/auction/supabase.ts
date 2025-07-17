@@ -226,8 +226,8 @@ export async function getSellerAuctions(seller_id: string) {
   return data;
 }
 
-//TODO - 테스트 해보기
-//FIXME - webp로 최적화하기
+//TODO - 테스트 해보기 (KMH)
+//FIXME - webp로 최적화하기 (KMH)
 export const uploadImage = async (imageData: string) => {
   const base64 = imageData.split(',')[1];
 
@@ -236,8 +236,8 @@ export const uploadImage = async (imageData: string) => {
   }
 
   const { data, error } = await supabase.storage
-    .from('vidding')
-    .upload(`auction-images/images/${uuidv4()}.png`, decode(base64), {
+    .from('auction-images')
+    .upload(`images/${uuidv4()}.png`, decode(base64), {
       contentType: 'image/png'
     });
 
@@ -245,7 +245,7 @@ export const uploadImage = async (imageData: string) => {
     console.error('uploadImage', error);
     throw new Error('이미지 업로드에 실패했습니다.');
   }
-
+  console.log('path', data.fullPath);
   return data;
 };
 

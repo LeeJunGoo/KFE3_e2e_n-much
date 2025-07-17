@@ -1,5 +1,5 @@
-//FIXME - type 하드 코딩 수정하기
-//FIXME - status 하드 코딩 수정하기
+//FIXME - type 하드 코딩 수정하기 (KMH)
+//FIXME - status 하드 코딩 수정하기 (KMH)
 
 import { NextResponse } from 'next/server';
 import { selectAuctionWithAddress, selectSellerAuctionCount } from 'src/entities/auction/supabase';

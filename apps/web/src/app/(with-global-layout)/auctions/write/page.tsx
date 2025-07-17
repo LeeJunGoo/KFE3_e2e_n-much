@@ -1,3 +1,5 @@
+//FIXME - memo 훅으로 최적화 시도 해보기
+
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getAuctionWIthAddress } from 'src/entities/auction/api';
 import AuctionForm from 'src/features/auction/AuctionForm';
