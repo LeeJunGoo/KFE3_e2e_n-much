@@ -10,7 +10,6 @@ type ParamsType = {
   params: Promise<{ id: string }>;
 };
 
-//FIXME - GET 타입 에러 고치기
 export async function GET(request: NextRequest, { params }: ParamsType) {
   const { id } = await params;
   const { searchParams } = request.nextUrl;
@@ -25,16 +24,13 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
     } else if (type === 'auction_detail') {
       res = await selectHighestBidder(id);
     } else {
-      return NextResponse.json(
-        { status: 'error', message: '잘못된 정보를 전달하였습니다.', id, type },
-        { status: 400 }
-      );
+      return NextResponse.json({ message: '잘못된 정보를 전달하였습니다.', id, type }, { status: 400 });
     }
 
-    return NextResponse.json({ status: 'success', data: res }, { status: 200 });
+    return NextResponse.json(res, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
   }
 }
