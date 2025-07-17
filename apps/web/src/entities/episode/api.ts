@@ -1,7 +1,7 @@
-import type { EpisodeInsert, EpisodeRow } from '../../shared/supabase/types';
-import type { EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
+import type { EpisodeCreateType, EpisodeEditType, EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
+import type { EpisodeRow } from 'src/shared/supabase/types';
 
-// NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
+//NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
 export const fetchEpisodesById = async (auction_id: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/?auctionId=${auction_id}`);
 
@@ -14,84 +14,56 @@ export const fetchEpisodesById = async (auction_id: string) => {
   return data.data;
 };
 
-//NOTE - 톡정 에피소드 정보
-export const fetchEpisodeById = async (episode_id: EpisodeRow['episode_id']) => {
+//ANCHOR - 톡정 에피소드 정보
+export const getEpisodeInfo = async (episode_id: EpisodeRow['episode_id']) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/?episodeId=${episode_id}`);
 
   if (!res.ok) {
-    const errorData = await res.json();
-    if (res.status === 400) {
-      console.error(errorData.message);
-      return;
-    }
     throw new Error('사연 정보를 가져오는 과정에서 네트워크 에러가 발생했습니다.');
   }
 
-  const result: EpisodeInfo = await res.json();
-
-  return result.data;
+  const data: EpisodeInfo = await res.json();
+  return data.data;
 };
 
-//NOTE - 톡정 에피소드 등록
-export const fetchCreateEpisode = async ({
-  auction_id,
-  buyer_id,
-  title,
-  description
-}: Pick<EpisodeInsert, 'auction_id' | 'buyer_id' | 'title' | 'description'>) => {
+//ANCHOR - 톡정 에피소드 등록
+export const postEpisodeInfo = async ({ auctionId, userId, title, description }: EpisodeCreateType) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
     body: JSON.stringify({
-      auction_id,
-      buyer_id,
+      auctionId,
+      userId,
       title,
       description
     })
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    if (res.status === 400) {
-      console.error(errorData.message);
-      return;
-    }
-    throw new Error('사연을 수정하는 과정에서 네트워크 에러가 발생했습니다.');
+    throw new Error('사연을 생성하는 과정에서 네트워크 에러가 발생했습니다.');
   }
-
-  const data: EpisodeInfo = await res.json();
-
-  return data.status;
+  const status = await res.json();
+  return status;
 };
 
-//NOTE - 톡정 에피소드 수정
-export const fetchEditEpisode = async ({
-  episode_id,
-  title,
-  description
-}: Pick<EpisodeInsert, 'episode_id' | 'title' | 'description'>) => {
+//ANCHOR - 톡정 에피소드 수정
+export const patchEpisodeInfo = async ({ episodeId, title, description }: EpisodeEditType) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes?type=updateEpisode`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'PATCH',
     body: JSON.stringify({
-      episode_id,
+      episodeId,
       title,
       description
     })
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    if (res.status === 400) {
-      console.error(errorData.message);
-      return;
-    }
     throw new Error('사연을 수정하는 과정에서 네트워크 에러가 발생했습니다.');
   }
 
-  const data: EpisodeInfo = await res.json();
-
-  return data.status;
+  const status = await res.json();
+  return status;
 };
 
 //NOTE - 톡정 에피소드 삭제

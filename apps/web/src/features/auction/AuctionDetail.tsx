@@ -1,7 +1,7 @@
 import { Badge } from '@repo/ui/components/ui/badge';
 import { Card } from '@repo/ui/components/ui/card';
 import Link from 'next/link';
-import AuctionTimer from 'src/features/auction/AuctionTimer';
+import AuctionTimer from 'src/features/auction/shared/AuctionTimer';
 import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 import type { SellerInfoType } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
