@@ -16,8 +16,12 @@ const MobileNavigationList = ({ isSearchOpen, setIsSearchOpen }: MobileNavigatio
   const { isHome, isAuctionWrite, isAuctions, isMypage } = useActiveRoute();
 
   return (
-    <nav className="border-t-(--color-warm-gray)/30 fixed bottom-0 left-0 right-0 z-40 m-auto h-16 max-w-2xl border-t bg-white">
-      <ul className="flex h-full items-center justify-between">
+    <nav
+      className="border-t-(--color-warm-gray)/30 fixed bottom-0 left-0 right-0 z-40 m-auto h-16 max-w-2xl border-t bg-white"
+      role="navigation"
+      aria-label="하단 모바일 메뉴"
+    >
+      <ul className="flex h-full items-center justify-between" role="menubar">
         <li className="flex-1">
           <Link href="/main" className={`${baseClass} ${getTextColor(isHome)}`}>
             <AiFillHome size={20} />
