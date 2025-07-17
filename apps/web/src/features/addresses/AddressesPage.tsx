@@ -1,12 +1,13 @@
+import AddressList from 'src/features/addresses/components/AddressList';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 
 const AddressesPage = () => {
   return (
     <>
-      <DetailPageHeader>배송지 관리</DetailPageHeader>
+      <DetailPageHeader>주소록 관리</DetailPageHeader>
       <PageContainer>
-        ㅇㅇ
+        <AddressList />
       </PageContainer>
     </>
   );
