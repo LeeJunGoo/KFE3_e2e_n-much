@@ -40,11 +40,10 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
   console.log('auction_id', auctionIdParam);
 
   //FIXME - 분리하기 (KMH)
-  //FIXME - auction 변수명 구체적으로 바꾸기 (KMH)
   const {
     data: fetchedAuction,
-    isLoading: isDataLoading,
-    isError
+    isLoading: isDataFetching,
+    isError: isDataFetchingError
   } = useQuery({
     queryKey: ['auctionForm'],
     queryFn: () => getAuctionWIthAddress(auctionIdParam),
@@ -208,12 +207,12 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
   };
 
   //FIXME - toss로 에러를 알리고, 에러 처리하기 (KMH)
-  if (isError) {
+  if (isDataFetchingError) {
     return <p>에러 발생</p>;
   }
 
   //FIXME - 스켈레톤 UI 사용 (KMH)
-  if (isFormLoading || isDataLoading) {
+  if (isFormLoading || isDataFetching) {
     return <p>Loading...</p>;
   }
 
