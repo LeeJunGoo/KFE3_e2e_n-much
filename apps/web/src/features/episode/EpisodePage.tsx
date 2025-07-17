@@ -4,7 +4,7 @@ import { getEpisodeInfo } from 'src/entities/episode/api';
 import { EPISODE_TIP } from 'src/entities/episode/constants';
 import EpisodeAuctionCard from 'src/features/episode/EpisodeAuctionCard';
 import EpisodesForm from 'src/features/episode/EpisodeForm';
-import { createClient } from 'src/shared/supabase/client/server';
+import { createServer } from 'src/shared/supabase/client/server';
 import { type EpisodeRow } from 'src/shared/supabase/types';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
@@ -22,7 +22,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
   }
 
   //NOTE - 로그인된 유저 정보
-  const supabase = await createClient();
+  const supabase = await createServer();
   const {
     data: { user }
   } = await supabase.auth.getUser();

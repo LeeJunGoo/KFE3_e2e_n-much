@@ -10,7 +10,7 @@ import {
   selectWinningEpisode,
   updateEpisodeById
 } from 'src/entities/episode/supabase';
-import { createClient } from 'src/shared/supabase/client/server';
+import { createServer } from 'src/shared/supabase/client/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
       res = await selectEpisodeById(episodeId);
     }
     if (type === 'biddingCount') {
-      const supabase = await createClient();
+      const supabase = await createServer();
       const {
         data: { user }
       } = await supabase.auth.getUser();
