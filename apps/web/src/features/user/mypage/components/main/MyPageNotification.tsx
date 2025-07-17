@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Button } from '@repo/ui/components/ui/button';
+import Link from 'next/link';
 import { MdInfoOutline, MdLightbulb } from 'react-icons/md';
 import BaseCard from 'src/widgets/BaseCard';
 
