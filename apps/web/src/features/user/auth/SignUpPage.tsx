@@ -12,7 +12,7 @@ const SignUpPage = () => {
         <Image src={Logo} alt="logo" className="mx-auto block size-20" />
         <h2 className="text-xl">당신의 가치를 Vidding</h2>
       </div>
-      <BaseCard as="div" className="p-15 mb-8 mt-10 w-full px-4 pb-10">
+      <BaseCard as="div" className="p-15 m-auto mb-8 mt-10 w-full max-w-md px-4 pb-10">
         <p className="text-2xl font-semibold">환영합니다! 👋</p>
         <p className="mb-8 mt-2 text-sm opacity-60">소셜 계정으로 빠르게 시작해 보세요</p>
         <SocialAuthSignUp />
