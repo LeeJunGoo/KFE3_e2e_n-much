@@ -1,5 +1,4 @@
 'use client';
-
 import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/authStore';
 import LogoutButton from 'src/features/user/mypage/components/main/LogoutButton';
 import MyPageNavigation from 'src/features/user/mypage/components/main/MyPageNavigation';
