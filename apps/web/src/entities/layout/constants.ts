@@ -37,3 +37,22 @@ export const BANNER_DATA = [
 export const TOTAL_SLIDES = 3;
 export const FIRST_SLIDE_INDEX = 0;
 export const LAST_SLIDE_INDEX = TOTAL_SLIDES - 1;
+
+// SecondSlide.tsx
+export const SAMPLE_STORIES = [
+  {
+    story: '엄마 생신이라 오랜만에 둘이서 외식을 하고 싶어요...',
+    likes: 24,
+    name: '김OO님'
+  },
+  {
+    story: '아이들 때문에 둘만의 시간이 없었는데...',
+    likes: 18,
+    name: '이OO님'
+  },
+  {
+    story: '힘든 시간을 보낸 우리의 기념일을 축하하고 싶어요...',
+    likes: 31,
+    name: '박OO님'
+  }
+];

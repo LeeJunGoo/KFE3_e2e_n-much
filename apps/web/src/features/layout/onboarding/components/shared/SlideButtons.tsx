@@ -10,9 +10,10 @@ type SlideButtonsProps = {
 
 const SlideButtons = ({ prev, current, next }: SlideButtonsProps) => {
   return (
-    <div className="flex items-center justify-between p-6">
+    <div className="flex items-center justify-between py-6">
       <Button
         variant="ghost"
+        size="lg"
         onClick={prev}
         disabled={current === FIRST_SLIDE_INDEX}
         className="text-(--color-warm-gray) hover:text-(--color-accent) disabled:opacity-30"
@@ -21,9 +22,10 @@ const SlideButtons = ({ prev, current, next }: SlideButtonsProps) => {
       </Button>
       <Button
         onClick={next}
-        className="bg-(--color-accent) hover:bg-(--color-accent)/90 rounded-xl px-8 py-3 text-white shadow-lg"
+        size="lg"
+        className="bg-(--color-accent) hover:bg-(--color-accent)/90 rounded-xl text-white shadow-lg"
       >
-        {current === LAST_SLIDE_INDEX ? '시작하기' : '다음'} <LuChevronRight className="ml-2 h-4 w-4" />
+        {current === LAST_SLIDE_INDEX ? '시작하기' : '다음'} <LuChevronRight className="ml-2 size-5" />
       </Button>
     </div>
   );
