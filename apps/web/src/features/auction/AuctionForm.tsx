@@ -30,6 +30,7 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
+import { AuctionInsert } from 'src/shared/supabase/types';
 
 const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined }) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -48,7 +49,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
     isError: isAuctionFetchingError
   } = useQuery({
     queryKey: ['auctionForm'],
-    queryFn: () => getAuctionWIthAddress(auctionIdParam),
+    queryFn: (): Promise<AuctionInsert> => getAuctionWIthAddress(auctionIdParam),
     enabled: !!auctionIdParam
   });
 
@@ -178,10 +179,10 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
         description,
         end_date: utcEndDate,
         starting_point: startingPoint,
-        current_point: isEditing ? fetchedAuction.current_point : 0,
+        current_point: isEditing ? fetchedAuction?.current_point || 0 : 0, //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기 (KMH)
         max_point: maxPoint,
         image_urls: imageUrls,
-        status: isEditing ? fetchedAuction.status : 'OPEN',
+        status: isEditing ? fetchedAuction?.status || 'OPEN' : 'OPEN', //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기
         updated_at: isEditing ? new TZDate(new Date(), 'utc') : null
       })
     });

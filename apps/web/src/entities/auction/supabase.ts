@@ -249,12 +249,16 @@ export const uploadImage = async (imageData: string) => {
   return data;
 };
 
-export const selectAuctionWithAddress = async (id: string) => {
-  const { data, error } = await supabase.rpc('get_auction_form', { auction_id_param: id }).maybeSingle();
+export const selectAuction = async (auctionId: string): Promise<AuctionInsert> => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select('title, description, end_date, starting_point, max_point, image_urls')
+    .eq('auction_id', auctionId)
+    .maybeSingle();
 
   if (error) {
-    console.error('getAuctionWithAddress', error);
-    throw new Error('DB: auction과 address 불러오기 실패');
+    console.error('selectAuction', error);
+    throw new Error('DB: auction 불러오기 실패');
   }
   return data;
 };
