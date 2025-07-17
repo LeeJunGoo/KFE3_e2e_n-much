@@ -1,9 +1,10 @@
 'use client';
 import { notFound } from 'next/navigation';
-import { useAuthContext } from 'src/shared/hooks/useAuthContext';
+import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/authStore';
 
 const AuthWrapper = ({ children }: { children: React.ReactNode }) => {
-  const { user, loading } = useAuthContext();
+  const user = useUserState();
+  const loading = useUserLoadingState();
 
   if (loading) return <div>로딩 중...</div>;
   if (!user) notFound();

@@ -1,5 +1,6 @@
 'use client';
-import useAuth from 'src/entities/user/auth/hooks/useAuth';
+
+import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/authStore';
 import LogoutButton from 'src/features/user/mypage/components/main/LogoutButton';
 import MyPageNavigation from 'src/features/user/mypage/components/main/MyPageNavigation';
 import MyPageNotification from 'src/features/user/mypage/components/main/MyPageNotification';
@@ -9,8 +10,8 @@ import MyPageMainSkeleton from 'src/features/user/mypage/components/shared/skele
 import PageContainer from 'src/shared/ui/PageContainer';
 
 const MyPageMain = () => {
-  // NOTE - 임시, 로그인 수정하면 바꿀 예정
-  const { user, loading } = useAuth();
+  const user = useUserState();
+  const loading = useUserLoadingState();
 
   if (!user || !user.user_metadata) return null;
 

@@ -2,13 +2,14 @@
 import { useEffect, useRef } from 'react';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
-import useAuth from 'src/entities/user/auth/hooks/useAuth';
+import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/authStore';
 import { createClient } from 'src/shared/supabase/client/client';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 
 const AuthCallbackPage = () => {
   const router = useRouter();
-  const { user, loading } = useAuth();
+  const user = useUserState();
+  const loading = useUserLoadingState();
   const hasProcessed = useRef(false);
 
   useEffect(() => {
