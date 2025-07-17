@@ -124,8 +124,10 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
       setPreviewImages(imageUrls.map((imageUrl: string) => ({ id: uuidv4(), data: imageUrl, isUrl: true })));
     }
 
-    setIsFormLoading(false);
-  }, [fetchedAuction.image_urls]);
+    if (isFormLoading) {
+      setIsFormLoading(false);
+    }
+  }, [fetchedAuction.image_urls, isFormLoading]);
 
   //FIXME - uploadImage 리팩토링 (KMH)
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
