@@ -1,8 +1,8 @@
-import AddressListItem from './AddressListItem';
+import AddressListItem from 'src/features/addresses/components/AddressListItem';
 
 const AddressList = () => {
   return (
-    <ul>
+    <ul className="space-y-3">
       <AddressListItem />
     </ul>
   );
