@@ -27,12 +27,7 @@ const FormTitle = ({ control, titleLabel, placeholder, maxTitleLength }: FormTit
           </FormLabel>
           <div className="relative mt-2">
             <FormControl>
-              <Input
-                type="text"
-                {...field}
-                className="aria-invalid:border-1 aria-invalid:border-(--color-red) h-11 bg-white p-3.5"
-                placeholder={placeholder}
-              />
+              <Input type="text" {...field} className="h-11 bg-white p-3.5" placeholder={placeholder} />
             </FormControl>
           </div>
           <div className="relative">

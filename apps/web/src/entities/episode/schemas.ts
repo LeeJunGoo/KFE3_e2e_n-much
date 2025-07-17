@@ -1,15 +1,15 @@
+import { MAX_DESC_LENGTH, MAX_TITLE_LENGTH, MIN_DESC_LENGTH, MIN_TITLE_LENGTH } from 'src/entities/episode/constants';
 import { z } from 'zod';
-import { MAX_DESC_LENGTH, MAX_TITLE_LENGTH, MIN_DESC_LENGTH, MIN_TITLE_LENGTH } from './constants';
 
 export const episodeFormSchema = z.object({
   title: z
     .string()
-    .min(MIN_TITLE_LENGTH, { message: '제목은 최소 2글자 이상이어야 합니다.' })
-    .max(MAX_TITLE_LENGTH, { message: '제목은 최대 50글자 이하이어야 합니다.' }),
+    .min(MIN_TITLE_LENGTH, { message: '제목을 두 글자 이상 입력해 주세요.' })
+    .max(MAX_TITLE_LENGTH, { message: '제목을 50자 이하로 입력해 주세요.' }),
   description: z
     .string()
-    .min(MIN_DESC_LENGTH, { message: '사연은 최소 5글자 이상이어야 합니다.' })
-    .max(MAX_DESC_LENGTH, { message: '사연은 최대 1000글자 이하이어야 합니다.' })
+    .min(MIN_DESC_LENGTH, { message: '사연을 다섯 글자 이상 입력해 주세요.' })
+    .max(MAX_DESC_LENGTH, { message: '사연을 1,000자 이하로 입력해 주세요.' })
 });
 
 export type DetailFormType = z.infer<typeof episodeFormSchema>;

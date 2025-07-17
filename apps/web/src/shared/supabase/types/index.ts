@@ -23,4 +23,4 @@ export type UserRow = Database['public']['Tables']['users']['Row'];
 //NOTE - supabase Keyword type
 export type KeywordRow = Database['public']['Tables']['keywords']['Row']; // 데이터 조회(GET)
 export type KeywordInsert = Database['public']['Tables']['keywords']['Insert']; // 데이터 추가(POST)
-export type KeyWordUpdate = Database['public']['Tables']['keywords']['Update']; // 데이터 수정(PATCH)
+export type KeywordUpdate = Database['public']['Tables']['keywords']['Update']; // 데이터 수정(PATCH)

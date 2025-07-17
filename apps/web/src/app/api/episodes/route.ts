@@ -1,16 +1,16 @@
+import { type NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { createClient } from 'src/shared/supabase/client/server';
 import {
-  createEpisode,
   deleteEpisode,
   getEpisodesByAuctionId,
   getUserBiddingCount,
   getUserStories,
+  insertEpisode,
   selectEpisodeById,
   selectWinningEpisode,
   updateEpisodeById
-} from '../../../entities/episode/supabase';
-import type { NextRequest } from 'next/server';
+} from 'src/entities/episode/supabase';
+import { createClient } from 'src/shared/supabase/client/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
     if (auctionId) {
       res = await getEpisodesByAuctionId(auctionId);
     }
-    //ANCHOR - 리팩토링 완료
+
     if (episodeId) {
       res = await selectEpisodeById(episodeId);
     }
@@ -62,15 +62,14 @@ export async function POST(request: NextRequest) {
   const { auctionId, userId, title, description } = await request.json();
 
   if (!auctionId || !userId || !title || !description) {
-    return NextResponse.json({ message: 'id, title, description 값이 존재하지 않습니다.' }, { status: 400 });
+    return NextResponse.json({ error: '400: id, title, description 값이 존재하지 않습니다.' });
   }
 
   try {
-    const res = await createEpisode({ auctionId, userId, title, description });
-
-    return NextResponse.json({ status: 'success', data: res });
+    await insertEpisode({ auctionId, userId, title, description });
+    return NextResponse.json('success');
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
+    if (error instanceof Error) return NextResponse.json({ error: `500: ${error.message}` });
   }
 }
 
@@ -81,7 +80,7 @@ export async function PATCH(request: NextRequest) {
   let res;
 
   if (!episodeId) {
-    return NextResponse.json({ error: 'id 값이 존재하지 않습니다.' }, { status: 400 });
+    return NextResponse.json({ error: '400: id 값이 존재하지 않습니다.' });
   }
 
   try {
@@ -93,9 +92,9 @@ export async function PATCH(request: NextRequest) {
       res = await selectWinningEpisode(episodeId, winning_bid);
     }
 
-    return NextResponse.json({ status: 'success', data: res });
+    return NextResponse.json('success');
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
+    if (error instanceof Error) return NextResponse.json({ error: `500: ${error.message}` });
   }
 }
 

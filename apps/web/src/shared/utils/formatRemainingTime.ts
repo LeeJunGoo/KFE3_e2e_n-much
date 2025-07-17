@@ -1,37 +1,32 @@
-import { useEffect, useRef, useState } from 'react';
 import { formatDuration, intervalToDuration } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { TZDate } from 'react-day-picker';
+import { type AuctionTimerStatus } from 'src/entities/auction/types';
 
-type AuctionStatus = 'ongoing' | 'ended' | null;
-
-interface RemainingInfo {
-  status: AuctionStatus;
+type RemainingTimeType = {
+  status: AuctionTimerStatus;
   remainTime: string;
-}
+};
 
-export const useFormatRemainingTime = (endDate: string): RemainingInfo => {
-  const [remainTime, setRemainTime] = useState('');
-  const statusRef = useRef<AuctionStatus>(null);
+export const formatRemainingTime = (endDate: string): RemainingTimeType => {
+  const now = new Date();
+  const end = new Date(endDate);
+  let status: AuctionTimerStatus;
 
-  useEffect(() => {
-    const now = new TZDate(new Date(), 'Asia/Seoul');
-    const end = new TZDate(endDate, 'Asia/Seoul');
+  const duration = intervalToDuration({ start: now, end });
+  const formatted = formatDuration(duration, {
+    format: ['days', 'hours', 'minutes'],
+    locale: ko
+  });
 
-    const duration = intervalToDuration({ start: now, end });
-    const formatted = formatDuration(duration, {
-      format: ['days', 'hours', 'minutes'],
-      locale: ko
-    });
-    if (now < end) {
-      statusRef.current = 'ongoing';
-    }
-    if (now > end) {
-      statusRef.current = 'ended';
-    }
+  // 1시간 미만
+  if (duration.days === 0 && duration.hours === 0) {
+    status = 'urgent';
+  } else {
+    status = 'ongoing';
+  }
 
-    setRemainTime(`남은 시간: ${formatted}`);
-  }, [endDate]);
-
-  return { status: statusRef.current, remainTime };
+  return {
+    status,
+    remainTime: formatted
+  };
 };

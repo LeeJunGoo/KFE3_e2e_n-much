@@ -19,7 +19,7 @@ const FormDescription = ({ control, descriptionLabel, placeholder, maxDescLength
     <FormField
       control={control}
       name="description"
-      render={({ field, fieldState, formState }) => (
+      render={({ field, fieldState }) => (
         <FormItem className="">
           <FormLabel className="flex gap-0.5">
             <p className="text-black">{descriptionLabel}</p>
@@ -29,14 +29,14 @@ const FormDescription = ({ control, descriptionLabel, placeholder, maxDescLength
             <FormControl>
               <Textarea
                 {...field}
-                className="h-51 aria-invalid:border-1 aria-invalid:border-(--color-red) w-full resize-none break-all bg-white p-3.5"
+                className="h-51 w-full resize-none break-all bg-white p-3.5"
                 placeholder={placeholder}
                 rows={4}
               ></Textarea>
             </FormControl>
           </div>
           <div className="relative">
-            {formState.isSubmitted && fieldState.error && <FormMessage />}
+            {fieldState.invalid && fieldState.error && <FormMessage />}
             <p className={`absolute right-0 top-0 text-xs font-semibold ${descTextColor}`}>
               {description.length}/{maxDescLength}
             </p>

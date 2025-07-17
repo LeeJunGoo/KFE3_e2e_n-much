@@ -1,4 +1,4 @@
-import type { AddressRow, AuctionRow, EpisodeRow, UserRow } from 'src/shared/supabase/types';
+import type { AddressRow, AuctionRow, UserRow } from 'src/shared/supabase/types';
 
 // export type BuyerInfoType = {
 //   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
@@ -20,11 +20,6 @@ export type SellerAuctionCountType = {
   };
 };
 
-export type AuctionTimeProps = {
-  endDate: AuctionRow['end_date'];
-  className?: string;
-};
-
 export type SortedAuctionItemType = AuctionRow & {
   episodes: {
     count: number;
@@ -42,3 +37,5 @@ export type AddressType = {
   detail_address: AddressRow['detail_address'];
   is_default: AddressRow['is_default'];
 };
+
+export type AuctionTimerStatus = 'ongoing' | 'urgent';

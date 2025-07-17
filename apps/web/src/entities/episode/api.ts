@@ -1,5 +1,5 @@
-import type { EpisodeInsert, EpisodeRow } from '../../shared/supabase/types';
 import type { EpisodeCreateType, EpisodeEditType, EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
+import type { EpisodeRow } from 'src/shared/supabase/types';
 
 //NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
 export const fetchEpisodesById = async (auction_id: string) => {
@@ -42,9 +42,8 @@ export const postEpisodeInfo = async ({ auctionId, userId, title, description }:
   if (!res.ok) {
     throw new Error('사연을 생성하는 과정에서 네트워크 에러가 발생했습니다.');
   }
-
-  const data: EpisodeInfo = await res.json();
-  return data.status;
+  const status = await res.json();
+  return status;
 };
 
 //ANCHOR - 톡정 에피소드 수정
@@ -63,8 +62,8 @@ export const patchEpisodeInfo = async ({ episodeId, title, description }: Episod
     throw new Error('사연을 수정하는 과정에서 네트워크 에러가 발생했습니다.');
   }
 
-  const data: EpisodeInfo = await res.json();
-  return data.status;
+  const status = await res.json();
+  return status;
 };
 
 //NOTE - 톡정 에피소드 삭제
