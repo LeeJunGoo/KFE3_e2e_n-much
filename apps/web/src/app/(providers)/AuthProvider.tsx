@@ -29,7 +29,7 @@ const AuthProvider = ({ user: initialUser, children }: { user: User | null; chil
     });
 
     return () => subscription.unsubscribe();
-  }, [currentUser, supabase, initialUser, setUser]);
+  }, [currentUser, supabase, initialUser, setUser, setLoading]);
 
   return <>{children}</>;
 };

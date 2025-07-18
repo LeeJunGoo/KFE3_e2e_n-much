@@ -1,6 +1,6 @@
 import EpisodePage from 'src/features/episode/EpisodePage';
 
-const page = async ({ params }: { params: Promise<{ id: string[] }> }) => {
+const Episode = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   return (
     <>
       <EpisodePage params={params} />
@@ -8,4 +8,4 @@ const page = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   );
 };
 
-export default page;
+export default Episode;
