@@ -19,7 +19,7 @@ const getIcon = (iconName: string) => {
 };
 
 const MyPageNavigation = () => {
-  const role = 'buyer';
+  const role = 'seller';
   const filteredMenus = MYPAGE_MENU_LIST.filter((menu) => menu.role === role || menu.role === 'common');
 
   return (

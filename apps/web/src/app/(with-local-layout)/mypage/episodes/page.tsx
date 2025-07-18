@@ -1,27 +1,11 @@
-// import { Suspense } from 'react';
-// import PageHeader from 'src/components/common/ui/PageHeader';
-// import PageContainer from 'src/components/layout/PageContainer';
-// import MyStorySection from 'src/components/mypage/episodes/MyStorySection';
+import MyEpisodesPage from 'src/features/user/mypage/components/episodes/MyEpisodesPage';
 
-// const MyStories = () => {
-//   return (
-//     <div>
-//       <PageHeader>내가 쓴 스토리</PageHeader>
-//       <PageContainer className="pt-2">
-//         <Suspense fallback={<div>스토리를 불러오는 중...</div>}>
-//           <MyStorySection />
-//         </Suspense>
-//       </PageContainer>
-//     </div>
-//   );
-// };
-
-// export default MyStories;
-
-import React from 'react';
-
-const page = () => {
-  return <div>page</div>;
+const MyEpisodes = () => {
+  return (
+    <>
+      <MyEpisodesPage />
+    </>
+  );
 };
 
-export default page;
+export default MyEpisodes;

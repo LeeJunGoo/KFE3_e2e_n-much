@@ -1,6 +1,6 @@
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
 
-const LikedEpisodesContainer = () => {
+const OngoingEpisodesContainer = () => {
   return (
     <ul>
       <MyEpisodeListItem />
@@ -8,4 +8,4 @@ const LikedEpisodesContainer = () => {
   );
 };
 
-export default LikedEpisodesContainer;
+export default OngoingEpisodesContainer;

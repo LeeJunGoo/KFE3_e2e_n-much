@@ -14,8 +14,8 @@ const MyPageMain = () => {
 
   if (!user || !user.user_metadata) return null;
 
-  console.log(user);
-  console.log(loading);
+  // console.log(user);
+  // console.log(loading);
 
   if (loading) return <MyPageMainSkeleton />;
 
