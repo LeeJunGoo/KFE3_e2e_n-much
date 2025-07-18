@@ -249,7 +249,7 @@ export const uploadImage = async (imageData: string) => {
   return data;
 };
 
-export const selectAuction = async (auctionId: string): Promise<AuctionInsert> => {
+export const selectAuction = async (auctionId: string) => {
   const { data, error } = await supabase
     .from('auctions')
     .select('user_id, title, description, end_date, starting_point, max_point, image_urls')
@@ -259,6 +259,22 @@ export const selectAuction = async (auctionId: string): Promise<AuctionInsert> =
   if (error) {
     console.error('selectAuction', error);
     throw new Error('DB: auction 불러오기 실패');
+  }
+  return data;
+};
+
+//FIXME - address 도메인으로 옮기기 (KMH)
+export const selectAddressId = async (userId: string) => {
+  const { data, error } = await supabase
+    .from('addresses')
+    .select('address_id')
+    .eq('user_id', userId)
+    .eq('is_default', true)
+    .maybeSingle();
+
+  if (error) {
+    console.error('selectAddressId', error);
+    throw new Error('DB: addressId 불러오기 실패');
   }
   return data;
 };
