@@ -27,9 +27,9 @@ const EpisodeForm = ({
   children: ReactNode;
 }) => {
   const router = useRouter();
-  const [isPending, setIsPending] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
   const isEditMode = !!initialEpisodeInfo?.episode_id;
-  const episodeId = isEditMode ? initialEpisodeInfo.episode_id : null;
+  const episodeId = initialEpisodeInfo?.episode_id;
 
   const form = useForm<DetailFormType>({
     resolver: zodResolver(episodeFormSchema),
@@ -40,14 +40,14 @@ const EpisodeForm = ({
   });
   const handleEpisodeUpsert = async (values: DetailFormType) => {
     const { title, description } = values;
-    setIsPending(true); // 버튼/로딩 상태 제어용
 
     try {
-      const result = isEditMode
+      const status = isEditMode
         ? await patchEpisodeInfo({ episodeId, title, description }) // 수정
         : await postEpisodeInfo({ auctionId, userId, title, description }); // 등록
 
-      if (result === 'success') {
+      if (status === 'success') {
+        setIsRedirecting(true);
         const message = isEditMode ? '사연을 수정하였습니다.' : '사연을 등록하였습니다.';
         toast.success(message);
         router.push(`/auctions/${auctionId}`);
@@ -55,7 +55,6 @@ const EpisodeForm = ({
     } catch (error) {
       const message = isEditMode ? '사연을 수정하지 못했습니다.' : '사연을 등록하지 못했습니다.';
       toast.error(message);
-
       if (error instanceof Error) {
         throw new Error(error.message);
       }
@@ -79,7 +78,11 @@ const EpisodeForm = ({
         />
         {/* 사연 Tip */}
         {children}
-        <FormActionButton buttonLabel={isEditMode ? '수정 완료' : '사연 등록'} isPending={isPending} />
+        <FormActionButton
+          buttonLabel={isEditMode ? '수정 완료' : '사연 등록'}
+          isSubmitting={form.formState.isSubmitting}
+          isRedirecting={isRedirecting}
+        />
       </form>
     </Form>
   );

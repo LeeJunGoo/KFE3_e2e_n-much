@@ -14,7 +14,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   const { id: auctionId } = await params;
 
   // NOTE - 경매 상품 및 경매 업체 정보
-  // const auctionInfo = await selectAuctionWithSellerInfo(auctionId);
+  const auctionInfo = await selectAuctionWithSellerInfo(auctionId);
   // const { image_urls, address, seller } = auctionInfo;
 
   // const supabase = await createServer();

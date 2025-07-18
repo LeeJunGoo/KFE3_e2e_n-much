@@ -7,13 +7,14 @@ import type { User } from '@supabase/supabase-js';
 
 const AuthProvider = ({ user: initialUser, children }: { user: User | null; children: ReactNode }) => {
   const currentUser = useUserState();
-  const { setUser } = useAuthActions();
+  const { setUser, setLoading } = useAuthActions();
   const supabase = createClient();
 
   useEffect(() => {
     //ANCHOR - 초기 렌더링
     if (initialUser && currentUser?.id !== initialUser.id) {
       setUser(initialUser);
+      setLoading(false);
     }
 
     const {

@@ -84,8 +84,8 @@ export const selectAuctionWithSellerInfo = async (auctionId: string) => {
     .maybeSingle();
 
   if (error) {
-    console.error('🚀 ~ getAuctionWithSellerInfo:', error.message);
-    throw new Error('DB: 특정 경매 정보 불러오기 에러');
+    console.error('🚀 ~ getAuctionWithSellerInfo:', error);
+    throw new Error();
   }
 
   return data;
