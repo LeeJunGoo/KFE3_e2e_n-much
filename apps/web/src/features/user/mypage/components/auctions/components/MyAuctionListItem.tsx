@@ -1,6 +1,6 @@
 import { Button } from '@repo/ui/components/ui/button';
 import BaseCard from 'src/widgets/BaseCard';
-import PointDisplay from 'src/widgets/PointDisplay';
+import PointDisplay from 'src/shared/ui/PointDisplay';
 
 const MyAuctionListItem = () => {
   return (

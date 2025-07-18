@@ -1,6 +1,6 @@
 import PageTitle from 'src/shared/ui/PageTitle';
 import BaseCard from 'src/widgets/BaseCard';
-import PointDisplay from 'src/widgets/PointDisplay';
+import PointDisplay from 'src/shared/ui/PointDisplay';
 
 const PointOverview = () => {
   return (
