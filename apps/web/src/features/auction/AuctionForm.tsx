@@ -1,6 +1,6 @@
 //TODO - 상세 정보에서 수정하기 누르면 자기 계정인지 확인하기 (KMH)
 //TODO - 폼 유효성 검사 상의 (KMH)
-//FIXME - 경매를 등록할 때, userId는 로그인한 유저의 아이디로 변경하기 (KMH)
+//TODO - 경매를 등록할 때, userId는 로그인한 유저의 아이디로 변경하기 (KMH)
 //TODO - 경매 수정시 이미지 업로드 처리 수정(이미지를 또 업로드함) (KMH)
 //TODO - 잘못된 auction_id가 전달된 경우도 대처하기 (KMH)
 
@@ -23,7 +23,7 @@ import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { getAuctionWIthAddress } from 'src/entities/auction/api';
+import { getAuction } from 'src/entities/auction/api';
 import { uploadImage } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -50,7 +50,7 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
     isError: isAuctionFetchingError
   } = useQuery({
     queryKey: ['auctionForm'],
-    queryFn: (): Promise<AuctionInsert> => getAuctionWIthAddress(auctionIdParam),
+    queryFn: (): Promise<AuctionInsert> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam
   });
 
