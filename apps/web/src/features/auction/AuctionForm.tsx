@@ -55,6 +55,16 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
     enabled: !!auctionIdParam
   });
 
+  const {
+    data: fetchedAddressID,
+    isLoading: isAddressIDFetching,
+    isError: isAddressIDFetchingError
+  } = useQuery({
+    queryKey: ['addressId'],
+    queryFn: (): Promise<AuctionInsert> => getAuction(auctionIdParam),
+    enabled: !!auctionIdParam
+  });
+  console.log('fetchedAddressID', fetchedAddressID);
   console.log('fetchedAuction', fetchedAuction);
 
   //FIXME - schema로 분리 (KMH)
@@ -201,12 +211,12 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
   };
 
   //FIXME - toss로 에러를 알리고, 에러 처리하기 (KMH)
-  if (isAuctionFetchingError) {
+  if (isAuctionFetchingError || isAddressIDFetchingError) {
     return <p>에러 발생</p>;
   }
 
   //FIXME - 스켈레톤 UI 사용 (KMH)
-  if (isFormLoading || isAuctionFetching) {
+  if (isFormLoading || isAuctionFetching || isAddressIDFetching) {
     return <p>Loading...</p>;
   }
 
