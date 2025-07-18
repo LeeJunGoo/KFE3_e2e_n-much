@@ -7,6 +7,7 @@ import AddressStatus from 'src/features/user/mypage/components/main/AddressStatu
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import BaseCard from 'src/widgets/BaseCard';
+import PointDisplay from 'src/widgets/PointDisplay';
 import type { RoleType, UserMetadata } from 'src/entities/user/mypage/main/types';
 
 const MyPageUserProfile = ({ data }: UserMetadata) => {
@@ -48,9 +49,7 @@ const MyPageUserProfile = ({ data }: UserMetadata) => {
       <div className="border-(--color-warm-gray)/30 border-t pt-4">
         <div className="flex items-center justify-between">
           <p className="text-sm">보유 포인트</p>
-          <div className="flex items-baseline gap-1">
-            <span className="text-(--color-accent) text-lg font-bold">1,000 P</span>
-          </div>
+          <PointDisplay amount={1000} />
         </div>
         <p className="text-(--color-warm-gray) mt-1 text-xs">마지막 업데이트: 2025년 5월 25일</p>
       </div>

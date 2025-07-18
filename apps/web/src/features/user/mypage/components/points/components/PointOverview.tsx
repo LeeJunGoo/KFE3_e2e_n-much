@@ -1,5 +1,6 @@
 import PageTitle from 'src/shared/ui/PageTitle';
 import BaseCard from 'src/widgets/BaseCard';
+import PointDisplay from 'src/widgets/PointDisplay';
 
 const PointOverview = () => {
   return (
@@ -9,7 +10,7 @@ const PointOverview = () => {
       </PageTitle>
       <div>
         <p className="text-(--color-accent) mb-2">
-          <span className="text-3xl font-bold">1000P</span>
+          <PointDisplay amount={1000} className="text-2xl" />
         </p>
         <p className="text-(--color-warm-gray) text-xs">마지막 업데이트: 2025.05.05</p>
       </div>

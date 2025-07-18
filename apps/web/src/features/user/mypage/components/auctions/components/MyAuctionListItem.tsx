@@ -1,24 +1,8 @@
 import { Button } from '@repo/ui/components/ui/button';
-// import Image from 'next/image';
 import BaseCard from 'src/widgets/BaseCard';
-// import LabelBadge from 'src/components/common/LabelBadge';
-// import { Button } from '@repo/ui/components/ui/button';
-// import { STATUS_LABELS, STATUS_VARIANTS } from 'src/entities/user/mypage/constants';
-// import { formatNumber } from 'src/shared/utils/formatNumber';
-// import type { MyAuctionListItemProps } from 'src/features/user/mypage/types';
-// import { useRouter } from 'next/navigation';
+import PointDisplay from 'src/widgets/PointDisplay';
 
 const MyAuctionListItem = () => {
-  // const { title, current_point, starting_point, end_time, status } = item;
-  // const router = useRouter();
-
-  // // status 관련 변수들
-  // const statusVariant = STATUS_VARIANTS[status as keyof typeof STATUS_VARIANTS] || 'muted';
-  // const statusLabel = STATUS_LABELS[status as keyof typeof STATUS_LABELS] || status;
-
-  // // 날짜 포맷팅 변수로 분리 (리팩토링 필요)
-  // const formattedEndDate = end_time ? new Date(end_time).toLocaleDateString('ko-KR') : '미정';
-
   return (
     <BaseCard as="li">
       <div className="border-(--color-warm-gray)/30 flex items-center gap-3 border-b pb-4">
@@ -48,11 +32,11 @@ const MyAuctionListItem = () => {
           <div className="mt-1 flex flex-col gap-0.5">
             <p className="flex justify-between text-sm">
               <span className="text-(--color-warm-gray)">최종 낙찰가</span>
-              <span>1000 P</span>
+              <PointDisplay amount={1000} className="text-(--color-warm-gray) font-semibold" />
             </p>
             <p className="flex items-baseline justify-between text-sm">
               <span className="text-(--color-warm-gray)">내 최종 입찰가</span>
-              <span className="text-(--color-accent) text-base font-medium">1000 P</span>
+              <PointDisplay amount={1000} className="text-base" />
             </p>
             <p className="text-(--color-warm-gray) flex justify-between text-sm">
               <span>경매 종료일</span>
