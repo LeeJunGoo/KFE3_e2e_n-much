@@ -3,7 +3,8 @@ export const ICON_NAMES = {
   DOCUMENT: 'HiDocumentText',
   GAVEL: 'FaGavel',
   COINS: 'FaCoins',
-  HEART: 'FaHeart'
+  HEART: 'FaHeart',
+  CHAT: 'HiChatBubbleLeftRight'
 };
 
 export const MYPAGE_MENU_LIST = [
@@ -15,7 +16,8 @@ export const MYPAGE_MENU_LIST = [
   },
   { role: 'seller', label: '내 경매 보기', href: '/mypage/auctions', icon: ICON_NAMES.GAVEL },
   { role: 'common', label: '포인트 사용 내역', href: '/mypage/points', icon: ICON_NAMES.COINS },
-  { role: 'common', label: '찜 목록', href: '/mypage/favorites', icon: ICON_NAMES.HEART }
+  { role: 'common', label: '찜 목록', href: '/mypage/favorites', icon: ICON_NAMES.HEART },
+  { role: 'common', label: '1:1 문의', href: '/', icon: ICON_NAMES.CHAT }
 ];
 
 // MyPageUserProfile.tsx

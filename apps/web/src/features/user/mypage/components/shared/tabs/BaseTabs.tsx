@@ -1,6 +1,6 @@
 import { Tabs } from '@repo/ui/components/ui/tabs';
-import BaseTabsContent from 'src/features/user/mypage/components/shared/BaseTabsContent';
-import BaseTabsTrigger from 'src/features/user/mypage/components/shared/BaseTabsTrigger';
+import BaseTabsContent from 'src/features/user/mypage/components/shared/tabs/BaseTabsContent';
+import BaseTabsTrigger from 'src/features/user/mypage/components/shared/tabs/BaseTabsTrigger';
 
 interface BaseTabsProps {
   defaultValue: string;

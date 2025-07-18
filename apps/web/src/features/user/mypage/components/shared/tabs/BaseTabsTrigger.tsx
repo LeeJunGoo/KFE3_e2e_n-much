@@ -1,5 +1,5 @@
 import { TabsList } from '@repo/ui/components/ui/tabs';
-import TabTriggerItem from 'src/features/user/mypage/components/shared/TabTriggerItem';
+import TabTriggerItem from 'src/features/user/mypage/components/shared/tabs/TabTriggerItem';
 
 interface BaseTabsTriggerProps {
   tabLabels: Record<string, string>;

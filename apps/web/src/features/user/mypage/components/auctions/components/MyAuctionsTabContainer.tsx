@@ -1,6 +1,6 @@
 import ClosedAuctionsContainer from 'src/features/user/mypage/components/auctions/components/ClosedAuctionsContainer';
 import OpenAuctionsContainer from 'src/features/user/mypage/components/auctions/components/OpenAuctionsContainer';
-import BaseTabs from 'src/features/user/mypage/components/shared/BaseTabs';
+import BaseTabs from 'src/features/user/mypage/components/shared/tabs/BaseTabs';
 
 const TAB_LABELS = {
   open: '경매 현황',

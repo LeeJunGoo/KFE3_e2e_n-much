@@ -1,6 +1,6 @@
 import FavoriteAuctionsContainer from 'src/features/user/mypage/components/favorites/components/FavoriteAuctionsContainer';
 import LikedEpisodesContainer from 'src/features/user/mypage/components/favorites/components/LikedEpisodesContainer';
-import BaseTabs from 'src/features/user/mypage/components/shared/BaseTabs';
+import BaseTabs from 'src/features/user/mypage/components/shared/tabs/BaseTabs';
 
 const TAB_LABELS = {
   favorite: '관심 경매',

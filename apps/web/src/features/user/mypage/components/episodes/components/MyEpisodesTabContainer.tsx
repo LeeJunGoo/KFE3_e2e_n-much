@@ -1,6 +1,6 @@
 import CompletedEpisodesContainer from 'src/features/user/mypage/components/episodes/components/CompletedEpisodesContainer';
 import OngoingEpisodesContainer from 'src/features/user/mypage/components/episodes/components/OngoingEpisodesContainer';
-import BaseTabs from 'src/features/user/mypage/components/shared/BaseTabs';
+import BaseTabs from 'src/features/user/mypage/components/shared/tabs/BaseTabs';
 
 const TAB_LABELS = {
   ongoing: '진행중',
