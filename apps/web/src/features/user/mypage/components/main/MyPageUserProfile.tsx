@@ -2,34 +2,14 @@ import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { FiRepeat } from 'react-icons/fi';
+import { ROLE_CONFIG } from 'src/entities/user/mypage/main/constants';
 import AddressStatus from 'src/features/user/mypage/components/main/AddressStatus';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import BaseCard from 'src/widgets/BaseCard';
-import type { User } from '@supabase/supabase-js';
+import type { RoleType, UserMetadata } from 'src/entities/user/mypage/main/types';
 
-type MyPageUserProfileProps = {
-  data: User['user_metadata'];
-};
-
-type RoleType = 'buyer' | 'seller';
-
-const ROLE_CONFIG = {
-  buyer: {
-    roleNext: 'seller' as const,
-    display: '입찰 참여자',
-    roleNextToast: '경매 진행자',
-    variant: 'success' as const
-  },
-  seller: {
-    roleNext: 'buyer' as const,
-    display: '경매 진행자',
-    roleNextToast: '입찰 참여자',
-    variant: 'error' as const
-  }
-} as const;
-
-const MyPageUserProfile = ({ data }: MyPageUserProfileProps) => {
+const MyPageUserProfile = ({ data }: UserMetadata) => {
   const { name, email, avatar_url: avatarUrl } = data;
   const role = 'buyer';
   const [currentRole, setCurrentRole] = useState<RoleType>(role);
@@ -69,14 +49,10 @@ const MyPageUserProfile = ({ data }: MyPageUserProfileProps) => {
         <div className="flex items-center justify-between">
           <p className="text-sm">보유 포인트</p>
           <div className="flex items-baseline gap-1">
-            <span className="text-(--color-accent) text-lg font-bold">1000</span>
-            <span className="text-(--color-accent) font-medium">P</span>
+            <span className="text-(--color-accent) text-lg font-bold">1,000 P</span>
           </div>
         </div>
-        <p className="text-(--color-warm-gray) mt-1 text-xs">
-          마지막 업데이트:
-          {/* {userInfo?.updated_at ? new Date(userInfo?.updated_at).toLocaleDateString('ko-KR') : '정보 없음'} */}
-        </p>
+        <p className="text-(--color-warm-gray) mt-1 text-xs">마지막 업데이트: 2025년 5월 25일</p>
       </div>
     </BaseCard>
   );

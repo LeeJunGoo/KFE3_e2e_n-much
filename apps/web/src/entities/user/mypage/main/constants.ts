@@ -1,0 +1,35 @@
+// MyPageNavigation.tsx
+export const ICON_NAMES = {
+  DOCUMENT: 'HiDocumentText',
+  GAVEL: 'FaGavel',
+  COINS: 'FaCoins',
+  HEART: 'FaHeart'
+};
+
+export const MYPAGE_MENU_LIST = [
+  {
+    role: 'buyer',
+    label: '내가 쓴 스토리',
+    href: '/mypage/episodes',
+    icon: ICON_NAMES.DOCUMENT
+  },
+  { role: 'seller', label: '내 경매 보기', href: '/mypage/auctions', icon: ICON_NAMES.GAVEL },
+  { role: 'common', label: '포인트 사용 내역', href: '/mypage/points', icon: ICON_NAMES.COINS },
+  { role: 'common', label: '찜 목록', href: '/mypage/like', icon: ICON_NAMES.HEART }
+];
+
+// MyPageUserProfile.tsx
+export const ROLE_CONFIG = {
+  buyer: {
+    roleNext: 'seller' as const,
+    display: '입찰 참여자',
+    roleNextToast: '경매 진행자',
+    variant: 'success' as const
+  },
+  seller: {
+    roleNext: 'buyer' as const,
+    display: '경매 진행자',
+    roleNextToast: '입찰 참여자',
+    variant: 'error' as const
+  }
+} as const;
