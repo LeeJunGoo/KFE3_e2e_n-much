@@ -1,5 +1,4 @@
 'use client';
-
 import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/authStore';
 import LogoutButton from 'src/features/user/mypage/components/main/LogoutButton';
 import MyPageNavigation from 'src/features/user/mypage/components/main/MyPageNavigation';
@@ -15,7 +14,7 @@ const MyPageMain = () => {
 
   if (!user || !user.user_metadata) return null;
 
-  console.log(user?.user_metadata);
+  console.log(user);
   console.log(loading);
 
   if (loading) return <MyPageMainSkeleton />;

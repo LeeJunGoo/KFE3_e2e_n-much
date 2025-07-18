@@ -1,4 +1,4 @@
-import AddressesPage from 'src/features/user/mypage/components/addresses/AddressesPage';
+import AddressesPage from 'src/features/addresses/AddressesPage';
 
 const Addresses = () => {
   return (
