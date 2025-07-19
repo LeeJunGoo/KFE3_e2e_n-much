@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaBookOpen, FaHeart } from 'react-icons/fa6';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
 const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
@@ -23,20 +23,10 @@ const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => 
             className="object-cover"
           />
 
-          <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/70 to-transparent" />
-
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/40 to-transparent" />
           <div className="absolute bottom-0 left-0 w-full p-3 text-white">
             <h3 className="line-clamp-2 text-sm font-medium">{auction.title}</h3>
-            <div className="mt-2 flex items-center gap-3 text-xs">
-              <i className="flex items-center gap-1 not-italic">
-                <FaHeart className="mr-1 text-sm text-red-500" />
-                <span>{favoritesCount}</span>
-              </i>
-              <i className="flex items-center gap-1 not-italic">
-                <FaBookOpen className="text-sm text-blue-500" />
-                <span>{episodesCount}</span>
-              </i>
-            </div>
+            <AuctionMetaInfo favoritesCount={favoritesCount} episodesCount={episodesCount} />
           </div>
         </div>
       </Link>

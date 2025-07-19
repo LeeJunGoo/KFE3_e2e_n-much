@@ -30,7 +30,7 @@ export type EpisodeCreateType = {
 
 //NOTE - 사연 수정
 export type EpisodeEditType = {
-  episodeId: EpisodeUpdate['episode_id'] | null;
+  episodeId: EpisodeUpdate['episode_id'];
   title: EpisodeUpdate['title'];
   description: EpisodeUpdate['description'];
 };

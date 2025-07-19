@@ -1,0 +1,3 @@
+export const ENDING_SOON_AUCTIONS_COUNT = 5;
+export const POPULAR_AUCTIONS_COUNT = 4;
+export const LATEST_AUCTIONS_COUNT = 10;

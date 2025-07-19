@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import EndingSoonListSection from 'src/features/auction/EndingSoonListSection';
 import LatestListSection from 'src/features/auction/LatestListSection';
 import PopularListSection from 'src/features/auction/PopularListSection';
+import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import MainBanner from 'src/features/layout/main/components/MainBanner';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -14,15 +15,18 @@ const MainPage = async () => {
         {/* Ending Soon Auctions */}
         <AuctionErrorBoundary
           fallback={
-            <div className="flex h-[200px] items-center justify-center border-2">
-              <h3 className="text-[22px]">⚠️ 곧 마감 물품 섹션에서 오류가 발생했습니다.</h3>
-            </div>
+            <ContentEmpty
+              titleLabel="곧 종료되는 경매 물품을 불러오는 중 문제가 발생했어요."
+              contentLabel="잠시 후 다시 시도해주세요!"
+            />
           }
         >
           <Suspense
             fallback={
               <div className="flex h-[200px] items-center justify-center">
-                <span className="animate-pulse text-lg text-gray-500">{'🚚 경매 데이터를 불러오는 중입니다...'}</span>
+                <span className="text-(--color-text-base) animate-pulse text-lg">
+                  {'🚚 경매 데이터를 불러오는 중입니다...'}
+                </span>
               </div>
             }
           >
@@ -32,9 +36,11 @@ const MainPage = async () => {
         {/* Popular Auctions */}
         <AuctionErrorBoundary
           fallback={
-            <div className="flex h-[200px] items-center justify-center border-2">
-              <h3 className="text-[22px]">⚠️ 인기 경매 물품 섹션에서 오류가 발생했습니다.</h3>
-            </div>
+            <ContentEmpty
+              titleLabel="인기 경매 물품을 불러오는 중 문제가 발생했어요."
+              contentLabel="잠시 후 다시 시도해주세요!"
+              className="mt-8"
+            />
           }
         >
           <Suspense
@@ -50,9 +56,11 @@ const MainPage = async () => {
         {/* Latest Auctions */}
         <AuctionErrorBoundary
           fallback={
-            <div className="flex h-[200px] items-center justify-center border-2">
-              <h3 className="text-[22px]">⚠️ 최신 경매 물품 섹션에서 오류가 발생했습니다.</h3>
-            </div>
+            <ContentEmpty
+              titleLabel="최신 경매 물품을 불러오는 중 문제가 발생했어요."
+              contentLabel="잠시 후 다시 시도해주세요!"
+              className="mt-8"
+            />
           }
         >
           <Suspense

@@ -5,16 +5,16 @@ import type {
   SellerAuctionCountType
 } from 'src/entities/auction/types';
 
-// NOTE - 에피소드 등록: 경매 상품 및 경매 업체 정보
+//ANCHOR - 에피소드 등록: 경매 상품 및 경매 업체 정보
 export const getAuctionInfoForEpisode = async (auctionId: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=episode_form`);
 
   if (!res.ok) {
-    throw new Error(`경매 상품에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
-  const result: AuctionInfoForEpisodeType = await res.json();
-
-  return result;
+  const data: AuctionInfoForEpisodeType = await res.json();
+  return data;
 };
 
 //NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수

@@ -13,7 +13,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
   const [auctionId, episodeId] = (await params).id;
   let initialEpisodeInfo: EpisodeRow | null = null; // 조건부에 따라 수정 및 등록 페이지로 나누기
 
-  // NOTE - 경매 상품 및 판매자 정보
+  // NOTE - 경매 상품 및 업체 정보
   const auctionInfo = await getAuctionInfoForEpisode(auctionId!);
 
   //NOTE - episodeId true: 수정, false: 등록
