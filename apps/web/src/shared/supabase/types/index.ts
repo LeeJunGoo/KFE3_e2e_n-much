@@ -18,3 +18,8 @@ export type PointRow = Database['public']['Tables']['points']['Row'];
 export type KeywordRow = Database['public']['Tables']['keywords']['Row']; // 데이터 조회(GET)
 export type KeywordInsert = Database['public']['Tables']['keywords']['Insert']; // 데이터 추가(POST)
 export type keywordUpdate = Database['public']['Tables']['keywords']['Update']; // 데이터 수정(PATCH)
+
+//NOTE - supabase Address type
+export type AddressRow = Database['public']['Tables']['addresses']['Row']; // 데이터 조회(GET)
+export type AddressInsert = Database['public']['Tables']['addresses']['Insert']; // 데이터 추가(POST)
+export type AddressUpdate = Database['public']['Tables']['addresses']['Update']; // 데이터 수정(PATCH)

@@ -26,7 +26,7 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import type { AuctionRow } from 'src/shared/supabase/types';
+import type { AddressRow, AuctionRow } from 'src/shared/supabase/types';
 
 interface AuctionFormProps {
   auctionIdParam: string | undefined;
@@ -54,7 +54,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     enabled: !!auctionIdParam
   });
 
-  //FIXME - fetchedAuction 타입 명확하게 작성하기 (KMH)
+  //FIXME - fetchedAddress 타입 명확하게 작성하기 (KMH)
   //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
   const {
     data: fetchedAddressID,
@@ -62,7 +62,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     isError: isAddressIdFetchingError
   } = useQuery({
     queryKey: ['addressId', loggedInUserId],
-    queryFn: (): Promise<{ address_id: string }> => getAuction(auctionIdParam),
+    queryFn: (): Promise<AddressRow> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam
   });
 
