@@ -1,9 +1,37 @@
 'use server';
-import { getAuctionsWithEpisodeCountByOrderMainPage } from './supabase';
+import { unstable_cache } from 'next/cache';
+import { selectAuctionsByMainPageCategory } from 'src/entities/auction/supabase';
 
-//NOTE - 경매 데이터 마감 임박, 인기순, 최신순
-export const fetchSortedAuctions = async (order: string, isAscending: boolean, count: number) => {
-  const data = await getAuctionsWithEpisodeCountByOrderMainPage(order, isAscending, count);
+//ANCHOR - 마감 임박
+export const getEndingSoonAuctions = unstable_cache(
+  async (order: string, isAscending: boolean, count: number) => {
+    const data = await selectAuctionsByMainPageCategory(order, isAscending, count);
+    return data;
+  },
+  ['auctions-endingSoon'],
+  { tags: ['auctions-endingSoon'], revalidate: 60 }
+);
 
-  return data;
-};
+//ANCHOR - 인기순
+export const getPopularAuctions = unstable_cache(
+  async (order: string, isAscending: boolean, count: number) => {
+    return await selectAuctionsByMainPageCategory(order, isAscending, count);
+  },
+  ['auctions-popularity'],
+  {
+    tags: ['auctions-popularity'],
+    revalidate: 3600
+  }
+);
+
+//ANCHOR - 최신순
+export const getLatestAuctions = unstable_cache(
+  async (order: string, isAscending: boolean, count: number) => {
+    const data = await selectAuctionsByMainPageCategory(order, isAscending, count);
+    return data;
+  },
+  ['auctions-Latest'],
+  {
+    tags: ['auctions-Latest']
+  }
+);

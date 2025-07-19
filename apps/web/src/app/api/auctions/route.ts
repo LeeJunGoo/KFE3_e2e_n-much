@@ -2,6 +2,8 @@
 //NOTE - status 빼는 것 의논해보기, 만약 뺀다면 DB 데이터만 보내도 좋을 것 같음
 
 import { NextResponse } from 'next/server';
+import { createServer } from 'src/shared/supabase/client/server';
+
 import {
   addAuction,
   deleteAuction,
@@ -28,7 +30,7 @@ export async function GET(request: NextRequest) {
 
     // 셀러 경매 목록 조회
     if (type === 'sellerAuctions') {
-      const supabase = await createClient();
+      const supabase = await createServer();
       const {
         data: { user }
       } = await supabase.auth.getUser();

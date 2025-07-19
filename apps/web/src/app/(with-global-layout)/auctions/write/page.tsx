@@ -43,7 +43,7 @@ const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <DetailPageHeader>{pageTitle}</DetailPageHeader>
+      <DetailPageHeader>{auctionId ? '경매 수정' : '경매 등록'}</DetailPageHeader>
       <AuctionForm auctionIdParam={auctionId} loggedInUserId={loggedInUserId} />
     </HydrationBoundary>
   );

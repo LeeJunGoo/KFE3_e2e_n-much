@@ -59,6 +59,7 @@ export default [
           format: ['camelCase'],
           leadingUnderscore: 'allow'
         },
+
         // 함수: camelCase
         {
           selector: 'function',

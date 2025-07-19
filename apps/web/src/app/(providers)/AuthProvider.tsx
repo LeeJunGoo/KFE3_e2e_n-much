@@ -1,25 +1,37 @@
 'use client';
-import { createContext } from 'react';
 import type { ReactNode } from 'react';
-import useAuth from 'src/entities/user/auth/hooks/useAuth';
+import { useEffect } from 'react';
+import { useAuthActions, useUserState } from 'src/entities/auth/stores/authStore';
+import { createClient } from 'src/shared/supabase/client/client';
 import type { User } from '@supabase/supabase-js';
 
-interface AuthContextType {
-  user: User | null;
-  loading: boolean;
-}
+const AuthProvider = ({ user: initialUser, children }: { user: User | null; children: ReactNode }) => {
+  const currentUser = useUserState();
+  const { setUser, setLoading } = useAuthActions();
+  const supabase = createClient();
 
-const AuthContext = createContext<AuthContextType>({
-  user: null,
-  loading: true
-});
+  useEffect(() => {
+    //ANCHOR - 초기 렌더링
+    if (initialUser && currentUser?.id !== initialUser.id) {
+      setUser(initialUser);
+      setLoading(false);
+    }
 
-const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const authState = useAuth();
+    const {
+      data: { subscription }
+    } = supabase.auth.onAuthStateChange((_, session) => {
+      const sessionUser = session?.user ?? null;
 
-  return <AuthContext.Provider value={authState}>{children}</AuthContext.Provider>;
+      //ANCHOR - 현재 상태와 다를 때만 setUser 호출
+      if ((sessionUser && currentUser?.id !== sessionUser.id) || (!sessionUser && currentUser !== null)) {
+        setUser(sessionUser);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [currentUser, supabase, initialUser, setUser, setLoading]);
+
+  return <>{children}</>;
 };
 
 export default AuthProvider;
-export { AuthContext };
-export type { AuthContextType };

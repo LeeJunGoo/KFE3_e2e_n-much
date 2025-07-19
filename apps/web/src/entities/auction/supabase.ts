@@ -1,7 +1,7 @@
 import { decode } from 'base64-arraybuffer';
 import { v4 as uuidv4 } from 'uuid';
 import { createClient } from '../../shared/supabase/client/client';
-import type { AuctionInsert, AuctionUpdate } from '../../shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from '../../shared/supabase/types';
 
 const supabase = createClient();
 
@@ -18,38 +18,75 @@ export const getAllAuctions = async () => {
 };
 
 //NOTE - 특정 상품 정보
-export const getAuction = async (auction_id: string) => {
+export const selectAuctionInfo = async (auction_id: string): Promise<AuctionRow> => {
   const { data, error } = await supabase.from('auctions').select(`*`).eq('auction_id', auction_id).maybeSingle();
 
   if (error) {
-    console.log('🚀 ~ getAuction ~ getAuction:', error.message);
+    console.error('🚀 ~ getAuction ~ getAuction:', error.message);
     throw new Error('DB: 특정 경매 불러오기 에러');
   }
 
   return data;
 };
 
-//NOTE - 특정 상품 정보 및 판매자 정보
-// export const selectAuctionWithSellerInfo = async (auction_id: string) => {
-//   const { data, error } = await supabase
-//     .from('auctions')
-//     .select(
-//       `
-//       *,
-//       seller:seller_id (
-//         seller_id,
-//         nickname,
-//         avatar
-//       )
-//     `
-//     )
-//     .eq('auction_id', auction_id)
-//     .maybeSingle();
+//NOTE - 특정 상품의 기본 주소 정보
+export const selectAuctionDefaultAddress = async (userId: string): Promise<UserRow> => {
+  const { data, error } = await supabase.from('users').select(`*`).eq('id', userId).maybeSingle();
 
-//   if (error) {
-//     console.error('🚀 ~ getAuctionWithSellerInfo:', error.message);
-//     throw new Error('DB: 특정 경매 정보 불러오기 에러');
-//   }
+  if (error) {
+    console.error('🚀 ~ selectAuctionDefaultAddress:', error.message);
+    throw new Error('DB: 특정 상품 주소 정보 불러오기 에러');
+  }
+
+  return data;
+};
+
+//NOTE - 에피소드 등록 페이지: 특정 상품 정보 및 판매자 정보
+export const selectAuctionInfoForEpisode = async (auctionId: string) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(
+      `
+      *,
+    users:user_id (
+        id,       
+        nick_name,
+        address_id
+      )
+    `
+    )
+    .eq('auction_id', auctionId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('🚀 ~ getAuctionWithSellerInfo:', error.message);
+    throw new Error('DB: 에피소드에 대한 특정 경매 정보 불러오기 에러');
+  }
+
+  return data;
+};
+
+//NOTE - 걍메 싱세 페이지: 특정 상품 정보 및 판매자 정보
+export const selectAuctionWithSellerInfo = async (auctionId: string) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(
+      `
+      *,
+    users:user_id (
+        id,       
+        nick_name,
+        address_id
+      )
+    `
+    )
+    .eq('auction_id', auctionId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('🚀 ~ getAuctionWithSellerInfo:', error);
+    throw new Error();
+  }
 
 //   return data;
 // };
@@ -137,30 +174,21 @@ export const getAllAuctionsCount = async () => {
   return data.count;
 };
 
-export const getAuctionsWithEpisodeCountByOrderMainPage = async (
-  orderParam: string,
-  isAscending: boolean,
-  count: number
-) => {
-  if (orderParam) {
-    const { data, error } = await supabase
-      .from('auctions')
-      .select(
-        `
-    *,episodes(count)
-  `
-      )
-      .order(orderParam, { ascending: isAscending })
-      .eq('status', 'OPEN')
-      .limit(count);
+//ANCHOR - 경매 데이터 마감 임박, 인기순, 최신순(메인 페이지)
+export const selectAuctionsByMainPageCategory = async (orderParam: string, isAscending: boolean, count: number) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(`* ,episodes(count)`)
+    .order(orderParam, { ascending: isAscending })
+    .eq('status', 'OPEN')
+    .limit(count);
 
-    if (error) {
-      console.error(error);
-      throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
-    }
-
-    return data;
+  if (error) {
+    console.error(error);
+    throw new Error();
   }
+
+  return data;
 };
 
 // 모든 경매와 경매의 사연 갯수를 불러오기

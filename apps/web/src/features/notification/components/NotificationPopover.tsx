@@ -13,7 +13,7 @@ const NotificationPopover = ({ isOpen, onOpenChange, trigger }: NotificationPopo
   return (
     <>
       {isOpen && (
-        <div className="fixed inset-0 z-40 m-auto max-w-2xl bg-black/40" onClick={() => onOpenChange(false)} />
+        <div className="fixed inset-0 z-50 m-auto max-w-2xl bg-black/40" onClick={() => onOpenChange(false)} />
       )}
       <Popover open={isOpen} onOpenChange={onOpenChange}>
         <PopoverTrigger asChild>{trigger}</PopoverTrigger>

@@ -2,7 +2,7 @@
 //FIXME - status 하드 코딩 수정하기 (KMH)
 
 import { NextResponse } from 'next/server';
-import { selectAuction, selectSellerAuctionCount } from 'src/entities/auction/supabase';
+import { selectAuctionInfoForEpisode, selectAuctionWithSellerInfo } from 'src/entities/auction/supabase';
 import { selectHighestBidder } from 'src/entities/episode/supabase';
 import type { NextRequest } from 'next/server';
 
@@ -16,21 +16,21 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
   const type = searchParams.get('type');
   let res;
 
+  if (!id || !type) {
+    return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
+  }
+
   try {
     if (type === 'auction_form') {
-      res = await selectAuction(id);
+      res = await selectAuctionWithSellerInfo(id);
     } else if (type === 'episode_form') {
-      res = await selectSellerAuctionCount(id);
-    } else if (type === 'auction_detail') {
+      res = await selectAuctionInfoForEpisode(id);
+    } else if (type === 'auction') {
       res = await selectHighestBidder(id);
-    } else {
-      return NextResponse.json({ message: '잘못된 정보를 전달하였습니다.', id, type }, { status: 400 });
     }
 
     return NextResponse.json(res, { status: 200 });
-  } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
-    }
+  } catch {
+    return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

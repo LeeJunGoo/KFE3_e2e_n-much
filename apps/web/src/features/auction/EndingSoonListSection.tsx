@@ -1,27 +1,21 @@
-import Link from 'next/link';
-import { fetchSortedAuctions } from 'src/entities/auction/serverActions';
+import { ENDING_SOON_AUCTIONS_COUNT } from 'src/entities/auction/constants';
+import { getEndingSoonAuctions } from 'src/entities/auction/serverActions';
+import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
+import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import EndingSoonCarousel from './EndingSoonCarousel';
-import PageTitle from '../../shared/ui/PageTitle';
 
 const EndingSoonListSection = async () => {
-  const endingSoonAuctions = await fetchSortedAuctions('end_time', true, 5);
+  const endingSoonAuctions = await getEndingSoonAuctions('end_date', true, ENDING_SOON_AUCTIONS_COUNT);
 
   if (!endingSoonAuctions || endingSoonAuctions.length === 0) {
     return (
-      <div className="h-50 flex w-full items-center justify-center rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500">
-        아직 등록된 정보가 없어요
-      </div>
+      <ContentEmpty titleLabel="아직 등록된 상품 정보가 없어요." contentLabel="새로운 정보가 등록되면 알려드릴게요.!" />
     );
   }
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <PageTitle>곧 종료되는 경매</PageTitle>
-        <Link href="/auctions?order=end_time" className="text-(--color-accent) cursor-pointer text-sm">
-          더보기
-        </Link>
-      </div>
+      <AuctionSectionHeader title="곧 종료되는 경매" href={'/auctions?order=end_time'} />
       <EndingSoonCarousel endingSoonAuctions={endingSoonAuctions} />
     </div>
   );

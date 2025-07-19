@@ -21,7 +21,7 @@ interface AuctionCardProp {
   title: string;
   currentPoint: number;
   episodeCount: number;
-  endTime: string;
+  endDate: string;
   favorites: number;
   address: string | undefined;
 }
@@ -30,7 +30,7 @@ export default function AuctionCard({
   auction_id,
   imageSrc,
   title,
-  endTime,
+  endDate,
   favorites,
   episodeCount,
   status,
@@ -39,7 +39,7 @@ export default function AuctionCard({
 }: AuctionCardProp) {
   setDefaultOptions({ locale: ko });
   const now = new TZDate(new Date(), 'Asia/Seoul');
-  const auctionTime = new TZDate(endTime, 'Asia/Seoul');
+  const auctionTime = new TZDate(endDate, 'Asia/Seoul');
   const diffDay = differenceInHours(now, auctionTime);
   const remainTime = formatDistanceToNow(auctionTime, { addSuffix: true });
 
@@ -60,7 +60,6 @@ export default function AuctionCard({
               <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
             )}
           </div>
-
           <Badge
             className={`absolute bottom-2 right-2 ${
               status === 'OPEN' && -24 < diffDay && diffDay < 0
