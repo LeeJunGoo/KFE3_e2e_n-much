@@ -1,6 +1,6 @@
 'use client';
 
-import PopularKeywordsSkeleton from './PopularKeywordsSkeleton';
+import PopularKeywordsSkeleton from 'src/features/search/components/PopularKeywordsSkeleton';
 
 interface PopularKeywordsProps {
   keywords: string[];
