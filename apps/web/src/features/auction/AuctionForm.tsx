@@ -21,7 +21,7 @@ import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { getAuction } from 'src/entities/auction/api';
-import { uploadImage } from 'src/entities/auction/supabase';
+import { deleteImages, uploadImage } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
@@ -37,7 +37,9 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
+  //FIXME - 타입 분리
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
+  const [imageUrlsToDelete, setImageUrlsToDelete] = useState<string[]>([]);
   const router = useRouter();
 
   console.log('auction_id', auctionIdParam);
@@ -161,21 +163,30 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     const auctionId = uuidv4();
 
     let imageUrls: string[] = [];
+    if (previewImages.length > 0) {
+      try {
+        const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
+          if (!prevImage.isUrl) {
+            const data = await uploadImage(prevImage.data);
+            return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
+          }
+          return prevImage.data;
+        });
 
-    try {
-      const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
-        if (!prevImage.isUrl) {
-          const data = await uploadImage(prevImage.data);
-          return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
-        }
-        return prevImage.data;
-      });
-
-      imageUrls = await Promise.all(imageUploadPromise);
-      console.log('image url', imageUrls);
-    } catch (error) {
-      //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
-      console.log(error);
+        imageUrls = await Promise.all(imageUploadPromise);
+        console.log('image url', imageUrls);
+      } catch (error) {
+        //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
+        console.log(error);
+      }
+    }
+    console.log('imageUrlsToDelete', imageUrlsToDelete);
+    if (imageUrlsToDelete.length > 0) {
+      try {
+        await deleteImages(imageUrlsToDelete);
+      } catch (error) {
+        console.error(error);
+      }
     }
 
     //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기 (KMH)
@@ -376,7 +387,18 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               return (
                 <li key={previewImage.id} className="relative">
                   <Button
-                    onClick={() => setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id))}
+                    onClick={() => {
+                      setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id));
+                      if (previewImage.isUrl) {
+                        setImageUrlsToDelete((prev) => {
+                          const imageFullPath: string[] = previewImage.data.split('/');
+                          const imagePath = 'images/' + imageFullPath[imageFullPath.length - 1];
+                          console.log('imageDir', imagePath);
+                          console.log('imagesToDelete', [...prev, imagePath]);
+                          return [...prev, imagePath];
+                        });
+                      }
+                    }}
                     className="absolute left-72 top-1"
                   >
                     X
