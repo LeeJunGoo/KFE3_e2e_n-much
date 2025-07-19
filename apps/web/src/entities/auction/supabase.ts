@@ -245,7 +245,7 @@ export const uploadImage = async (imageData: string) => {
     console.error('uploadImage', error);
     throw new Error('이미지 업로드에 실패했습니다.');
   }
-  console.log('path', data.fullPath);
+
   return data;
 };
 
