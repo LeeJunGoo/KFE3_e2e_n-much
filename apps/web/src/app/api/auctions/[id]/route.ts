@@ -2,7 +2,7 @@
 //FIXME - status 하드 코딩 수정하기 (KMH)
 
 import { NextResponse } from 'next/server';
-import { selectAuctionInfoForEpisode, selectAuctionWithSellerInfo } from 'src/entities/auction/supabase';
+import { selectAuction, selectAuctionInfoForEpisode } from 'src/entities/auction/supabase';
 import { selectHighestBidder } from 'src/entities/episode/supabase';
 import type { NextRequest } from 'next/server';
 
@@ -22,7 +22,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
   try {
     if (type === 'auction_form') {
-      res = await selectAuctionWithSellerInfo(id);
+      res = await selectAuction(id);
     } else if (type === 'episode_form') {
       res = await selectAuctionInfoForEpisode(id);
     } else if (type === 'auction') {

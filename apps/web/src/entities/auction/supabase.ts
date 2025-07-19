@@ -25,7 +25,7 @@ export const selectAuctionInfo = async (auction_id: string): Promise<AuctionRow>
     console.error('🚀 ~ getAuction ~ getAuction:', error.message);
     throw new Error('DB: 특정 경매 불러오기 에러');
   }
-
+  //NOTE - 준구님이 고칠 예정 (KMH)
   return data;
 };
 
@@ -37,7 +37,7 @@ export const selectAuctionDefaultAddress = async (userId: string): Promise<UserR
     console.error('🚀 ~ selectAuctionDefaultAddress:', error.message);
     throw new Error('DB: 특정 상품 주소 정보 불러오기 에러');
   }
-
+  //NOTE - 준구님이 고칠 예정 (KMH)
   return data;
 };
 
