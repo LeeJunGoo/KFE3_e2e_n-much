@@ -31,6 +31,7 @@ interface AuctionFormProps {
   loggedInUserId: string;
 }
 
+//TODO - supabase type 이용해보기 (KMH)
 interface AddressId {
   address_id: string;
 }

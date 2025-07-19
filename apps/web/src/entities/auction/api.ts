@@ -96,17 +96,17 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
 
 //NOTE - 경매 등록/수정 페이지에서 경매 정보와 주소 정보 가져오기 (KMH)
 //FIXME - 매개 변수 undefined 제거하기 (KMH)
+//FIXME - 준구님 코드랑 코드 컨벤션 맞추기 (KMH)
 export const getAuction = async (auctionId: string | undefined) => {
-  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction_form`;
-  const result = await fetch(fetchUrl);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction_form`);
 
-  if (result.ok) {
-    const data = await result.json();
-
-    return data;
-  } else {
-    throw new Error('auction_id로 경매 fetch 실패');
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
+
+  const data = await res.json();
+  return data;
 };
 
 //TODO - address 도메인으로 이동 (KMH)
