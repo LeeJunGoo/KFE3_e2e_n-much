@@ -2,17 +2,15 @@
 //NOTE - status 빼는 것 의논해보기, 만약 뺀다면 DB 데이터만 보내도 좋을 것 같음
 
 import { NextResponse } from 'next/server';
-import { createServer } from 'src/shared/supabase/client/server';
-
 import {
   addAuction,
   deleteAuction,
   getAllAuctions,
-  getAuction,
+  selectAuction,
   getSellerAuctions,
   updateAuction
 } from 'src/entities/auction/supabase';
-import { createClient } from 'src/shared/supabase/client/server';
+import { createServer } from 'src/shared/supabase/client/server';
 import type { NextRequest } from 'next/server';
 import type { AuctionInsert, AuctionUpdate } from 'src/shared/supabase/types';
 
@@ -24,7 +22,7 @@ export async function GET(request: NextRequest) {
   try {
     // 특정 경매 조회
     if (auctionId) {
-      const res = await getAuction(auctionId);
+      const res = await selectAuction(auctionId);
       return NextResponse.json({ status: 'success', data: res });
     }
 
