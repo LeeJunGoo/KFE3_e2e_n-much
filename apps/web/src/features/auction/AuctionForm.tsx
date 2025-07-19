@@ -60,9 +60,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const [imageUrlsToDelete, setImageUrlsToDelete] = useState<string[]>([]);
   const router = useRouter();
 
+  console.log('로그인한 유저 id', loggedInUserId);
   console.log('auctionIdParam', auctionIdParam);
 
   //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
+  //FIXME - 쿼리 키 객체로 만들어서 관리하기 (KMH)
+  //FIXME - fetch한 데이터가 없을 경우도 처리하기 (KMH)
   //FIXME - 분리하기 (KMH)
   const {
     data: fetchedAuction,
@@ -76,6 +79,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   });
 
   //FIXME - 분리하기 (KMH)
+  //FIXME - 쿼리 키 객체로 만들어서 관리하기 (KMH)
+  //FIXME - fetch한 데이터가 없을 경우도 처리하기 (KMH)
   const {
     data: fetchedAddressId,
     isLoading: isAddressIdFetching,
@@ -180,7 +185,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     });
     const utcEndDate = new TZDate(korEndDate, 'utc');
 
-    const auctionId = uuidv4();
+    const newAuctionId = uuidv4();
 
     let imageUrls: string[] = [];
     if (previewImages.length > 0) {
@@ -197,9 +202,10 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         console.log('image url', imageUrls);
       } catch (error) {
         //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
-        console.log(error);
+        console.error(error);
       }
     }
+
     console.log('imageUrlsToDelete', imageUrlsToDelete);
     if (imageUrlsToDelete.length > 0) {
       try {
@@ -211,20 +217,20 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
     //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기 (KMH)
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
-    console.log('로그인한 유저 id', loggedInUserId);
+
     const data = await fetch(fetchUrl, {
       method: isEditing ? 'PATCH' : 'POST',
       body: JSON.stringify({
-        auction_id: isEditing ? auctionIdParam : auctionId,
+        auction_id: isEditing ? auctionIdParam : newAuctionId,
         user_id: loggedInUserId,
         title,
         description,
         end_date: utcEndDate,
         starting_point: startingPoint,
-        current_point: isEditing ? fetchedAuction?.current_point || 0 : 0, //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기 (KMH)
+        current_point: isEditing && fetchedAuction ? fetchedAuction.current_point : 0, //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기 (KMH)
         max_point: maxPoint,
         image_urls: imageUrls,
-        status: isEditing ? fetchedAuction?.status || 'OPEN' : 'OPEN', //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기
+        status: isEditing && fetchedAuction ? fetchedAuction.status : 'OPEN', //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기
         address_id: fetchedAddressId,
         updated_at: isEditing ? new TZDate(new Date(), 'utc') : null
       })
@@ -233,7 +239,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
     console.log(values);
     console.log('결과', result);
-    console.log('옥션아이디', auctionId);
+    console.log('옥션아이디', newAuctionId);
     if (isEditing) {
       //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
       // router.push(`/auctions/${auctionIdParam}`);

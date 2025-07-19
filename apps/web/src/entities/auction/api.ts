@@ -1,7 +1,7 @@
 //TODO - 준구님 컨벤션에 맞추기 (KMH)
 
 import type {
-  AuctionHighestBidder,
+  // AuctionHighestBidder,
   AuctionInfoForEpisodeType,
   AuctionInfoType,
   SellerAuctionCountType
@@ -40,7 +40,8 @@ export const fetchHighestBidder = async (auction_id: string) => {
     throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
   }
 
-  const result: AuctionHighestBidder = await res.json();
+  // const result: AuctionHighestBidder = await res.json();
+  const result = await res.json(); //FIXME - 타입 에러가 발생해서 기존 내용 주석처리해서 임시 조치함 (KMH)
 
   return result.data;
 };
