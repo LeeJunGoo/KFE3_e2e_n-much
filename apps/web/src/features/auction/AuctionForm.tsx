@@ -1,9 +1,5 @@
-//TODO - 상세 정보에서 수정하기 누르면 미들웨어에서 자기 계정인지 확인하기  (KMH)
 //TODO - 폼 유효성 검사 상의 (KMH)
-//TODO - 경매를 등록할 때, userId는 로그인한 유저의 아이디로 변경하기 (KMH)
 //TODO - 경매 수정시 이미지 제거시 버켓 이미지 삭제 (KMH)
-//TODO - 잘못된 auction_id가 전달된 경우도 대처하기 (KMH)
-//TODO - address_id도 경매 등록한 user_id의 기본 배송지를 삽입 (KMH)
 
 'use client';
 
@@ -32,14 +28,17 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined }) => {
+interface AuctionFormProps {
+  auctionIdParam: string | undefined;
+  loggedInUserId: string;
+}
+
+const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
   const router = useRouter();
-
-  const loggedInUserId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기 (KMH)
 
   console.log('auction_id', auctionIdParam);
 
