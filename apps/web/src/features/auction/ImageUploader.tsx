@@ -1,4 +1,5 @@
-//NOTE - 업로드할 이미지를 드래그하면 UI에 효과줄 수 있음 (isDragActive)
+//NOTE - 업로드할 이미지를 드래그하면 UI에 효과줄 수 있음 (isDragActive) (KMH)
+//TODO - 업로드할 이미지 확장자 의논하기 (KMH)
 
 import type { Dispatch, SetStateAction } from 'react';
 import { useCallback } from 'react';
@@ -6,14 +7,13 @@ import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 
-const ImageUploader = ({
-  onPreviewImages
-}: {
+interface ImageUploaderProps {
   onPreviewImages: Dispatch<SetStateAction<{ id: string; data: string; isUrl: boolean }[]>>;
-}) => {
+}
+
+const ImageUploader = ({ onPreviewImages }: ImageUploaderProps) => {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      console.log(acceptedFiles);
       onPreviewImages([]);
 
       acceptedFiles.forEach((file) => {
@@ -26,7 +26,7 @@ const ImageUploader = ({
     },
     [onPreviewImages]
   );
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
       'image/*': ['.jpeg', '.jpg', '.png', '.webp']
@@ -46,11 +46,6 @@ const ImageUploader = ({
         </p>
       </div>
       <input {...getInputProps()} />
-      {/* {isDragActive ? (
-        <p className="">Drop the files here ...</p>
-      ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      )} */}
     </div>
   );
 };
