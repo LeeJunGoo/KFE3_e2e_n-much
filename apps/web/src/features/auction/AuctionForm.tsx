@@ -30,7 +30,7 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import type { AuctionInsert } from 'src/shared/supabase/types';
+import type { AuctionRow } from 'src/shared/supabase/types';
 
 const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined }) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -50,18 +50,20 @@ const AuctionForm = ({ auctionIdParam }: { auctionIdParam: string | undefined })
     isLoading: isAuctionFetching,
     isError: isAuctionFetchingError
   } = useQuery({
-    queryKey: ['auctionForm'],
-    queryFn: (): Promise<AuctionInsert> => getAuction(auctionIdParam),
+    queryKey: ['auctionForm', auctionIdParam],
+    queryFn: (): Promise<AuctionRow> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam
   });
 
+  //FIXME - fetchedAuction 타입 명확하게 작성하기 (KMH)
+  //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
   const {
     data: fetchedAddressID,
     isLoading: isAddressIDFetching,
     isError: isAddressIDFetchingError
   } = useQuery({
-    queryKey: ['addressId'],
-    queryFn: (): Promise<AuctionInsert> => getAuction(auctionIdParam),
+    queryKey: ['addressId', loggedInUserId],
+    queryFn: (): Promise<{ address_id: string }> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam
   });
   console.log('fetchedAddressID', fetchedAddressID);
