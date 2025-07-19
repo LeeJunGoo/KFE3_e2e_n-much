@@ -15,11 +15,11 @@ const badgeVariants = cva(
         outline: 'text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground',
 
         //상태별 variants
-        success: 'bg-(--color-accent) text-white font-semibold border border-transparent',
-        warning: 'bg-(--color-yellow) text-white font-semibold border border-transparent',
-        error: 'bg-(--color-red) text-white font-semibold border border-transparent',
-        info: 'bg-(--color-green) text-white font-semibold border border-transparent',
-        muted: 'bg-(--color-light-gray) text-white font-semibold border border-transparent',
+        accent: 'bg-(--color-accent) text-white font-semibold border border-transparent',
+        yellow: 'bg-(--color-yellow) text-white font-semibold border border-transparent',
+        red: 'bg-(--color-red) text-white font-semibold border border-transparent',
+        green: 'bg-(--color-green) text-white font-semibold border border-transparent',
+        lightGray: 'bg-(--color-light-gray) text-white font-semibold border border-transparent',
         primary: 'bg-(--color-primary) text-white font-semibold border border-transparent',
         secondary: 'bg-(--color-secondary) text-white font-semibold border border-transparent'
       }
