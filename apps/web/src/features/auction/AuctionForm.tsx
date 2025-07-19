@@ -3,7 +3,7 @@
 
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
 import { Calendar } from '@repo/ui/components/ui/calendar';
@@ -58,13 +58,14 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
   const {
     data: fetchedAddressID,
-    isLoading: isAddressIDFetching,
-    isError: isAddressIDFetchingError
+    isLoading: isAddressIdFetching,
+    isError: isAddressIdFetchingError
   } = useQuery({
     queryKey: ['addressId', loggedInUserId],
     queryFn: (): Promise<{ address_id: string }> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam
   });
+
   console.log('fetchedAddressID', fetchedAddressID);
   console.log('fetchedAuction', fetchedAuction);
 
@@ -90,60 +91,59 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   //FIXME - 날짜, 시간 기능 함수로 분리하기 (KMH)
   //FIXME - 24 매직 넘버 수정 (KMH)
-  const getFormDefaultValues = useMemo(() => {
-    if (!isEditing || !fetchedAuction) {
-      const today = new Date();
-      const korToday = new TZDate(today, 'Asia/Seoul');
-      const endDay = addHours(korToday, 24);
-      const endTime = format(endDay, 'HH:mm:ss');
-
-      return {
-        title: '',
-        description: '',
-        endDay,
-        endTime,
-        startingPoint: '0',
-        maxPoint: '0'
-      };
-    }
-
-    const {
-      title,
-      description,
-      end_date: endDate,
-      starting_point: startingPoint,
-      max_point: maxPoint
-    } = fetchedAuction;
-
-    const endDay = new TZDate(endDate, 'Asia/Seoul');
+  const getFormDefaultValues = () => {
+    const today = new Date();
+    const korToday = new TZDate(today, 'Asia/Seoul');
+    const endDay = addHours(korToday, 24);
     const endTime = format(endDay, 'HH:mm:ss');
 
     return {
-      title,
-      description,
+      title: '',
+      description: '',
       endDay,
       endTime,
-      startingPoint: String(startingPoint),
-      maxPoint: String(maxPoint)
+      startingPoint: '0',
+      maxPoint: '0'
     };
-  }, [fetchedAuction, isEditing]);
+  };
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: getFormDefaultValues
+    defaultValues: getFormDefaultValues()
   });
 
   useEffect(() => {
-    const imageUrls = fetchedAuction?.image_urls;
+    if (isEditing && fetchedAuction) {
+      const {
+        title,
+        description,
+        end_date: endDate,
+        starting_point: startingPoint,
+        max_point: maxPoint,
+        image_urls: imageUrls
+      } = fetchedAuction;
 
-    if (imageUrls) {
-      setPreviewImages(imageUrls.map((imageUrl: string) => ({ id: uuidv4(), data: imageUrl, isUrl: true })));
-    }
+      const endDay = new TZDate(endDate, 'Asia/Seoul');
+      const endTime = format(endDay, 'HH:mm:ss');
 
-    if (isFormLoading) {
-      setIsFormLoading(false);
+      form.reset({
+        title,
+        description,
+        endDay,
+        endTime,
+        startingPoint: String(startingPoint),
+        maxPoint: String(maxPoint)
+      });
+
+      if (imageUrls) {
+        setPreviewImages(imageUrls.map((imageUrl: string) => ({ id: uuidv4(), data: imageUrl, isUrl: true })));
+      }
+
+      if (isFormLoading) {
+        setIsFormLoading(false);
+      }
     }
-  }, [fetchedAuction?.image_urls, isFormLoading]);
+  }, [fetchedAuction, isEditing, form, isFormLoading]);
 
   //FIXME - uploadImage 리팩토링 (KMH)
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -212,12 +212,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   };
 
   //FIXME - toss로 에러를 알리고, 에러 처리하기 (KMH)
-  if (isAuctionFetchingError || isAddressIDFetchingError) {
+  if (isAuctionFetchingError || isAddressIdFetchingError) {
     return <p>에러 발생</p>;
   }
 
   //FIXME - 스켈레톤 UI 사용 (KMH)
-  if (isFormLoading || isAuctionFetching || isAddressIDFetching) {
+  if (isFormLoading || isAuctionFetching || isAddressIdFetching) {
     return <p>Loading...</p>;
   }
 
