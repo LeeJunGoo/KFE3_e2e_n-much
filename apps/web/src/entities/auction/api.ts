@@ -111,14 +111,13 @@ export const getAuction = async (auctionId: string | undefined) => {
 
 //TODO - address 도메인으로 이동 (KMH)
 export const getAddressId = async (userId: string) => {
-  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses/?user_id=${userId}`;
-  const result = await fetch(fetchUrl);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses/?user_id=${userId}`);
 
-  if (result.ok) {
-    const data = await result.json();
-
-    return data;
-  } else {
-    throw new Error('auction_id로 경매 fetch 실패');
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
+
+  const data = await res.json();
+  return data;
 };
