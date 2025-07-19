@@ -48,12 +48,18 @@ interface Auction {
   status: string;
 }
 
+interface PreviewImage {
+  id: string;
+  data: string;
+  isUrl: boolean;
+}
+
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
   //FIXME - 타입 분리
-  const [previewImages, setPreviewImages] = useState<{ id: string; data: string; isUrl: boolean }[]>([]);
+  const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
   const [imageUrlsToDelete, setImageUrlsToDelete] = useState<string[]>([]);
   const router = useRouter();
 
