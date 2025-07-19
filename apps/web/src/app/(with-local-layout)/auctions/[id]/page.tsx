@@ -1,13 +1,11 @@
 import { Suspense } from 'react';
-import { selectAuctionWithSellerInfo } from 'src/entities/auction/api';
-import { fetchDetailPageUserInfo } from 'src/entities/auth/api';
 import AuctionDetail from 'src/features/auction/AuctionDetail';
 import AuctionDetailICarousel from 'src/features/auction/AuctionDetailICarousel';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import HighestBuyerInfoSection from 'src/features/auction/HighestBuyerInfoSection';
 import SellerInfoSection from 'src/features/auction/SellerInfoSection';
 import EpisodeDetailSection from 'src/features/episode/EpisodeDetailSection';
-import { createClient } from 'src/shared/supabase/client/server';
+import { createServer } from 'src/shared/supabase/client/server';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import PageContainer from 'src/shared/ui/PageContainer';
 import type { UserInfoType } from 'src/app/api/auth/user-info/route';
@@ -19,7 +17,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   const auctionInfo = await selectAuctionWithSellerInfo(auctionId);
   const { image_urls, address, seller } = auctionInfo;
 
-  const supabase = await createClient();
+  const supabase = await createServer();
   const {
     data: { user }
   } = await supabase.auth.getUser();

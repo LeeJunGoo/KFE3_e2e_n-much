@@ -1,18 +1,19 @@
-import { createClient } from '../../shared/supabase/client/client';
+import { createClient } from 'src/shared/supabase/client/client';
+import type { EpisodeCreateType, EpisodeEditType } from 'src/entities/episode/types';
 
 const supabase = createClient();
 
-// NOTE - 특정 에피소드 정보
-export async function getEpisode(episode_id: string) {
+//ANCHOR - 특정 에피소드 정보
+export const selectEpisodeById = async (episode_id: string) => {
   const { data, error } = await supabase.from('episodes').select(`*`).eq('episode_id', episode_id).maybeSingle();
 
   if (error) {
-    console.log('🚀 ~ getEpisode ~ error:', error.message);
+    console.error('🚀 ~ getEpisode ~ error:', error.message);
     throw new Error('DB: 특정 사연 불러오기 에러');
   }
 
   return data;
-}
+};
 
 // NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
 export const getEpisodesByAuctionId = async (auctionId: string) => {
@@ -90,43 +91,32 @@ export async function deleteEpisode(episode_id: string) {
   return data;
 }
 
-//NOTE - 특정 에피소드 등록
-export const createEpisode = async (auction_id: string, buyer_id: string, title: string, description: string) => {
-  const { data, error } = await supabase
-    .from('episodes')
-    .insert([
-      {
-        auction_id,
-        buyer_id,
-        title,
-        description
-      }
-    ])
-    .select()
-    .single();
+//ANCHOR - 특정 에피소드 등록
+export const insertEpisode = async ({ auctionId, userId, title, description }: EpisodeCreateType) => {
+  const { error } = await supabase.from('episodes').insert([
+    {
+      auction_id: auctionId,
+      user_id: userId,
+      title,
+      description
+    }
+  ]);
 
   if (error) {
-    console.log('🚀 ~ createEpisode ~ error:', error.message);
+    console.error('🚀 ~ insertEpisode ~ error:', error.message);
     throw new Error(error.message);
   }
-  return data;
 };
 
-//NOTE - 특정 에피소드 수정
-export async function updateEpisode(episode_id: string, title: string, description: string) {
-  const { data, error } = await supabase
-    .from('episodes')
-    .update({ title, description })
-    .eq('episode_id', episode_id)
-    .select();
+//ANCHOR - 특정 에피소드 수정
+export const updateEpisodeById = async ({ episodeId, title, description }: EpisodeEditType) => {
+  const { error } = await supabase.from('episodes').update({ title, description }).eq('episode_id', episodeId);
 
   if (error) {
-    console.log('🚀 ~ updateEpisode ~ error:', error.message);
-    throw new Error('DB: 사연 수정 에러');
+    console.error('🚀 ~ updateEpisodeById ~ error:', error.message);
+    throw new Error(error.message);
   }
-
-  return data;
-}
+};
 
 // NOTE - 최고 입찰자의 정보
 export const selectHighestBidder = async (auction_id: string) => {

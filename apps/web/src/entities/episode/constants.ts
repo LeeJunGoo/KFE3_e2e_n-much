@@ -4,5 +4,8 @@ export const EPISODE_TIP = [
   '당신의 특별한 순간과 어떤 연관이 있는지 공유해주세요'
 ];
 
-export const MAX_TITLE_LENGTH = 40;
+export const MIN_TITLE_LENGTH = 2;
+export const MIN_DESC_LENGTH = 5;
+
+export const MAX_TITLE_LENGTH = 50;
 export const MAX_DESC_LENGTH = 1000;

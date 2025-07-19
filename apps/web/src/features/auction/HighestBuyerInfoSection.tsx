@@ -1,7 +1,7 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { FaRegCommentDots } from 'react-icons/fa6';
 import { fetchHighestBidder } from 'src/entities/auction/api';
-import UserAvatar from 'src/shared/ui/UserAvatar';
+import UserAvatar from 'src/shared/ui/BaseAvatar';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import { formatToKoreanDateTime } from 'src/shared/utils/formatToKoreanDateTime';
 import { maskEmail } from 'src/shared/utils/maskEmail';
