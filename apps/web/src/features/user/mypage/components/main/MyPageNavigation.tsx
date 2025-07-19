@@ -1,6 +1,7 @@
 import { FaGavel, FaCoins, FaHeart } from 'react-icons/fa';
 import { HiDocumentText } from 'react-icons/hi';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
+import { LuHeartHandshake } from 'react-icons/lu';
 import { ICON_NAMES, MYPAGE_MENU_LIST } from 'src/entities/user/mypage/main/constants';
 import MyPageNavigationList from 'src/features/user/mypage/components/main/MyPageNavigationList';
 
@@ -16,13 +17,15 @@ const getIcon = (iconName: string) => {
       return <FaHeart className="text-(--color-accent) size-4" />;
     case ICON_NAMES.CHAT:
       return <HiChatBubbleLeftRight className="text-(--color-accent) size-5" />;
+    case ICON_NAMES.HANDSHAKE:
+      return <LuHeartHandshake className="text-(--color-accent) size-5" />;
     default:
       return null;
   }
 };
 
 const MyPageNavigation = () => {
-  const role = 'seller';
+  const role = 'buyer';
   const filteredMenus = MYPAGE_MENU_LIST.filter((menu) => menu.role === role || menu.role === 'common');
 
   return (
