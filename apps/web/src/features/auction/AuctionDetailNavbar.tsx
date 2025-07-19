@@ -1,15 +1,8 @@
 import EditDeleteActions from 'src/features/auction/EditDeleteActions';
 import GoBackButton from 'src/shared/ui/GoBackButton';
-import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const AuctionDetailNavbar = async ({
-  auctionId,
-  userInfo
-}: {
-  auctionId: AuctionRow['auction_id'];
-  userInfo: UserInfoType;
-}) => {
+const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const isSeller = userInfo.role === 'SELLER';
 
   return (
@@ -18,7 +11,7 @@ const AuctionDetailNavbar = async ({
         <div className="bg-gray bg-(--color-background)/70 flex h-10 w-10 justify-center rounded-sm shadow-sm">
           <GoBackButton className="-translate-x-2" />
         </div>
-        <div>{isSeller && <EditDeleteActions auctionId={auctionId} />}</div>
+        {isSeller && <EditDeleteActions auctionId={auctionId} />}
       </nav>
     </>
   );

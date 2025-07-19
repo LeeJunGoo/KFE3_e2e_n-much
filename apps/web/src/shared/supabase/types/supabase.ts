@@ -37,6 +37,7 @@ export type Database = {
         Row: {
           address_id: string;
           business_name: string;
+          company_image: string | null;
           created_at: string;
           detail_address: string | null;
           is_default: boolean;
@@ -47,6 +48,7 @@ export type Database = {
         Insert: {
           address_id?: string;
           business_name: string;
+          company_image?: string | null;
           created_at?: string;
           detail_address?: string | null;
           is_default: boolean;
@@ -57,6 +59,7 @@ export type Database = {
         Update: {
           address_id?: string;
           business_name?: string;
+          company_image?: string | null;
           created_at?: string;
           detail_address?: string | null;
           is_default?: boolean;
@@ -76,6 +79,7 @@ export type Database = {
       };
       auctions: {
         Row: {
+          address_id: string | null;
           auction_id: string;
           created_at: string;
           current_point: number;
@@ -92,11 +96,12 @@ export type Database = {
           user_id: string;
         };
         Insert: {
+          address_id?: string | null;
           auction_id?: string;
           created_at?: string;
           current_point: number;
           description: string;
-          end_date: string;
+          end_date?: string;
           favorites?: string[] | null;
           highest_bidder_id?: string | null;
           image_urls?: string[];
@@ -108,6 +113,7 @@ export type Database = {
           user_id?: string;
         };
         Update: {
+          address_id?: string | null;
           auction_id?: string;
           created_at?: string;
           current_point?: number;
@@ -126,45 +132,6 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: 'auctions_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
-      bids: {
-        Row: {
-          auction_id: string;
-          bid_amount: number;
-          bid_time: string;
-          id: string;
-          user_id: string;
-        };
-        Insert: {
-          auction_id: string;
-          bid_amount: number;
-          bid_time?: string;
-          id?: string;
-          user_id: string;
-        };
-        Update: {
-          auction_id?: string;
-          bid_amount?: number;
-          bid_time?: string;
-          id?: string;
-          user_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'bids_auction_id_fkey';
-            columns: ['auction_id'];
-            isOneToOne: false;
-            referencedRelation: 'auctions';
-            referencedColumns: ['auction_id'];
-          },
-          {
-            foreignKeyName: 'bids_user_id_fkey';
             columns: ['user_id'];
             isOneToOne: false;
             referencedRelation: 'users';
@@ -426,6 +393,7 @@ export type Database = {
           max_point: number;
           image_urls: string[];
           end_date: string;
+          address_id: string;
           business_name: string;
           postal_code: string;
           road_address: string;

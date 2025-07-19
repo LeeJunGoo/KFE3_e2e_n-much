@@ -38,7 +38,7 @@ const AuctionDetail = ({
         </div>
         <p className="text-(--color-warm-gray) mb-3 text-sm">{auctionInfo.description}</p>
 
-        <AuctionTimer startTime={auctionInfo.start_time} endTime={auctionInfo.end_time} />
+        <AuctionTimer endTime={auctionInfo.end_time} />
 
         <div className="mb-4">
           <p className="text-(--color-warm-gray) text-sm">현재 최고 입찰가</p>
