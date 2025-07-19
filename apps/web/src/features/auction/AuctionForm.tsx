@@ -20,7 +20,7 @@ import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { getAuction } from 'src/entities/auction/api';
+import { getAddressId, getAuction } from 'src/entities/auction/api';
 import { deleteImages, uploadImage } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -59,16 +59,17 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   //FIXME - fetchedAddress 타입 명확하게 작성하기 (KMH)
   //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
   const {
-    data: fetchedAddressID,
+    data: fetchedAddressId,
     isLoading: isAddressIdFetching,
     isError: isAddressIdFetchingError
   } = useQuery({
     queryKey: ['addressId', loggedInUserId],
-    queryFn: (): Promise<AddressRow> => getAuction(auctionIdParam),
-    enabled: !!auctionIdParam
+    queryFn: (): Promise<AddressRow> => getAddressId(loggedInUserId),
+    select: (data: { address_id: string }) => data.address_id,
+    enabled: !!loggedInUserId
   });
 
-  console.log('fetchedAddressID', fetchedAddressID);
+  console.log('fetchedAddressID', fetchedAddressId);
   console.log('fetchedAuction', fetchedAuction);
 
   //FIXME - schema로 분리 (KMH)
@@ -205,6 +206,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         max_point: maxPoint,
         image_urls: imageUrls,
         status: isEditing ? fetchedAuction?.status || 'OPEN' : 'OPEN', //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기
+        address_id: fetchedAddressId,
         updated_at: isEditing ? new TZDate(new Date(), 'utc') : null
       })
     });
