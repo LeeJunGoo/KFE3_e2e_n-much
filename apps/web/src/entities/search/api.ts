@@ -5,6 +5,7 @@ export const getPopularKeywords = async () => {
     throw new Error('인기 검색어를 불러오는 데 실패했습니다.');
   }
   const result = await res.json();
+
   return result.data.map((item: { keyword: string }) => item.keyword);
 };
 
@@ -18,9 +19,9 @@ export const postKeyword = async (keyword: string) => {
   });
 
   if (!res.ok) {
-    throw new Error(`키워드를 저장하는 과정에서 에러가 발생했습니다.: ${res.status}`);
+    throw new Error(`키워드 저장에 실패했습니다.: ${res.status}`);
   }
   const result = await res.json();
 
-  return result.data;
+  return result.message;
 };

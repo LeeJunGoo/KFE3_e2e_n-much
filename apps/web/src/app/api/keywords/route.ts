@@ -4,11 +4,12 @@ import type { NextRequest } from 'next/server';
 
 export async function GET() {
   try {
-    const popularKeywords = await selectPopularKeywords();
-    return NextResponse.json({ status: 'success', data: popularKeywords });
+    const res = await selectPopularKeywords();
+    return NextResponse.json({ status: 'success', data: res });
   } catch (error) {
-    const message = error instanceof Error ? error.message : '서버 오류가 발생했습니다.';
-    return NextResponse.json({ status: 'error', message }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
+    }
   }
 }
 
@@ -35,7 +36,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ status: 'success', message: '키워드가 성공적으로 저장되었습니다.' });
   } catch (error) {
-    const message = error instanceof Error ? error.message : '서버 오류가 발생했습니다.';
-    return NextResponse.json({ status: 'error', message }, { status: 500 });
+    if (error instanceof Error) {
+      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
+    }
   }
 }

@@ -1,11 +1,16 @@
 'use client';
 
+import { toast } from '@repo/ui/components/ui/sonner';
+import { useRouter } from 'next/navigation';
+import { LOCALSTORAGE_KEY, LOCALSTORAGE_MAX_LENGTH } from 'src/entities/auction/constants';
+import { postKeyword } from 'src/entities/search/api';
 import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
 import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
 import useSearchAction from 'src/entities/search/hooks/useSearchAction';
 import PopularKeywords from 'src/features/search/components/PopularKeywords';
 import RecentKeywords from 'src/features/search/components/RecentKeywords';
 import SearchInput from 'src/features/search/components/SearchInput';
+import { getList, pushItem, removeItem, removeList } from 'src/shared/utils/LocalStorageListUtil';
 
 interface SearchViewProps {
   open: boolean;
@@ -13,13 +18,67 @@ interface SearchViewProps {
 }
 
 const SearchView = ({ open, setOpen }: SearchViewProps) => {
-  const { keyword, setKeyword, handleSearch, isLoading: isSearchLoading } = useSearchAction();
-  const { recentKeywords, remove: removeRecentKeyword, clear: clearRecentKeywords } = useRecentKeywords();
+  const { keyword, setKeyword, isLoading: isSearchLoading, setIsLoading: setIsSerachLoading } = useSearchAction();
+  const { recentKeywords, setRecentKeywords } = useRecentKeywords({ getList });
   const { popularKeywords, isLoading: isPopularLoading } = usePopularKeywords();
 
-  const handleSearchClick = (searchKeyword: string) => {
-    handleSearch(searchKeyword);
+  const router = useRouter();
+
+  const handleSearchClick = async (searchKeyword: string) => {
+    const trimmedKeyword = searchKeyword.trim();
+    if (!trimmedKeyword || isSearchLoading) {
+      return;
+    }
+
+    setIsSerachLoading(true);
+
+    // 검색 결과 페이지로 이동
+    router.push(`/auctions?keyword=${encodeURIComponent(trimmedKeyword)}`);
+    // 모달 닫기
     setOpen(false);
+
+    try {
+      // 검색어 저장 (백그라운드)
+      await postKeyword(trimmedKeyword);
+
+      // 로컬스토리지에 추가 후 반환 값을 상태 변수에 저장
+      const result = pushItem({
+        key: LOCALSTORAGE_KEY,
+        newValueItem: trimmedKeyword,
+        valueList: recentKeywords,
+        maxLangth: LOCALSTORAGE_MAX_LENGTH
+      });
+      setRecentKeywords(result);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`검색 처리 중 오류가 발생했습니다. ${error.message}`);
+      }
+      toast.error('검색 처리 중 오류가 발생했습니다.');
+    } finally {
+      setIsSerachLoading(false);
+    }
+  };
+
+  const handleRemoveClick = (keyword: string) => {
+    try {
+      const result = removeItem({ key: LOCALSTORAGE_KEY, newValueItem: keyword, valueList: recentKeywords });
+      setRecentKeywords(result);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`검색어 삭제 중 오류가 발생했습니다.: ${error.message}`);
+      }
+    }
+  };
+
+  const handleClearClick = () => {
+    try {
+      const result = removeList({ key: LOCALSTORAGE_KEY });
+      setRecentKeywords(result);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(`검색어 전체 삭제 중 오류가 발생했습니다.: ${error.message}`);
+      }
+    }
   };
 
   return (
@@ -34,8 +93,8 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
       <RecentKeywords
         keywords={recentKeywords}
         handleKeywordClick={handleSearchClick}
-        handleRemoveClick={removeRecentKeyword}
-        handleClearClick={clearRecentKeywords}
+        handleRemoveClick={handleRemoveClick}
+        handleClearClick={handleClearClick}
       />
       <PopularKeywords keywords={popularKeywords} handleKeywordClick={handleSearchClick} isLoading={isPopularLoading} />
     </section>
