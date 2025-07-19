@@ -1,30 +1,19 @@
-
-import { Badge } from '@repo/ui/components/ui/badge';
-import { differenceInHours, formatDistanceToNow, setDefaultOptions } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TZDate } from 'react-day-picker';
-import { FaBookOpen, FaHeart } from 'react-icons/fa6';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
-import type { SortedAuctionItemType } from 'src/entities/auction/types';
+import { type SortedAuctionItemType } from 'src/entities/auction/types';
+import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
+import BaseBadge from 'src/shared/ui/BaseBadge';
+import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 
 const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
   const auctionImage = auction.image_urls && auction.image_urls.length > 0 ? auction.image_urls[0] : NotAuctionImage;
-
-  setDefaultOptions({ locale: ko });
-  const now = new TZDate(new Date(), 'Asia/Seoul');
-  const auctionTime = new TZDate(auction.end_time, 'Asia/Seoul');
-  const diffDay = differenceInHours(now, auctionTime);
-  const remainTime = formatDistanceToNow(auctionTime, { addSuffix: true });
+  const { status, remainTime } = formatRemainingTime(auction.end_date);
 
   const favoritesCount = auction.favorites?.length || 0;
   const episodesCount = auction.episodes?.length || 0;
 
-  const isUrgent = auction.status === 'OPEN' && -24 < diffDay && diffDay < 0;
-  const badgeColor = isUrgent
-    ? 'bg-[var(--color-red)] hover:bg-[var(--color-red)]'
-    : 'bg-[var(--color-accent)] hover:bg-[var(--color-accent)]';
+  const badgeVariant = status === 'urgent' ? 'accent' : 'red';
 
   return (
     <li className="border-(--color-warm-gray)/30 border-b last:border-b-0">
@@ -41,20 +30,15 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
             <div>
               <h3 className="mr-2 flex-1 font-medium">{auction.title}</h3>
             </div>
-            <Badge className={`${badgeColor} px-2 py-1 font-normal`}>{remainTime}</Badge>
+            <BaseBadge variant={badgeVariant} className={'px-2 py-1 font-normal'}>
+              {remainTime}
+            </BaseBadge>
           </div>
-          <div className="text-(--color-warm-gray) mt-2 flex items-center gap-3 text-sm">
-            <div className="flex items-center gap-3">
-              <i className="flex items-center gap-1">
-                <FaHeart className="text-(--color-red) mr-1 text-sm" />
-                <span>{favoritesCount}</span>
-              </i>
-              <i className="flex items-center gap-1">
-                <FaBookOpen className="text-(--color-primary) text-sm" />
-                <span>{episodesCount}</span>
-              </i>
-            </div>
-          </div>
+          <AuctionMetaInfo
+            favoritesCount={favoritesCount}
+            episodesCount={episodesCount}
+            className="text-(--color-warm-gray) mt-2"
+          />
         </div>
       </Link>
     </li>

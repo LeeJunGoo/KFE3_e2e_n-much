@@ -1,28 +1,27 @@
-import Link from 'next/link';
-import { fetchSortedAuctions } from 'src/entities/auction/serverActions';
-import PopularAuctionCard from './PopularAuctionCard';
-import PageTitle from '../../shared/ui/PageTitle';
-import type { SortedAuctionItemType } from 'src/entities/auction/types';
+import { POPULAR_AUCTIONS_COUNT } from 'src/entities/auction/constants';
+import { getPopularAuctions } from 'src/entities/auction/serverActions';
+import { type SortedAuctionItemType } from 'src/entities/auction/types';
+import PopularAuctionCard from 'src/features/auction/PopularAuctionCard';
+import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
+import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 
 const PopularListSection = async () => {
-  const popularAuctions = await fetchSortedAuctions('favorites', false, 4);
+  const popularAuctions = await getPopularAuctions('favorites', false, POPULAR_AUCTIONS_COUNT);
 
   if (!popularAuctions || popularAuctions.length === 0) {
     return (
-      <div className="h-50 flex w-full items-center justify-center rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500">
-        아직 등록된 정보가 없어요
-      </div>
+      <ContentEmpty
+        titleLabel="아직 등록된 상품 정보가 없어요."
+        contentLabel="새로운 정보가 등록되면 알려드릴게요.!"
+        className="mt-8"
+      />
     );
   }
 
   return (
     <div className="mt-8">
-      <div className="mb-4 flex items-center justify-between">
-        <PageTitle>인기 경매</PageTitle>
-        <Link href="/auctions?order=favorites" className="text-(--color-accent) cursor-pointer text-sm">
-          더보기
-        </Link>
-      </div>
+      <AuctionSectionHeader title="인기 경매" href={'/auctions?order=favorites'} />
+      <div className="mb-4 flex items-center justify-between"></div>
       <ul className="grid grid-cols-2 gap-3">
         {popularAuctions.map((auction: SortedAuctionItemType) => (
           <PopularAuctionCard key={auction.auction_id} auction={auction} />
