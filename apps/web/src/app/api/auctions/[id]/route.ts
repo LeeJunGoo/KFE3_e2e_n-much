@@ -13,6 +13,10 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
   const type = searchParams.get('type');
   let res;
 
+  if (!id || !type) {
+    return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
+  }
+
   try {
     if (type === 'auction_form') {
       res = await selectAuctionWithSellerInfo(id);
@@ -20,15 +24,10 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
       res = await selectAuctionInfoForEpisode(id);
     } else if (type === 'auction') {
       res = await selectHighestBidder(id);
-    } else {
-      return NextResponse.json(
-        { status: 'error', message: '잘못된 정보를 전달하였습니다.', id, type },
-        { status: 400 }
-      );
     }
 
-    return NextResponse.json(res);
-  } catch (error) {
-    return NextResponse.json({ error: `Server Error${error}` });
+    return NextResponse.json(res, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

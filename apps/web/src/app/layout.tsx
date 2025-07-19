@@ -1,7 +1,7 @@
+import Providers from 'src/app/(providers)/Providers';
 import { pretendard } from 'src/assets/fonts';
 import './globals.css';
 import { home } from 'src/entities/layout/metaData';
-import Providers from './(providers)/Providers';
 
 export const metadata = home;
 
