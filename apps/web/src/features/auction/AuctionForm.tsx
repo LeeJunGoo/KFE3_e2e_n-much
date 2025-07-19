@@ -216,6 +216,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
 
     //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기 (KMH)
+    //TODO - POST와 PATCH로 분리하기 (KMH)
+    //TODO - POST와 PATCH로 나누고, DB 컬럼 조건도 수정하기 (KMH)
     const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
 
     const data = await fetch(fetchUrl, {
@@ -245,7 +247,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       // router.push(`/auctions/${auctionIdParam}`);
     } else {
       //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
-      // router.push(`/auctions/${auctionId}`);
+      // router.push(`/auctions/${newAuctionId}`);
     }
   };
 

@@ -2,17 +2,10 @@
 //NOTE - status 빼는 것 의논해보기, 만약 뺀다면 DB 데이터만 보내도 좋을 것 같음
 
 import { NextResponse } from 'next/server';
-import {
-  addAuction,
-  deleteAuction,
-  getAllAuctions,
-  selectAuction,
-  getSellerAuctions,
-  updateAuction
-} from 'src/entities/auction/supabase';
+import { getAllAuctions, selectAuction, getSellerAuctions, insertAuction } from 'src/entities/auction/supabase';
 import { createServer } from 'src/shared/supabase/client/server';
 import type { NextRequest } from 'next/server';
-import type { AuctionInsert, AuctionUpdate } from 'src/shared/supabase/types';
+import type { AuctionInsert } from 'src/shared/supabase/types';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -48,44 +41,16 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  //TODO - type 느슨함, 다시 생각해보기 (KMH)
+  //TODO - zod 스키마로 값 검증하기 (KMH)
   const auctionData: AuctionInsert = await request.json();
 
   try {
-    const res = await addAuction(auctionData);
-    return NextResponse.json({ status: 'success', data: res }, { status: 201 });
+    const res = await insertAuction(auctionData);
+    return NextResponse.json(res, { status: 201 }); //TODO - res를 반환할지 다른 것을 반환할지 고려하기 (KMH)
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
-    }
-  }
-}
-
-export async function PATCH(request: NextRequest) {
-  const auctionData: AuctionUpdate = await request.json();
-
-  try {
-    const res = await updateAuction(auctionData.auction_id, auctionData);
-    return NextResponse.json({ status: 'success', data: res }, { status: 200 });
-  } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
-    }
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  const { auction_id: auctionId } = await request.json();
-
-  if (!auctionId) {
-    return NextResponse.json({ status: 'error', message: 'auction_id 값이 존재하지 않습니다.' }, { status: 400 });
-  }
-
-  try {
-    const res = await deleteAuction(auctionId);
-    return NextResponse.json({ status: 'success', data: res }, { status: 200 });
-  } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
+      return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
     }
   }
 }

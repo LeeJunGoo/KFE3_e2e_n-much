@@ -92,7 +92,7 @@ export const selectAuctionWithSellerInfo = async (auctionId: string) => {
 };
 
 //NOTE - 경매 물품 추가
-export const addAuction = async (auctionData: AuctionInsert) => {
+export const insertAuction = async (auctionData: AuctionInsert) => {
   const { data, error } = await supabase.from('auctions').insert([auctionData]).select().single();
 
   if (error) {
