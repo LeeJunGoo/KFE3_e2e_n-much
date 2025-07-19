@@ -33,6 +33,10 @@ interface AuctionFormProps {
   loggedInUserId: string;
 }
 
+interface AddressId {
+  address_id: string;
+}
+
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
@@ -64,8 +68,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     isError: isAddressIdFetchingError
   } = useQuery({
     queryKey: ['addressId', loggedInUserId],
-    queryFn: (): Promise<AddressRow> => getAddressId(loggedInUserId),
-    select: (data: { address_id: string }) => data.address_id,
+    queryFn: (): Promise<AddressId> => getAddressId(loggedInUserId),
+    select: (data: AddressId) => data.address_id,
     enabled: !!loggedInUserId
   });
 
