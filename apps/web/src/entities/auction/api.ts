@@ -110,7 +110,7 @@ export const getAuction = async (auctionId: string | undefined) => {
 };
 
 //TODO - address 도메인으로 이동 (KMH)
-export const getAddressId = async (userId: string) => {
+export const getAddressId = async (userId: string | undefined) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses/?user_id=${userId}`);
 
   if (!res.ok) {
