@@ -13,6 +13,7 @@ export async function GET() {
   }
 }
 
+// upsert로 변경 예정
 export async function POST(request: NextRequest) {
   try {
     const { keyword } = await request.json();
