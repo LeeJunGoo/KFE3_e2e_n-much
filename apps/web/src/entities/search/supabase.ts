@@ -13,7 +13,7 @@ export const selectKeyword = async (keyword: string): Promise<KeywordRow | null>
 
   if (error) {
     console.error('🚀 ~ selectKeyword ~ error:', error.message);
-    throw new Error('DB : 키워드 조회 에러');
+    throw new Error();
   }
 
   return data;
@@ -29,7 +29,7 @@ export const updateKeyword = async (keywordId: number, updates: keywordUpdate) =
 
   if (error) {
     console.error('🚀 ~ updateKeyword ~ error:', error.message);
-    throw new Error('DB : 키워드 업데이트 에러');
+    throw new Error();
   }
 };
 
@@ -43,7 +43,7 @@ export const insertKeyword = async (keyword: string) => {
 
   if (error) {
     console.error('🚀 ~ insertKeyword ~ error:', error.message);
-    throw new Error('DB : 키워드 추가 에러');
+    throw new Error();
   }
 };
 
@@ -62,7 +62,7 @@ export const selectPopularKeywords = async (limit = DEFAULT_POPULAR_LIMIT) => {
 
   if (error) {
     console.error('🚀 ~ insertKeyword ~ error:', error.message);
-    throw new Error('DB : 인기 검색어 조회 에러');
+    throw new Error();
   }
   return data;
 };

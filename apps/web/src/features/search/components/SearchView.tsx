@@ -39,21 +39,26 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
 
     try {
       // 검색어 저장 (백그라운드)
-      await postKeyword(trimmedKeyword);
+      const successMessage = await postKeyword(trimmedKeyword);
+      if (successMessage === 'success') {
+        const message = '검색어를 저장했습니다.';
+        toast.success(message);
 
-      // 로컬스토리지에 추가 후 반환 값을 상태 변수에 저장
-      const result = pushItem({
-        key: LOCALSTORAGE_KEY,
-        newValueItem: trimmedKeyword,
-        valueList: recentKeywords,
-        maxLangth: LOCALSTORAGE_MAX_LENGTH
-      });
-      setRecentKeywords(result);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(`검색 처리 중 오류가 발생했습니다. ${error.message}`);
+        // 로컬스토리지에 추가 후 반환 값을 상태 변수에 저장
+        const result = pushItem({
+          key: LOCALSTORAGE_KEY,
+          newValueItem: trimmedKeyword,
+          valueList: recentKeywords,
+          maxLangth: LOCALSTORAGE_MAX_LENGTH
+        });
+        setRecentKeywords(result);
       }
-      toast.error('검색 처리 중 오류가 발생했습니다.');
+    } catch (error) {
+      const message = '검색어를 저장하지 못했습니다.';
+      toast.error(message);
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
     } finally {
       setIsSerachLoading(false);
     }
