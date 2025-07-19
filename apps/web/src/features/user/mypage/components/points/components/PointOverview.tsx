@@ -1,6 +1,7 @@
 import PageTitle from 'src/shared/ui/PageTitle';
-import BaseCard from 'src/widgets/BaseCard';
 import PointDisplay from 'src/shared/ui/PointDisplay';
+import { formatKoreanFullDate } from 'src/shared/utils/formatToKoreanDateTime';
+import BaseCard from 'src/widgets/BaseCard';
 
 const PointOverview = () => {
   return (
@@ -12,7 +13,7 @@ const PointOverview = () => {
         <p className="text-(--color-accent) mb-2">
           <PointDisplay amount={1000} className="text-2xl" />
         </p>
-        <p className="text-(--color-warm-gray) text-xs">마지막 업데이트: 2025.05.05</p>
+        <p className="text-(--color-warm-gray) text-xs">마지막 업데이트: {formatKoreanFullDate('2025-05-05')}</p>
       </div>
     </BaseCard>
   );

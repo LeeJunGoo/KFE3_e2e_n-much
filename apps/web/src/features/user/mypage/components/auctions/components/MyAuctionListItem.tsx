@@ -1,6 +1,7 @@
 import { Button } from '@repo/ui/components/ui/button';
-import BaseCard from 'src/widgets/BaseCard';
 import PointDisplay from 'src/shared/ui/PointDisplay';
+import { formatYYYYMMDD } from 'src/shared/utils/formatToKoreanDateTime';
+import BaseCard from 'src/widgets/BaseCard';
 
 const MyAuctionListItem = () => {
   return (
@@ -40,7 +41,7 @@ const MyAuctionListItem = () => {
             </p>
             <p className="text-(--color-warm-gray) flex justify-between text-sm">
               <span>경매 종료일</span>
-              <time>2025.05.05</time>
+              <time>{formatYYYYMMDD('2025-05-05')}</time>
             </p>
           </div>
         </div>

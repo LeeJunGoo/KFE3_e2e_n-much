@@ -1,4 +1,5 @@
 import { FaChevronRight, FaGavel } from 'react-icons/fa6';
+import { formatYYYYMMDD } from 'src/shared/utils/formatToKoreanDateTime';
 import BaseCard from 'src/widgets/BaseCard';
 
 const MyEpisodeListItem = () => {
@@ -13,7 +14,7 @@ const MyEpisodeListItem = () => {
           {/* <Badge variant={getVariant(status)}>{getStatusText(status)}</Badge> */}
           진행중
         </div>
-        <p className="text-(--color-warm-gray) text-sm">작성일: 2025.05.05</p>
+        <p className="text-(--color-warm-gray) text-sm">작성일: {formatYYYYMMDD('2025-05-05')}</p>
         <div className="bg-(--color-secondary) group-hover:bg-(--color-accent)/30 mt-2 rounded-lg p-3 transition-colors duration-200">
           <p className="text-(--color-accent) flex items-center gap-2 text-sm transition-all duration-200 group-hover:text-white">
             <FaGavel />

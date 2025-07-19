@@ -6,8 +6,9 @@ import { ROLE_CONFIG } from 'src/entities/user/mypage/main/constants';
 import AddressStatus from 'src/features/user/mypage/components/main/AddressStatus';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
-import BaseCard from 'src/widgets/BaseCard';
 import PointDisplay from 'src/shared/ui/PointDisplay';
+import { formatKoreanFullDate } from 'src/shared/utils/formatToKoreanDateTime';
+import BaseCard from 'src/widgets/BaseCard';
 import type { RoleType, UserMetadata } from 'src/entities/user/mypage/main/types';
 
 const MyPageUserProfile = ({ data }: UserMetadata) => {
@@ -51,7 +52,7 @@ const MyPageUserProfile = ({ data }: UserMetadata) => {
           <p className="text-sm">보유 포인트</p>
           <PointDisplay amount={1000} />
         </div>
-        <p className="text-(--color-warm-gray) mt-1 text-xs">마지막 업데이트: 2025년 5월 25일</p>
+        <p className="text-(--color-warm-gray) mt-1 text-xs">마지막 업데이트: {formatKoreanFullDate('2025-05-05')}</p>
       </div>
     </BaseCard>
   );
