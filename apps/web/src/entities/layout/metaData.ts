@@ -1,4 +1,4 @@
-export const metadata = {
+export const home = {
   title: 'Vidding',
   description: '당신의 가치를 입찰하세요!',
   keywords: ['Vidding', 'vidding', 'VIDDING', 'Bidding', 'bidding', 'BIDDING'],
