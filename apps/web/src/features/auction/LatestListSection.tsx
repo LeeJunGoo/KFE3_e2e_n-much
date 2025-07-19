@@ -1,12 +1,12 @@
 import { LATEST_AUCTIONS_COUNT } from 'src/entities/auction/constants';
-import { getALatestAuctions } from 'src/entities/auction/serverActions';
+import { getLatestAuctions } from 'src/entities/auction/serverActions';
 import { type SortedAuctionItemType } from 'src/entities/auction/types';
 import LatestAuctionCard from 'src/features/auction/LatestAuctionCard';
+import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
-import AuctionSectionHeader from './shared/AuctionSectionHeader';
 
 const LatestListSection = async () => {
-  const latestAuctions = await getALatestAuctions('created_at', true, LATEST_AUCTIONS_COUNT);
+  const latestAuctions = await getLatestAuctions('created_at', true, LATEST_AUCTIONS_COUNT);
 
   if (!latestAuctions || latestAuctions.length === 0) {
     return (

@@ -1,16 +1,13 @@
-import { createClient } from 'src/shared/supabase/client/server'; // SSR 전용
+import { type User } from '@supabase/supabase-js';
+import { NextResponse } from 'next/server';
+import { selectAuthInfo } from 'src/entities/auth/supabase';
 
-//NOTE - 서버측에서만 사용 가능
+//ANCHOR - 현재 사용 x
 export async function GET() {
   try {
-    const supabase = await createClient();
-
-    const {
-      data: { user }
-    } = await supabase.auth.getUser();
-
-    return user;
-  } catch (error) {
-    if (error instanceof Error) throw new Error(error.message);
+    const user: User | null = await selectAuthInfo();
+    return NextResponse.json(user, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

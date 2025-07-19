@@ -18,7 +18,7 @@ const ContentEmpty = ({ titleLabel, contentLabel, className }: ContentEmpty) => 
       )}
     >
       <div className="flex-1/3 flex items-center justify-end">
-        <Image src={MascotImage} alt="에러 햄스터" width={65} className="h-auto" />
+        <Image src={MascotImage} alt="에러가 발생했습니다." width={65} className="h-auto" />
       </div>
       <div className="flex-2/3 text-(--color-text-base) text-left text-sm leading-relaxed">
         <p className="font-semibold"> {titleLabel}</p>

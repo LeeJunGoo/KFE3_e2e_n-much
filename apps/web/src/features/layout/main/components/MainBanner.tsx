@@ -61,7 +61,7 @@ const MainBanner = () => {
                     fill
                     className="object-contain"
                     priority
-                    sizes=" (max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
+                    sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               </div>

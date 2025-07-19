@@ -25,17 +25,13 @@ export const getPopularAuctions = unstable_cache(
 );
 
 //ANCHOR - 최신순
-// export const getALatestAuctions = unstable_cache(
-//   async (order: string, isAscending: boolean, count: number) => {
-//     const data = await selectAuctionsByMainPageCategory(order, isAscending, count);
-//     return data;
-//   },
-//   ['auctions-Latest'],
-//   {
-//     tags: ['auctions-Latest']
-//   }
-// );
-export const getALatestAuctions = async (order: string, isAscending: boolean, count: number) => {
-  const data = await selectAuctionsByMainPageCategory(order, isAscending, count);
-  return data;
-};
+export const getLatestAuctions = unstable_cache(
+  async (order: string, isAscending: boolean, count: number) => {
+    const data = await selectAuctionsByMainPageCategory(order, isAscending, count);
+    return data;
+  },
+  ['auctions-Latest'],
+  {
+    tags: ['auctions-Latest']
+  }
+);

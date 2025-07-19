@@ -29,6 +29,7 @@ export async function GET(request: NextRequest) {
       res = await getEpisodesByAuctionId(auctionId);
     }
 
+    //FIXME - 현재 경매 등록 페이지에서만 현재 GET을 사용 중이며, 경매 등록 페이지에서(수정일 경우에만 작동되므로, 위의 조건문에서 값이 전부 존재할 경우에만 실행)
     if (episodeId) {
       res = await selectEpisodeById(episodeId);
     }
