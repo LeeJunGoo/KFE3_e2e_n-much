@@ -26,7 +26,7 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import type { AddressRow, AuctionRow } from 'src/shared/supabase/types';
+import type { AuctionRow } from 'src/shared/supabase/types';
 
 interface AuctionFormProps {
   auctionIdParam: string | undefined;
@@ -35,6 +35,17 @@ interface AuctionFormProps {
 
 interface AddressId {
   address_id: string;
+}
+
+interface Auction {
+  title: string;
+  description: string;
+  end_date: string;
+  starting_point: number;
+  current_point: number;
+  max_point: number;
+  image_urls: string[];
+  status: string;
 }
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
@@ -56,7 +67,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     isError: isAuctionFetchingError
   } = useQuery({
     queryKey: ['auctionForm', auctionIdParam],
-    queryFn: (): Promise<AuctionRow> => getAuction(auctionIdParam),
+    queryFn: (): Promise<Auction> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam
   });
 
