@@ -84,8 +84,8 @@ export const selectAuctionWithSellerInfo = async (auctionId: string) => {
     .maybeSingle();
 
   if (error) {
-    console.error('🚀 ~ getAuctionWithSellerInfo:', error.message);
-    throw new Error('DB: 특정 경매 정보 불러오기 에러');
+    console.error('🚀 ~ getAuctionWithSellerInfo:', error);
+    throw new Error();
   }
 
   return data;
@@ -173,30 +173,21 @@ export const getAllAuctionsCount = async () => {
   return data.count;
 };
 
-export const getAuctionsWithEpisodeCountByOrderMainPage = async (
-  orderParam: string,
-  isAscending: boolean,
-  count: number
-) => {
-  if (orderParam) {
-    const { data, error } = await supabase
-      .from('auctions')
-      .select(
-        `
-    *,episodes(count)
-  `
-      )
-      .order(orderParam, { ascending: isAscending })
-      .eq('status', 'OPEN')
-      .limit(count);
+//ANCHOR - 경매 데이터 마감 임박, 인기순, 최신순(메인 페이지)
+export const selectAuctionsByMainPageCategory = async (orderParam: string, isAscending: boolean, count: number) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(`* ,episodes(count)`)
+    .order(orderParam, { ascending: isAscending })
+    .eq('status', 'OPEN')
+    .limit(count);
 
-    if (error) {
-      console.error(error);
-      throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
-    }
-
-    return data;
+  if (error) {
+    console.error(error);
+    throw new Error();
   }
+
+  return data;
 };
 
 // 모든 경매와 경매의 사연 갯수를 불러오기
