@@ -1,5 +1,4 @@
 //TODO - 폼 유효성 검사 상의 (KMH)
-//TODO - 경매 수정시 이미지 제거시 버켓 이미지 삭제 (KMH)
 
 'use client';
 
@@ -26,7 +25,6 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import type { AuctionRow } from 'src/shared/supabase/types';
 
 interface AuctionFormProps {
   auctionIdParam: string | undefined;
@@ -58,31 +56,31 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
-  //FIXME - 타입 분리
   const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
   const [imageUrlsToDelete, setImageUrlsToDelete] = useState<string[]>([]);
   const router = useRouter();
 
-  console.log('auction_id', auctionIdParam);
+  console.log('auctionIdParam', auctionIdParam);
 
+  //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
   //FIXME - 분리하기 (KMH)
-  //FIXME - fetchedAuction 타입 명확하게 작성하기 (KMH)
   const {
     data: fetchedAuction,
     isLoading: isAuctionFetching,
-    isError: isAuctionFetchingError
+    isError: isAuctionFetchingError,
+    error: fetchingAuctionError
   } = useQuery({
     queryKey: ['auctionForm', auctionIdParam],
     queryFn: (): Promise<Auction> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam
   });
 
-  //FIXME - fetchedAddress 타입 명확하게 작성하기 (KMH)
-  //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
+  //FIXME - 분리하기 (KMH)
   const {
     data: fetchedAddressId,
     isLoading: isAddressIdFetching,
-    isError: isAddressIdFetchingError
+    isError: isAddressIdFetchingError,
+    error: fetchingAddressIdError
   } = useQuery({
     queryKey: ['addressId', loggedInUserId],
     queryFn: (): Promise<AddressId> => getAddressId(loggedInUserId),
@@ -108,7 +106,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       message: '상세 내용은 최대 500자가 되어야 합니다.'
     }),
     endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }),
-    endTime: z.string().min(8, { message: '경매 종료 시각을 입력해야 합니다.' }),
+    endTime: z.string().min(1, { message: '경매 종료 시각을 입력해야 합니다.' }),
     startingPoint: z.string().refine((value) => Number(value) > 0, { message: '최소 포인트는 0보다 커야 합니다.' }),
     maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야 합니다.' })
   });
@@ -247,6 +245,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   //FIXME - toss로 에러를 알리고, 에러 처리하기 (KMH)
   if (isAuctionFetchingError || isAddressIdFetchingError) {
+    console.error('fetchingAuctionError', fetchingAuctionError);
+    console.error('fetchingAddressIdError', fetchingAddressIdError);
     return <p>에러 발생</p>;
   }
 
