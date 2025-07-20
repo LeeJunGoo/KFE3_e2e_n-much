@@ -13,12 +13,13 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 interface EpisodeCount {
   episodes: [{ count: number }];
 }
-
+console.log('first', Boolean(0));
 const AuctionList = ({ order }: { order: string }) => {
   const { ref, inView } = useInView();
   const {
     data: auctions,
     isError,
+    error,
     isLoading,
     isFetchingNextPage,
     fetchNextPage
@@ -27,7 +28,7 @@ const AuctionList = ({ order }: { order: string }) => {
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
       getAllAuctionsWithEpisodeCount({ order, pageParam }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextId,
+    getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
     staleTime: 5
   });
 
@@ -38,6 +39,7 @@ const AuctionList = ({ order }: { order: string }) => {
   }, [fetchNextPage, inView]);
 
   if (isError) {
+    console.error(error);
     return <p>에러 발생</p>;
   }
 

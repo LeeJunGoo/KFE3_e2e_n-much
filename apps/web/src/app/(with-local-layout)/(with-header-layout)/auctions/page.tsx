@@ -33,10 +33,10 @@ const Page = async ({ searchParams }: PageProps) => {
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['auctions', order],
-    queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: AuctionRow & EpisodeCount; nextId: number }> =>
+    queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
       getAllAuctionsWithEpisodeCount({ order, pageParam }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage: { data: AuctionRow & EpisodeCount; nextId: number }) => lastPage.nextId
+    getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId
   });
 
   return (

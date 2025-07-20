@@ -9,11 +9,11 @@ export async function GET(request: NextRequest) {
   const page = searchParams.get('page');
   let res = null;
 
+  console.log('order', order, 'page', page);
+
   if (!order || !page) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
-
-  console.log('order', order, 'page', page);
 
   try {
     if (order === 'favorites') {
