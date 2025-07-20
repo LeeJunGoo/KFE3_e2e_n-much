@@ -83,16 +83,34 @@ export const fetchSellerAuctions = async () => {
 };
 
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
-export const getAllAuctionsWithEpisodeCount = async ({ order, pageParam }: { order: string; pageParam: number }) => {
-  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count?order=${order}&page=${pageParam}`;
-  const data = await fetch(fetchUrl);
-  const result = await data.json();
+export const getAllAuctionsWithEpisodeCount = async ({
+  order,
+  page
+}: {
+  order: string | undefined;
+  page: number | undefined;
+}) => {
+  if (!order && !page) {
+    throw new Error('getAllAuctionsWithEpisodeCount: order와 page가 없습니다.');
+  }
 
-  if (result.status === 'success') {
-    return result.data;
-  } else {
+  if (!order) {
+    throw new Error('getAllAuctionsWithEpisodeCount: order가 없습니다.');
+  }
+
+  if (!page) {
+    throw new Error('getAllAuctionsWithEpisodeCount: page가 없습니다.');
+  }
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count?order=${order}&page=${page}`
+  );
+  if (!res.ok) {
     throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
   }
+
+  const data = await res.json();
+  return data;
 };
 
 export const getAuction = async (auctionId: string | undefined) => {
