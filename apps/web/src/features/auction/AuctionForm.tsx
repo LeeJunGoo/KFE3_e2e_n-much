@@ -1,6 +1,5 @@
 //TODO - 폼 유효성 검사 상의 (KMH)
 //TODO - 서영님한테 이미지와 버튼 css 물어보기 (KMH)
-//TODO - 날짜, 시간 유효성 검사 넣기 (KMH)
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -28,6 +27,23 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import type { AddressRow, AuctionRow } from 'src/shared/supabase/types';
 
+const MIN_TITLE_LETTERS = 5;
+const MAX_TITLE_LETTERS = 50;
+const MIN_DESCRIPTION_LETTERS = 5;
+const MAX_DESCRIPTION_LETTERS = 500;
+const MIN_END_TIME_LETTERS = 1;
+const MIN_STARTING_POINT_NUM = 0;
+const MIN_MAX_POINT_NUM = 0;
+const BUCKET_FOLDER_NAME = 'images/';
+
+const HOURS_OF_DAY = 24;
+const KOR_TIME_ZONE = 'Asia/Seoul';
+const UTC_TIME_ZONE = 'utc';
+
+//TODO - 분리하기 (KMH)
+const AUCTION_FORM_QUERY_KEY = 'auctionForm';
+const ADDRESS_ID_QUERY_KEY = 'addressId';
+
 //TODO - 분리하기 (KMH)
 interface AuctionFormProps {
   auctionIdParam: string | undefined;
@@ -52,26 +68,15 @@ interface PreviewImage {
 
 //TODO - 분리하기 (KMH)
 const auctionFormKeys = {
-  all: ['auctionForm'] as const,
+  all: [AUCTION_FORM_QUERY_KEY] as const,
   item: (auctionId: string) => [...auctionFormKeys.all, auctionId] as const
 };
 
 //TODO - 분리하기 (KMH)
 const addressIdKeys = {
-  all: ['addressId'] as const,
+  all: [ADDRESS_ID_QUERY_KEY] as const,
   item: (userId: string) => [...auctionFormKeys.all, userId] as const
 };
-
-const MIN_TITLE_LETTERS = 5;
-const MAX_TITLE_LETTERS = 50;
-const MIN_DESCRIPTION_LETTERS = 5;
-const MAX_DESCRIPTION_LETTERS = 500;
-const MIN_END_TIME_LETTERS = 1;
-const MIN_STARTING_POINT_NUM = 0;
-const MIN_MAX_POINT_NUM = 0;
-const BUCKET_FOLDER_NAME = 'images/';
-
-const HOURS_OF_DAY = 24;
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -150,7 +155,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   //TODO - 분리하기 (KMH)
   const getNowKorDate = () => {
     const now = new Date();
-    const korNow = new TZDate(now, 'Asia/Seoul');
+    const korNow = new TZDate(now, KOR_TIME_ZONE);
 
     return korNow;
   };
@@ -169,13 +174,13 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   //TODO - 분리하기 (KMH)
   const convertFromUtcToKorDate = (date: string) => {
-    const korDate = new TZDate(date, 'Asia/Seoul');
+    const korDate = new TZDate(date, KOR_TIME_ZONE);
     return korDate;
   };
 
   //TODO - 분리하기 (KMH)
   const convertFromKorToUtcDate = (date: Date) => {
-    const korDate = new TZDate(date, 'utc');
+    const korDate = new TZDate(date, UTC_TIME_ZONE);
     return korDate;
   };
 
@@ -331,7 +336,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         console.log('결과', data);
         console.log('옥션아이디', data.auction_id);
 
-        queryClient.removeQueries({ queryKey: ['auctionForm', auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
+        queryClient.removeQueries({ queryKey: [AUCTION_FORM_QUERY_KEY, auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
 
         //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
         // router.push(`/auctions/${data.auction_id}`);
@@ -355,7 +360,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         image_urls: imageUrls,
         status: fetchedAuction.status,
         address_id: fetchedAddressId,
-        updated_at: new TZDate(new Date(), 'utc').toISOString()
+        updated_at: new TZDate(new Date(), UTC_TIME_ZONE).toISOString()
       };
 
       const data = await patchAuction(auctionIdParam, patchAuctionParam);
@@ -364,7 +369,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       console.log('결과', data);
       console.log('옥션아이디', data.auction_id);
 
-      queryClient.removeQueries({ queryKey: ['auctionForm', auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
+      queryClient.removeQueries({ queryKey: [AUCTION_FORM_QUERY_KEY, auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
 
       //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
       // router.push(`/auctions/${newAuctionId}`);
@@ -401,7 +406,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     return isDisableCondition ? formDate < korNow : formDate > korNow;
   };
 
-  //FIXME - UI 수정하기 (KMH)
   //TODO - 공통 컴포넌트로 분리하기 (KMH)
   return (
     <>

@@ -12,25 +12,25 @@ interface AuctionFormPageProps {
 }
 
 //TODO - 분리하기 (KMH)
-const EDITING_AUCTION_TITLE = '경매 수정하기';
-const REGISTERING_AUCTION_TITLE = '경매 등록하기';
+const AUCTION_FORM_QUERY_KEY = 'auctionForm';
+const ADDRESS_ID_QUERY_KEY = 'addressId';
 
 //TODO - 분리하기 (KMH)
 const auctionFormKeys = {
-  all: ['auctionForm'] as const,
+  all: [AUCTION_FORM_QUERY_KEY] as const,
   item: (auctionId: string) => [...auctionFormKeys.all, auctionId] as const
 };
 
 //TODO - 분리하기 (KMH)
 const addressIdKeys = {
-  all: ['addressId'] as const,
+  all: [ADDRESS_ID_QUERY_KEY] as const,
   item: (userId: string) => [...auctionFormKeys.all, userId] as const
 };
 
 const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
   const { auction_id: auctionId } = await searchParams;
   const isEditing = Boolean(auctionId);
-  const pageTitle = isEditing ? EDITING_AUCTION_TITLE : REGISTERING_AUCTION_TITLE;
+  const pageTitle = isEditing ? '경매 수정하기' : '경매 등록하기';
   const loggedInUserId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기 (KMH)
 
   const queryClient = new QueryClient();
