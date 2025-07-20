@@ -11,7 +11,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { cn } from '@repo/ui/lib/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addHours, format, set } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
@@ -25,7 +25,7 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import type { AddressRow, AuctionRow } from 'src/shared/supabase/types';
+import type { AddressRow, AuctionInsert, AuctionRow } from 'src/shared/supabase/types';
 
 const MIN_TITLE_LETTERS = 5;
 const MAX_TITLE_LETTERS = 50;
@@ -121,6 +121,16 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   console.log('fetchedAddressID', fetchedAddressId);
   console.log('fetchedAuction', fetchedAuction);
 
+  const { mutateAsync: mutatePostAuction, isPending: isPostAuctionPending } = useMutation({
+    mutationFn: (formData: AuctionInsert): Promise<AuctionRow> => postAuction(formData),
+    onSuccess: () => {
+      //FIXME - 쿼리 키를 객체의 쿼리 키로 수정하기 (KMH)
+      queryClient.removeQueries({ queryKey: [AUCTION_FORM_QUERY_KEY, auctionIdParam] });
+    },
+    onError: (error) => {
+      //TODO - toast로 error 표시
+    }
+  });
   //FIXME - schema로 분리 (KMH)
   const formSchema = z.object({
     title: z
@@ -312,7 +322,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       console.error(error);
     }
 
-    //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기 (KMH)
     try {
       if (!fetchedAddressId) {
         //TODO - toast로 처리 (KMH)
@@ -331,12 +340,10 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
           address_id: fetchedAddressId
         };
 
-        const data = await postAuction(postAuctionParam);
+        const data = await mutatePostAuction(postAuctionParam);
         console.log(values);
         console.log('결과', data);
         console.log('옥션아이디', data.auction_id);
-
-        queryClient.removeQueries({ queryKey: [AUCTION_FORM_QUERY_KEY, auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
 
         //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
         // router.push(`/auctions/${data.auction_id}`);
