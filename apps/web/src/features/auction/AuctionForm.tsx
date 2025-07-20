@@ -243,9 +243,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       console.log(values);
       console.log('결과', data);
       console.log('옥션아이디', data.auction_id);
-
-      //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
-      // router.push(`/auctions/${newAuctionId}`);
     } catch (error) {
       console.error(error);
     }
@@ -270,7 +267,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     return <p>Loading...</p>;
   }
 
-  //TODO - 공통 컴포넌트로 분리하기 (KMH)
+  //TODO - 준구님이랑 의논해서 공통 컴포넌트로 분리하기 (KMH)
   return (
     <>
       <PageContainer>

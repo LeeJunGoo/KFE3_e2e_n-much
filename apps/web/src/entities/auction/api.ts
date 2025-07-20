@@ -6,7 +6,7 @@ import type {
   AuctionInfoType,
   SellerAuctionCountType
 } from 'src/entities/auction/types';
-import { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 //ANCHOR - 에피소드 등록: 경매 상품 및 경매 업체 정보
 export const getAuctionInfoForEpisode = async (auctionId: string) => {
@@ -95,10 +95,10 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
   }
 }
 
-//NOTE - 경매 등록/수정 페이지에서 경매 정보와 주소 정보 가져오기 (KMH)
-//FIXME - 매개 변수 undefined 제거하기 (KMH)
-//FIXME - 준구님 코드랑 코드 컨벤션 맞추기 (KMH)
 export const getAuction = async (auctionId: string | undefined) => {
+  if (!auctionId) {
+    throw new Error('selectAuction: auctionId가 없습니다.');
+  }
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction_form`);
 
   if (!res.ok) {
@@ -109,14 +109,16 @@ export const getAuction = async (auctionId: string | undefined) => {
   const data = await res.json();
 
   if (!data) {
-    throw new Error('auctionId가 존재하지 않습니다.');
+    throw new Error('getAuction: 가져올 경매가 없습니다.');
   }
 
   return data;
 };
 
-//TODO - address 도메인으로 이동 (KMH)
 export const getAddressId = async (userId: string | undefined) => {
+  if (!userId) {
+    throw new Error('getAddressId: userId가 없습니다.');
+  }
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses/?user_id=${userId}`);
 
   if (!res.ok) {
@@ -127,15 +129,16 @@ export const getAddressId = async (userId: string | undefined) => {
   const data = await res.json();
 
   if (!data) {
-    throw new Error('addressId가 존재하지 않습니다.');
+    throw new Error('getAddressId: 가져올 addressId가 없습니다.');
   }
 
   return data;
 };
 
-//TODO - 확인해보기 (KMH)
-//TODO - 테스트해보기 (KMH)
-export const postAuction = async (auction: AuctionInsert): Promise<AuctionRow> => {
+export const postAuction = async (auction: AuctionInsert | undefined): Promise<AuctionRow> => {
+  if (!auction) {
+    throw new Error('postAuction: auction이 없습니다.');
+  }
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
@@ -151,9 +154,22 @@ export const postAuction = async (auction: AuctionInsert): Promise<AuctionRow> =
   return data;
 };
 
-//TODO - 확인해보기 (KMH)
-//TODO - 테스트해보기 (KMH)
-export const patchAuction = async (auctionId: string | undefined, auction: AuctionUpdate): Promise<AuctionRow> => {
+export const patchAuction = async (
+  auctionId: string | undefined,
+  auction: AuctionUpdate | undefined
+): Promise<AuctionRow> => {
+  if (!auctionId && !auction) {
+    throw new Error('patchAuction: auctionId와 auction이 없습니다.');
+  }
+
+  if (!auctionId) {
+    throw new Error('patchAuction: auctionId이 없습니다.');
+  }
+
+  if (!auction) {
+    throw new Error('patchAuction: auction이 없습니다.');
+  }
+
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'PATCH',
