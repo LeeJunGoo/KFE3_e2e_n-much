@@ -1,5 +1,5 @@
 //TODO - 폼 유효성 검사 상의 (KMH)
-
+//TODO - 서영님한테 이미지와 버튼 css 물어보기 (KMH)
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -429,12 +429,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               </p>
             </div>
 
-            <div className="flex w-full gap-2">
+            <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="endDay"
                 render={({ field }) => (
-                  <FormItem className="flex w-1/2 flex-col">
+                  <FormItem className="flex w-full flex-col">
                     <FormLabel>
                       경매 종료일<span className="text-(--color-red)">&#42;</span>
                     </FormLabel>
@@ -476,12 +476,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                 control={form.control}
                 name="endTime"
                 render={({ field }) => (
-                  <FormItem className="w-1/2">
+                  <FormItem className="w-full">
                     <FormLabel>
                       경매 종료 시간<span className="text-(--color-red)">&#42;</span>
                     </FormLabel>
                     <FormControl>
-                      <Input className="bg-white" type="time" step="1" {...field} />
+                      <Input className="h-9 bg-white" type="time" step="1" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -535,29 +535,37 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
             </Button>
           </form>
         </Form>
-        <ul>
+        <ul className="mt-4 grid w-full grid-cols-1 gap-2 md:grid-cols-2">
           {previewImages &&
-            previewImages.map((previewImage) => {
+            previewImages.map((previewImage, index) => {
               return (
-                <li key={previewImage.id} className="relative">
-                  <Button
-                    onClick={() => {
-                      setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id));
-                      if (previewImage.isUrl) {
-                        setImageUrlsToDelete((prev) => {
-                          const imageFullPath: string[] = previewImage.data.split('/');
-                          const imagePath = 'images/' + imageFullPath[imageFullPath.length - 1];
-                          console.log('imageDir', imagePath);
-                          console.log('imagesToDelete', [...prev, imagePath]);
-                          return [...prev, imagePath];
-                        });
-                      }
-                    }}
-                    className="absolute left-72 top-1"
-                  >
-                    X
-                  </Button>
-                  <Image alt={'img'} src={previewImage.data} width={300} height={300} />
+                <li key={previewImage.id} className="relative w-full">
+                  <div className="h-80 w-full border-2 border-black md:w-80">
+                    <Image
+                      alt={`${index + 1}번 째 업로드할 경매 이미지 `}
+                      src={previewImage.data}
+                      className="object-contain"
+                      priority
+                      fill
+                    />
+                    <Button
+                      onClick={() => {
+                        setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id));
+                        if (previewImage.isUrl) {
+                          setImageUrlsToDelete((prev) => {
+                            const imageFullPath: string[] = previewImage.data.split('/');
+                            const imagePath = 'images/' + imageFullPath[imageFullPath.length - 1];
+                            console.log('imageDir', imagePath);
+                            console.log('imagesToDelete', [...prev, imagePath]);
+                            return [...prev, imagePath];
+                          });
+                        }
+                      }}
+                      className="absolute right-1 top-1"
+                    >
+                      X
+                    </Button>
+                  </div>
                 </li>
               );
             })}
