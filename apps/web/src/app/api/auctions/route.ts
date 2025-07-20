@@ -1,12 +1,9 @@
-//FIXME - status 하드 코딩 수정하기
-//NOTE - status 빼는 것 의논해보기, 만약 뺀다면 DB 데이터만 보내도 좋을 것 같음
-
 import { NextResponse } from 'next/server';
 import { getAllAuctions, selectAuction, getSellerAuctions, insertAuction } from 'src/entities/auction/supabase';
 import { createServer } from 'src/shared/supabase/client/server';
+import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionInsert } from 'src/shared/supabase/types';
-import { z } from 'zod';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -63,7 +60,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const res = await insertAuction(auctionData);
-    return NextResponse.json(res, { status: 201 }); //TODO - res를 반환할지 다른 것을 반환할지 고려하기 (KMH)
+    return NextResponse.json(res, { status: 201 });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });

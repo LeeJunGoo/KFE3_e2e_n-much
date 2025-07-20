@@ -78,15 +78,15 @@ export async function DELETE(request: NextRequest) {
   const { auction_id: auctionId } = await request.json();
 
   if (!auctionId) {
-    return NextResponse.json({ status: 'error', message: 'auction_id 값이 존재하지 않습니다.' }, { status: 400 });
+    return NextResponse.json({ message: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
   try {
     const res = await deleteAuction(auctionId);
-    return NextResponse.json({ status: 'success', data: res }, { status: 200 });
+    return NextResponse.json(res, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ status: 'error', error: error.message }, { status: 500 });
+      return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
     }
   }
 }
