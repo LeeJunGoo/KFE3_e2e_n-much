@@ -23,7 +23,6 @@ interface AuctionCardProp {
   episodeCount: number;
   endDate: string;
   favorites: number;
-  address: string | undefined;
 }
 
 const AuctionCard = ({
@@ -34,7 +33,6 @@ const AuctionCard = ({
   favorites,
   episodeCount,
   status,
-  address,
   currentPoint
 }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
@@ -73,7 +71,7 @@ const AuctionCard = ({
         <div className="p-2">
           <h3 className="mb-1.5 overflow-hidden text-ellipsis text-sm font-medium text-[#1F1F25]">{title}</h3>
           <div className="text-(--color-warm-gray) mb-2 flex items-center justify-between text-xs">
-            <address className="max-w-[65%] truncate">{address} </address>
+            {/* <address className="max-w-[65%] truncate">{address} </address> */}
             <span className="text-(--color-accent) font-semibold">{formatNumber(currentPoint)}&nbsp;P</span>
           </div>
           <div className="text-(--color-warm-gray) flex items-center justify-between text-xs">

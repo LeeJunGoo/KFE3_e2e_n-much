@@ -52,11 +52,18 @@ const AuctionList = ({ order }: { order: string }) => {
         {auctions &&
           auctions.pages.map((page) =>
             page.data.map((auction: AuctionRow & EpisodeCount) => {
-              const { auction_id, status, title, current_point, end_time, episodes, address } = auction;
-              let { image_urls, favorites } = auction;
+              const {
+                auction_id: auctionId,
+                status,
+                title,
+                current_point: currentPoint,
+                end_date: endDate,
+                episodes
+              } = auction;
+              let { image_urls: imageUrls, favorites } = auction;
 
-              if (!image_urls) {
-                image_urls = [];
+              if (!imageUrls) {
+                imageUrls = [];
               }
               if (!favorites) {
                 favorites = [];
@@ -64,14 +71,13 @@ const AuctionList = ({ order }: { order: string }) => {
 
               return (
                 <AuctionCard
-                  key={`${auction_id}`}
-                  auction_id={auction_id}
-                  address={address[0]}
+                  key={`${auctionId}`}
+                  auction_id={auctionId}
                   status={status}
-                  imageSrc={image_urls[0]}
+                  imageSrc={imageUrls[0]}
                   title={title}
-                  currentPoint={current_point}
-                  endTime={end_time}
+                  currentPoint={currentPoint}
+                  endDate={endDate}
                   episodeCount={episodes[0]['count']}
                   favorites={favorites.length}
                 />
