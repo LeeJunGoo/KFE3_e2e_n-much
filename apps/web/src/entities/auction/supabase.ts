@@ -291,7 +291,7 @@ export const uploadImageToBucket = async (imageData: string | undefined) => {
 
   if (error) {
     console.error('uploadImage', error);
-    throw new Error('이미지 업로드 에러');
+    throw new Error('BUCKET: 이미지 업로드 에러');
   }
 
   return data;
@@ -310,7 +310,7 @@ export const deleteImages = async (imageUrls: string[] | undefined) => {
 
   if (error) {
     console.error('deleteImage', error);
-    throw new Error('이미지 삭제 에러.');
+    throw new Error('BUCKET: 이미지 삭제 에러.');
   }
 };
 
