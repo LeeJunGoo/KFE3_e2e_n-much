@@ -20,42 +20,19 @@ import { TZDate } from 'react-day-picker';
 import { useForm, useWatch } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { getAddressId, getAuction, patchAuction, postAuction } from 'src/entities/auction/api';
+import { MIN_MAX_POINT_NUM, MIN_STARTING_POINT_NUM } from 'src/entities/auction/constants/auctionForm';
+import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
-import { z } from 'zod';
 import type { AddressRow, AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
+import type { z } from 'zod';
+import { AuctionFormProps, PreviewImage } from 'src/entities/auction/types';
 
 const HOURS_OF_DAY = 24;
 const KOR_TIME_ZONE = 'Asia/Seoul';
 const UTC_TIME_ZONE = 'utc';
-
-//TODO - 분리하기 (KMH)
-const AUCTION_FORM_QUERY_KEY = 'auctionForm';
-const ADDRESS_ID_QUERY_KEY = 'addressId';
-
-//TODO - 분리하기 (KMH)
-interface AuctionFormProps {
-  auctionIdParam: string | undefined;
-  loggedInUserId: string;
-}
-
-//TODO - 분리하기 (KMH)
-type AddressId = Pick<AddressRow, 'address_id'>;
-
-//TODO - 분리하기 (KMH)
-type FetchedAuction = Pick<
-  AuctionRow,
-  'title' | 'description' | 'end_date' | 'starting_point' | 'current_point' | 'max_point' | 'image_urls' | 'status'
->;
-
-//TODO - 분리하기 (KMH)
-interface PreviewImage {
-  id: string;
-  data: string;
-  isUrl: boolean;
-}
 
 //TODO - 분리하기 (KMH)
 const auctionFormKeys = {
@@ -205,8 +182,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     };
   };
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof auctionFormSchema>>({
+    resolver: zodResolver(auctionFormSchema),
     defaultValues: getFormDefaultValues()
   });
 
@@ -281,7 +258,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     return imageUrls;
   };
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof auctionFormSchema>) => {
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
     const korEndDate = setTimeToDate(endDay, endTime);

@@ -39,3 +39,32 @@ export type AddressType = {
 };
 
 export type AuctionTimerStatus = 'ongoing' | 'urgent';
+
+//NOTE - auctionForm에서 사용하는 목록
+export type AddressId = Pick<AddressRow, 'address_id'>;
+
+export type FetchedAuction = Pick<
+  AuctionRow,
+  'title' | 'description' | 'end_date' | 'starting_point' | 'current_point' | 'max_point' | 'image_urls' | 'status'
+>;
+
+export interface PreviewImage {
+  id: string;
+  data: string;
+  isUrl: boolean;
+}
+
+//NOTE - auctionForm 관련 페이지 props 목록
+export interface AuctionMutationPageProps {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}
+
+export interface AuctionFormPageProps {
+  auctionId: string | undefined;
+}
+
+//NOTE - auctionForm 컴포넌트 props
+export interface AuctionFormProps {
+  auctionIdParam: string | undefined;
+  loggedInUserId: string;
+}

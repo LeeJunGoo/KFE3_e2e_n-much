@@ -5,12 +5,9 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getAddressId, getAuction } from 'src/entities/auction/api';
 import { addressIdKeys, auctionFormKeys } from 'src/entities/auction/queryKeyFactory';
+import { AuctionFormPageProps } from 'src/entities/auction/types';
 import AuctionForm from 'src/features/auction/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
-
-interface AuctionFormPageProps {
-  auctionId: string | undefined;
-}
 
 const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   const isEditing = Boolean(auctionId);
