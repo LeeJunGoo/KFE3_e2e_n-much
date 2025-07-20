@@ -11,7 +11,6 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { cn } from '@repo/ui/lib/utils';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { addHours, format, set } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
@@ -19,32 +18,30 @@ import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
 import { useForm, useWatch } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { getAddressId, getAuction, patchAuction, postAuction } from 'src/entities/auction/api';
-import { MIN_MAX_POINT_NUM, MIN_STARTING_POINT_NUM } from 'src/entities/auction/constants/auctionForm';
+import {
+  BUCKET_FOLDER_NAME,
+  MAX_DESCRIPTION_LETTERS,
+  MAX_TITLE_LETTERS,
+  MIN_MAX_POINT_NUM,
+  MIN_STARTING_POINT_NUM
+} from 'src/entities/auction/constants/auctionForm';
+import {
+  useGetAddressIdQuery,
+  useGetAuctionQuery,
+  usePatchAuctionQuery,
+  usePostAuctionQuery
+} from 'src/entities/auction/queries/auctionForm';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
-import type { AddressRow, AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
+import type { AuctionFormProps, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
-import { AuctionFormProps, PreviewImage } from 'src/entities/auction/types';
 
 const HOURS_OF_DAY = 24;
 const KOR_TIME_ZONE = 'Asia/Seoul';
 const UTC_TIME_ZONE = 'utc';
-
-//TODO - 분리하기 (KMH)
-const auctionFormKeys = {
-  all: [AUCTION_FORM_QUERY_KEY] as const,
-  item: (auctionId: string) => [...auctionFormKeys.all, auctionId] as const
-};
-
-//TODO - 분리하기 (KMH)
-const addressIdKeys = {
-  all: [ADDRESS_ID_QUERY_KEY] as const,
-  item: (userId: string) => [...auctionFormKeys.all, userId] as const
-};
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -57,62 +54,16 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   console.log('로그인한 유저 id', loggedInUserId);
   console.log('auctionIdParam', auctionIdParam);
 
-  const queryClient = useQueryClient();
-
-  //FIXME - 분리하기 (KMH)
-  const {
-    data: fetchedAuction,
-    isLoading: isAuctionFetching,
-    isError: isAuctionFetchingError,
-    error: fetchingAuctionError
-  } = useQuery({
-    queryKey: auctionFormKeys.item(auctionIdParam!), //NOTE - enabled에서 이미 필터링함 (KMH)
-    queryFn: (): Promise<FetchedAuction> => getAuction(auctionIdParam),
-    enabled: !!auctionIdParam,
-    staleTime: Infinity
-  });
-
-  //FIXME - 분리하기 (KMH)
-  const {
-    data: fetchedAddressId,
-    isLoading: isAddressIdFetching,
-    isError: isAddressIdFetchingError,
-    error: fetchingAddressIdError
-  } = useQuery({
-    queryKey: addressIdKeys.item(loggedInUserId),
-    queryFn: (): Promise<AddressId> => getAddressId(loggedInUserId),
-    select: (data: AddressId) => data.address_id,
-    enabled: !!loggedInUserId,
-    staleTime: Infinity
-  });
+  const { fetchedAuction, isAuctionFetching, isAuctionFetchingError, fetchingAuctionError } =
+    useGetAuctionQuery(auctionIdParam);
+  const { fetchedAddressId, isAddressIdFetching, isAddressIdFetchingError, fetchingAddressIdError } =
+    useGetAddressIdQuery(loggedInUserId);
 
   console.log('fetchedAddressID', fetchedAddressId);
   console.log('fetchedAuction', fetchedAuction);
 
-  const { mutateAsync: mutatePostAuction, isPending: isPostAuctionPending } = useMutation({
-    mutationFn: (formData: AuctionInsert): Promise<AuctionRow> => postAuction(formData),
-    onSuccess: () => {
-      //FIXME - 쿼리 키를 객체의 쿼리 키로 수정하기 (KMH)
-      queryClient.removeQueries({ queryKey: [AUCTION_FORM_QUERY_KEY, auctionIdParam] });
-    },
-    onError: (error) => {
-      //TODO - toast로 error 표시
-    }
-  });
-
-  const { mutateAsync: mutatePatchAuction, isPending: isPatchAuctionPending } = useMutation({
-    mutationFn: (patchMutationParam: {
-      auctionIdParam: string | undefined;
-      patchAuctionParam: AuctionUpdate;
-    }): Promise<AuctionRow> => patchAuction(patchMutationParam.auctionIdParam, patchMutationParam.patchAuctionParam),
-    onSuccess: () => {
-      //FIXME - 쿼리 키를 객체의 쿼리 키로 수정하기 (KMH)
-      queryClient.removeQueries({ queryKey: [AUCTION_FORM_QUERY_KEY, auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
-    },
-    onError: (error) => {
-      //TODO - toast로 error 표시
-    }
-  });
+  const { mutatePostAuction, isPostAuctionPending } = usePostAuctionQuery(auctionIdParam);
+  const { mutatePatchAuction, isPatchAuctionPending } = usePatchAuctionQuery(auctionIdParam);
 
   const validateDate = (day: Date | null, time: string | null, isDisableCondition: boolean) => {
     const formEndDay = day || form.getValues('endDay');
