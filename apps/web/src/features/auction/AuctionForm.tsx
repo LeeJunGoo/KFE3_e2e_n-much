@@ -206,8 +206,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   const titleValue = useWatch({
     control: form.control,
-    name: 'title',
-    defaultValue: ''
+    name: 'title'
+  });
+
+  const descriptionValue = useWatch({
+    control: form.control,
+    name: 'description'
   });
 
   useEffect(() => {
@@ -399,26 +403,32 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               </p>
             </div>
 
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    상세 내용 <span className="text-(--color-red)">&#42;</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Textarea
-                      className="resize-none bg-white"
-                      rows={5}
-                      placeholder="상품에 대한 자세한 설명을 입력하세요."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="relative">
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      상세 내용 <span className="text-(--color-red)">&#42;</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className="resize-none bg-white"
+                        rows={5}
+                        placeholder="상품에 대한 자세한 설명을 입력하세요."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <p className={`absolute right-0 top-0 text-xs font-semibold`}>
+                {descriptionValue.length}/{MAX_DESCRIPTION_LETTERS}
+              </p>
+            </div>
+
             <div className="flex w-full gap-2">
               <FormField
                 control={form.control}
@@ -520,7 +530,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
             />
             <FormLabel>상품 이미지</FormLabel>
             <ImageUploader onPreviewImages={setPreviewImages} />
-
             <Button type="submit" className="h-12 w-full" variant="base">
               {isEditing ? '수정하기' : '등록하기'}
             </Button>
