@@ -27,15 +27,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import type { AddressRow, AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
-const MIN_TITLE_LETTERS = 5;
-const MAX_TITLE_LETTERS = 50;
-const MIN_DESCRIPTION_LETTERS = 5;
-const MAX_DESCRIPTION_LETTERS = 500;
-const MIN_END_TIME_LETTERS = 1;
-const MIN_STARTING_POINT_NUM = 0;
-const MIN_MAX_POINT_NUM = 0;
-const BUCKET_FOLDER_NAME = 'images/';
-
 const HOURS_OF_DAY = 24;
 const KOR_TIME_ZONE = 'Asia/Seoul';
 const UTC_TIME_ZONE = 'utc';
@@ -154,37 +145,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
     return isDisableCondition ? formDate < korNow : formDate > korNow;
   };
-
-  //FIXME - schema로 분리 (KMH)
-  const formSchema = z.object({
-    title: z
-      .string()
-      .min(MIN_TITLE_LETTERS, {
-        message: '경매 제목은 최소 5글자가 되어야 합니다.'
-      })
-      .max(MAX_TITLE_LETTERS, {
-        message: '경매 제목은 최대 50글자가 되어야 합니다.'
-      }),
-    description: z
-      .string()
-      .min(MIN_DESCRIPTION_LETTERS, { message: '상세 내용은 최소 5글자가 되어야 합니다.' })
-      .max(MAX_DESCRIPTION_LETTERS, {
-        message: '상세 내용은 최대 500자가 되어야 합니다.'
-      }),
-    endDay: z
-      .date({ message: '경매 종료일을 입력해야 합니다.' })
-      .refine((day) => validateDate(day, null, false), { message: '경매 종료 일/시각은 현재 이후여야 합니다.' }),
-    endTime: z
-      .string()
-      .min(MIN_END_TIME_LETTERS, { message: '경매 종료 시각을 입력해야 합니다.' })
-      .refine((time) => validateDate(null, time, false), { message: '경매 종료 일/시각은 현재 이후여야 합니다.' }),
-    startingPoint: z
-      .string()
-      .refine((value) => Number(value) > MIN_STARTING_POINT_NUM, { message: '최소 포인트는 0보다 커야 합니다.' }),
-    maxPoint: z
-      .string()
-      .refine((value) => Number(value) > MIN_MAX_POINT_NUM, { message: '최대 포인트는 0보다 커야 합니다.' })
-  });
 
   //TODO - 분리하기 (KMH)
   const getNowKorDate = () => {
