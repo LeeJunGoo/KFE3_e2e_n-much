@@ -15,7 +15,7 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
   const favoritesCount = auction.favorites?.length || 0;
   const episodesCount = auction.episodes?.length || 0;
 
-  const badgeVariant = status === 'urgent' ? 'red' : status === 'ongoing' ? 'accent' : 'red';
+  const badgeVariant = status === 'ongoing' ? 'accent' : 'red';
 
   return (
     <li className="border-(--color-warm-gray)/30 border-b last:border-b-0">

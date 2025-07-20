@@ -1,7 +1,24 @@
-import type { AuctionSummaryInfoWithAddressType, SellerAuctionCountType } from 'src/entities/auction/types';
+import { type AuctionRow } from 'src/shared/supabase/types';
+import type { AuctionInfoWithAddressType, AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
 
-//ANCHOR - 에피소드 등록: 경매 상품 및 업체 정보
-export const getAuctionSummaryInfoWithAddress = async (auctionId: string) => {
+//ANCHOR - 경매 상세 페이지: 경매 상풍 및 업체 정보
+export const getAuctionInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction`, {
+    cache: 'force-cache',
+    next: { tags: [`auctions-${auctionId}`] }
+  });
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data: AuctionInfoWithAddressType = await res.json();
+  return data;
+};
+
+//ANCHOR - 에피소드 등록 페이지: 경매 상품 및 업체 정보
+export const getAuctionSummaryInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=episode_form`);
 
   if (!res.ok) {
@@ -20,9 +37,9 @@ export const fetchSellerAuctionCount = async (seller_id: string) => {
     throw new Error(`경매 상품에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
   }
 
-  const result: SellerAuctionCountType = await res.json();
+  // const result: SellerAuctionCountType = await res.json();
 
-  return result.data;
+  // return result.data;
 };
 
 // NOTE - 최고 입찰자의 정보
@@ -33,9 +50,8 @@ export const fetchHighestBidder = async (auction_id: string) => {
     throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
   }
 
-  const result: AuctionHighestBidder = await res.json();
-
-  return result.data;
+  // const result: AuctionHighestBidder = await res.json();
+  // return result.data;
 };
 
 //NOTE - 경매 데이터 삭제
@@ -58,9 +74,8 @@ export const fetchDeleteAuction = async (auction_id: string) => {
     }
     throw new Error('경매 데이터를 삭제하는 과정에서 네트워크 에러가 발생했습니다.');
   }
-  const data: AuctionInfoType = await res.json();
-
-  return data.status;
+  // const data: AuctionInfoType = await res.json();
+  // return data.status;
 };
 
 //NOTE - 셀러가 등록한 경매 목록 조회
