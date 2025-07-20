@@ -69,6 +69,8 @@ const MIN_END_TIME_LETTERS = 1;
 const MIN_STARTING_POINT_NUM = 0;
 const MIN_MAX_POINT_NUM = 0;
 
+const HOURS_OF_DAY = 24;
+
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
@@ -113,7 +115,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   console.log('fetchedAuction', fetchedAuction);
 
   //FIXME - schema로 분리 (KMH)
-  //FIXME - 스키마 제한 글자 숫자 리터럴 상수화 하기 (KMH)
   const formSchema = z.object({
     title: z
       .string()
@@ -144,7 +145,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const getFormDefaultValues = () => {
     const today = new Date();
     const korToday = new TZDate(today, 'Asia/Seoul');
-    const endDay = addHours(korToday, 24);
+    const endDay = addHours(korToday, HOURS_OF_DAY);
     const endTime = format(endDay, 'HH:mm:ss');
 
     return {
