@@ -1,5 +1,6 @@
 //TODO - 폼 유효성 검사 상의 (KMH)
 //TODO - 서영님한테 이미지와 버튼 css 물어보기 (KMH)
+//TODO - 날짜, 시간 유효성 검사 넣기 (KMH)
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -130,8 +131,13 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       .max(MAX_DESCRIPTION_LETTERS, {
         message: '상세 내용은 최대 500자가 되어야 합니다.'
       }),
-    endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }),
-    endTime: z.string().min(MIN_END_TIME_LETTERS, { message: '경매 종료 시각을 입력해야 합니다.' }),
+    endDay: z
+      .date({ message: '경매 종료일을 입력해야 합니다.' })
+      .refine((day) => validateDate(day, null, false), { message: '경매 종료 일/시각은 현재 이후여야 합니다.' }),
+    endTime: z
+      .string()
+      .min(MIN_END_TIME_LETTERS, { message: '경매 종료 시각을 입력해야 합니다.' })
+      .refine((time) => validateDate(null, time, false), { message: '경매 종료 일/시각은 현재 이후여야 합니다.' }),
     startingPoint: z
       .string()
       .refine((value) => Number(value) > MIN_STARTING_POINT_NUM, { message: '최소 포인트는 0보다 커야 합니다.' }),
@@ -213,6 +219,16 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     control: form.control,
     name: 'description'
   });
+
+  const endTimeValue = useWatch({
+    control: form.control,
+    name: 'endTime'
+  });
+
+  useEffect(() => {
+    form.trigger('endDay');
+    form.trigger('endTime');
+  }, [form, endTimeValue]);
 
   useEffect(() => {
     if (isEditing && fetchedAuction) {
@@ -375,6 +391,15 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     return <p>Loading...</p>;
   }
 
+  const validateDate = (day: Date | null, time: string | null, isDisableCondition: boolean) => {
+    const formEndDay = day || form.getValues('endDay');
+    const formEndTime = time || form.getValues('endTime');
+    const formDate = setTimeToDate(formEndDay, formEndTime);
+    const korNow = getNowKorDate();
+
+    return isDisableCondition ? formDate < korNow : formDate > korNow;
+  };
+
   //FIXME - UI 수정하기 (KMH)
   //TODO - 공통 컴포넌트로 분리하기 (KMH)
   return (
@@ -458,12 +483,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          // disabled={(date) => {
-                          //   const startDate = new TZDate(form.getValues('startDay'), 'Asia/Seoul');
-                          //   const compareEndDate = compareAsc(date, startDate);
-
-                          //   return compareEndDate === -1;
-                          // }}
+                          disabled={(day) => validateDate(day, null, true)}
                           captionLayout="dropdown"
                         />
                       </PopoverContent>
