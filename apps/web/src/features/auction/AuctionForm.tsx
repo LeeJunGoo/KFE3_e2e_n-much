@@ -146,6 +146,15 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   });
 
+  const validateDate = (day: Date | null, time: string | null, isDisableCondition: boolean) => {
+    const formEndDay = day || form.getValues('endDay');
+    const formEndTime = time || form.getValues('endTime');
+    const formDate = setTimeToDate(formEndDay, formEndTime);
+    const korNow = getNowKorDate();
+
+    return isDisableCondition ? formDate < korNow : formDate > korNow;
+  };
+
   //FIXME - schema로 분리 (KMH)
   const formSchema = z.object({
     title: z
@@ -417,15 +426,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     return <p>Loading...</p>;
   }
 
-  const validateDate = (day: Date | null, time: string | null, isDisableCondition: boolean) => {
-    const formEndDay = day || form.getValues('endDay');
-    const formEndTime = time || form.getValues('endTime');
-    const formDate = setTimeToDate(formEndDay, formEndTime);
-    const korNow = getNowKorDate();
-
-    return isDisableCondition ? formDate < korNow : formDate > korNow;
-  };
-
   //TODO - 공통 컴포넌트로 분리하기 (KMH)
   return (
     <>
@@ -576,7 +576,10 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
             <FormLabel>상품 이미지</FormLabel>
             <ImageUploader onPreviewImages={setPreviewImages} />
             <Button type="submit" className="h-12 w-full" variant="base">
-              {isEditing ? '수정하기' : '등록하기'}
+              {(isEditing && !isPatchAuctionPending && '수정하기') ||
+                (isEditing && isPatchAuctionPending && '수정중...') ||
+                (!isEditing && !isPostAuctionPending && '등록하기') ||
+                (!isEditing && isPostAuctionPending && '등록중...')}
             </Button>
           </form>
         </Form>
