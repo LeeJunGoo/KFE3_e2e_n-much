@@ -1,7 +1,7 @@
 import { decode } from 'base64-arraybuffer';
+import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
-import { createClient } from '../../shared/supabase/client/client';
-import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from '../../shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -271,7 +271,7 @@ export async function getSellerAuctions(seller_id: string) {
   return data;
 }
 
-//FIXME - webp로 최적화하기 (KMH)
+//TODO - webp로 최적화하기 (KMH)
 export const uploadImageToBucket = async (imageData: string | undefined) => {
   if (!imageData) {
     throw new Error('BUCKET: 이미지 업로드 에러(imageData가 없습니다.)');
@@ -331,7 +331,6 @@ export const selectAuction = async (auctionId: string | undefined) => {
   return data;
 };
 
-//FIXME - address 도메인으로 옮기기 (KMH)
 export const selectAddressId = async (userId: string | undefined) => {
   if (!userId) {
     throw new Error('DB: 주소 불러오기 에러(userId가 없습니다.)');

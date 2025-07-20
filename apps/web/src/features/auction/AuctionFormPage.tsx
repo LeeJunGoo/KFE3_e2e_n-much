@@ -4,10 +4,10 @@
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getAddressId, getAuction } from 'src/entities/auction/api';
-import { addressIdKeys, auctionFormKeys } from 'src/entities/auction/queryKeyFactory';
-import { AuctionFormPageProps } from 'src/entities/auction/types';
+import { addressIdKeys, auctionFormKeys } from 'src/entities/auction/queries/query-key-factory';
 import AuctionForm from 'src/features/auction/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
+import type { AuctionFormPageProps } from 'src/entities/auction/types';
 
 const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   const isEditing = Boolean(auctionId);
@@ -22,7 +22,7 @@ const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
     queryFn: () => getAddressId(loggedInUserId)
   });
 
-  if (!isEditing && auctionId) {
+  if (isEditing && auctionId) {
     await queryClient.prefetchQuery({
       queryKey: auctionFormKeys.item(auctionId),
       queryFn: () => getAuction(auctionId)

@@ -30,6 +30,7 @@ export const usePostAuctionQuery = (auctionId: string | undefined) => {
     },
     onError: (error) => {
       //TODO - toast로 error 표시 (KMH)
+      console.error(error);
     }
   });
   return { mutatePostAuction, isPostAuctionPending };
@@ -46,6 +47,7 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
     },
     onError: (error) => {
       //TODO - toast로 error 표시 (KMH)
+      console.error(error);
     }
   });
   return { mutatePatchAuction, isPatchAuctionPending };

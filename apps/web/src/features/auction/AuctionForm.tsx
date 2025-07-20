@@ -65,6 +65,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const { mutatePostAuction, isPostAuctionPending } = usePostAuctionQuery(auctionIdParam);
   const { mutatePatchAuction, isPatchAuctionPending } = usePatchAuctionQuery(auctionIdParam);
 
+  //TODO - 어디에 배치할지 의논하기 (KMH)
   const validateDate = (day: Date | null, time: string | null, isDisableCondition: boolean) => {
     const formEndDay = day || form.getValues('endDay');
     const formEndTime = time || form.getValues('endTime');
@@ -255,7 +256,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   };
 
-  //FIXME - toss로 에러를 알리고, 에러 처리하기 (KMH)
+  //TODO - error가 발생하면 대처가 불가능, 화면을 어떡해 보여줄지 의논하기 (KMH)
   if (isAuctionFetchingError || isAddressIdFetchingError) {
     console.error('fetchingAuctionError', fetchingAuctionError);
     console.error('fetchingAddressIdError', fetchingAddressIdError);
@@ -263,6 +264,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   }
 
   //FIXME - 스켈레톤 UI 사용 (KMH)
+  //TODO - 서영님한테 물어보기 (KMH)
   if (isFormLoading || isAuctionFetching || isAddressIdFetching) {
     return <p>Loading...</p>;
   }
