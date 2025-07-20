@@ -11,7 +11,8 @@ interface EpisodeCount {
   episodes: [{ count: number }];
 }
 
-export default async function Page({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) {
+//FIXME - Page 컴포넌트 이름 바꾸기
+const Page = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
   const queryClient = new QueryClient();
 
   let { order, page } = await searchParams;
@@ -43,4 +44,5 @@ export default async function Page({ searchParams }: { searchParams: Promise<{ [
       </HydrationBoundary>
     </PageContainer>
   );
-}
+};
+export default Page;
