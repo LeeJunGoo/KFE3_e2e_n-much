@@ -1,5 +1,5 @@
 import { createClient } from 'src/shared/supabase/client/client';
-import type { KeywordInsert, KeywordRow, keywordUpdate } from 'src/shared/supabase/types';
+import type { KeywordInsert, KeywordRow, KeywordUpdate } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -24,7 +24,7 @@ export const selectKeyword = async (keyword: string): Promise<KeywordRow | null>
  * @param keywordId - 업데이트할 키워드의 ID
  * @param updates - 업데이트할 필드 객체
  */
-export const updateKeyword = async (keywordId: number, updates: keywordUpdate) => {
+export const updateKeyword = async (keywordId: number, updates: KeywordUpdate) => {
   const { error } = await supabase.from('keywords').update(updates).eq('keyword_id', keywordId);
 
   if (error) {
