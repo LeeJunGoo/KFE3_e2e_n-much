@@ -24,7 +24,7 @@ const Page = async ({ searchParams }: PageProps) => {
   let { order, page } = await searchParams;
 
   if (!order) {
-    order = 'end_time';
+    order = 'end_date';
   }
 
   if (!page) {

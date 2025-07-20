@@ -12,11 +12,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
+  console.log('order', order, 'page', page);
+
   try {
     if (order === 'favorites') {
       const res = await getAllAuctionsWithEpisodeCountByOrder(order, false, Number(page));
       return NextResponse.json(res, { status: 200 });
-    } else if (order === 'end_time') {
+    } else if (order === 'end_date') {
       const res = await getAllAuctionsWithEpisodeCountByOrder(order, true, Number(page));
       return NextResponse.json(res, { status: 200 });
     } else if (order === 'created_at') {
