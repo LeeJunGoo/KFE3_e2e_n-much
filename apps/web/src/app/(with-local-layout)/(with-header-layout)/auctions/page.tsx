@@ -7,10 +7,12 @@ import SelectOrder from 'src/features/auction/SelectOrder';
 import PageContainer from 'src/shared/ui/PageContainer';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
+//TODO - 파일로 분리하기 (KMH)
 interface PageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
+//TODO - 파일로 분리하기
 interface EpisodeCount {
   episodes: [{ count: number }];
 }

@@ -26,7 +26,7 @@ interface AuctionCardProp {
   address: string | undefined;
 }
 
-export default function AuctionCard({
+const AuctionCard = ({
   auction_id,
   imageSrc,
   title,
@@ -36,7 +36,7 @@ export default function AuctionCard({
   status,
   address,
   currentPoint
-}: AuctionCardProp) {
+}: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
   const now = new TZDate(new Date(), 'Asia/Seoul');
   const auctionTime = new TZDate(endDate, 'Asia/Seoul');
@@ -90,4 +90,5 @@ export default function AuctionCard({
       </Link>
     </li>
   );
-}
+};
+export default AuctionCard;
