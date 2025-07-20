@@ -27,23 +27,39 @@ import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
 import type { AddressRow, AuctionRow } from 'src/shared/supabase/types';
 
+//TODO - 분리하기 (KMH)
 interface AuctionFormProps {
   auctionIdParam: string | undefined;
   loggedInUserId: string;
 }
 
+//TODO - 분리하기 (KMH)
 type AddressId = Pick<AddressRow, 'address_id'>;
 
+//TODO - 분리하기 (KMH)
 type FetchedAuction = Pick<
   AuctionRow,
   'title' | 'description' | 'end_date' | 'starting_point' | 'current_point' | 'max_point' | 'image_urls' | 'status'
 >;
 
+//TODO - 분리하기 (KMH)
 interface PreviewImage {
   id: string;
   data: string;
   isUrl: boolean;
 }
+
+//TODO - 분리하기 (KMH)
+const auctionFormKeys = {
+  all: ['auctionForm'] as const,
+  item: (auctionId: string) => [...auctionFormKeys.all, auctionId] as const
+};
+
+//TODO - 분리하기 (KMH)
+const addressIdKeys = {
+  all: ['addressId'] as const,
+  item: (userId: string) => [...auctionFormKeys.all, userId] as const
+};
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -58,8 +74,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   const queryClient = useQueryClient();
 
-  //FIXME - 쿼리 키 객체로 만들어서 관리하기 (KMH)
-  //FIXME - fetch한 데이터가 없을 경우도 처리하기 (KMH)
   //FIXME - 분리하기 (KMH)
   const {
     data: fetchedAuction,
@@ -67,22 +81,20 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     isError: isAuctionFetchingError,
     error: fetchingAuctionError
   } = useQuery({
-    queryKey: ['auctionForm', auctionIdParam],
+    queryKey: auctionFormKeys.item(auctionIdParam!), //NOTE - enabled에서 이미 필터링함 (KMH)
     queryFn: (): Promise<FetchedAuction> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam,
     staleTime: Infinity
   });
 
   //FIXME - 분리하기 (KMH)
-  //FIXME - 쿼리 키 객체로 만들어서 관리하기 (KMH)
-  //FIXME - fetch한 데이터가 없을 경우도 처리하기 (KMH)
   const {
     data: fetchedAddressId,
     isLoading: isAddressIdFetching,
     isError: isAddressIdFetchingError,
     error: fetchingAddressIdError
   } = useQuery({
-    queryKey: ['addressId', loggedInUserId],
+    queryKey: addressIdKeys.item(loggedInUserId),
     queryFn: (): Promise<AddressId> => getAddressId(loggedInUserId),
     select: (data: AddressId) => data.address_id,
     enabled: !!loggedInUserId,
@@ -236,7 +248,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         console.log('결과', data);
         console.log('옥션아이디', data.auction_id);
 
-        queryClient.removeQueries({ queryKey: ['auctionForm', auctionIdParam] });
+        queryClient.removeQueries({ queryKey: ['auctionForm', auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
 
         //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
         // router.push(`/auctions/${data.auction_id}`);
@@ -269,7 +281,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       console.log('결과', data);
       console.log('옥션아이디', data.auction_id);
 
-      queryClient.removeQueries({ queryKey: ['auctionForm', auctionIdParam] });
+      queryClient.removeQueries({ queryKey: ['auctionForm', auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
 
       //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
       // router.push(`/auctions/${newAuctionId}`);
