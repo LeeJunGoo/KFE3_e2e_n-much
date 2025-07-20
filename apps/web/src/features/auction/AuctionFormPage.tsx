@@ -4,12 +4,11 @@
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getAddressId, getAuction } from 'src/entities/auction/api';
+import { ADDRESS_ID_QUERY_KEY, AUCTION_FORM_QUERY_KEY } from 'src/entities/auction/constants/queryKey';
 import AuctionForm from 'src/features/auction/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 
 //TODO - 분리하기 (KMH)
-const AUCTION_FORM_QUERY_KEY = 'auctionForm';
-const ADDRESS_ID_QUERY_KEY = 'addressId';
 
 //TODO - 분리하기 (KMH)
 const auctionFormKeys = {

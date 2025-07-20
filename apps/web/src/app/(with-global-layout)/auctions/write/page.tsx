@@ -8,6 +8,7 @@ interface PageProps {
 
 const Page = async ({ searchParams }: PageProps) => {
   const { auction_id: auctionIdParam } = await searchParams;
+
   return <AuctionFormPage auctionId={auctionIdParam} />;
 };
 
