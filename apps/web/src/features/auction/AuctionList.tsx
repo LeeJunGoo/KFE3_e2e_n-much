@@ -14,7 +14,7 @@ interface EpisodeCount {
   episodes: [{ count: number }];
 }
 
-export default function AuctionList({ order }: { order: string }) {
+const AuctionList = ({ order }: { order: string }) => {
   const { ref, inView } = useInView();
   const {
     data: auctions,
@@ -86,4 +86,5 @@ export default function AuctionList({ order }: { order: string }) {
       </ul>
     </div>
   );
-}
+};
+export default AuctionList;
