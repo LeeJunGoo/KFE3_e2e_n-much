@@ -25,27 +25,19 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
+import type { AddressRow, AuctionRow } from 'src/shared/supabase/types';
 
 interface AuctionFormProps {
   auctionIdParam: string | undefined;
   loggedInUserId: string;
 }
 
-//TODO - supabase type 이용해보기 (KMH)
-interface AddressId {
-  address_id: string;
-}
+type AddressId = Pick<AddressRow, 'address_id'>;
 
-interface Auction {
-  title: string;
-  description: string;
-  end_date: string;
-  starting_point: number;
-  current_point: number;
-  max_point: number;
-  image_urls: string[];
-  status: string;
-}
+type FetchedAuction = Pick<
+  AuctionRow,
+  'title' | 'description' | 'end_date' | 'starting_point' | 'current_point' | 'max_point' | 'image_urls' | 'status'
+>;
 
 interface PreviewImage {
   id: string;
@@ -66,7 +58,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   const queryClient = useQueryClient();
 
-  //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
   //FIXME - 쿼리 키 객체로 만들어서 관리하기 (KMH)
   //FIXME - fetch한 데이터가 없을 경우도 처리하기 (KMH)
   //FIXME - 분리하기 (KMH)
@@ -77,7 +68,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     error: fetchingAuctionError
   } = useQuery({
     queryKey: ['auctionForm', auctionIdParam],
-    queryFn: (): Promise<Auction> => getAuction(auctionIdParam),
+    queryFn: (): Promise<FetchedAuction> => getAuction(auctionIdParam),
     enabled: !!auctionIdParam,
     staleTime: Infinity
   });

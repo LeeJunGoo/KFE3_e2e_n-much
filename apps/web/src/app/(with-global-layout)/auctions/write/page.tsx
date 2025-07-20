@@ -11,15 +11,20 @@ interface AuctionFormPageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
+//TODO - 분리하기 (KMH)
+const EDITING_AUCTION_TITLE = '경매 수정하기';
+const REGISTERING_AUCTION_TITLE = '경매 등록하기';
+
 const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
   const { auction_id: auctionId } = await searchParams;
   const isEditing = Boolean(auctionId);
-  const pageTitle = isEditing ? '경매 수정하기' : '경매 등록하기';
+  const pageTitle = isEditing ? EDITING_AUCTION_TITLE : REGISTERING_AUCTION_TITLE;
   const loggedInUserId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기 (KMH)
 
   const queryClient = new QueryClient();
 
   //TODO - 마이 페이지에서 주소를 변경할 때, 아래 쿼리 키의 캐시를 지워야 함 (KMH)
+  //FIXME - 쿼리 키 객체로 만들어서 관리하기 (KMH)
   await queryClient.prefetchQuery({
     queryKey: ['addressId', loggedInUserId],
     queryFn: () => getAddressId(loggedInUserId)
@@ -27,6 +32,7 @@ const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
 
   if (!isEditing) {
     //TODO - auctionForm에서 경매를 수정할 경우, 캐시를 지워야 함 (KMH)
+    //FIXME - 쿼리 키 객체로 만들어서 관리하기 (KMH)
     await queryClient.prefetchQuery({
       queryKey: ['auctionForm', auctionId],
       queryFn: () => getAuction(auctionId)
@@ -42,7 +48,7 @@ const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <DetailPageHeader>{auctionId ? '경매 수정' : '경매 등록'}</DetailPageHeader>
+      <DetailPageHeader>{pageTitle}</DetailPageHeader>
       <AuctionForm auctionIdParam={auctionId} loggedInUserId={loggedInUserId} />
     </HydrationBoundary>
   );
