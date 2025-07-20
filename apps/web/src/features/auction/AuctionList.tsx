@@ -7,8 +7,8 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { fetchAllAuctionWithEpisodeCount } from 'src/entities/auction/api';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
+import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import type { AuctionRow } from 'src/shared/supabase/types';
-// import { LoadingSpinner } from '../../features/auth/LoadingSpinner';
 
 interface EpisodeCount {
   episodes: [{ count: number }];
@@ -86,7 +86,7 @@ const AuctionList = ({ order }: { order: string }) => {
           )}
         <div>
           <div ref={ref} onClick={() => fetchNextPage()}>
-            {/* {isFetchingNextPage && <LoadingSpinner />} */}
+            {isFetchingNextPage && <LoadingSpinner />}
           </div>
         </div>
       </ul>
