@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { LOCALSTORAGE_KEY } from 'src/entities/auction/constants';
+import { LOCALSTORAGE_KEY } from 'src/entities/search/constants';
 
 interface RecentKeywordsProps {
   getList: (params: { key: string }) => string[];

@@ -1,33 +1,30 @@
-import React from 'react';
-import Link from 'next/link';
-// import { fetchSortedAuctions } from 'src/entities/auction/serverActions';
-import LatestAuctionCard from './LatestAuctionCard';
-import PageTitle from '../../shared/ui/PageTitle';
-import type { SortedAuctionItemType } from 'src/entities/auction/types';
+import { LATEST_AUCTIONS_COUNT } from 'src/entities/auction/constants';
+import { getLatestAuctions } from 'src/entities/auction/serverActions';
+import { type SortedAuctionItemType } from 'src/entities/auction/types';
+import LatestAuctionCard from 'src/features/auction/LatestAuctionCard';
+import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
+import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 
 const LatestListSection = async () => {
-  // const latestAuctions = await fetchSortedAuctions('created_at', true, 10);
+  const latestAuctions = await getLatestAuctions('created_at', true, LATEST_AUCTIONS_COUNT);
 
-  // if (!latestAuctions || latestAuctions.length === 0) {
-  //   return (
-  //     <div className="h-50 flex w-full items-center justify-center rounded-lg border border-gray-200 bg-gray-50 text-sm text-gray-500">
-  //       아직 등록된 정보가 없어요
-  //     </div>
-  //   );
-  // }
+  if (!latestAuctions || latestAuctions.length === 0) {
+    return (
+      <ContentEmpty
+        titleLabel="아직 등록된 상품 정보가 없어요."
+        contentLabel="새로운 정보가 등록되면 알려드릴게요.!"
+        className="mt-8"
+      />
+    );
+  }
 
   return (
     <div className="mt-8">
-      <div className="mb-4 flex items-center justify-between">
-        <PageTitle>최신 경매</PageTitle>
-        <Link href="/auctions?order=created_at" className="text-(--color-accent) cursor-pointer text-sm">
-          더보기
-        </Link>
-      </div>
+      <AuctionSectionHeader title="최신 경매" href={'/auctions?order=created_at'} />
       <ul className="overflow-hidden rounded-lg bg-white shadow-sm">
-        {/* {latestAuctions.map((auction: SortedAuctionItemType) => (
+        {latestAuctions.map((auction: SortedAuctionItemType) => (
           <LatestAuctionCard key={auction.auction_id} auction={auction} />
-        ))} */}
+        ))}
       </ul>
     </div>
   );

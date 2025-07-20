@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LOCALSTORAGE_KEY, LOCALSTORAGE_MAX_LENGTH } from 'src/entities/auction/constants';
+import { LOCALSTORAGE_KEY, LOCALSTORAGE_MAX_LENGTH } from 'src/entities/search/constants';
 import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
 import { usePostKeywordMutation } from 'src/entities/search/hooks/usePostKeywordMutation';
 import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';

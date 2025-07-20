@@ -55,7 +55,14 @@ const MainBanner = () => {
                   <h3 className="text-xl">{item.subTitle}</h3>
                 </div>
                 <div className={`relative md:w-2/4 ${item.imageStyle}`}>
-                  <Image src={item.src} alt={item.alt} fill className="object-contain" priority />
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    className="object-contain"
+                    priority
+                    sizes="(max-width: 768px) 80vw, (max-width: 1200px) 50vw, 33vw"
+                  />
                 </div>
               </div>
             </CarouselItem>
