@@ -4,23 +4,9 @@
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getAddressId, getAuction } from 'src/entities/auction/api';
-import { ADDRESS_ID_QUERY_KEY, AUCTION_FORM_QUERY_KEY } from 'src/entities/auction/constants/queryKey';
+import { addressIdKeys, auctionFormKeys } from 'src/entities/auction/query-key-factory';
 import AuctionForm from 'src/features/auction/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
-
-//TODO - 분리하기 (KMH)
-
-//TODO - 분리하기 (KMH)
-const auctionFormKeys = {
-  all: [AUCTION_FORM_QUERY_KEY] as const,
-  item: (auctionId: string) => [...auctionFormKeys.all, auctionId] as const
-};
-
-//TODO - 분리하기 (KMH)
-const addressIdKeys = {
-  all: [ADDRESS_ID_QUERY_KEY] as const,
-  item: (userId: string) => [...auctionFormKeys.all, userId] as const
-};
 
 interface AuctionFormPageProps {
   auctionId: string | undefined;
@@ -40,7 +26,6 @@ const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   });
 
   if (!isEditing && auctionId) {
-    //TODO - auctionForm에서 경매를 수정할 경우, 캐시를 지워야 함 (KMH)
     await queryClient.prefetchQuery({
       queryKey: auctionFormKeys.item(auctionId),
       queryFn: () => getAuction(auctionId)
