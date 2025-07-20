@@ -69,6 +69,7 @@ const MAX_DESCRIPTION_LETTERS = 500;
 const MIN_END_TIME_LETTERS = 1;
 const MIN_STARTING_POINT_NUM = 0;
 const MIN_MAX_POINT_NUM = 0;
+const BUCKET_FOLDER_NAME = 'images/';
 
 const HOURS_OF_DAY = 24;
 
@@ -574,7 +575,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                         if (previewImage.isUrl) {
                           setImageUrlsToDelete((prev) => {
                             const imageFullPath: string[] = previewImage.data.split('/');
-                            const imagePath = 'images/' + imageFullPath[imageFullPath.length - 1];
+                            const imagePath = BUCKET_FOLDER_NAME + imageFullPath[imageFullPath.length - 1];
                             console.log('imageDir', imagePath);
                             console.log('imagesToDelete', [...prev, imagePath]);
                             return [...prev, imagePath];
@@ -582,6 +583,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                         }
                       }}
                       className="absolute right-1 top-1"
+                      variant="base"
                     >
                       X
                     </Button>
