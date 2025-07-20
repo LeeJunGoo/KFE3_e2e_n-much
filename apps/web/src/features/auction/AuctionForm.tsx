@@ -11,7 +11,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { cn } from '@repo/ui/lib/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { addHours, format, set } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
@@ -64,6 +64,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   console.log('로그인한 유저 id', loggedInUserId);
   console.log('auctionIdParam', auctionIdParam);
 
+  const queryClient = useQueryClient();
+
   //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
   //FIXME - 쿼리 키 객체로 만들어서 관리하기 (KMH)
   //FIXME - fetch한 데이터가 없을 경우도 처리하기 (KMH)
@@ -76,7 +78,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   } = useQuery({
     queryKey: ['auctionForm', auctionIdParam],
     queryFn: (): Promise<Auction> => getAuction(auctionIdParam),
-    enabled: !!auctionIdParam
+    enabled: !!auctionIdParam,
+    staleTime: Infinity
   });
 
   //FIXME - 분리하기 (KMH)
@@ -91,7 +94,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     queryKey: ['addressId', loggedInUserId],
     queryFn: (): Promise<AddressId> => getAddressId(loggedInUserId),
     select: (data: AddressId) => data.address_id,
-    enabled: !!loggedInUserId
+    enabled: !!loggedInUserId,
+    staleTime: Infinity
   });
 
   console.log('fetchedAddressID', fetchedAddressId);
@@ -241,6 +245,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         console.log('결과', data);
         console.log('옥션아이디', data.auction_id);
 
+        queryClient.removeQueries({ queryKey: ['auctionForm', auctionIdParam] });
+
         //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
         // router.push(`/auctions/${data.auction_id}`);
         return;
@@ -271,6 +277,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       console.log(values);
       console.log('결과', data);
       console.log('옥션아이디', data.auction_id);
+
+      queryClient.removeQueries({ queryKey: ['auctionForm', auctionIdParam] });
 
       //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
       // router.push(`/auctions/${newAuctionId}`);
