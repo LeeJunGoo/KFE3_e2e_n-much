@@ -7,7 +7,9 @@ import BaseBadge from 'src/shared/ui/BaseBadge';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 
 const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
-  const auctionImage = auction.image_urls && auction.image_urls.length > 0 ? auction.image_urls[0] : NotAuctionImage;
+  const isImage = auction.image_urls && auction.image_urls.length > 0;
+
+  const auctionImage = isImage ? auction.image_urls![0] : NotAuctionImage;
   const { status, remainTime } = formatRemainingTime(auction.end_date);
 
   const favoritesCount = auction.favorites?.length || 0;
@@ -22,7 +24,14 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
         className="hover:bg-(--color-secondary) flex cursor-pointer items-center p-3 transition-colors"
       >
         <div className="relative mr-3 h-20 w-20 flex-shrink-0">
-          <Image src={auctionImage!} alt={auction.title} fill sizes="80px" className="rounded-lg object-contain" />
+          <Image
+            src={auctionImage!}
+            alt={auction.title}
+            fill
+            sizes="80px"
+            className="rounded-lg object-contain"
+            priority
+          />
         </div>
 
         <div className="ml-2 flex-1">
