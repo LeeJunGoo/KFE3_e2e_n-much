@@ -1,3 +1,4 @@
+//TODO - '500: 서버 처리 중 오류가 발생했습니다.' 의논해보기 DB에러가 무시됨 (KMH)
 import { NextResponse } from 'next/server';
 import {
   deleteAuction,

@@ -92,26 +92,38 @@ export const selectAuctionWithSellerInfo = async (auctionId: string) => {
 };
 
 //NOTE - 경매 물품 추가
-export const insertAuction = async (auctionData: AuctionInsert) => {
-  const { data, error } = await supabase.from('auctions').insert([auctionData]).select().single();
+export const insertAuction = async (auctionFormData: AuctionInsert | undefined) => {
+  if (!auctionFormData) {
+    throw new Error('DB: 경매 삽입 에러(auctionFormData가 없습니다.)');
+  }
+
+  const { data, error } = await supabase.from('auctions').insert([auctionFormData]).select().single();
 
   if (error) {
-    console.error('addAuction', error);
-    throw new Error('DB: 경매 추가 에러');
+    console.error('addAuction', error.message);
+    throw new Error('DB: 경매 삽입 에러');
   }
 
   return data;
 };
 
 //NOTE -  경매 물품 수정
-export const updateAuction = async (auctionId: string | undefined, editData: AuctionUpdate) => {
+export const updateAuction = async (auctionId: string | undefined, auctionFormData: AuctionUpdate | undefined) => {
+  if (!auctionId && !auctionFormData) {
+    throw new Error('DB: 경매 수정 에러(auctionId와 auctionFormData가 없습니다.)');
+  }
+
   if (!auctionId) {
     throw new Error('DB: 경매 수정 에러(auctionId가 없습니다.)');
   }
 
+  if (!auctionFormData) {
+    throw new Error('DB: 경매 수정 에러(auctionFormData가 없습니다.)');
+  }
+
   const { data, error } = await supabase
     .from('auctions')
-    .update({ ...editData })
+    .update(auctionFormData)
     .eq('auction_id', auctionId)
     .select()
     .single();
@@ -124,7 +136,11 @@ export const updateAuction = async (auctionId: string | undefined, editData: Auc
 };
 
 //NOTE - 경매 물품 삭제
-export const deleteAuction = async (auctionId: string) => {
+export const deleteAuction = async (auctionId: string | undefined) => {
+  if (!auctionId) {
+    throw new Error('DB: 경매 삭제 에러(auctionId가 없습니다.)');
+  }
+
   const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auctionId).select().single();
 
   if (error) {
@@ -255,13 +271,16 @@ export async function getSellerAuctions(seller_id: string) {
   return data;
 }
 
-//TODO - 테스트 해보기 (KMH)
 //FIXME - webp로 최적화하기 (KMH)
-export const uploadImageToBucket = async (imageData: string) => {
+export const uploadImageToBucket = async (imageData: string | undefined) => {
+  if (!imageData) {
+    throw new Error('BUCKET: 이미지 업로드 에러(imageData가 없습니다.)');
+  }
+
   const base64 = imageData.split(',')[1];
 
   if (!base64) {
-    throw new Error('업로드할 이미지를 잘못 선택하였습니다.');
+    throw new Error('BUCKET: 업로드할 이미지 데이터가 base64가 아닙니다.');
   }
 
   const { data, error } = await supabase.storage
@@ -272,14 +291,17 @@ export const uploadImageToBucket = async (imageData: string) => {
 
   if (error) {
     console.error('uploadImage', error);
-    throw new Error('이미지 업로드에 실패했습니다.');
+    throw new Error('이미지 업로드 에러');
   }
 
   return data;
 };
 
-//TODO - 테스트 해보기 (KMH)
-export const deleteImages = async (imageUrls: string[]) => {
+export const deleteImages = async (imageUrls: string[] | undefined) => {
+  if (!imageUrls) {
+    throw new Error('BUCKET: 이미지 삭제 에러(imageUrls가 배열이 아닙니다.');
+  }
+
   if (imageUrls.length === 0) {
     return;
   }
@@ -288,11 +310,14 @@ export const deleteImages = async (imageUrls: string[]) => {
 
   if (error) {
     console.error('deleteImage', error);
-    throw new Error('이미지 업로드에 실패했습니다.');
+    throw new Error('이미지 삭제 에러.');
   }
 };
 
-export const selectAuction = async (auctionId: string) => {
+export const selectAuction = async (auctionId: string | undefined) => {
+  if (!auctionId) {
+    throw new Error('DB: 경매 불러오기 에러(auctionId가 없습니다.)');
+  }
   const { data, error } = await supabase
     .from('auctions')
     .select('user_id, title, description, end_date, starting_point, current_point, max_point, image_urls, status')
@@ -301,13 +326,16 @@ export const selectAuction = async (auctionId: string) => {
 
   if (error) {
     console.error('selectAuction', error);
-    throw new Error('DB: auction 불러오기 실패');
+    throw new Error('DB: 경매 불러오기 에러');
   }
   return data;
 };
 
 //FIXME - address 도메인으로 옮기기 (KMH)
-export const selectAddressId = async (userId: string) => {
+export const selectAddressId = async (userId: string | undefined) => {
+  if (!userId) {
+    throw new Error('DB: 주소 불러오기 에러(userId가 없습니다.)');
+  }
   const { data, error } = await supabase
     .from('addresses')
     .select('address_id')
@@ -317,7 +345,7 @@ export const selectAddressId = async (userId: string) => {
 
   if (error) {
     console.error('selectAddressId', error);
-    throw new Error('DB: addressId 불러오기 실패');
+    throw new Error('DB: 주소 불러오기 에러');
   }
   return data;
 };
