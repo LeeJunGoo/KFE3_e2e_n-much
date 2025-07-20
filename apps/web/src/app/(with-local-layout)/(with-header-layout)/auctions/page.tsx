@@ -1,7 +1,7 @@
 //TODO - 하단의 경매 현황 누르면 url 파라미터로 end_time을 넘기도록 해야 함
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { fetchAllAuctionWithEpisodeCount } from 'src/entities/auction/api';
+import { getAllAuctionsWithEpisodeCount } from 'src/entities/auction/api';
 import AuctionList from 'src/features/auction/AuctionList';
 import SelectOrder from 'src/features/auction/SelectOrder';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -34,7 +34,7 @@ const Page = async ({ searchParams }: PageProps) => {
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['auctions', order],
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: AuctionRow & EpisodeCount; nextId: number }> =>
-      fetchAllAuctionWithEpisodeCount({ order, pageParam }),
+      getAllAuctionsWithEpisodeCount({ order, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: AuctionRow & EpisodeCount; nextId: number }) => lastPage.nextId
   });
