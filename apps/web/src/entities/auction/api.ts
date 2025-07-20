@@ -6,7 +6,7 @@ import type {
   AuctionInfoType,
   SellerAuctionCountType
 } from 'src/entities/auction/types';
-import { AuctionInsert, AuctionRow } from 'src/shared/supabase/types';
+import { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 //ANCHOR - 에피소드 등록: 경매 상품 및 경매 업체 정보
 export const getAuctionInfoForEpisode = async (auctionId: string) => {
@@ -130,13 +130,29 @@ export const getAddressId = async (userId: string | undefined) => {
 
 //TODO - 확인해보기 (KMH)
 //TODO - 테스트해보기 (KMH)
-export const postAuction = async (postAuctionParam: AuctionInsert): Promise<AuctionRow> => {
+export const postAuction = async (auction: AuctionInsert): Promise<AuctionRow> => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
-    body: JSON.stringify({
-      ...postAuctionParam
-    })
+    body: JSON.stringify(auction)
+  });
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data = await res.json();
+  return data;
+};
+
+//TODO - 확인해보기 (KMH)
+//TODO - 테스트해보기 (KMH)
+export const patchAuction = async (auctionId: string | undefined, auction: AuctionUpdate): Promise<AuctionRow> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}`, {
+    headers: { 'Content-Type': 'application/json' },
+    method: 'PATCH',
+    body: JSON.stringify(auction)
   });
 
   if (!res.ok) {

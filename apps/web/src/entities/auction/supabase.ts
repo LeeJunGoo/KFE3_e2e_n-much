@@ -108,6 +108,7 @@ export const updateAuction = async (auctionId: string | undefined, editData: Auc
   if (!auctionId) {
     throw new Error('DB: 경매 수정 에러(auctionId가 없습니다.)');
   }
+
   const { data, error } = await supabase
     .from('auctions')
     .update({ ...editData })
@@ -290,7 +291,7 @@ export const deleteImages = async (imageUrls: string[]) => {
 export const selectAuction = async (auctionId: string) => {
   const { data, error } = await supabase
     .from('auctions')
-    .select('user_id, title, description, end_date, starting_point, max_point, image_urls')
+    .select('user_id, title, description, end_date, starting_point, current_point, max_point, image_urls, status')
     .eq('auction_id', auctionId)
     .maybeSingle();
 

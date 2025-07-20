@@ -19,7 +19,7 @@ import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { getAddressId, getAuction, postAuction } from 'src/entities/auction/api';
+import { getAddressId, getAuction, patchAuction, postAuction } from 'src/entities/auction/api';
 import { deleteImages, uploadImage } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -240,37 +240,43 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         console.log(values);
         console.log('결과', data);
         console.log('옥션아이디', data.auction_id);
+
         //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
         // router.push(`/auctions/${data.auction_id}`);
+        return;
       }
+
+      if (!fetchedAuction) {
+        //TODO - toast로 처리 (KMH)
+        throw new Error('경매를 불러오는데 실패했습니다.');
+      }
+
+      const patchAuctionParam = {
+        auction_id: auctionIdParam,
+        user_id: loggedInUserId,
+        title,
+        description,
+        end_date: utcEndDate.toISOString(),
+        starting_point: Number(startingPoint),
+        current_point: Number(fetchedAuction.current_point),
+        max_point: Number(maxPoint),
+        image_urls: imageUrls,
+        status: fetchedAuction.status,
+        address_id: fetchedAddressId,
+        updated_at: new TZDate(new Date(), 'utc').toISOString()
+      };
+
+      const data = await patchAuction(auctionIdParam, patchAuctionParam);
+
+      console.log(values);
+      console.log('결과', data);
+      console.log('옥션아이디', data.auction_id);
+
+      //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
+      // router.push(`/auctions/${newAuctionId}`);
     } catch (error) {
       console.error(error);
     }
-
-    // const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`;
-
-    // const data = await fetch(fetchUrl, {
-    //   method: isEditing ? 'PATCH' : 'POST',
-    //   body: JSON.stringify({
-    //     auction_id: isEditing ? auctionIdParam : newAuctionId,
-    //     user_id: loggedInUserId,
-    //     title,
-    //     description,
-    //     end_date: utcEndDate,
-    //     starting_point: startingPoint,
-    //     current_point: isEditing && fetchedAuction ? fetchedAuction.current_point : 0, //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기 (KMH)
-    //     max_point: maxPoint,
-    //     image_urls: imageUrls,
-    //     status: isEditing && fetchedAuction ? fetchedAuction.status : 'OPEN', //FIXME - auction_id 쿼리 스트링이 잘못될 경우 고려하기
-    //     address_id: fetchedAddressId,
-    //     updated_at: isEditing ? new TZDate(new Date(), 'utc') : null
-    //   })
-    // });
-    //  const result = await data.json();
-
-    // console.log(values);
-    // console.log('결과', result);
-    // console.log('옥션아이디', newAuctionId);
     if (isEditing) {
       //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
       // router.push(`/auctions/${data.auction_id}`);
@@ -281,7 +287,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   };
 
   //FIXME - toss로 에러를 알리고, 에러 처리하기 (KMH)
-  if (isAuctionFetchingError || isAddressIdFetchingError || !fetchedAddressId) {
+  if (isAuctionFetchingError || isAddressIdFetchingError) {
     console.error('fetchingAuctionError', fetchingAuctionError);
     console.error('fetchingAddressIdError', fetchingAddressIdError);
     return <p>에러 발생</p>;

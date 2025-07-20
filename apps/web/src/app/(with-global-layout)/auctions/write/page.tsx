@@ -27,7 +27,6 @@ const AuctionFormPage = async ({ searchParams }: AuctionFormPageProps) => {
 
   if (!isEditing) {
     //TODO - auctionForm에서 경매를 수정할 경우, 캐시를 지워야 함 (KMH)
-    //FIXME - 경매 리스트의 쿼리 키에 따라서 쿼리 키 수정하기 (KMH)
     await queryClient.prefetchQuery({
       queryKey: ['auctionForm', auctionId],
       queryFn: () => getAuction(auctionId)
