@@ -61,6 +61,14 @@ const addressIdKeys = {
   item: (userId: string) => [...auctionFormKeys.all, userId] as const
 };
 
+const MIN_TITLE_LETTERS = 5;
+const MAX_TITLE_LETTERS = 50;
+const MIN_DESCRIPTION_LETTERS = 5;
+const MAX_DESCRIPTION_LETTERS = 500;
+const MIN_END_TIME_LETTERS = 1;
+const MIN_STARTING_POINT_NUM = 0;
+const MIN_MAX_POINT_NUM = 0;
+
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
@@ -109,19 +117,26 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const formSchema = z.object({
     title: z
       .string()
-      .min(5, {
+      .min(MIN_TITLE_LETTERS, {
         message: '경매 제목은 최소 5글자가 되어야 합니다.'
       })
-      .max(50, {
+      .max(MAX_TITLE_LETTERS, {
         message: '경매 제목은 최대 50글자가 되어야 합니다.'
       }),
-    description: z.string().min(5, { message: '상세 내용은 최소 5글자가 되어야 합니다.' }).max(500, {
-      message: '상세 내용은 최대 500자가 되어야 합니다.'
-    }),
+    description: z
+      .string()
+      .min(MIN_DESCRIPTION_LETTERS, { message: '상세 내용은 최소 5글자가 되어야 합니다.' })
+      .max(MAX_DESCRIPTION_LETTERS, {
+        message: '상세 내용은 최대 500자가 되어야 합니다.'
+      }),
     endDay: z.date({ message: '경매 종료일을 입력해야 합니다.' }),
-    endTime: z.string().min(1, { message: '경매 종료 시각을 입력해야 합니다.' }),
-    startingPoint: z.string().refine((value) => Number(value) > 0, { message: '최소 포인트는 0보다 커야 합니다.' }),
-    maxPoint: z.string().refine((value) => Number(value) > 0, { message: '최대 포인트는 0보다 커야 합니다.' })
+    endTime: z.string().min(MIN_END_TIME_LETTERS, { message: '경매 종료 시각을 입력해야 합니다.' }),
+    startingPoint: z
+      .string()
+      .refine((value) => Number(value) > MIN_STARTING_POINT_NUM, { message: '최소 포인트는 0보다 커야 합니다.' }),
+    maxPoint: z
+      .string()
+      .refine((value) => Number(value) > MIN_MAX_POINT_NUM, { message: '최대 포인트는 0보다 커야 합니다.' })
   });
 
   //FIXME - 날짜, 시간 기능 함수로 분리하기 (KMH)
