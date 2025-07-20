@@ -1,6 +1,3 @@
-//FIXME - type 하드 코딩 수정하기 (KMH)
-//FIXME - status 하드 코딩 수정하기 (KMH)
-
 import { NextResponse } from 'next/server';
 import {
   deleteAuction,
@@ -9,9 +6,9 @@ import {
   updateAuction
 } from 'src/entities/auction/supabase';
 import { selectHighestBidder } from 'src/entities/episode/supabase';
+import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionUpdate } from 'src/shared/supabase/types';
-import { z } from 'zod';
 
 type ParamsType = {
   params: Promise<{ id: string }>;
@@ -72,7 +69,7 @@ export async function PATCH(request: NextRequest, { params }: ParamsType) {
     return NextResponse.json(res, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
     }
   }
 }

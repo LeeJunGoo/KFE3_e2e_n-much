@@ -5,16 +5,16 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const userId = searchParams.get('user_id');
 
-  try {
-    if (userId) {
-      const res = await selectAddressId(userId);
-      return NextResponse.json(res, { status: 200 });
-    }
+  if (!userId) {
+    return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
+  }
 
-    return NextResponse.json({ message: '잘못된 정보를 전달하였습니다.' }, { status: 400 });
+  try {
+    const res = await selectAddressId(userId);
+    return NextResponse.json(res, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
     }
   }
 }
