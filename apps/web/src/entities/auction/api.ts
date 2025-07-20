@@ -107,6 +107,11 @@ export const getAuction = async (auctionId: string | undefined) => {
   }
 
   const data = await res.json();
+
+  if (!data) {
+    throw new Error('auctionId가 존재하지 않습니다.');
+  }
+
   return data;
 };
 
