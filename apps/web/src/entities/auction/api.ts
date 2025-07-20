@@ -1,19 +1,14 @@
-import type {
-  AuctionHighestBidder,
-  AuctionInfoForEpisodeType,
-  AuctionInfoType,
-  SellerAuctionCountType
-} from 'src/entities/auction/types';
+import type { AuctionSummaryInfoWithAddressType, SellerAuctionCountType } from 'src/entities/auction/types';
 
-//ANCHOR - 에피소드 등록: 경매 상품 및 경매 업체 정보
-export const getAuctionInfoForEpisode = async (auctionId: string) => {
+//ANCHOR - 에피소드 등록: 경매 상품 및 업체 정보
+export const getAuctionSummaryInfoWithAddress = async (auctionId: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=episode_form`);
 
   if (!res.ok) {
     const errorResponse = await res.json();
     throw new Error(errorResponse.error);
   }
-  const data: AuctionInfoForEpisodeType = await res.json();
+  const data: AuctionSummaryInfoWithAddressType = await res.json();
   return data;
 };
 

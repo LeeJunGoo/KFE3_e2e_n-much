@@ -33,7 +33,7 @@ export const postEpisodeInfo = async ({ auctionId, userId, title, description }:
   }
 
   const status = await res.json();
-  return status;
+  return status.message;
 };
 
 //ANCHOR - 톡정 에피소드 수정
@@ -52,8 +52,8 @@ export const patchEpisodeInfo = async ({ episodeId, title, description }: Episod
     const errorResponse = await res.json();
     throw new Error(errorResponse.error);
   }
-  const { message } = await res.json();
-  return message;
+  const status = await res.json();
+  return status.message;
 };
 
 //NOTE - 톡정 에피소드 삭제

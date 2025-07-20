@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { getAuctionInfoForEpisode } from 'src/entities/auction/api';
+import { getAuctionSummaryInfoWithAddress } from 'src/entities/auction/api';
 import { getEpisodeInfo } from 'src/entities/episode/api';
 import { EPISODE_TIP } from 'src/entities/episode/constants';
 import EpisodeAuctionCard from 'src/features/episode/EpisodeAuctionCard';
@@ -14,7 +14,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
   let initialEpisodeInfo: EpisodeRow | null = null; // 조건부에 따라 수정 및 등록 페이지로 나누기
 
   // NOTE - 경매 상품 및 업체 정보
-  const auctionInfo = await getAuctionInfoForEpisode(auctionId!);
+  const auctionInfo = await getAuctionSummaryInfoWithAddress(auctionId!);
 
   //NOTE - episodeId true: 수정, false: 등록
   if (episodeId) {

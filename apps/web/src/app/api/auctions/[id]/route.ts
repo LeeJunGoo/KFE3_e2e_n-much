@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { selectAuctionInfoForEpisode, selectAuctionWithSellerInfo } from 'src/entities/auction/supabase';
+import { selectAuctionSummaryInfoWithAddress, selectAuctionWithSellerInfo } from 'src/entities/auction/supabase';
 import { selectHighestBidder } from 'src/entities/episode/supabase';
 import type { NextRequest } from 'next/server';
 
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
     if (type === 'auction_form') {
       res = await selectAuctionWithSellerInfo(id);
     } else if (type === 'episode_form') {
-      res = await selectAuctionInfoForEpisode(id);
+      res = await selectAuctionSummaryInfoWithAddress(id);
     } else if (type === 'auction') {
       res = await selectHighestBidder(id);
     }

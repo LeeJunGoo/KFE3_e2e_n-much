@@ -25,34 +25,34 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
     }
 
-    if (auctionId) {
-      res = await getEpisodesByAuctionId(auctionId);
-    }
+    // if (auctionId) {
+    //   res = await getEpisodesByAuctionId(auctionId);
+    // }
 
     //FIXME - 현재 경매 등록 페이지에서만 현재 GET을 사용 중이며, 경매 등록 페이지에서(수정일 경우에만 작동되므로, 위의 조건문에서 값이 전부 존재할 경우에만 실행)
     if (episodeId) {
       res = await selectEpisodeById(episodeId);
     }
-    if (type === 'biddingCount') {
-      const supabase = await createServer();
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
-      if (!user) {
-        throw new Error('로그인된 사용자가 없습니다');
-      }
-      res = await getUserBiddingCount(user.id);
-    }
-    if (type === 'userStories') {
-      const supabase = await createServer();
-      const {
-        data: { user }
-      } = await supabase.auth.getUser();
-      if (!user) {
-        throw new Error('로그인된 사용자가 없습니다');
-      }
-      res = await getUserStories(user.id);
-    }
+    // if (type === 'biddingCount') {
+    //   const supabase = await createServer();
+    //   const {
+    //     data: { user }
+    //   } = await supabase.auth.getUser();
+    //   if (!user) {
+    //     throw new Error('로그인된 사용자가 없습니다');
+    //   }
+    //   res = await getUserBiddingCount(user.id);
+    // }
+    // if (type === 'userStories') {
+    //   const supabase = await createServer();
+    //   const {
+    //     data: { user }
+    //   } = await supabase.auth.getUser();
+    //   if (!user) {
+    //     throw new Error('로그인된 사용자가 없습니다');
+    //   }
+    //   res = await getUserStories(user.id);
+    // }
 
     return NextResponse.json(res, { status: 200 });
   } catch {
