@@ -38,4 +38,4 @@ export type AddressType = {
   is_default: AddressRow['is_default'];
 };
 
-export type AuctionTimerStatus = 'ongoing' | 'urgent';
+export type AuctionTimerStatus = 'ongoing' | 'urgent' | 'ended';

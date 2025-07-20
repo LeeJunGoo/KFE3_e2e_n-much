@@ -1,12 +1,12 @@
 import { POPULAR_AUCTIONS_COUNT } from 'src/entities/auction/constants';
-import { getPopularAuctions } from 'src/entities/auction/serverActions';
+import { getAuctionsCategory } from 'src/entities/auction/serverActions';
 import { type SortedAuctionItemType } from 'src/entities/auction/types';
 import PopularAuctionCard from 'src/features/auction/PopularAuctionCard';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 
 const PopularListSection = async () => {
-  const popularAuctions = await getPopularAuctions('favorites', false, POPULAR_AUCTIONS_COUNT);
+  const popularAuctions = await getAuctionsCategory('favorites', false, POPULAR_AUCTIONS_COUNT);
 
   if (!popularAuctions || popularAuctions.length === 0) {
     return (
