@@ -140,21 +140,62 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       .refine((value) => Number(value) > MIN_MAX_POINT_NUM, { message: '최대 포인트는 0보다 커야 합니다.' })
   });
 
-  //FIXME - 날짜, 시간 기능 함수로 분리하기 (KMH)
-  //FIXME - 24 매직 넘버 수정 (KMH)
+  //TODO - 분리하기 (KMH)
+  const getNowKorDate = () => {
+    const now = new Date();
+    const korNow = new TZDate(now, 'Asia/Seoul');
+
+    return korNow;
+  };
+
+  //TODO - 분리하기 (KMH)
+  const getTomorrowDate = (date: Date) => {
+    const tomorrowDate = addHours(date, HOURS_OF_DAY);
+    return tomorrowDate;
+  };
+
+  //TODO - 분리하기 (KMH)
+  const getTime = (date: Date) => {
+    const time = format(date, 'HH:mm:ss');
+    return time;
+  };
+
+  //TODO - 분리하기 (KMH)
+  const convertFromUtcToKorDate = (date: string) => {
+    const korDate = new TZDate(date, 'Asia/Seoul');
+    return korDate;
+  };
+
+  //TODO - 분리하기 (KMH)
+  const convertFromKorToUtcDate = (date: Date) => {
+    const korDate = new TZDate(date, 'utc');
+    return korDate;
+  };
+
+  //TODO - 분리하기 (KMH)
+  const setTimeToDate = (date: Date, time: string) => {
+    const splittedTime = time.split(':');
+    const resultDate = set(date, {
+      hours: Number(splittedTime[0]),
+      minutes: Number(splittedTime[1]),
+      seconds: Number(splittedTime[2])
+    });
+
+    return resultDate;
+  };
+
   const getFormDefaultValues = () => {
-    const today = new Date();
-    const korToday = new TZDate(today, 'Asia/Seoul');
-    const endDay = addHours(korToday, HOURS_OF_DAY);
-    const endTime = format(endDay, 'HH:mm:ss');
+    const korToday = getNowKorDate();
+    const endDay = getTomorrowDate(korToday);
+    const endTime = getTime(endDay);
 
     return {
       title: '',
       description: '',
       endDay,
       endTime,
-      startingPoint: '0',
-      maxPoint: '0'
+      startingPoint: String(MIN_STARTING_POINT_NUM),
+      maxPoint: String(MIN_MAX_POINT_NUM)
     };
   };
 
@@ -174,8 +215,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         image_urls: imageUrls
       } = fetchedAuction;
 
-      const endDay = new TZDate(endDate, 'Asia/Seoul');
-      const endTime = format(endDay, 'HH:mm:ss');
+      const endDay = convertFromUtcToKorDate(endDate);
+      const endTime = getTime(endDay);
 
       form.reset({
         title,
@@ -200,14 +241,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
-    //FIXME - 타임존을 바꾸는 함수 만들어서 분리하기 (KMH)
-    const korEndTime = endTime.split(':');
-    const korEndDate = set(endDay, {
-      hours: Number(korEndTime[0]),
-      minutes: Number(korEndTime[1]),
-      seconds: Number(korEndTime[2])
-    });
-    const utcEndDate = new TZDate(korEndDate, 'utc');
+    const korEndDate = setTimeToDate(endDay, endTime);
+    const utcEndDate = convertFromKorToUtcDate(korEndDate);
 
     let imageUrls: string[] = [];
     if (previewImages.length > 0) {
