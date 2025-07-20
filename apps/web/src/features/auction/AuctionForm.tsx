@@ -11,22 +11,13 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { cn } from '@repo/ui/lib/utils';
-import { addHours, format, set } from 'date-fns';
+import { format, getTime } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
 import { useForm, useWatch } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
-import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
-import ImageUploader from 'src/features/auction/ImageUploader';
-import PageContainer from 'src/shared/ui/PageContainer';
-import { v4 as uuidv4 } from 'uuid';
-import type { AuctionFormProps, PreviewImage } from 'src/entities/auction/types';
-import type { z } from 'zod';
-import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
-import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import {
   BUCKET_FOLDER_NAME,
   MAX_DESCRIPTION_LETTERS,
@@ -34,10 +25,23 @@ import {
   MIN_MAX_POINT_NUM,
   MIN_STARTING_POINT_NUM
 } from 'src/entities/auction/constants';
-
-const HOURS_OF_DAY = 24;
-const KOR_TIME_ZONE = 'Asia/Seoul';
-const UTC_TIME_ZONE = 'utc';
+import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
+import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
+import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
+import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
+import ImageUploader from 'src/features/auction/ImageUploader';
+import PageContainer from 'src/shared/ui/PageContainer';
+import {
+  convertFromKorToUtcDate,
+  convertFromUtcToKorDate,
+  getNowKorDate,
+  getTomorrowDate,
+  setTimeToDate,
+  UTC_TIME_ZONE
+} from 'src/shared/utils/dateFns';
+import { v4 as uuidv4 } from 'uuid';
+import type { AuctionFormProps, PreviewImage } from 'src/entities/auction/types';
+import type { z } from 'zod';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -70,50 +74,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     return isDisableCondition ? formDate < korNow : formDate > korNow;
   };
 
-  //TODO - 분리하기 (KMH)
-  const getNowKorDate = () => {
-    const now = new Date();
-    const korNow = new TZDate(now, KOR_TIME_ZONE);
-
-    return korNow;
-  };
-
-  //TODO - 분리하기 (KMH)
-  const getTomorrowDate = (date: Date) => {
-    const tomorrowDate = addHours(date, HOURS_OF_DAY);
-    return tomorrowDate;
-  };
-
-  //TODO - 분리하기 (KMH)
-  const getTime = (date: Date) => {
-    const time = format(date, 'HH:mm:ss');
-    return time;
-  };
-
-  //TODO - 분리하기 (KMH)
-  const convertFromUtcToKorDate = (date: string) => {
-    const korDate = new TZDate(date, KOR_TIME_ZONE);
-    return korDate;
-  };
-
-  //TODO - 분리하기 (KMH)
-  const convertFromKorToUtcDate = (date: Date) => {
-    const korDate = new TZDate(date, UTC_TIME_ZONE);
-    return korDate;
-  };
-
-  //TODO - 분리하기 (KMH)
-  const setTimeToDate = (date: Date, time: string) => {
-    const splittedTime = time.split(':');
-    const resultDate = set(date, {
-      hours: Number(splittedTime[0]),
-      minutes: Number(splittedTime[1]),
-      seconds: Number(splittedTime[2])
-    });
-
-    return resultDate;
-  };
-
   const getFormDefaultValues = () => {
     const korToday = getNowKorDate();
     const endDay = getTomorrowDate(korToday);
@@ -123,7 +83,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       title: '',
       description: '',
       endDay,
-      endTime,
+      endTime: String(endTime),
       startingPoint: String(MIN_STARTING_POINT_NUM),
       maxPoint: String(MIN_MAX_POINT_NUM)
     };
@@ -172,7 +132,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         title,
         description,
         endDay,
-        endTime,
+        endTime: String(endTime),
         startingPoint: String(startingPoint),
         maxPoint: String(maxPoint)
       });
