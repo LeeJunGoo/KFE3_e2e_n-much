@@ -7,12 +7,16 @@ import SelectOrder from 'src/features/auction/SelectOrder';
 import PageContainer from 'src/shared/ui/PageContainer';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}
+
 interface EpisodeCount {
   episodes: [{ count: number }];
 }
 
 //FIXME - Page 컴포넌트 이름 바꾸기
-const Page = async ({ searchParams }: { searchParams: Promise<{ [key: string]: string | undefined }> }) => {
+const Page = async ({ searchParams }: PageProps) => {
   const queryClient = new QueryClient();
 
   let { order, page } = await searchParams;
