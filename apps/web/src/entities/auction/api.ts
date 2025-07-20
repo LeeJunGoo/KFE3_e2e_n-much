@@ -6,6 +6,7 @@ import type {
   AuctionInfoType,
   SellerAuctionCountType
 } from 'src/entities/auction/types';
+import { AuctionInsert, AuctionRow } from 'src/shared/supabase/types';
 
 //ANCHOR - 에피소드 등록: 경매 상품 및 경매 업체 정보
 export const getAuctionInfoForEpisode = async (auctionId: string) => {
@@ -112,6 +113,31 @@ export const getAuction = async (auctionId: string | undefined) => {
 //TODO - address 도메인으로 이동 (KMH)
 export const getAddressId = async (userId: string | undefined) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses/?user_id=${userId}`);
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data = await res.json();
+
+  if (!data) {
+    throw new Error('addressId가 존재하지 않습니다.');
+  }
+
+  return data;
+};
+
+//TODO - 확인해보기 (KMH)
+//TODO - 테스트해보기 (KMH)
+export const postAuction = async (postAuctionParam: AuctionInsert): Promise<AuctionRow> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`, {
+    headers: { 'Content-Type': 'application/json' },
+    method: 'POST',
+    body: JSON.stringify({
+      ...postAuctionParam
+    })
+  });
 
   if (!res.ok) {
     const errorResponse = await res.json();

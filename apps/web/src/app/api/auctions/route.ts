@@ -6,6 +6,7 @@ import { getAllAuctions, selectAuction, getSellerAuctions, insertAuction } from 
 import { createServer } from 'src/shared/supabase/client/server';
 import type { NextRequest } from 'next/server';
 import type { AuctionInsert } from 'src/shared/supabase/types';
+import { z } from 'zod';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -40,10 +41,25 @@ export async function GET(request: NextRequest) {
   }
 }
 
+//TODO - 분리하기 (KMH)
+const postAuctionSchema = z.object({
+  user_id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  end_date: z.string(),
+  starting_point: z.number(),
+  max_point: z.number(),
+  image_urls: z.array(z.string()),
+  address_id: z.string()
+});
+
 export async function POST(request: NextRequest) {
-  //TODO - type 느슨함, 다시 생각해보기 (KMH)
-  //TODO - zod 스키마로 값 검증하기 (KMH)
   const auctionData: AuctionInsert = await request.json();
+  const schemaResult = postAuctionSchema.safeParse(auctionData);
+
+  if (!schemaResult.success) {
+    return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
+  }
 
   try {
     const res = await insertAuction(auctionData);
