@@ -11,6 +11,7 @@ export async function GET(request: NextRequest) {
   if (!order || !page) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
+
   try {
     if (order === 'favorites') {
       const res = await getAllAuctionsWithEpisodeCountByOrder(order, false, Number(page));
