@@ -6,8 +6,7 @@ export const getPopularKeywords = async () => {
     throw new Error(errorResponse.error);
   }
   const resData = await res.json();
-
-  return resData.data.map((item: { keyword: string }) => item.keyword);
+  return resData.map((item: { keyword: string }) => item.keyword);
 };
 
 export const postKeyword = async (keyword: string) => {
