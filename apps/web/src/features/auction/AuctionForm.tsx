@@ -18,19 +18,6 @@ import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
 import { useForm, useWatch } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
-import {
-  BUCKET_FOLDER_NAME,
-  MAX_DESCRIPTION_LETTERS,
-  MAX_TITLE_LETTERS,
-  MIN_MAX_POINT_NUM,
-  MIN_STARTING_POINT_NUM
-} from 'src/entities/auction/constants/auctionForm';
-import {
-  useGetAddressIdQuery,
-  useGetAuctionQuery,
-  usePatchAuctionQuery,
-  usePostAuctionQuery
-} from 'src/entities/auction/queries/auctionForm';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
@@ -38,6 +25,15 @@ import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
+import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
+import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
+import {
+  BUCKET_FOLDER_NAME,
+  MAX_DESCRIPTION_LETTERS,
+  MAX_TITLE_LETTERS,
+  MIN_MAX_POINT_NUM,
+  MIN_STARTING_POINT_NUM
+} from 'src/entities/auction/constants';
 
 const HOURS_OF_DAY = 24;
 const KOR_TIME_ZONE = 'Asia/Seoul';
