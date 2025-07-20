@@ -257,7 +257,7 @@ export async function getSellerAuctions(seller_id: string) {
 
 //TODO - 테스트 해보기 (KMH)
 //FIXME - webp로 최적화하기 (KMH)
-export const uploadImage = async (imageData: string) => {
+export const uploadImageToBucket = async (imageData: string) => {
   const base64 = imageData.split(',')[1];
 
   if (!base64) {
@@ -280,6 +280,10 @@ export const uploadImage = async (imageData: string) => {
 
 //TODO - 테스트 해보기 (KMH)
 export const deleteImages = async (imageUrls: string[]) => {
+  if (imageUrls.length === 0) {
+    return;
+  }
+
   const { error } = await supabase.storage.from('auction-images').remove([...imageUrls]);
 
   if (error) {

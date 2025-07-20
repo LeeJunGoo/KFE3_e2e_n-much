@@ -20,7 +20,7 @@ import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { getAddressId, getAuction, patchAuction, postAuction } from 'src/entities/auction/api';
-import { deleteImages, uploadImage } from 'src/entities/auction/supabase';
+import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
@@ -237,7 +237,24 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
-  //FIXME - uploadImage 리팩토링 (KMH)
+  //TODO - 분리하기 (KMH)
+  const uploadImagesToDB = async (previewImages: PreviewImage[]) => {
+    if (previewImages.length === 0) {
+      return [];
+    }
+
+    const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
+      if (!prevImage.isUrl) {
+        const data = await uploadImageToBucket(prevImage.data);
+        return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
+      }
+      return prevImage.data;
+    });
+
+    const imageUrls = await Promise.all(imageUploadPromise);
+    return imageUrls;
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
@@ -245,31 +262,22 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     const utcEndDate = convertFromKorToUtcDate(korEndDate);
 
     let imageUrls: string[] = [];
-    if (previewImages.length > 0) {
-      try {
-        const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
-          if (!prevImage.isUrl) {
-            const data = await uploadImage(prevImage.data);
-            return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
-          }
-          return prevImage.data;
-        });
 
-        imageUrls = await Promise.all(imageUploadPromise);
-        console.log('image url', imageUrls);
-      } catch (error) {
-        //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
-        console.error(error);
-      }
+    try {
+      imageUrls = await uploadImagesToDB(previewImages);
+      console.log('image url', imageUrls);
+    } catch (error) {
+      //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
+      console.error(error);
     }
 
     console.log('imageUrlsToDelete', imageUrlsToDelete);
-    if (imageUrlsToDelete.length > 0) {
-      try {
-        await deleteImages(imageUrlsToDelete);
-      } catch (error) {
-        console.error(error);
-      }
+
+    try {
+      await deleteImages(imageUrlsToDelete);
+    } catch (error) {
+      //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
+      console.error(error);
     }
 
     //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기 (KMH)
