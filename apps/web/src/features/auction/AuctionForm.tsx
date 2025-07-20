@@ -11,7 +11,7 @@ import { Input } from '@repo/ui/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { cn } from '@repo/ui/lib/utils';
-import { format, getTime } from 'date-fns';
+import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -35,6 +35,7 @@ import {
   convertFromKorToUtcDate,
   convertFromUtcToKorDate,
   getNowKorDate,
+  getTime,
   getTomorrowDate,
   setTimeToDate,
   UTC_TIME_ZONE
@@ -84,7 +85,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       title: '',
       description: '',
       endDay,
-      endTime: String(endTime),
+      endTime,
       startingPoint: String(MIN_STARTING_POINT_NUM),
       maxPoint: String(MIN_MAX_POINT_NUM)
     };
@@ -133,7 +134,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         title,
         description,
         endDay,
-        endTime: String(endTime),
+        endTime,
         startingPoint: String(startingPoint),
         maxPoint: String(maxPoint)
       });
