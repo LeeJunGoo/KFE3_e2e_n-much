@@ -7,6 +7,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const order = searchParams.get('order');
   const page = searchParams.get('page');
+  let res = null;
 
   if (!order || !page) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
@@ -16,15 +17,18 @@ export async function GET(request: NextRequest) {
 
   try {
     if (order === 'favorites') {
-      const res = await getAllAuctionsWithEpisodeCountByOrder(order, false, Number(page));
-      return NextResponse.json(res, { status: 200 });
+      res = await getAllAuctionsWithEpisodeCountByOrder(order, false, Number(page));
     } else if (order === 'end_date') {
-      const res = await getAllAuctionsWithEpisodeCountByOrder(order, true, Number(page));
-      return NextResponse.json(res, { status: 200 });
+      res = await getAllAuctionsWithEpisodeCountByOrder(order, true, Number(page));
     } else if (order === 'created_at') {
-      const res = await getAllAuctionsWithEpisodeCountByOrder(order, true, Number(page));
-      return NextResponse.json(res, { status: 200 });
+      res = await getAllAuctionsWithEpisodeCountByOrder(order, true, Number(page));
     }
+
+    if (!res) {
+      return NextResponse.json({ error: '400: order의 값이 올바르지 않습니다.' }, { status: 400 });
+    }
+
+    return NextResponse.json(res, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
