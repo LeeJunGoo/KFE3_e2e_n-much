@@ -17,7 +17,7 @@ import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { getAddressId, getAuction, patchAuction, postAuction } from 'src/entities/auction/api';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
@@ -204,6 +204,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     defaultValues: getFormDefaultValues()
   });
 
+  const titleValue = useWatch({
+    control: form.control,
+    name: 'title',
+    defaultValue: ''
+  });
+
   useEffect(() => {
     if (isEditing && fetchedAuction) {
       const {
@@ -281,10 +287,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
 
     //FIXME - POST하는 fetch 메서드 tanstack query로 만들어서 분리하기 (KMH)
-    //TODO - POST와 PATCH로 분리하기 (KMH)
-    //TODO - POST와 PATCH로 나누고, DB 컬럼 조건도 수정하기 (KMH)
     try {
-      //TODO - 폼 로딩시 주소를 가져옴 (KMH)
       if (!fetchedAddressId) {
         //TODO - toast로 처리 (KMH)
         throw new Error('주소를 불러오는데 실패했습니다.');
@@ -369,26 +372,32 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   }
 
   //FIXME - UI 수정하기 (KMH)
+  //TODO - 공통 컴포넌트로 분리하기 (KMH)
   return (
     <>
       <PageContainer>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="mt-8 space-y-8">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    제목<span className="text-(--color-red)">&#42;</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input className="bg-white" placeholder="경매 상품의 제목을 입력하세요." {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <div className="relative">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>
+                      제목<span className="text-(--color-red)">&#42;</span>
+                    </FormLabel>
+                    <FormControl>
+                      <Input className="bg-white" placeholder="경매 상품의 제목을 입력하세요." {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <p className={`absolute right-0 top-0 text-xs font-semibold`}>
+                {titleValue.length}/{MAX_TITLE_LETTERS}
+              </p>
+            </div>
 
             <FormField
               control={form.control}
