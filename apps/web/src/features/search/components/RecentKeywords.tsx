@@ -8,9 +8,19 @@ interface RecentKeywordsProps {
   handleKeywordClick: (keyword: string) => void;
   handleRemoveClick: (keyword: string) => void;
   handleClearClick: () => void;
+  isMd: boolean;
 }
 
-const RecentKeywords = ({ keywords, handleKeywordClick, handleRemoveClick, handleClearClick }: RecentKeywordsProps) => {
+const RecentKeywords = ({
+  keywords,
+  handleKeywordClick,
+  handleRemoveClick,
+  handleClearClick,
+  isMd
+}: RecentKeywordsProps) => {
+  const RENDER_ITEM_LENTH = 2;
+  const keywordsToRender = isMd ? keywords : keywords.slice(0, RENDER_ITEM_LENTH);
+
   return (
     <div className="mb-6">
       <div className="mb-3 flex items-center justify-between">
@@ -20,8 +30,8 @@ const RecentKeywords = ({ keywords, handleKeywordClick, handleRemoveClick, handl
         </button>
       </div>
       <div className="grid grid-cols-2 gap-2">
-        {keywords.length > 0 ? (
-          keywords.map((k, idx) => (
+        {keywordsToRender.length > 0 ? (
+          keywordsToRender.map((k, idx) => (
             <div
               key={`recent-${k}-${idx}`}
               className="bg-(--color-secondary) flex cursor-pointer items-center rounded-full px-3 py-2"

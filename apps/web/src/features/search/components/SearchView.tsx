@@ -1,10 +1,10 @@
 'use client';
 
-import { toast } from '@repo/ui/components/ui/sonner';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { LOCALSTORAGE_KEY, LOCALSTORAGE_MAX_LENGTH } from 'src/entities/auction/constants';
-import { postKeyword } from 'src/entities/search/api';
 import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
+import { usePostKeywordMutation } from 'src/entities/search/hooks/usePostKeywordMutation';
 import useRecentKeywords from 'src/entities/search/hooks/useRecentKeywords';
 import useSearchAction from 'src/entities/search/hooks/useSearchAction';
 import PopularKeywords from 'src/features/search/components/PopularKeywords';
@@ -18,50 +18,53 @@ interface SearchViewProps {
 }
 
 const SearchView = ({ open, setOpen }: SearchViewProps) => {
+  const [isMd, setIsMd] = useState(false);
   const { keyword, setKeyword, isLoading: isSearchLoading, setIsLoading: setIsSerachLoading } = useSearchAction();
   const { recentKeywords, setRecentKeywords } = useRecentKeywords({ getList });
   const { popularKeywords, isLoading: isPopularLoading } = usePopularKeywords();
 
   const router = useRouter();
 
-  const handleSearchClick = async (searchKeyword: string) => {
+  const optimisticUpdate = (keyword: string) => {
+    const previous = [...recentKeywords];
+    const result = pushItem({
+      key: LOCALSTORAGE_KEY,
+      newValueItem: keyword,
+      valueList: recentKeywords,
+      maxLangth: LOCALSTORAGE_MAX_LENGTH
+    });
+    setRecentKeywords(result);
+    return previous;
+  };
+
+  const rollback = (previous: string[]) => {
+    setRecentKeywords(previous);
+  };
+
+  const postKeyword = usePostKeywordMutation(optimisticUpdate, rollback);
+
+  const handleSearchClick = (searchKeyword: string) => {
     const trimmedKeyword = searchKeyword.trim();
-    if (!trimmedKeyword || isSearchLoading) {
-      return;
-    }
+    if (!trimmedKeyword || isSearchLoading) return;
 
     setIsSerachLoading(true);
 
-    // 검색 결과 페이지로 이동
     router.push(`/auctions?keyword=${encodeURIComponent(trimmedKeyword)}`);
-    // 모달 닫기
     setOpen(false);
 
-    try {
-      // 검색어 저장 (백그라운드)
-      const successMessage = await postKeyword(trimmedKeyword);
-      if (successMessage === 'success') {
-        const message = '검색어를 저장했습니다.';
-        toast.success(message);
-
-        // 로컬스토리지에 추가 후 반환 값을 상태 변수에 저장
-        const result = pushItem({
-          key: LOCALSTORAGE_KEY,
-          newValueItem: trimmedKeyword,
-          valueList: recentKeywords,
-          maxLangth: LOCALSTORAGE_MAX_LENGTH
-        });
-        setRecentKeywords(result);
+    postKeyword.mutate(
+      { keyword: trimmedKeyword },
+      {
+        onSettled: () => {
+          setIsSerachLoading(false);
+        },
+        onError: (error) => {
+          if (error instanceof Error) {
+            console.error(error.message);
+          }
+        }
       }
-    } catch (error) {
-      const message = '검색어를 저장하지 못했습니다.';
-      toast.error(message);
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    } finally {
-      setIsSerachLoading(false);
-    }
+    );
   };
 
   const handleRemoveClick = (keyword: string) => {
@@ -70,7 +73,7 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
       setRecentKeywords(result);
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`검색어 삭제 중 오류가 발생했습니다.: ${error.message}`);
+        console.error(error.message);
       }
     }
   };
@@ -81,10 +84,15 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
       setRecentKeywords(result);
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`검색어 전체 삭제 중 오류가 발생했습니다.: ${error.message}`);
+        console.error(error.message);
       }
     }
   };
+
+  useEffect(() => {
+    const mdQuery = window.matchMedia('(min-width: 768px)');
+    setIsMd(mdQuery.matches);
+  }, []);
 
   return (
     <section aria-label="검색" className="px-4 pb-8 pt-4">
@@ -100,6 +108,7 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
         handleKeywordClick={handleSearchClick}
         handleRemoveClick={handleRemoveClick}
         handleClearClick={handleClearClick}
+        isMd={isMd}
       />
       <PopularKeywords keywords={popularKeywords} handleKeywordClick={handleSearchClick} isLoading={isPopularLoading} />
     </section>
