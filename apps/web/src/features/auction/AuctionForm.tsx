@@ -25,7 +25,7 @@ import ImageUploader from 'src/features/auction/ImageUploader';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { v4 as uuidv4 } from 'uuid';
 import { z } from 'zod';
-import type { AddressRow, AuctionInsert, AuctionRow } from 'src/shared/supabase/types';
+import type { AddressRow, AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 const MIN_TITLE_LETTERS = 5;
 const MAX_TITLE_LETTERS = 50;
@@ -131,6 +131,21 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       //TODO - toast로 error 표시
     }
   });
+
+  const { mutateAsync: mutatePatchAuction, isPending: isPatchAuctionPending } = useMutation({
+    mutationFn: (patchMutationParam: {
+      auctionIdParam: string | undefined;
+      patchAuctionParam: AuctionUpdate;
+    }): Promise<AuctionRow> => patchAuction(patchMutationParam.auctionIdParam, patchMutationParam.patchAuctionParam),
+    onSuccess: () => {
+      //FIXME - 쿼리 키를 객체의 쿼리 키로 수정하기 (KMH)
+      queryClient.removeQueries({ queryKey: [AUCTION_FORM_QUERY_KEY, auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
+    },
+    onError: (error) => {
+      //TODO - toast로 error 표시
+    }
+  });
+
   //FIXME - schema로 분리 (KMH)
   const formSchema = z.object({
     title: z
@@ -370,13 +385,11 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         updated_at: new TZDate(new Date(), UTC_TIME_ZONE).toISOString()
       };
 
-      const data = await patchAuction(auctionIdParam, patchAuctionParam);
+      const data = await mutatePatchAuction({ auctionIdParam, patchAuctionParam });
 
       console.log(values);
       console.log('결과', data);
       console.log('옥션아이디', data.auction_id);
-
-      queryClient.removeQueries({ queryKey: [AUCTION_FORM_QUERY_KEY, auctionIdParam] }); //TODO - mutate 안에 넣기 (KMH)
 
       //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
       // router.push(`/auctions/${newAuctionId}`);
