@@ -14,7 +14,7 @@ const useRecentKeywords = ({ getList }: RecentKeywordsProps) => {
       setRecentKeywords(storedvalueList);
     } catch (error) {
       if (error instanceof Error) {
-        console.error(`검색어 전체 조회 중 오류가 발생했습니다.: ${error.message}`);
+        console.error(error.message);
       }
     }
   }, [getList]);
