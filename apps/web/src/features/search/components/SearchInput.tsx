@@ -28,7 +28,6 @@ const SearchInput = ({
 
   return (
     <form
-      data-role="input_section"
       className="relative mb-6"
       onSubmit={(e) => {
         e.preventDefault();

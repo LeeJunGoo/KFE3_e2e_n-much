@@ -1,38 +1,25 @@
 import { useState, useEffect } from 'react';
+import { LOCALSTORAGE_KEY } from 'src/entities/search/constants';
 
-const STORAGE_KEY = 'recentKeywords';
-const MAX_LENGTH = 6;
+interface RecentKeywordsProps {
+  getList: (params: { key: string }) => string[];
+}
 
-const useRecentKeywords = () => {
+const useRecentKeywords = ({ getList }: RecentKeywordsProps) => {
   const [recentKeywords, setRecentKeywords] = useState<string[]>([]);
 
   useEffect(() => {
-    const storedData = localStorage.getItem(STORAGE_KEY);
-    setRecentKeywords(storedData ? JSON.parse(storedData) : []);
-  }, []);
-
-  const insert = (keyword: string) => {
-    let newKeywords = recentKeywords.filter((k) => k !== keyword);
-    newKeywords.unshift(keyword);
-    if (newKeywords.length > MAX_LENGTH) {
-      newKeywords = newKeywords.slice(0, MAX_LENGTH);
+    try {
+      const storedvalueList = getList({ key: LOCALSTORAGE_KEY });
+      setRecentKeywords(storedvalueList);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
     }
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newKeywords));
-    setRecentKeywords(newKeywords);
-  };
+  }, [getList]);
 
-  const remove = (keyword: string) => {
-    const newKeywords = recentKeywords.filter((k) => k !== keyword);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newKeywords));
-    setRecentKeywords(newKeywords);
-  };
-
-  const clear = () => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([]));
-    setRecentKeywords([]);
-  };
-
-  return { recentKeywords, insert, remove, clear };
+  return { recentKeywords, setRecentKeywords };
 };
 
 export default useRecentKeywords;
