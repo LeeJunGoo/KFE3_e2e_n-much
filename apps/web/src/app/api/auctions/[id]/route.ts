@@ -7,10 +7,10 @@ import {
   selectAuctionSummaryInfoWithAddress,
   updateAuction
 } from 'src/entities/auction/supabase';
+import { selectBidderRanking } from 'src/entities/episode/supabase';
 import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionUpdate } from 'src/shared/supabase/types';
-import { selectBidderRanking } from 'src/entities/episode/supabase';
 
 type ParamsType = {
   params: Promise<{ id: string }>;

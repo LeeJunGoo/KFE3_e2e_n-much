@@ -1,4 +1,4 @@
-import type { AddressRow, AuctionRow, RankingRow } from 'src/shared/supabase/types';
+import type { AddressRow, AuctionRow, RankingRow, UserRow } from 'src/shared/supabase/types';
 
 type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
 type AddressSummaryInfoType = Pick<AddressRow, 'address_id' | 'business_name' | 'road_address' | 'detail_address'>;
@@ -19,9 +19,10 @@ export type SellerAuctionCountType = {
   activeAuctions: number;
 };
 
-type RankingSummaryInfoType = Pick<RankingRow, 'rank_position' | 'bid_amount'>;
+type RankingSummaryInfoType = Pick<RankingRow, 'rank_position' | 'bid_amount' | 'created_at'>;
+type UserSummaryInfoType = Pick<UserRow, 'email' | 'nick_name' | 'user_avatar' | 'id'>;
 
-// export type AuctionHighestBidder = EpisodeRow & BuyerInfoType
+export type BidderRankingInfoType = RankingSummaryInfoType & { users: UserSummaryInfoType };
 
 // export type BuyerInfoType = {
 //   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;

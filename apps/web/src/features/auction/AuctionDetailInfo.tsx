@@ -1,8 +1,8 @@
 import { Card } from '@repo/ui/components/ui/card';
 import Link from 'next/link';
-import type { AuctionInfoWithAddressType } from 'src/entities/auction/types';
 import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
 import BaseBadge from 'src/shared/ui/BaseBadge';
+import type { AuctionInfoWithAddressType } from 'src/entities/auction/types';
 
 const AuctionDetailInfo = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
   const badgeVariant = auctionInfo.status === 'OPEN' ? 'accent' : 'red';

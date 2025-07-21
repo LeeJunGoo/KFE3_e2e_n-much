@@ -136,11 +136,10 @@ export const selectBidderRanking = async (auction_id: string) => {
     `
     )
     .eq('auction_id', auction_id)
-    .order('rank_position', { ascending: false })
-    .maybeSingle();
+    .order('rank_position', { ascending: true });
 
   if (error) {
-    console.error('🚀 ~ getHighestBidder ~ error:', error);
+    console.error('🚀 ~ selectBidderRanking ~ error:', error);
     throw new Error();
   }
 

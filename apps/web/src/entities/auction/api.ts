@@ -3,6 +3,7 @@
 import type {
   AuctionInfoWithAddressType,
   AuctionSummaryInfoWithAddressType,
+  BidderRankingInfoType,
   SellerAuctionCountType
 } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
@@ -55,7 +56,7 @@ export const getBidderRanking = async (auction_id: AuctionRow['auction_id']) => 
     throw new Error(errorResponse.error);
   }
 
-  const data: SellerAuctionCountType = await res.json();
+  const data: BidderRankingInfoType[] | null = await res.json();
   return data;
 };
 
