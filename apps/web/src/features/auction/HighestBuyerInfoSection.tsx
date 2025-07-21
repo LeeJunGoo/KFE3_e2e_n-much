@@ -3,7 +3,7 @@ import { FaRegCommentDots } from 'react-icons/fa6';
 import { fetchHighestBidder } from 'src/entities/auction/api';
 import UserAvatar from 'src/shared/ui/BaseAvatar';
 import { formatNumber } from 'src/shared/utils/formatNumber';
-import { formatToKoreanDateTime } from 'src/shared/utils/formatToKoreanDateTime';
+import { formatToKoreanDateTime } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 import type { AuctionRow } from 'src/shared/supabase/types';

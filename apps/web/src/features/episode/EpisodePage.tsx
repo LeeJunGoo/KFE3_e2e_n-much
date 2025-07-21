@@ -16,6 +16,8 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
   // NOTE - 경매 상품 및 업체 정보
   const auctionInfo = await getAuctionInfoForEpisode(auctionId!);
 
+  console.log(auctionInfo);
+
   //NOTE - episodeId true: 수정, false: 등록
   if (episodeId) {
     initialEpisodeInfo = await getEpisodeInfo(episodeId);
