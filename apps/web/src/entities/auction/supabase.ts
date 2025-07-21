@@ -209,7 +209,7 @@ export const selectAuctionsByMainPageCategory = async (orderParam: string, isAsc
 };
 
 //NOTE - 모든 경매와 경매의 사연 갯수를 불러오기
-export const getAllAuctionsWithEpisodeCountByOrder = async (
+export const selectAuctionCardList = async (
   orderParam: string | null,
   isAscending: boolean,
   pageParam: number | null

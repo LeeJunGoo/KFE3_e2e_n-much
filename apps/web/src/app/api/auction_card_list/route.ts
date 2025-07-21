@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { getAllAuctionsWithEpisodeCountByOrder } from 'src/entities/auction/supabase';
+import { selectAuctionCardList } from 'src/entities/auction/supabase';
 import type { NextRequest } from 'next/server';
 
 //TODO - 팀원들과 정렬순을 의논해서 수정할 것
@@ -17,11 +17,11 @@ export async function GET(request: NextRequest) {
 
   try {
     if (order === 'favorites') {
-      res = await getAllAuctionsWithEpisodeCountByOrder(order, false, Number(page));
+      res = await selectAuctionCardList(order, false, Number(page));
     } else if (order === 'end_date') {
-      res = await getAllAuctionsWithEpisodeCountByOrder(order, true, Number(page));
+      res = await selectAuctionCardList(order, true, Number(page));
     } else if (order === 'created_at') {
-      res = await getAllAuctionsWithEpisodeCountByOrder(order, true, Number(page));
+      res = await selectAuctionCardList(order, true, Number(page));
     }
 
     if (!res) {
