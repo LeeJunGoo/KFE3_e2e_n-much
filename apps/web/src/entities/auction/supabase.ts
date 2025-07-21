@@ -192,7 +192,7 @@ export const selectAuctionCardList = async (
   isAscending: boolean,
   pageParam: number | null
 ) => {
-  const itemsPerPage = 5; //TODO - 상수화하기
+  const ITEM_PER_PAGE = 4; //TODO - 분리하기
   const auctionsCount = await selectAuctionsCount();
 
   if (!orderParam) {
@@ -212,14 +212,14 @@ export const selectAuctionCardList = async (
     )
     .order(orderParam, { ascending: isAscending })
     .eq('status', 'OPEN')
-    .range(pageParam, pageParam + itemsPerPage);
+    .range(pageParam, pageParam + ITEM_PER_PAGE);
 
   if (error) {
     console.error(error);
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
   }
 
-  const nextId = pageParam < auctionsCount - itemsPerPage ? pageParam + itemsPerPage + 1 : null;
+  const nextId = pageParam < auctionsCount - ITEM_PER_PAGE ? pageParam + ITEM_PER_PAGE + 1 : null;
 
   return { data, nextId };
 };

@@ -22,8 +22,9 @@ const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
 
   //TODO - page 파라미터 어디서 쓰는지 확인
   // let { order, page } = await searchParams;
-  let { order } = await searchParams;
+  const { order } = await searchParams;
 
+  //TODO - 미들웨어로 order가 없는 경우, end_date로
   const selectedOrder = order || 'end_date';
 
   //TODO - page 파라미터 어디서 쓰는지 확인
