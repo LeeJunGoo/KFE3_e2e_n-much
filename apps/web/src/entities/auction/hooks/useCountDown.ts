@@ -1,67 +1,67 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { differenceInSeconds, type Duration, intervalToDuration } from 'date-fns';
+import { TZDate } from 'react-day-picker';
+import { DEFAULT_TIMER_DELAY, MILLISECONDS, TIME_UNIT_PADDING } from '../constants';
 
-export interface CountdownState {
-  remainingTime: string;
-  status: 'upcoming' | 'ongoing' | 'ended' | 'urgent';
-}
+type TimerReturnType = {
+  days: string;
+  hours: string;
+  minutes: string;
+  seconds: string;
+};
 
-export const useCountdown = (startTime: string, endTime: string): CountdownState => {
-  const [now, setNow] = useState(new Date());
+type TimerProps = {
+  endDate: string;
+  delay?: number;
+  onCompleted?: () => void;
+};
+
+export const useTimer = ({ endDate, delay = DEFAULT_TIMER_DELAY, onCompleted }: TimerProps): TimerReturnType => {
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [remainingTime, setRemainingTime] = useState(0);
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setNow(new Date());
-    }, 60000);
-
-    return () => clearInterval(intervalId);
-  }, []);
-
-  // 남은 시간을 계산하고 상태를 결정하는 함수
-  const getCountdownState = (): CountdownState => {
-    const startDate = new Date(startTime);
-    const endDate = new Date(endTime);
-
-    // 상태 1: 시작 전
-    if (now < startDate) {
-      return {
-        remainingTime: '시작 전',
-        status: 'upcoming'
-      };
+    if (!(typeof endDate === 'string') || !endDate) {
+      setRemainingTime(0);
+      return;
     }
 
-    // 상태 2: 종료됨
-    if (now >= endDate) {
-      return {
-        remainingTime: '종료됨',
-        status: 'ended'
-      };
-    }
+    const calculateRemainingTime = (): number => {
+      const now = new TZDate(new Date(), 'Asia/Seoul');
+      const end = new TZDate(endDate, 'Asia/Seoul');
+      const secondsDiff = differenceInSeconds(end, now);
+      return secondsDiff > 0 ? secondsDiff : 0;
+    };
 
-    // 상태 3: 진행 중
-    const diffInMs = endDate.getTime() - now.getTime();
+    setRemainingTime(calculateRemainingTime());
 
-    const days = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diffInMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((diffInMs % (1000 * 60 * 60)) / (1000 * 60));
+    intervalRef.current = setInterval(() => {
+      const newRemainingTime = calculateRemainingTime();
+      if (newRemainingTime <= 0 && intervalRef.current) {
+        onCompleted?.();
+        clearInterval(intervalRef.current);
+      }
+      setRemainingTime(newRemainingTime);
+    }, delay);
 
-    let remainingString = '';
-    if (days > 0) remainingString += `${days}일 `;
-    if (hours > 0) remainingString += `${hours}시간 `;
-    if (minutes > 0) remainingString += `${minutes}분`;
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [endDate, delay, onCompleted]);
 
-    // 5분 미만일 경우
-    if (days === 0 && hours === 0 && minutes < 5) {
-      return {
-        remainingTime: remainingString,
-        status: 'urgent'
-      };
-    }
+  //ANCHOR - 반환하는 날짜 형식: 05일 05시 05분 05초
+  const formatTime = (timeInSeconds: number) => {
+    const duration: Duration = intervalToDuration({ start: 0, end: timeInSeconds * MILLISECONDS });
 
     return {
-      remainingTime: remainingString,
-      status: 'ongoing'
+      days: String(duration.days || 0).padStart(TIME_UNIT_PADDING, '0'),
+      hours: String(duration.hours || 0).padStart(TIME_UNIT_PADDING, '0'),
+      minutes: String(duration.minutes || 0).padStart(TIME_UNIT_PADDING, '0'),
+      seconds: String(duration.seconds || 0).padStart(TIME_UNIT_PADDING, '0')
     };
   };
 
-  return getCountdownState();
+  return { ...formatTime(remainingTime) };
 };

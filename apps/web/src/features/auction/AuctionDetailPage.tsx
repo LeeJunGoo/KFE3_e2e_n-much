@@ -7,7 +7,6 @@ import PageContainer from 'src/shared/ui/PageContainer';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
-  console.log('🚀 ~ AuctionDetailPage ~ id:', auctionId);
 
   // NOTE - 경매 상품 및 경매 업체 정보
   const auctionInfo = await getAuctionInfoWithAddress(auctionId);

@@ -1,10 +1,11 @@
-import { formatDuration, intervalToDuration } from 'date-fns';
+import { type Duration, formatDuration, intervalToDuration } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { TZDate } from 'react-day-picker';
 import { type AuctionTimerStatus } from 'src/entities/auction/types';
 
 type RemainingTimeType = {
   status: AuctionTimerStatus;
+  duration: Duration;
   remainTime: string;
   formattedTime: string;
 };
@@ -58,8 +59,9 @@ export const formatRemainingTime = (endDate: string): RemainingTimeType => {
   }
 
   return {
-    status,
-    remainTime,
-    formattedTime
+    status, //ANCHOR - 뱃지 상태
+    duration, //ANCHOR - {years: 0, moths: 0, days: 0, hours: 0, minutes: 0, secondes: 0}
+    remainTime, //ANCHOR - "00 남음"
+    formattedTime //ANCHOR - "일 시간 분"
   };
 };
