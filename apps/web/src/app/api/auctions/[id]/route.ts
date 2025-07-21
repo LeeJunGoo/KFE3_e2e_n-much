@@ -1,7 +1,6 @@
+import { type NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { selectAuctionInfoForEpisode, selectAuctionWithSellerInfo } from 'src/entities/auction/supabase';
-import { selectHighestBidder } from 'src/entities/episode/supabase';
-import type { NextRequest } from 'next/server';
+import { selectAuctionInfoWithAddress, selectAuctionSummaryInfoWithAddress } from 'src/entities/auction/supabase';
 
 type ParamsType = {
   params: Promise<{ id: string }>;
@@ -19,11 +18,11 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
 
   try {
     if (type === 'auction_form') {
-      res = await selectAuctionWithSellerInfo(id);
+      // res = await selectAuctionWithSellerInfo(id);
     } else if (type === 'episode_form') {
-      res = await selectAuctionInfoForEpisode(id);
+      res = await selectAuctionSummaryInfoWithAddress(id);
     } else if (type === 'auction') {
-      res = await selectHighestBidder(id);
+      res = await selectAuctionInfoWithAddress(id);
     }
 
     return NextResponse.json(res, { status: 200 });

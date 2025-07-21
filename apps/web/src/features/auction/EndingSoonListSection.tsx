@@ -1,11 +1,11 @@
 import { ENDING_SOON_AUCTIONS_COUNT } from 'src/entities/auction/constants';
-import { getEndingSoonAuctions } from 'src/entities/auction/serverActions';
+import { getAuctionsCategory } from 'src/entities/auction/serverActions';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import EndingSoonCarousel from './EndingSoonCarousel';
 
 const EndingSoonListSection = async () => {
-  const endingSoonAuctions = await getEndingSoonAuctions('end_date', true, ENDING_SOON_AUCTIONS_COUNT);
+  const endingSoonAuctions = await getAuctionsCategory('end_date', true, ENDING_SOON_AUCTIONS_COUNT);
 
   if (!endingSoonAuctions || endingSoonAuctions.length === 0) {
     return (

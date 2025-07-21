@@ -6,14 +6,5 @@
       "mode": "auto"
     }
   ],
-  "cSpell.words": [
-    "autodocs",
-    "Chatbubble",
-    "kakao",
-    "MMDD",
-    "pretendard",
-    "sonner",
-    "supabase",
-    "Vidding"
-  ]
+  "cSpell.words": ["autodocs", "Chatbubble", "kakao", "MMDD", "pretendard", "sonner", "supabase", "uuidv", "Vidding"]
 }

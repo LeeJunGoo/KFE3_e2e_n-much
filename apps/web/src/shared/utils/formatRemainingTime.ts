@@ -24,7 +24,7 @@ export const formatRemainingTime = (endDate: string): RemainingTimeType => {
   });
 
   //ANCHOR - status: 상태에 따라 시간 color 변경
-  if (duration.days === 0 && duration.hours === 0) {
+  if (duration.days! <= 0 && duration.hours! <= 0) {
     status = 'urgent';
   } else {
     status = 'ongoing';
@@ -33,23 +33,23 @@ export const formatRemainingTime = (endDate: string): RemainingTimeType => {
   //ANCHOR - 일부 남은 시간을 표시(메인 페이지의 뱃지)
   switch (true) {
     case (duration.years ?? 0) > 0:
-      remainTime = `${duration.years}년`;
+      remainTime = `${duration.years}년 남음`;
       break;
 
     case (duration.months ?? 0) > 0:
-      remainTime = `${duration.months}개월`;
+      remainTime = `${duration.months}개월 남음`;
       break;
 
     case (duration.days ?? 0) > 0:
-      remainTime = `${duration.days}일`;
+      remainTime = `${duration.days}일 남음`;
       break;
 
     case (duration.hours ?? 0) > 0:
-      remainTime = `${duration.hours}시간`;
+      remainTime = `${duration.hours}시간 남음`;
       break;
 
     case (duration.minutes ?? 0) > 0:
-      remainTime = `${duration.minutes}분`;
+      remainTime = `${duration.minutes}분 남음`;
       break;
 
     default:

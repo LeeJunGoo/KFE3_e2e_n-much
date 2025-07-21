@@ -1,7 +1,7 @@
 import { decode } from 'base64-arraybuffer';
+import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
-import { createClient } from '../../shared/supabase/client/client';
-import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from '../../shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -41,54 +41,32 @@ export const selectAuctionDefaultAddress = async (userId: string): Promise<UserR
   return data;
 };
 
-//NOTE - 에피소드 등록 페이지: 특정 상품 정보 및 판매자 정보
-export const selectAuctionInfoForEpisode = async (auctionId: string) => {
-  const { data, error } = await supabase
-    .from('auctions')
-    .select(
-      `
-      *,
-    users:user_id (
-        id,       
-        nick_name,
-        address_id
-      )
-    `
-    )
-    .eq('auction_id', auctionId)
-    .maybeSingle();
+//ANCHOR - 에피소드 등록 페이지: 특정 상품 정보 및 업체 정보
+export const selectAuctionSummaryInfoWithAddress = async (auctionId: string) => {
+  const { data, error } = await supabase.rpc('get_auction_summary_with_address', {
+    auction_id_param: auctionId
+  });
 
   if (error) {
-    console.error('🚀 ~ getAuctionWithSellerInfo:', error.message);
-    throw new Error('DB: 에피소드에 대한 특정 경매 정보 불러오기 에러');
-  }
-
-  return data;
-};
-
-//NOTE - 걍메 싱세 페이지: 특정 상품 정보 및 판매자 정보
-export const selectAuctionWithSellerInfo = async (auctionId: string) => {
-  const { data, error } = await supabase
-    .from('auctions')
-    .select(
-      `
-      *,
-    users:user_id (
-        id,       
-        nick_name,
-        address_id
-      )
-    `
-    )
-    .eq('auction_id', auctionId)
-    .maybeSingle();
-
-  if (error) {
-    console.error('🚀 ~ getAuctionWithSellerInfo:', error);
+    console.error('🚀 ~ selectAuctionSummaryInfoWithAddress:', error);
     throw new Error();
   }
 
-  return data;
+  return data[0];
+};
+
+//ANCHOR - 경매 싱세 페이지: 특정 상품 정보 및 판매자 정보
+export const selectAuctionInfoWithAddress = async (auctionId: string) => {
+  const { data, error } = await supabase.rpc('get_auction_detail_with_address', {
+    auction_id_param: auctionId
+  });
+
+  if (error) {
+    console.error('🚀 ~ selectAuctionInfoWithAddress:', error);
+    throw new Error();
+  }
+
+  return data[0];
 };
 
 //NOTE - 경매 물품 추가

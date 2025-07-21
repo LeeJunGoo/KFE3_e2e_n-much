@@ -10,7 +10,7 @@ interface BaseBadgeProps extends VariantProps<typeof badgeVariants> {
 }
 
 const BaseBadge = ({ children, className = '', variant = 'primary', ...props }: BaseBadgeProps) => {
-  const baseStyle = 'rounded-md px-2';
+  const baseStyle = 'rounded-md px-2 ';
 
   return (
     <Badge variant={variant} className={twMerge(baseStyle, className)} {...props}>
