@@ -1,18 +1,7 @@
 //TODO - 준구님 컨벤션에 맞추기 (KMH)
 
-import type {
-  // AuctionHighestBidder,
-  AuctionInfoForEpisodeType,
-  AuctionInfoType,
-  SellerAuctionCountType
-} from 'src/entities/auction/types';
-import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 import type { AuctionInfoWithAddressType, AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
-
-//ANCHOR - 에피소드 등록: 경매 상품 및 경매 업체 정보
-export const getAuctionInfoForEpisode = async (auctionId: string) => {
-
-
+import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 //ANCHOR - 경매 상세 페이지: 경매 상풍 및 업체 정보
 export const getAuctionInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
@@ -104,36 +93,17 @@ export const fetchSellerAuctions = async () => {
 };
 
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
-export const getAuctionCardList = async ({
-  order,
-  pageParam
-}: {
-  order: string | undefined;
-  pageParam: number | undefined;
-}) => {
-  //NOTE - pageParam이 0인 경우, false로 나옴
-  if (!order && pageParam === undefined) {
-    throw new Error('getAllAuctionsWithEpisodeCount: order와 pageParam이 없습니다.');
-  }
+export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { order: string; pageParam: number }) {
+  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count?order=${order}&page=${pageParam}`;
+  const data = await fetch(fetchUrl);
+  const result = await data.json();
 
-  if (!order) {
-    throw new Error('getAllAuctionsWithEpisodeCount: order가 없습니다.');
-  }
-
-  if (pageParam === undefined) {
-    throw new Error('getAllAuctionsWithEpisodeCount: pageParam이 없습니다.');
-  }
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list?order=${order}&page=${pageParam}`
-  );
-  if (!res.ok) {
+  if (result.status === 'success') {
+    return result.data;
+  } else {
     throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
   }
-
-  const data = await res.json();
-  return data;
-};
+}
 
 export const getAuction = async (auctionId: string | undefined) => {
   if (!auctionId) {
