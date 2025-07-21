@@ -1,6 +1,6 @@
 import { Button } from '@repo/ui/components/ui/button';
 import PointDisplay from 'src/shared/ui/PointDisplay';
-import { formatYYYYMMDD } from 'src/shared/utils/formatToKoreanDateTime';
+import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import BaseCard from 'src/widgets/BaseCard';
 
 const MyAuctionListItem = () => {

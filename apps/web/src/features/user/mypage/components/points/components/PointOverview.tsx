@@ -1,6 +1,6 @@
 import PageTitle from 'src/shared/ui/PageTitle';
 import PointDisplay from 'src/shared/ui/PointDisplay';
-import { formatKoreanFullDate } from 'src/shared/utils/formatToKoreanDateTime';
+import { formatKoreanFullDate } from 'src/shared/utils/formatKoreanDate';
 import BaseCard from 'src/widgets/BaseCard';
 
 const PointOverview = () => {
