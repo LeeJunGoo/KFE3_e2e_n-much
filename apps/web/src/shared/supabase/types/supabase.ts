@@ -387,6 +387,7 @@ export type Database = {
           image_urls: string[]
           end_date: string
           favorites: string[]
+          status: string
           address_id: string
           business_name: string
           postal_code: string

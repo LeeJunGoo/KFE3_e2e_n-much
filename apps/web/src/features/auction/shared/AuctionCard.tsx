@@ -60,7 +60,6 @@ export default function AuctionCard({
               <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
             )}
           </div>
-
           <Badge
             className={`absolute bottom-2 right-2 ${
               status === 'OPEN' && -24 < diffDay && diffDay < 0

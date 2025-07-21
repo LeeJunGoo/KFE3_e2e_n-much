@@ -1,5 +1,18 @@
-import { type AuctionRow } from 'src/shared/supabase/types';
+//TODO - 준구님 컨벤션에 맞추기 (KMH)
+
+import type {
+  // AuctionHighestBidder,
+  AuctionInfoForEpisodeType,
+  AuctionInfoType,
+  SellerAuctionCountType
+} from 'src/entities/auction/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 import type { AuctionInfoWithAddressType, AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
+
+//ANCHOR - 에피소드 등록: 경매 상품 및 경매 업체 정보
+export const getAuctionInfoForEpisode = async (auctionId: string) => {
+
+
 
 //ANCHOR - 경매 상세 페이지: 경매 상풍 및 업체 정보
 export const getAuctionInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
@@ -51,7 +64,9 @@ export const fetchHighestBidder = async (auction_id: string) => {
   }
 
   // const result: AuctionHighestBidder = await res.json();
-  // return result.data;
+  const result = await res.json(); //FIXME - 타입 에러가 발생해서 기존 내용 주석처리해서 임시 조치함 (KMH)
+
+  return result.data;
 };
 
 //NOTE - 경매 데이터 삭제
@@ -101,14 +116,92 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
   }
 }
 
-export async function fetchAuctionById(auctionId: string | undefined) {
-  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions?auction_id=${auctionId}`;
-  const data = await fetch(fetchUrl);
-  const result = await data.json();
-
-  if (result.status === 'success') {
-    return result.data;
-  } else {
-    throw new Error('auction_id로 경매 fetch 실패');
+export const getAuction = async (auctionId: string | undefined) => {
+  if (!auctionId) {
+    throw new Error('selectAuction: auctionId가 없습니다.');
   }
-}
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction_form`);
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data = await res.json();
+
+  if (!data) {
+    throw new Error('getAuction: 가져올 경매가 없습니다.');
+  }
+
+  return data;
+};
+
+export const getAddressId = async (userId: string | undefined) => {
+  if (!userId) {
+    throw new Error('getAddressId: userId가 없습니다.');
+  }
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses/?user_id=${userId}`);
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data = await res.json();
+
+  if (!data) {
+    throw new Error('getAddressId: 가져올 addressId가 없습니다.');
+  }
+
+  return data;
+};
+
+export const postAuction = async (auction: AuctionInsert | undefined): Promise<AuctionRow> => {
+  if (!auction) {
+    throw new Error('postAuction: auction이 없습니다.');
+  }
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`, {
+    headers: { 'Content-Type': 'application/json' },
+    method: 'POST',
+    body: JSON.stringify(auction)
+  });
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data = await res.json();
+  return data;
+};
+
+export const patchAuction = async (
+  auctionId: string | undefined,
+  auction: AuctionUpdate | undefined
+): Promise<AuctionRow> => {
+  if (!auctionId && !auction) {
+    throw new Error('patchAuction: auctionId와 auction이 없습니다.');
+  }
+
+  if (!auctionId) {
+    throw new Error('patchAuction: auctionId이 없습니다.');
+  }
+
+  if (!auction) {
+    throw new Error('patchAuction: auction이 없습니다.');
+  }
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}`, {
+    headers: { 'Content-Type': 'application/json' },
+    method: 'PATCH',
+    body: JSON.stringify(auction)
+  });
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data = await res.json();
+  return data;
+};
