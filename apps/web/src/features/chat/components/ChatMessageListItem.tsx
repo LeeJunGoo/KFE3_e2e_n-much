@@ -1,3 +1,5 @@
+import { formatShortDateTime } from 'src/shared/utils/formatKoreanDate';
+
 const ChatMessageListItem = () => {
   return (
     <>
@@ -16,7 +18,9 @@ const ChatMessageListItem = () => {
             <div className="border-r-(--color-primary) absolute -left-2 top-3 h-0 w-0 border-b-[15px] border-r-[15px] border-t-[15px] border-b-transparent border-t-transparent"></div>
           </div>
         </div>
-        <time className="text-(--color-text-base)/60 inline-block w-full pr-1 text-right text-xs">11:19 PM</time>
+        <time className="text-(--color-text-base)/60 inline-block w-full pr-1 text-right text-xs">
+          {formatShortDateTime('2025-05-05T14:30:00.000Z')}
+        </time>
       </li>
       <li>
         <div className="flex gap-4">
@@ -29,7 +33,9 @@ const ChatMessageListItem = () => {
             <div className="border-l-(--color-accent) absolute -right-2 top-3 h-0 w-0 border-b-[15px] border-l-[15px] border-t-[15px] border-b-transparent border-t-transparent"></div>
           </div>
         </div>
-        <time className="text-(--color-text-base)/60 inline-block w-full pl-1 text-left text-xs">11:19 PM</time>
+        <time className="text-(--color-text-base)/60 inline-block w-full pl-1 text-left text-xs">
+          {formatShortDateTime('2025-05-05T14:30:00.000Z')}
+        </time>
       </li>
     </>
   );
