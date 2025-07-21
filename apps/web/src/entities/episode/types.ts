@@ -3,19 +3,15 @@ import type { EpisodeInsert, EpisodeRow, EpisodeUpdate } from 'src/shared/supaba
 
 //NOTE - 경매 사연, 등록, 수정 타입 지정
 export type EpisodeItemProps = EpisodeRow & {
-  buyer: {
-    buyer_id: string;
+  users: {
     nickname: string;
-    avatar: string | null;
+    user_avatar: string | null;
     email: string;
   };
 };
 export type EpisodesListType = {
-  status: string;
-  data: {
-    episode: EpisodeItemProps[];
-    count: number;
-  };
+  episodeList: EpisodeItemProps[];
+  episodeCount: number;
 };
 
 export type EpisodeInfo = { status: string; data: EpisodeRow };

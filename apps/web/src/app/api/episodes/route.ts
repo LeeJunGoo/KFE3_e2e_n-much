@@ -1,38 +1,28 @@
-import { error } from 'console';
-import { type NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 import {
   deleteEpisode,
-  getEpisodesByAuctionId,
-  getUserBiddingCount,
-  getUserStories,
   insertEpisode,
-  selectEpisodeById,
+  selectEpisodeInfo,
   selectWinningEpisode,
   updateEpisodeById
 } from 'src/entities/episode/supabase';
-import { createServer } from 'src/shared/supabase/client/server';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const episodeId = searchParams.get('episodeId');
   const auctionId = searchParams.get('auctionId');
   const type = searchParams.get('type');
-
   let res;
+
   try {
-    if (!auctionId && !episodeId && !type) {
+    if (!auctionId && !episodeId) {
       return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
     }
 
-    // if (auctionId) {
-    //   res = await getEpisodesByAuctionId(auctionId);
-    // }
-
-    //FIXME - 현재 경매 등록 페이지에서만 현재 GET을 사용 중이며, 경매 등록 페이지에서(수정일 경우에만 작동되므로, 위의 조건문에서 값이 전부 존재할 경우에만 실행)
     if (episodeId) {
-      res = await selectEpisodeById(episodeId);
+      res = await selectEpisodeInfo(episodeId);
     }
+
     // if (type === 'biddingCount') {
     //   const supabase = await createServer();
     //   const {

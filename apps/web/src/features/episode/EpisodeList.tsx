@@ -10,7 +10,7 @@ import {
 } from '@repo/ui/components/ui/pagination';
 import { useEffect, useRef, useState } from 'react';
 import { FaRegCommentDots } from 'react-icons/fa';
-import { fetchEpisodesById } from 'src/entities/episode/api';
+// import { fetchEpisodesById } from 'src/entities/episode/api';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 import { AuctionRow } from 'src/shared/supabase/types';
 import EpisodeItem from './EpisodeItem';
@@ -18,15 +18,17 @@ import EpisodeItem from './EpisodeItem';
 const EPISODES_PER_PAGE = 5;
 
 const EpisodeList = ({
+  episodeList,
   auction_id,
   sellerId
 }: {
+  episodeList: EpisodeItemProps[];
   auction_id: AuctionRow['auction_id'];
   sellerId: AuctionRow['user_id'];
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
-  const [episodesCount, setEpisodesCount] = useState(0);
+  const [episodes, setEpisodes] = useState<EpisodeItemProps[]>(episodeList);
+  const [episodesCount, setEpisodesCount] = useState(episodes.length);
 
   const listHeaderRef = useRef<HTMLDivElement>(null);
   const isInitialRender = useRef(true);
@@ -43,24 +45,24 @@ const EpisodeList = ({
       setCurrentPage(page);
     }
   };
-  useEffect(() => {
-    if (!auction_id) return;
+  // useEffect(() => {
+  //   if (!auction_id) return;
 
-    const fetchEpisodes = async () => {
-      try {
-        const episodesListData = await fetchEpisodesById(auction_id);
-        setEpisodes(episodesListData.episode);
-        setEpisodesCount(episodesListData.count);
-      } catch (error) {
-        if (error instanceof Error) {
-          setEpisodes([]);
-          throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${error.message}`);
-        }
-      }
-    };
+  //   const fetchEpisodes = async () => {
+  //     try {
+  //       const episodesListData = await fetchEpisodesById(auction_id);
+  //       setEpisodes(episodesListData.episode);
+  //       setEpisodesCount(episodesListData.count);
+  //     } catch (error) {
+  //       if (error instanceof Error) {
+  //         setEpisodes([]);
+  //         throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${error.message}`);
+  //       }
+  //     }
+  //   };
 
-    fetchEpisodes();
-  }, [currentPage, auction_id]);
+  //   fetchEpisodes();
+  // }, [currentPage, auction_id]);
 
   useEffect(() => {
     if (isInitialRender.current) {

@@ -1,14 +1,15 @@
 import { createClient } from 'src/shared/supabase/client/client';
+import { type AuctionRow } from 'src/shared/supabase/types';
 import type { EpisodeCreateType, EpisodeEditType } from 'src/entities/episode/types';
 
 const supabase = createClient();
 
 //ANCHOR - 특정 에피소드 정보
-export const selectEpisodeById = async (episode_id: string) => {
+export const selectEpisodeInfo = async (episode_id: string) => {
   const { data, error } = await supabase.from('episodes').select(`*`).eq('episode_id', episode_id).maybeSingle();
 
   if (error) {
-    console.error('🚀 ~ getEpisode ~ error:', error);
+    console.error('🚀 ~ selectEpisodeInfo ~ error:', error);
     throw new Error();
   }
 
@@ -42,8 +43,8 @@ export const updateEpisodeById = async ({ episodeId, title, description }: Episo
   }
 };
 
-// NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
-export const getEpisodesByAuctionId = async (auctionId: string) => {
+//ANCHOR - 경매 상품에 대한 에피소드 및 사연자 정보
+export const selectEpisodesByAuctionId = async (auctionId: AuctionRow['auction_id']) => {
   const {
     data: episode,
     error,
@@ -53,9 +54,9 @@ export const getEpisodesByAuctionId = async (auctionId: string) => {
     .select(
       `
       *,
-      buyer:buyer_id (
-        nickname,
-        avatar,
+      users:user_id (
+        nick_name,
+        user_avatar,
         email
       )
     `,
@@ -65,11 +66,14 @@ export const getEpisodesByAuctionId = async (auctionId: string) => {
     .order('created_at', { ascending: false });
 
   if (error) {
-    console.log('🚀 ~ getEpisodesByAuctionId ~ error:', error.message);
-    throw new Error('DB: 경매 물품에 대한 사연 정보 불러오기 에러');
+    console.error('🚀 ~ selectEpisodesByAuctionId ~ error:', error);
+    throw new Error();
   }
 
-  return { episode, count };
+  return {
+    episodeList: episode ?? [],
+    episodeCount: count ?? 0
+  };
 };
 
 //NOTE - 특정 에피소드 입찰
@@ -118,7 +122,7 @@ export async function deleteEpisode(episode_id: string) {
   return data;
 }
 
-// NOTE - 최고 입찰자의 정보
+//ANCHOR - 입찰 랭킹의 입찰자의 정보
 export const selectBidderRanking = async (auction_id: string) => {
   const { data, error } = await supabase
     .from('ranking')

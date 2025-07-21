@@ -7,7 +7,7 @@ import {
   selectAuctionSummaryInfoWithAddress,
   updateAuction
 } from 'src/entities/auction/supabase';
-import { selectBidderRanking } from 'src/entities/episode/supabase';
+import { selectBidderRanking, selectEpisodesByAuctionId } from 'src/entities/episode/supabase';
 import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionUpdate } from 'src/shared/supabase/types';
@@ -29,6 +29,8 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
   try {
     if (type === 'auction_form') {
       res = await selectAuction(id);
+    } else if (type === 'episode_list') {
+      res = await selectEpisodesByAuctionId(id);
     } else if (type === 'episode_form') {
       res = await selectAuctionSummaryInfoWithAddress(id);
     } else if (type === 'auction') {

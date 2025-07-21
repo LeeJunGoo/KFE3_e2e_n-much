@@ -128,7 +128,7 @@ export const deleteAuction = async (auctionId: string | undefined) => {
   return data;
 };
 
-//ANCHOR - 판매자의 총 경매 수 및 현재 진행 중인 갱며 수
+//ANCHOR - 판매자의 총 경매 수 및 현재 진행 중인 경매 수
 export const selectSellerAuctionCount = async (sellerId: AuctionRow['user_id']) => {
   const [totalResult, activeResult] = await Promise.all([
     supabase.from('auctions').select('*', { count: 'exact', head: true }).eq('user_id', sellerId),
