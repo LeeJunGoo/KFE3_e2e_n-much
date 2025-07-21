@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { LOCALSTORAGE_KEY, LOCALSTORAGE_MAX_LENGTH } from 'src/entities/search/constants';
 import usePopularKeywords from 'src/entities/search/hooks/usePopularKeywords';
@@ -45,26 +46,25 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
 
   const handleSearchClick = (searchKeyword: string) => {
     const trimmedKeyword = searchKeyword.trim();
-    if (!trimmedKeyword || isSearchLoading) return;
+    if (!trimmedKeyword) {
+      toast.warning('검색어를 입력해주세요.');
+      return;
+    }
 
     setIsSerachLoading(true);
 
     router.push(`/auctions?keyword=${encodeURIComponent(trimmedKeyword)}`);
     setOpen(false);
 
-    postKeyword.mutate(
-      { keyword: trimmedKeyword },
-      {
-        onSettled: () => {
-          setIsSerachLoading(false);
-        },
-        onError: (error) => {
-          if (error instanceof Error) {
-            console.error(error.message);
-          }
-        }
+    try {
+      postKeyword.mutate({ keyword: trimmedKeyword });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
       }
-    );
+    } finally {
+      setIsSerachLoading(false);
+    }
   };
 
   const handleRemoveClick = (keyword: string) => {
