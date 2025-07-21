@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import BottomDrawer from './components/BottomDrawer';
-import SearchView from './components/SearchView';
+import BottomDrawer from 'src/features/search/components/BottomDrawer';
+import SearchView from 'src/features/search/components/SearchView';
 
 interface SearchDrawerProps {
   open: boolean;

@@ -7,7 +7,7 @@ import { twMerge } from 'tailwind-merge';
 type AuctionTimerProps = {
   remainTime: string;
   status: AuctionTimerStatus;
-  className: string;
+  className?: string;
 };
 
 const AuctionTimer = ({ remainTime, status, className }: AuctionTimerProps) => {
