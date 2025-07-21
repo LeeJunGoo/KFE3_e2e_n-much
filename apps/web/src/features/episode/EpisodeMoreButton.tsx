@@ -4,15 +4,16 @@ import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/ui/dialog';
 import UserAvatar from 'src/shared/ui/BaseAvatar';
-import { formatToKoreanDateTime } from 'src/shared/utils/formatKoreanDate';
+import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
-import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-const EpisodeMoreButton = ({ episode, userInfo }: { episode: EpisodeItemProps; userInfo: UserInfoType }) => {
+const EpisodeMoreButton = ({ episode }: { episode: EpisodeItemProps }) => {
   const [showStoryModal, setShowStoryModal] = useState<boolean>(false);
   const [selectedEpisodes, setSelectedEpisodes] = useState<EpisodeItemProps>();
-  const userNickname = episode.buyer.nickname ?? userInfo.social_name;
+
+  // const userNickname = episode.buyer.nickname ?? userInfo.social_name;
+  const userNickname = '닉네임';
 
   return (
     <>
@@ -41,7 +42,7 @@ const EpisodeMoreButton = ({ episode, userInfo }: { episode: EpisodeItemProps; u
                     <p className="text-(--color-text-base) text-sm">{userNickname}</p>
                     <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(episode.buyer.email)}&#41;</p>
                   </div>
-                  <p className="text-(--color-warm-gray) text-xs">{formatToKoreanDateTime(episode.created_at)}</p>
+                  <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>
                 </div>
               </div>
               <h3 className="mb-3 text-lg font-bold text-[#1F1F25]">{episode.title}</h3>

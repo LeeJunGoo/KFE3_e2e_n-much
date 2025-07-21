@@ -4,6 +4,7 @@ import AuctionDetailInfo from 'src/features/auction/AuctionDetailInfo';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import BidderRankingInfoSection from 'src/features/auction/BidderRankingInfoSection';
 import SellerInfoSection from 'src/features/auction/SellerInfoSection';
+import EpisodeDetailSection from 'src/features/episode/EpisodeDetailSection';
 import PageContainer from 'src/shared/ui/PageContainer';
 import GoTopButton from 'src/shared/utils/goTopButton';
 
@@ -44,7 +45,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
           {/* 입찰자 랭킹 정보 */}
           <BidderRankingInfoSection auctionId={auctionId} />
           {/* 사연 섹션 */}
-          {/* <EpisodeDetailSection auctionId={auctionId} userInfo={userInfo} sellerId={seller.seller_id} /> */}
+          <EpisodeDetailSection auctionId={auctionId} sellerId={auctionInfo.user_id} />
         </div>
         <GoTopButton />
       </PageContainer>

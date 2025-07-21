@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import {
   Pagination,
   PaginationContent,
@@ -9,23 +8,21 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
+import { useEffect, useRef, useState } from 'react';
 import { FaRegCommentDots } from 'react-icons/fa';
 import { fetchEpisodesById } from 'src/entities/episode/api';
-import EpisodeItem from './EpisodeItem';
-import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
-import type { SellerRow } from 'src/shared/supabase/types';
+import { AuctionRow } from 'src/shared/supabase/types';
+import EpisodeItem from './EpisodeItem';
 
 const EPISODES_PER_PAGE = 5;
 
 const EpisodeList = ({
   auction_id,
-  userInfo,
   sellerId
 }: {
-  auction_id: string;
-  userInfo: UserInfoType;
-  sellerId: SellerRow['seller_id'];
+  auction_id: AuctionRow['auction_id'];
+  sellerId: AuctionRow['user_id'];
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
@@ -90,7 +87,7 @@ const EpisodeList = ({
       ) : (
         <ul className="space-y-5 divide-y">
           {currentEpisodes.map((episode: EpisodeItemProps) => (
-            <EpisodeItem key={episode.episode_id} episode={episode} userInfo={userInfo} sellerId={sellerId} />
+            <EpisodeItem key={episode.episode_id} episode={episode} sellerId={sellerId} />
           ))}
         </ul>
       )}
