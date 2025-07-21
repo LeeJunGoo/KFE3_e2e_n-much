@@ -1,6 +1,5 @@
-import { DEFAULT_POPULAR_LIMIT } from 'src/entities/search/constants';
 import { createClient } from 'src/shared/supabase/client/client';
-import type { KeywordInsert, KeywordRow, keywordUpdate } from 'src/shared/supabase/types';
+import type { KeywordInsert, KeywordRow, KeywordUpdate } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -13,8 +12,8 @@ export const selectKeyword = async (keyword: string): Promise<KeywordRow | null>
   const { data, error } = await supabase.from('keywords').select('*').eq('keyword', keyword).maybeSingle();
 
   if (error) {
-    console.error('Error fetching keyword:', error);
-    throw new Error('키워드 조회에 실패했습니다.');
+    console.error('🚀 ~ selectKeyword ~ error:', error.message);
+    throw new Error();
   }
 
   return data;
@@ -25,12 +24,12 @@ export const selectKeyword = async (keyword: string): Promise<KeywordRow | null>
  * @param keywordId - 업데이트할 키워드의 ID
  * @param updates - 업데이트할 필드 객체
  */
-export const updateKeyword = async (keywordId: number, updates: keywordUpdate) => {
+export const updateKeyword = async (keywordId: number, updates: KeywordUpdate) => {
   const { error } = await supabase.from('keywords').update(updates).eq('keyword_id', keywordId);
 
   if (error) {
-    console.error('Error updating keyword:', error);
-    throw new Error('키워드 업데이트에 실패했습니다.');
+    console.error('🚀 ~ updateKeyword ~ error:', error.message);
+    throw new Error();
   }
 };
 
@@ -43,8 +42,8 @@ export const insertKeyword = async (keyword: string) => {
   const { error } = await supabase.from('keywords').insert(newKeyword);
 
   if (error) {
-    console.error('Error inserting keyword:', error);
-    throw new Error('키워드 추가에 실패했습니다.');
+    console.error('🚀 ~ insertKeyword ~ error:', error.message);
+    throw new Error();
   }
 };
 
@@ -53,6 +52,7 @@ export const insertKeyword = async (keyword: string) => {
  * @param limit - 가져올 검색어 개수 (기본값: 10)
  * @returns count가 높은 순서대로 정렬된 KeywordRow 배열
  */
+const DEFAULT_POPULAR_LIMIT = 10;
 export const selectPopularKeywords = async (limit = DEFAULT_POPULAR_LIMIT) => {
   const { data, error } = await supabase
     .from('keywords')
@@ -61,8 +61,8 @@ export const selectPopularKeywords = async (limit = DEFAULT_POPULAR_LIMIT) => {
     .limit(limit);
 
   if (error) {
-    console.error('Error fetching popular keywords:', error);
-    throw new Error('인기 검색어 조회에 실패했습니다.');
+    console.error('🚀 ~ insertKeyword ~ error:', error.message);
+    throw new Error();
   }
-  return data || [];
+  return data;
 };

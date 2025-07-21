@@ -1,48 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { getPopularKeywords } from 'src/entities/search/api';
-import { COL_COUNT } from '../constants';
-
-interface PopularKeyword {
-  rank: number;
-  keyword: string;
-}
 
 const usePopularKeywords = () => {
-  const [popularKeywords, setPopularKeywords] = useState<PopularKeyword[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  // 랭킹순 데이터 재정렬
-  const getVerticalList = (dataList: string[]): PopularKeyword[] => {
-    const verticalOrdered: PopularKeyword[] = [];
-    const rowCount = Math.ceil(dataList.length / COL_COUNT);
-    for (let row = 0; row < rowCount; row++) {
-      for (let col = 0; col < COL_COUNT; col++) {
-        const idx = row + col * rowCount;
-        if (dataList[idx]) {
-          verticalOrdered.push({ rank: idx + 1, keyword: dataList[idx] });
-        }
-      }
-    }
-    return verticalOrdered;
-  };
+  const {
+    data: popularKeywords = [],
+    isLoading,
+    isError,
+    error
+  } = useQuery({
+    queryKey: ['popularKeywords'],
+    queryFn: getPopularKeywords
+  });
 
   useEffect(() => {
-    const fetchKeywords = async () => {
-      setIsLoading(true);
-      try {
-        const data = await getPopularKeywords();
-        setPopularKeywords(getVerticalList(data));
-      } catch (error) {
-        console.error('인기 검색어 로딩 실패:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    if (isError && error) {
+      console.error('인기 검색어 조회에 실패했습니다.:', error);
+    }
+  }, [isError, error]);
 
-    fetchKeywords();
-  }, []);
-
-  return { popularKeywords, isLoading };
+  return { popularKeywords, isLoading, isError, error };
 };
 
 export default usePopularKeywords;

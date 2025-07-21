@@ -36,7 +36,7 @@ const FormDescription = ({ control, descriptionLabel, placeholder, maxDescLength
             </FormControl>
           </div>
           <div className="relative">
-            {fieldState.invalid && fieldState.error && <FormMessage />}
+            {fieldState.invalid && <FormMessage />}
             <p className={`absolute right-0 top-0 text-xs font-semibold ${descTextColor}`}>
               {description.length}/{maxDescLength}
             </p>

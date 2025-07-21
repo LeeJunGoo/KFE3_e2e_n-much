@@ -33,6 +33,7 @@ const EpisodeForm = ({
 
   const form = useForm<DetailFormType>({
     resolver: zodResolver(episodeFormSchema),
+    mode: 'onChange',
     defaultValues: {
       title: initialEpisodeInfo?.title || '',
       description: initialEpisodeInfo?.description || ''
@@ -56,7 +57,7 @@ const EpisodeForm = ({
       const message = isEditMode ? '사연을 수정하지 못했습니다.' : '사연을 등록하지 못했습니다.';
       toast.error(message);
       if (error instanceof Error) {
-        throw new Error(error.message);
+        console.error(error.message);
       }
     }
   };

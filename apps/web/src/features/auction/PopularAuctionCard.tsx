@@ -21,6 +21,7 @@ const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => 
             fill
             sizes="(min-width: 768px) 390px, 100vw"
             className="object-cover"
+            priority
           />
 
           <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/40 to-transparent" />

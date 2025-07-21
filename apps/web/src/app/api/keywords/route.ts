@@ -4,12 +4,10 @@ import type { NextRequest } from 'next/server';
 
 export async function GET() {
   try {
-    const popularKeywords = await selectPopularKeywords();
-    return NextResponse.json({ status: 'success', data: popularKeywords });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : '서버 오류가 발생했습니다.';
-    console.error(`[API/KEYWORDS] GET - ${message}`);
-    return NextResponse.json({ status: 'error', message }, { status: 500 });
+    const res = await selectPopularKeywords();
+    return NextResponse.json(res, { status: 200 });
+  } catch {
+    NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }
 
@@ -17,8 +15,8 @@ export async function POST(request: NextRequest) {
   try {
     const { keyword } = await request.json();
 
-    if (!keyword || typeof keyword !== 'string' || keyword.trim().length === 0) {
-      return NextResponse.json({ status: 'error', message: '유효하지 않은 키워드입니다.' }, { status: 400 });
+    if (!keyword || keyword.trim().length === 0) {
+      return NextResponse.json({ error: '400: 유효하지 않은 키워드입니다.' }, { status: 400 });
     }
 
     const trimmedKeyword = keyword.trim();
@@ -34,10 +32,8 @@ export async function POST(request: NextRequest) {
       await insertKeyword(trimmedKeyword);
     }
 
-    return NextResponse.json({ status: 'success', message: '키워드가 성공적으로 저장되었습니다.' });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : '서버 오류가 발생했습니다.';
-    console.error(`[API/KEYWORDS] POST - ${message}`);
-    return NextResponse.json({ status: 'error', message }, { status: 500 });
+    return NextResponse.json({ message: 'success' }, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

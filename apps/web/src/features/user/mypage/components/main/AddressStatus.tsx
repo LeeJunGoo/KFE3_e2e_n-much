@@ -21,7 +21,7 @@ const AddressStatus = () => {
           <div className="-translate-y-1">
             <div className="mb-1 flex items-center gap-2">
               <h4 className="text-(--color-text-base)">안주원제과점</h4>
-              <BaseBadge variant="success">매장주소</BaseBadge>
+              <BaseBadge variant="accent">매장주소</BaseBadge>
             </div>
             <p className="flex flex-col gap-1 sm:flex-row sm:items-center">
               <span className="flex items-center gap-1">
