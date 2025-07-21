@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/ui/dialog';
 import UserAvatar from 'src/shared/ui/BaseAvatar';
+import MoreButton from 'src/shared/ui/MoreButton';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
@@ -17,15 +18,12 @@ const EpisodeMoreButton = ({ episode }: { episode: EpisodeItemProps }) => {
 
   return (
     <>
-      <button
-        className="text-(--color-accent) cursor-pointer text-xs"
+      <MoreButton
         onClick={() => {
           setSelectedEpisodes(episode);
           setShowStoryModal(true);
         }}
-      >
-        더보기
-      </button>
+      />
 
       <Dialog open={showStoryModal} onOpenChange={setShowStoryModal}>
         <DialogContent aria-describedby={undefined}>
