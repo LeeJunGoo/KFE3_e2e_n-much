@@ -1,18 +1,7 @@
 //TODO - 준구님 컨벤션에 맞추기 (KMH)
 
-import type {
-  // AuctionHighestBidder,
-  AuctionInfoForEpisodeType,
-  AuctionInfoType,
-  SellerAuctionCountType
-} from 'src/entities/auction/types';
-import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 import type { AuctionInfoWithAddressType, AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
-
-//ANCHOR - 에피소드 등록: 경매 상품 및 경매 업체 정보
-export const getAuctionInfoForEpisode = async (auctionId: string) => {
-
-
+import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 //ANCHOR - 경매 상세 페이지: 경매 상풍 및 업체 정보
 export const getAuctionInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
