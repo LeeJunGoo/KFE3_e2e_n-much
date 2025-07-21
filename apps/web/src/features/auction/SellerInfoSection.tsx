@@ -13,7 +13,7 @@ const SellerInfoSection = async ({ auctionInfo }: { auctionInfo: AuctionInfoWith
         <h3 className="text-(--color-text-base) font-medium">판매자 정보</h3>
         {/* //FIXME - 문의하기 페이지 이동 */}
         <Link
-          href={'/'}
+          href={'/inquiries/write'}
           className="text-(--color-warm-gray) hover:text-(--color-accent) text-sm font-semibold transition-colors"
         >
           문의하기

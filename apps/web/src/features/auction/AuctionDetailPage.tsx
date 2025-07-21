@@ -5,6 +5,7 @@ import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import BidderRankingInfoSection from 'src/features/auction/BidderRankingInfoSection';
 import SellerInfoSection from 'src/features/auction/SellerInfoSection';
 import PageContainer from 'src/shared/ui/PageContainer';
+import GoTopButton from 'src/shared/utils/goTopButton';
 
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
@@ -27,24 +28,27 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   // const userInfo: UserInfoType = await fetchDetailPageUserInfo(user.id);
 
   return (
-    <PageContainer className="-pt-8 -px-5 min-h-screen">
-      <div className="h-68 w-full">
-        {/* 이미지 슬라이더 */}
-        <AuctionDetailCarousel imageUrls={auctionInfo.image_urls} />
-        {/* 상단 네비게이션 */}
-        <AuctionDetailNavbar auctionId={auctionId} />
-      </div>
-      <div className="-translate-y-14 px-4">
-        {/* 경매 상품 정보 */}
-        <AuctionDetailInfo auctionInfo={auctionInfo} />
-        {/* 판매자 정보 */}
-        <SellerInfoSection auctionInfo={auctionInfo} />
-        {/* 입찰자 랭킹 정보 */}
-        <BidderRankingInfoSection auctionId={auctionId} />
-        {/* 사연 섹션 */}
-        {/* <EpisodeDetailSection auctionId={auctionId} userInfo={userInfo} sellerId={seller.seller_id} /> */}
-      </div>
-    </PageContainer>
+    <>
+      <PageContainer className="-pt-8 -px-5 min-h-screen">
+        <div className="h-68 w-full">
+          {/* 이미지 슬라이더 */}
+          <AuctionDetailCarousel imageUrls={auctionInfo.image_urls} />
+          {/* 상단 네비게이션 */}
+          <AuctionDetailNavbar auctionId={auctionId} />
+        </div>
+        <div className="-translate-y-14 px-4">
+          {/* 경매 상품 정보 */}
+          <AuctionDetailInfo auctionInfo={auctionInfo} />
+          {/* 판매자 정보 */}
+          <SellerInfoSection auctionInfo={auctionInfo} />
+          {/* 입찰자 랭킹 정보 */}
+          <BidderRankingInfoSection auctionId={auctionId} />
+          {/* 사연 섹션 */}
+          {/* <EpisodeDetailSection auctionId={auctionId} userInfo={userInfo} sellerId={seller.seller_id} /> */}
+        </div>
+        <GoTopButton />
+      </PageContainer>
+    </>
   );
 };
 
