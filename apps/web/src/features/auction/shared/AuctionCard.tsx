@@ -1,5 +1,4 @@
 //NOTE - 마감 임박: 1일 (KMH)
-//FIXME - 이미지 없음에 기본 이미지 넣기 (KMH)
 //FIXME - 경매 상태 정하기 (KMH)
 'use client';
 
@@ -13,10 +12,10 @@ import { FaHeart } from 'react-icons/fa';
 import { FaBookOpen } from 'react-icons/fa6';
 import noAuctionImage from 'src/assets/images/noAuctionImage.png';
 import { formatNumber } from 'src/shared/utils/formatNumber';
+import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 
 interface AuctionCardProp {
   auction_id: string;
-  status: string;
   imageSrc: string | undefined;
   title: string;
   currentPoint: number;
@@ -32,14 +31,13 @@ const AuctionCard = ({
   endDate,
   favorites,
   episodeCount,
-  status,
   currentPoint
 }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
   const now = new TZDate(new Date(), 'Asia/Seoul');
   const auctionTime = new TZDate(endDate, 'Asia/Seoul');
   const diffDay = differenceInHours(now, auctionTime);
-  const remainTime = formatDistanceToNow(auctionTime, { addSuffix: true });
+  const { status, remainTime } = formatRemainingTime(endDate);
 
   return (
     <li className="!rounded-button overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]">
@@ -60,9 +58,7 @@ const AuctionCard = ({
           </div>
           <Badge
             className={`absolute bottom-2 right-2 ${
-              status === 'OPEN' && -24 < diffDay && diffDay < 0
-                ? 'bg-[#D84A5F] hover:bg-[#D84A5F]'
-                : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
+              status === 'urgent' ? 'bg-[#D84A5F] hover:bg-[#D84A5F]' : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
             } px-2 py-1 font-normal text-white`}
           >
             {remainTime}

@@ -30,12 +30,12 @@ const AuctionList = ({ order }: AuctionListProps) => {
     isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery({
-    queryKey: ['auctions', order],
+    queryKey: ['auctions', order], //TODO - 쿼리 키 객체로 만들어서 관리하기 (KMH)
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
       getAuctionCardList({ order, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
-    staleTime: 5
+    staleTime: 5 //TODO - 생각해보기 (KMH)
   });
 
   useEffect(() => {
@@ -55,14 +55,13 @@ const AuctionList = ({ order }: AuctionListProps) => {
 
   return (
     <div>
-      <h3 className="pb-2 pt-1 text-sm">{`총 ${auctions?.pages.reduce((total, page) => total + page.data.length, 0)}개의 경매가 있습니다`}</h3>
+      <h3 className="pb-2 pt-1 text-sm">{`총 ${auctions ? auctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
       <ul className="grid grid-cols-2 gap-3">
         {auctions &&
           auctions.pages.map((page) =>
             page.data.map((auction: AuctionRow & EpisodeCount) => {
               const {
                 auction_id: auctionId,
-                status,
                 title,
                 current_point: currentPoint,
                 end_date: endDate,
@@ -81,7 +80,6 @@ const AuctionList = ({ order }: AuctionListProps) => {
                 <AuctionCard
                   key={`${auctionId}`}
                   auction_id={auctionId}
-                  status={status}
                   imageSrc={imageUrls[0]}
                   title={title}
                   currentPoint={currentPoint}
