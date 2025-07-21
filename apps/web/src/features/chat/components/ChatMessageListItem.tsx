@@ -37,6 +37,19 @@ const ChatMessageListItem = () => {
           {formatShortDateTime('2025-05-05T14:30:00.000Z')}
         </time>
       </li>
+      <li>
+        <div className="flex gap-4">
+          <div className="relative">
+            <p className="bg-(--color-accent) flex rounded-md p-4 text-sm text-white">
+              내용을 보내요. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet eos inventore voluptatem
+            </p>
+            <div className="border-l-(--color-accent) absolute -right-2 top-3 h-0 w-0 border-b-[15px] border-l-[15px] border-t-[15px] border-b-transparent border-t-transparent"></div>
+          </div>
+        </div>
+        <time className="text-(--color-text-base)/60 inline-block w-full pl-1 text-left text-xs">
+          {formatShortDateTime('2025-05-05T14:30:00.000Z')}
+        </time>
+      </li>
     </>
   );
 };

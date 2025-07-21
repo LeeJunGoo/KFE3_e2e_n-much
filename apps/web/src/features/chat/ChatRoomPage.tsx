@@ -9,7 +9,7 @@ const ChatRoomPage = () => {
     <>
       <DetailPageHeader>안주원제과점</DetailPageHeader>
       <ChatObject />
-      <PageContainer className="pb-22 relative flex min-h-[calc(100vh-146px)] flex-col-reverse">
+      <PageContainer className="pb-22 relative flex max-h-[calc(100vh-146px)] min-h-[calc(100vh-146px)] flex-col">
         <ChatContent />
         <ChatMessageForm />
       </PageContainer>
