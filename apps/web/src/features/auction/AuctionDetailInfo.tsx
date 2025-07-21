@@ -4,7 +4,7 @@ import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import type { AuctionInfoWithAddressType } from 'src/entities/auction/types';
 
-const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
+const AuctionDetailInfo = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
   const badgeVariant = auctionInfo.status === 'OPEN' ? 'accent' : 'red';
   const auctionStatus = auctionInfo.status === 'OPEN' ? 'OPEN' : 'CLOSED';
 
@@ -39,4 +39,4 @@ const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressTyp
   );
 };
 
-export default AuctionDetail;
+export default AuctionDetailInfo;

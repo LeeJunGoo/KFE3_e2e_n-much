@@ -1,6 +1,6 @@
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
-import AuctionDetail from 'src/features/auction/AuctionDetail';
-import AuctionDetailICarousel from 'src/features/auction/AuctionDetailICarousel';
+import AuctionDetailCarousel from 'src/features/auction/AuctionDetailCarousel';
+import AuctionDetailInfo from 'src/features/auction/AuctionDetailInfo';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import SellerInfoSection from 'src/features/auction/SellerInfoSection';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -30,13 +30,13 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
       <PageContainer className="-pt-8 -px-5 min-h-screen">
         <div className="h-68 w-full">
           {/* 이미지 슬라이더 */}
-          <AuctionDetailICarousel imageUrls={auctionInfo.image_urls} />
+          <AuctionDetailCarousel imageUrls={auctionInfo.image_urls} />
           {/* 상단 네비게이션 */}
           <AuctionDetailNavbar auctionId={auctionId} />
         </div>
         <div className="-translate-y-14 px-4">
           {/* 경매 상품 정보 */}
-          <AuctionDetail auctionInfo={auctionInfo} />
+          <AuctionDetailInfo auctionInfo={auctionInfo} />
 
           {/* 판매자 정보 */}
           <SellerInfoSection auctionInfo={auctionInfo} />
