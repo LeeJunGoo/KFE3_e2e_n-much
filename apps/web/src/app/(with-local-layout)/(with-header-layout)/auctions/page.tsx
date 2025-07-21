@@ -17,7 +17,6 @@ interface EpisodeCount {
   episodes: [{ count: number }];
 }
 
-//FIXME - Page 컴포넌트 이름 바꾸기
 const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
   const queryClient = new QueryClient();
 
@@ -25,6 +24,7 @@ const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
   // let { order, page } = await searchParams;
   let { order } = await searchParams;
 
+  //TODO - 컬럼명 상수화 생각해보기
   if (!order) {
     order = 'end_date';
   }
@@ -34,6 +34,7 @@ const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
   //   page = '0';
   // }
 
+  //TODO - 쿼리 키 객체로 만들어서 관리하기
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['auctions', order],
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>

@@ -11,11 +11,12 @@ import {
 } from '@repo/ui/components/ui/select';
 import { useRouter } from 'next/navigation';
 
+//TODO - 파일로 분리하기
 interface SelectOrderProp {
   order: string;
 }
 
-export default function SelectOrder({ order }: SelectOrderProp) {
+const SelectOrder = ({ order }: SelectOrderProp) => {
   const router = useRouter();
 
   return (
@@ -31,11 +32,12 @@ export default function SelectOrder({ order }: SelectOrderProp) {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>정렬 순서</SelectLabel>
-          <SelectItem value="end_time">마감 임박순</SelectItem>
+          <SelectItem value="end_date">마감 임박순</SelectItem>
           <SelectItem value="favorites">인기순</SelectItem>
           <SelectItem value="created_at">최신순</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
   );
-}
+};
+export default SelectOrder;
