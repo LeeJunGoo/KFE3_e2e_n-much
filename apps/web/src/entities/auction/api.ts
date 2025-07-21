@@ -83,7 +83,7 @@ export const fetchSellerAuctions = async () => {
 };
 
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
-export const getAllAuctionsWithEpisodeCount = async ({
+export const getAuctionCardList = async ({
   order,
   pageParam
 }: {

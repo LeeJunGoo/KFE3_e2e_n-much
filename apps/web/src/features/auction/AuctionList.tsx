@@ -5,7 +5,7 @@
 import { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
-import { getAllAuctionsWithEpisodeCount } from 'src/entities/auction/api';
+import { getAuctionCardList } from 'src/entities/auction/api';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import type { AuctionRow } from 'src/shared/supabase/types';
@@ -13,7 +13,7 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 interface EpisodeCount {
   episodes: [{ count: number }];
 }
-console.log('first', Boolean(0));
+
 const AuctionList = ({ order }: { order: string }) => {
   const { ref, inView } = useInView();
   const {
@@ -26,7 +26,7 @@ const AuctionList = ({ order }: { order: string }) => {
   } = useInfiniteQuery({
     queryKey: ['auctions', order],
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
-      getAllAuctionsWithEpisodeCount({ order, pageParam }),
+      getAuctionCardList({ order, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
     staleTime: 5

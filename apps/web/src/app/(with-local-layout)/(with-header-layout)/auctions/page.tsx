@@ -1,7 +1,7 @@
 //TODO - 하단의 경매 현황 누르면 url 파라미터로 end_time을 넘기도록 해야 함
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { getAllAuctionsWithEpisodeCount } from 'src/entities/auction/api';
+import { getAuctionCardList } from 'src/entities/auction/api';
 import AuctionList from 'src/features/auction/AuctionList';
 import SelectOrder from 'src/features/auction/SelectOrder';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -12,7 +12,7 @@ interface PageProps {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
-//TODO - 파일로 분리하기
+//TODO - 파일로 분리하기 (KMH)
 interface EpisodeCount {
   episodes: [{ count: number }];
 }
@@ -21,20 +21,23 @@ interface EpisodeCount {
 const Page = async ({ searchParams }: PageProps) => {
   const queryClient = new QueryClient();
 
-  let { order, page } = await searchParams;
+  //TODO - page 파라미터 어디서 쓰는지 확인
+  // let { order, page } = await searchParams;
+  let { order } = await searchParams;
 
   if (!order) {
     order = 'end_date';
   }
 
-  if (!page) {
-    page = '0';
-  }
+  //TODO - page 파라미터 어디서 쓰는지 확인
+  // if (!page) {
+  //   page = '0';
+  // }
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ['auctions', order],
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
-      getAllAuctionsWithEpisodeCount({ order, pageParam }),
+      getAuctionCardList({ order, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId
   });
