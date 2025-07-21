@@ -74,8 +74,8 @@ const MainPage = async () => {
             <LatestListSection />
           </Suspense>
         </AuctionErrorBoundary>
+        <GoTopButton />
       </PageContainer>
-      <GoTopButton />
     </>
   );
 };

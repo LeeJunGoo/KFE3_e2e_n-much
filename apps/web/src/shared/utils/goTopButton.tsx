@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { FaArrowCircleUp } from 'react-icons/fa';
+import { IoIosArrowUp } from 'react-icons/io';
 
 const SCROLL_THRESHOLD = 200;
 
@@ -32,14 +32,14 @@ const GoTopButton = () => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-3 left-0 right-3 z-50">
-      <div className="relative m-auto max-w-[1320px]">
+    <div className="bottom-15 fixed left-0 right-2 z-50">
+      <div className="relative m-auto max-w-2xl">
         <button
           onClick={onClickToTop}
           aria-label="최상단으로 이동"
-          className="absolute bottom-3 right-3 z-[999] transition-opacity hover:opacity-80 lg:bottom-14 lg:right-5"
+          className="absolute bottom-5 right-2 z-[999] overflow-hidden transition-opacity hover:opacity-80"
         >
-          <FaArrowCircleUp size={40} className="text-(--color-accent) rounded-full bg-white" />
+          <IoIosArrowUp className="bg-(--color-accent) size-8 rounded-full p-1 text-white" />
         </button>
       </div>
     </div>
