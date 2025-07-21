@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
-import { useTimer } from 'src/entities/auction/hooks/useCountDown';
+import { IoTime } from 'react-icons/io5';
+import { useTimer } from 'src/entities/auction/hooks/useTimer';
 import { type AuctionTimerStatus } from 'src/entities/auction/types';
+import AuctionTimer from 'src/features/auction/shared/AuctionTimer';
 import { type AuctionRow } from 'src/shared/supabase/types';
-import AuctionTimer from './shared/AuctionTimer';
 
 const AuctionTimerDynamic = ({ endDate }: { endDate: AuctionRow['end_date'] }) => {
   const { days, hours, minutes, seconds } = useTimer({ endDate });
@@ -23,7 +23,10 @@ const AuctionTimerDynamic = ({ endDate }: { endDate: AuctionRow['end_date'] }) =
 
   return (
     <>
-      <AuctionTimer remainTime={formattedTime} status={status} />
+      <AuctionTimer remainTime={formattedTime} status={status}>
+        <IoTime />
+        <span>남은 시간:</span>
+      </AuctionTimer>
     </>
   );
 };

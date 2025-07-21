@@ -37,10 +37,14 @@ export const useTimer = ({ endDate, delay = DEFAULT_TIMER_DELAY, onCompleted }: 
 
     intervalRef.current = setInterval(() => {
       const newRemainingTime = calculateRemainingTime();
+
+      //ANCHOR - 타이머 종료
       if (newRemainingTime <= 0 && intervalRef.current) {
         onCompleted?.();
         clearInterval(intervalRef.current);
       }
+
+      //ANCHOR - 타이머 작동
       setRemainingTime(newRemainingTime);
     }, delay);
 

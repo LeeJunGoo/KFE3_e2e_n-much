@@ -1,4 +1,5 @@
 import { Card } from '@repo/ui/components/ui/card';
+import { FaMapPin } from 'react-icons/fa';
 import { getSellerAuctionCount } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
 import UserAvatar from 'src/shared/ui/BaseAvatar';
@@ -12,10 +13,14 @@ const SellerInfoSection = async ({ auctionInfo }: { auctionInfo: AuctionInfoWith
       <div className="mb-4 flex items-center gap-2">
         <UserAvatar src={auctionInfo.company_image!} alt={auctionInfo.business_name!} size="sm" />
         <div>
-          <h3 className="font-sm text-(--color-text-base) text-sm">{auctionInfo.business_name}</h3>
-          <p className="text-(--color-warm-gray) text-sm">{auctionInfo.road_address}</p>
+          <h3 className="text-(--color-text-base)">{auctionInfo.business_name}</h3>
+          <div className="text-(--color-warm-gray) text-sm">
+            <span>{auctionInfo.road_address}</span>&nbsp;
+            <span>{auctionInfo.detail_address}</span>
+          </div>
         </div>
       </div>
+      <div className="flex items-start gap-3"></div>
       <div className="text-(--color-warm-gray) flex text-sm">
         <div className="flex-1">
           <p>총 경매</p>
