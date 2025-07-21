@@ -1,42 +1,27 @@
-//NOTE - 마감 임박: 1일 (KMH)
-//FIXME - 경매 상태 정하기 (KMH)
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
-import { differenceInHours, setDefaultOptions } from 'date-fns';
+import { setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TZDate } from 'react-day-picker';
 import { FaHeart } from 'react-icons/fa';
 import { FaBookOpen } from 'react-icons/fa6';
 import noAuctionImage from 'src/assets/images/noAuctionImage.png';
-import { formatNumber } from 'src/shared/utils/formatNumber';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 
+//TODO - 파일로 분리하기 (KMH)
 interface AuctionCardProp {
   auction_id: string;
   imageSrc: string | undefined;
   title: string;
-  currentPoint: number;
   episodeCount: number;
   endDate: string;
   favorites: number;
 }
 
-const AuctionCard = ({
-  auction_id,
-  imageSrc,
-  title,
-  endDate,
-  favorites,
-  episodeCount,
-  currentPoint
-}: AuctionCardProp) => {
+const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeCount }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
-  const now = new TZDate(new Date(), 'Asia/Seoul');
-  const auctionTime = new TZDate(endDate, 'Asia/Seoul');
-  const diffDay = differenceInHours(now, auctionTime);
   const { status, remainTime } = formatRemainingTime(endDate);
 
   return (
@@ -66,10 +51,6 @@ const AuctionCard = ({
         </div>
         <div className="p-2">
           <h3 className="mb-1.5 overflow-hidden text-ellipsis text-sm font-medium text-[#1F1F25]">{title}</h3>
-          <div className="text-(--color-warm-gray) mb-2 flex items-center justify-between text-xs">
-            {/* <address className="max-w-[65%] truncate">{address} </address> */}
-            <span className="text-(--color-accent) font-semibold">{formatNumber(currentPoint)}&nbsp;P</span>
-          </div>
           <div className="text-(--color-warm-gray) flex items-center justify-between text-xs">
             <div className="flex items-center">
               <FaHeart color="#D84A5F" className="mr-1" />

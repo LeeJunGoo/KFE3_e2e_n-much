@@ -44,11 +44,13 @@ const AuctionList = ({ order }: AuctionListProps) => {
     }
   }, [fetchNextPage, inView]);
 
+  //TODO - 에러 발생을 이미지로 표시하기 (KMH)
   if (isError) {
     console.error(error);
     return <p>에러 발생</p>;
   }
 
+  //TODO - 스켈레톤 UJI 사용하기 (KMH)
   if (isLoading) {
     return <p>로딩중...</p>;
   }
@@ -60,13 +62,7 @@ const AuctionList = ({ order }: AuctionListProps) => {
         {fetchedAuctions &&
           fetchedAuctions.pages.map((page) =>
             page.data.map((auction: AuctionRow & EpisodeCount) => {
-              const {
-                auction_id: auctionId,
-                title,
-                current_point: currentPoint,
-                end_date: endDate,
-                episodes
-              } = auction;
+              const { auction_id: auctionId, title, end_date: endDate, episodes } = auction;
               let { image_urls: imageUrls, favorites } = auction;
 
               if (!imageUrls) {
@@ -83,7 +79,6 @@ const AuctionList = ({ order }: AuctionListProps) => {
                   auction_id={auctionId}
                   imageSrc={imageUrls[0]}
                   title={title}
-                  currentPoint={currentPoint}
                   endDate={endDate}
                   episodeCount={episodes[0]['count']}
                   favorites={favorites.length}
