@@ -45,7 +45,7 @@ const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
   return (
     <PageContainer>
       <div className="mb-4 flex w-full justify-between">
-        <p className="text-lg font-semibold text-[#1F1F25]">경매 리스트</p>
+        <p className="text-foreground text-lg font-semibold">경매 리스트</p>
         <SelectOrder order={order} />
       </div>
       <HydrationBoundary state={dehydrate(queryClient)}>
