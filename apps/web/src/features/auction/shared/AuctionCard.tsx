@@ -3,7 +3,7 @@
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
-import { differenceInHours, formatDistanceToNow, setDefaultOptions } from 'date-fns';
+import { differenceInHours, setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';

@@ -23,7 +23,7 @@ interface EpisodeCount {
 const AuctionList = ({ order }: AuctionListProps) => {
   const { ref, inView } = useInView();
   const {
-    data: auctions,
+    data: fetchedAuctions,
     isError,
     error,
     isLoading,
@@ -55,10 +55,10 @@ const AuctionList = ({ order }: AuctionListProps) => {
 
   return (
     <div>
-      <h3 className="pb-2 pt-1 text-sm">{`총 ${auctions ? auctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
+      <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
       <ul className="grid grid-cols-2 gap-3">
-        {auctions &&
-          auctions.pages.map((page) =>
+        {fetchedAuctions &&
+          fetchedAuctions.pages.map((page) =>
             page.data.map((auction: AuctionRow & EpisodeCount) => {
               const {
                 auction_id: auctionId,
@@ -72,6 +72,7 @@ const AuctionList = ({ order }: AuctionListProps) => {
               if (!imageUrls) {
                 imageUrls = [];
               }
+
               if (!favorites) {
                 favorites = [];
               }
