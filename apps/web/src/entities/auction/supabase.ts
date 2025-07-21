@@ -128,45 +128,31 @@ export const deleteAuction = async (auctionId: string | undefined) => {
   return data;
 };
 
-//NOTE - 판매자의 총 경매 수 및 현재 진행 중인 갱며 수
-export const selectSellerAuctionCount = async (sellerId: string) => {
-  const { count: totalCount, error: totalError } = await supabase
-    .from('auctions')
-    .select('*', { count: 'exact', head: true })
-    .eq('seller_id', sellerId);
+//ANCHOR - 판매자의 총 경매 수 및 현재 진행 중인 갱며 수
+export const selectSellerAuctionCount = async (sellerId: AuctionRow['user_id']) => {
+  // 두 개의 쿼리를 Promise.all을 사용해 병렬로 실행하여 성능을 개선할 수 있습니다.
+  const [totalResult, activeResult] = await Promise.all([
+    supabase.from('auctions').select('*', { count: 'exact', head: true }).eq('user_id', sellerId),
+    supabase.from('auctions').select('*', { count: 'exact', head: true }).eq('user_id', sellerId).eq('status', 'OPEN')
+  ]);
 
-  const { count: activeCount, error: activeError } = await supabase
-    .from('auctions')
-    .select('*', { count: 'exact', head: true })
-    .eq('seller_id', sellerId)
-    .eq('status', 'OPEN');
+  const { count: totalCount, error: totalError } = totalResult;
+  const { count: activeCount, error: activeError } = activeResult;
 
   if (totalError) {
-    console.log('🚀 ~ getSellerAuctionCount ~ totalError:', totalError.message);
-    throw new Error('DB: 경매자의 총 경매 수를 불러오는 과정에서 Error 발생');
+    console.error('🚀 ~ selectSellerAuctionCount ~ totalError:', totalError);
+    throw new Error();
   }
+
   if (activeError) {
-    console.log('🚀 ~ getSellerAuctionCount ~ activeError:', activeError.message);
-    throw new Error('DB: 경매자의 현재 진행중인 경매 수를 불러오는 과정에서 Error 발생');
+    console.error('🚀 ~ selectSellerAuctionCount ~ activeError:', activeError);
+    throw new Error();
   }
 
   return {
     totalAuctions: totalCount || 0,
     activeAuctions: activeCount || 0
   };
-};
-
-export const getAllAuctionsCount = async () => {
-  const { data, error } = await supabase.from('auctions').select('count').eq('status', 'OPEN').maybeSingle();
-
-  if (error) {
-    console.error(error);
-    throw new Error('DB: 경매의 총 갯수 가져오기 에러');
-  }
-
-  if (!data) return 0;
-
-  return data.count;
 };
 
 //ANCHOR - 경매 데이터 마감 임박, 인기순, 최신순(메인 페이지)

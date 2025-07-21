@@ -18,12 +18,13 @@ const AuctionDetailInfo = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddres
             {auctionStatus}
           </BaseBadge>
         </div>
-        <p className="text-(--color-warm-gray) mb-3 text-sm">{auctionInfo.description}</p>
-        <AuctionTimerDynamic endDate={auctionInfo.end_date} />
-
-        <div className="mb-4">
-          <p className="text-(--color-warm-gray) text-sm">현재 최고 입찰가</p>
-          <p className="text-(--color-text-base) text-xl font-bold">{auctionInfo.current_point.toLocaleString()} P</p>
+        <div className="space-y-2">
+          <p className="text-(--color-warm-gray) text-sm">{auctionInfo.description}</p>
+          <AuctionTimerDynamic endDate={auctionInfo.end_date} />
+          <div className="mb-4">
+            <p className="text-(--color-warm-gray) text-sm">현재 최고 입찰가</p>
+            <p className="text-(--color-text-base) text-xl font-bold">{auctionInfo.current_point.toLocaleString()} P</p>
+          </div>
         </div>
         {/* //FIXME - Seller일 경우만 */}
         <div className="flex space-x-3">

@@ -1,10 +1,10 @@
 import { Card } from '@repo/ui/components/ui/card';
+import { getSellerAuctionCount } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
 import UserAvatar from 'src/shared/ui/BaseAvatar';
 
 const SellerInfoSection = async ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
-  //FIXME - 경매자의 총 경매 수 및 현재 진행중인 경매 수
-  // const { totalAuctions, activeAuctions } = await fetchSellerAuctionCount(auctionInfo.user_id);
+  const { totalAuctions, activeAuctions } = await getSellerAuctionCount(auctionInfo.user_id);
 
   return (
     <Card className="mb-4 p-5 shadow-sm">
@@ -19,11 +19,11 @@ const SellerInfoSection = async ({ auctionInfo }: { auctionInfo: AuctionInfoWith
       <div className="text-(--color-warm-gray) flex text-sm">
         <div className="flex-1">
           <p>총 경매</p>
-          {/* <p className="text-(--color-text-base) font-medium">{totalAuctions}개</p> */}
+          <p className="text-(--color-text-base) font-medium">{totalAuctions}개</p>
         </div>
         <div className="flex-1">
           <p>진행중인 경매</p>
-          {/* <p className="text-(--color-text-base) font-medium">{activeAuctions}개</p> */}
+          <p className="text-(--color-text-base) font-medium">{activeAuctions}개</p>
         </div>
       </div>
     </Card>

@@ -14,8 +14,6 @@ type AddressInfoType = Omit<AddressRow, 'created_at' | 'is_default' | 'user_id'>
 
 export type AuctionInfoWithAddressType = AuctionInfoType & AddressInfoType;
 
-export type AuctionTimerStatus = 'ongoing' | 'urgent' | 'ended';
-
 // export type BuyerInfoType = {
 //   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
 // };
@@ -24,13 +22,9 @@ export type AuctionTimerStatus = 'ongoing' | 'urgent' | 'ended';
 
 // export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
 
-
 export type SellerAuctionCountType = {
-  status: string;
-  data: {
-    totalAuctions: number;
-    activeAuctions: number;
-  };
+  totalAuctions: number;
+  activeAuctions: number;
 };
 
 export type SortedAuctionItemType = AuctionRow & {
@@ -92,4 +86,3 @@ export interface AuctionFormProps {
 //   data: SortedAuctionItemType[];
 //   status: string;
 // };
-

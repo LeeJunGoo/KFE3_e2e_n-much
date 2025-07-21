@@ -36,7 +36,6 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
       <div className="-translate-y-14 px-4">
         {/* 경매 상품 정보 */}
         <AuctionDetailInfo auctionInfo={auctionInfo} />
-
         {/* 판매자 정보 */}
         <SellerInfoSection auctionInfo={auctionInfo} />
         {/* 최고 입찰자 정보 */}
