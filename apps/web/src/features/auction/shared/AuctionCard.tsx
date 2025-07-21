@@ -26,7 +26,7 @@ const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeC
   const { status, remainTime } = formatRemainingTime(endDate);
 
   return (
-    <li className="!rounded-button overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]">
+    <li className="rounded-button hover:scale-98 active:scale-96 overflow-hidden rounded-xl bg-white shadow-sm transition-transform">
       <Link href={`/auctions/${auction_id}`}>
         <div className="relative">
           <div className="relative h-40 w-full">
@@ -36,7 +36,7 @@ const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeC
                 fill
                 alt={`${title} 이미지`}
                 className="object-cover"
-                sizes="(min-width: 768px) 400px, 100vw"
+                sizes="(min-width: 768px) 400px, 100vw" //TODO - 이것도 고쳐야하는지 물어보기 (KMH)
               />
             ) : (
               <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
@@ -44,14 +44,14 @@ const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeC
           </div>
           <Badge
             className={`absolute bottom-2 right-2 ${
-              status === 'urgent' ? 'bg-[#D84A5F] hover:bg-[#D84A5F]' : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
+              status === 'urgent' ? 'bg-(--color-red)' : 'bg-(--color-accent)'
             } px-2 py-1 font-normal text-white`}
           >
             {remainTime}
           </Badge>
         </div>
         <div className="p-2">
-          <h3 className="mb-1.5 overflow-hidden text-ellipsis text-sm font-medium text-[#1F1F25]">{title}</h3>
+          <h3 className="text-(--color-text-base) mb-1.5 overflow-hidden text-ellipsis text-sm font-medium">{title}</h3>
           <div className="text-(--color-warm-gray) flex items-center justify-between text-xs">
             <div className="flex items-center">
               <FaHeart color="#D84A5F" className="mr-1" />
