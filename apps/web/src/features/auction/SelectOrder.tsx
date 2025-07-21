@@ -18,7 +18,7 @@ interface SelectOrderProp {
 
 const SelectOrder = ({ order }: SelectOrderProp) => {
   const router = useRouter();
-
+  //TODO - 서영님한테 물어보기 w-full md:w-44하니까 레이아웃 이상해짐 (KMH)
   return (
     <Select
       onValueChange={(changedOrder) =>
@@ -29,6 +29,7 @@ const SelectOrder = ({ order }: SelectOrderProp) => {
       <SelectTrigger className="w-44">
         <SelectValue placeholder="정렬 순서 선택" />
       </SelectTrigger>
+
       <SelectContent>
         <SelectGroup>
           <SelectLabel>정렬 순서</SelectLabel>
