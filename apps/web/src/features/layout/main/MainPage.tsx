@@ -6,6 +6,7 @@ import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import MainBanner from 'src/features/layout/main/components/MainBanner';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import PageContainer from 'src/shared/ui/PageContainer';
+import GoTopButton from 'src/shared/utils/goTopButton';
 
 const MainPage = async () => {
   return (
@@ -74,6 +75,7 @@ const MainPage = async () => {
           </Suspense>
         </AuctionErrorBoundary>
       </PageContainer>
+      <GoTopButton />
     </>
   );
 };
