@@ -10,11 +10,17 @@ import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
+//TODO - 파일로 분리하기 (KMH)
+interface AuctionListProps {
+  order: string;
+}
+
+//TODO - 파일로 분리하기 (KMH)
 interface EpisodeCount {
   episodes: [{ count: number }];
 }
 
-const AuctionList = ({ order }: { order: string }) => {
+const AuctionList = ({ order }: AuctionListProps) => {
   const { ref, inView } = useInView();
   const {
     data: auctions,

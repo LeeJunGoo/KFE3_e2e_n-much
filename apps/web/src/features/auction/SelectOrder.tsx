@@ -11,7 +11,7 @@ import {
 } from '@repo/ui/components/ui/select';
 import { useRouter } from 'next/navigation';
 
-//TODO - 파일로 분리하기
+//TODO - 파일로 분리하기 (KMH)
 interface SelectOrderProp {
   order: string;
 }
@@ -26,7 +26,7 @@ const SelectOrder = ({ order }: SelectOrderProp) => {
       }
       value={order}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-44">
         <SelectValue placeholder="정렬 순서 선택" />
       </SelectTrigger>
       <SelectContent>

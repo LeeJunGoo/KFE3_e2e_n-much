@@ -1,6 +1,6 @@
-//NOTE - 마감 임박: 1일
-//FIXME - 이미지 없음에 기본 이미지 넣기
-//FIXME - 경매 상태 정하기
+//NOTE - 마감 임박: 1일 (KMH)
+//FIXME - 이미지 없음에 기본 이미지 넣기 (KMH)
+//FIXME - 경매 상태 정하기 (KMH)
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
