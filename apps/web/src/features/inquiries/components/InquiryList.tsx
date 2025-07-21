@@ -1,4 +1,4 @@
-import InquiryListItem from 'src/features/user/mypage/components/inquiries/components/InquiryListItem';
+import InquiryListItem from 'src/features/inquiries/components/InquiryListItem';
 
 const InquiryList = () => {
   return (
