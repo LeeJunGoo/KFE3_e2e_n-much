@@ -1,7 +1,7 @@
 import { decode } from 'base64-arraybuffer';
+import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
-import { createClient } from '../../shared/supabase/client/client';
-import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from '../../shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -25,7 +25,7 @@ export const selectAuctionInfo = async (auction_id: string): Promise<AuctionRow>
     console.error('🚀 ~ getAuction ~ getAuction:', error.message);
     throw new Error('DB: 특정 경매 불러오기 에러');
   }
-
+  //NOTE - 준구님이 고칠 예정 (KMH)
   return data;
 };
 
@@ -37,96 +37,92 @@ export const selectAuctionDefaultAddress = async (userId: string): Promise<UserR
     console.error('🚀 ~ selectAuctionDefaultAddress:', error.message);
     throw new Error('DB: 특정 상품 주소 정보 불러오기 에러');
   }
-
+  //NOTE - 준구님이 고칠 예정 (KMH)
   return data;
 };
 
-//NOTE - 에피소드 등록 페이지: 특정 상품 정보 및 판매자 정보
-export const selectAuctionInfoForEpisode = async (auctionId: string) => {
-  const { data, error } = await supabase
-    .from('auctions')
-    .select(
-      `
-      *,
-    users:user_id (
-        id,       
-        nick_name,
-        address_id
-      )
-    `
-    )
-    .eq('auction_id', auctionId)
-    .maybeSingle();
+//ANCHOR - 에피소드 등록 페이지: 특정 상품 정보 및 업체 정보
+export const selectAuctionSummaryInfoWithAddress = async (auctionId: string) => {
+  const { data, error } = await supabase.rpc('get_auction_summary_with_address', {
+    auction_id_param: auctionId
+  });
 
   if (error) {
-    console.error('🚀 ~ getAuctionWithSellerInfo:', error.message);
-    throw new Error('DB: 에피소드에 대한 특정 경매 정보 불러오기 에러');
-  }
-
-  return data;
-};
-
-//NOTE - 걍메 싱세 페이지: 특정 상품 정보 및 판매자 정보
-export const selectAuctionWithSellerInfo = async (auctionId: string) => {
-  const { data, error } = await supabase
-    .from('auctions')
-    .select(
-      `
-      *,
-    users:user_id (
-        id,       
-        nick_name,
-        address_id
-      )
-    `
-    )
-    .eq('auction_id', auctionId)
-    .maybeSingle();
-
-  if (error) {
-    console.error('🚀 ~ getAuctionWithSellerInfo:', error);
+    console.error('🚀 ~ selectAuctionSummaryInfoWithAddress:', error);
     throw new Error();
   }
 
-  return data;
+  return data[0];
+};
+
+//ANCHOR - 경매 싱세 페이지: 특정 상품 정보 및 판매자 정보
+export const selectAuctionInfoWithAddress = async (auctionId: string) => {
+  const { data, error } = await supabase.rpc('get_auction_detail_with_address', {
+    auction_id_param: auctionId
+  });
+
+  if (error) {
+    console.error('🚀 ~ selectAuctionInfoWithAddress:', error);
+    throw new Error();
+  }
+
+  return data[0];
 };
 
 //NOTE - 경매 물품 추가
-export const addAuction = async (auctionData: AuctionInsert) => {
-  const { data, error } = await supabase.from('auctions').insert([auctionData]).select().single();
+export const insertAuction = async (auctionFormData: AuctionInsert | undefined) => {
+  if (!auctionFormData) {
+    throw new Error('DB: 경매 삽입 에러(auctionFormData가 없습니다.)');
+  }
+
+  const { data, error } = await supabase.from('auctions').insert([auctionFormData]).select().single();
 
   if (error) {
-    console.log('🚀 ~ addAuction ~ error:', error.message);
-    throw new Error('DB: 경매 추가 에러');
+    console.error('addAuction', error.message);
+    throw new Error('DB: 경매 삽입 에러');
   }
 
   return data;
 };
 
 //NOTE -  경매 물품 수정
-export const updateAuction = async (auction_id: string | undefined, editData: AuctionUpdate) => {
-  if (!auction_id) {
+export const updateAuction = async (auctionId: string | undefined, auctionFormData: AuctionUpdate | undefined) => {
+  if (!auctionId && !auctionFormData) {
+    throw new Error('DB: 경매 수정 에러(auctionId와 auctionFormData가 없습니다.)');
+  }
+
+  if (!auctionId) {
     throw new Error('DB: 경매 수정 에러(auctionId가 없습니다.)');
   }
+
+  if (!auctionFormData) {
+    throw new Error('DB: 경매 수정 에러(auctionFormData가 없습니다.)');
+  }
+
   const { data, error } = await supabase
     .from('auctions')
-    .update({ ...editData })
-    .eq('auction_id', auction_id)
-    .select();
+    .update(auctionFormData)
+    .eq('auction_id', auctionId)
+    .select()
+    .single();
 
   if (error) {
-    console.log('🚀 ~ updateAuction ~ updateAuction:', error.message);
+    console.error('updateAuction', error);
     throw new Error('DB: 경매 수정 에러');
   }
   return data;
 };
 
 //NOTE - 경매 물품 삭제
-export const deleteAuction = async (auction_id: string) => {
-  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auction_id).select();
+export const deleteAuction = async (auctionId: string | undefined) => {
+  if (!auctionId) {
+    throw new Error('DB: 경매 삭제 에러(auctionId가 없습니다.)');
+  }
+
+  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auctionId).select().single();
 
   if (error) {
-    console.log('🚀 ~ deleteAuction ~ deleteAuction:', error.message);
+    console.error('deleteAuction', error);
     throw new Error('DB: 경매 삭제 에러');
   }
   return data;
@@ -253,22 +249,80 @@ export async function getSellerAuctions(seller_id: string) {
   return data;
 }
 
-export async function uploadImage(imageData: string) {
+//TODO - webp로 최적화하기 (KMH)
+export const uploadImageToBucket = async (imageData: string | undefined) => {
+  if (!imageData) {
+    throw new Error('BUCKET: 이미지 업로드 에러(imageData가 없습니다.)');
+  }
+
   const base64 = imageData.split(',')[1];
+
   if (!base64) {
-    throw new Error('업로드할 이미지를 잘못 선택하였습니다.');
+    throw new Error('BUCKET: 업로드할 이미지 데이터가 base64가 아닙니다.');
   }
 
   const { data, error } = await supabase.storage
-    .from('vidding')
-    .upload(`auctions_images/${uuidv4()}.png`, decode(base64), {
+    .from('auction-images')
+    .upload(`images/${uuidv4()}.png`, decode(base64), {
       contentType: 'image/png'
     });
 
   if (error) {
-    console.log(error);
-    throw new Error('이미지 업로드 에러');
+    console.error('uploadImage', error);
+    throw new Error('BUCKET: 이미지 업로드 에러');
   }
 
   return data;
-}
+};
+
+export const deleteImages = async (imageUrls: string[] | undefined) => {
+  if (!imageUrls) {
+    throw new Error('BUCKET: 이미지 삭제 에러(imageUrls가 배열이 아닙니다.');
+  }
+
+  if (imageUrls.length === 0) {
+    return;
+  }
+
+  const { error } = await supabase.storage.from('auction-images').remove([...imageUrls]);
+
+  if (error) {
+    console.error('deleteImage', error);
+    throw new Error('BUCKET: 이미지 삭제 에러.');
+  }
+};
+
+export const selectAuction = async (auctionId: string | undefined) => {
+  if (!auctionId) {
+    throw new Error('DB: 경매 불러오기 에러(auctionId가 없습니다.)');
+  }
+  const { data, error } = await supabase
+    .from('auctions')
+    .select('user_id, title, description, end_date, starting_point, current_point, max_point, image_urls, status')
+    .eq('auction_id', auctionId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('selectAuction', error);
+    throw new Error('DB: 경매 불러오기 에러');
+  }
+  return data;
+};
+
+export const selectAddressId = async (userId: string | undefined) => {
+  if (!userId) {
+    throw new Error('DB: 주소 불러오기 에러(userId가 없습니다.)');
+  }
+  const { data, error } = await supabase
+    .from('addresses')
+    .select('address_id')
+    .eq('user_id', userId)
+    .eq('is_default', true)
+    .maybeSingle();
+
+  if (error) {
+    console.error('selectAddressId', error);
+    throw new Error('DB: 주소 불러오기 에러');
+  }
+  return data;
+};

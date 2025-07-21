@@ -2,13 +2,13 @@ import Image from 'next/image';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import AuctionTimerStatic from 'src/features/auction/AuctionTimerStatic';
 import BaseCard from 'src/widgets/BaseCard';
-import type { AuctionInfoForEpisodeType } from 'src/entities/auction/types';
+import type { AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
 
-const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionInfoForEpisodeType }) => {
+const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummaryInfoWithAddressType }) => {
   const imageUrls = auctionInfo.image_urls;
   const auctionTitle = auctionInfo.title;
   const endDate = auctionInfo.end_date;
-  const auctionUser = auctionInfo.users;
+  const auctionUser = auctionInfo;
   const auctionImage = imageUrls && imageUrls.length > 0 ? imageUrls[0] : NotAuctionImage;
 
   return (
@@ -29,10 +29,7 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionInfoFor
           <div>
             <p className="font-medium">{auctionTitle}</p>
             <div className="flex items-center">
-              <address className="text-(--color-warm-gray) max-w-[45%] truncate text-sm">
-                {/* //FIXME - 테스트 필요 */}
-                {auctionUser.address_id}
-              </address>
+              <p className="text-(--color-warm-gray) max-w-[45%] truncate text-sm">{auctionUser.address_id}</p>
             </div>
           </div>
           <AuctionTimerStatic endDate={endDate} />

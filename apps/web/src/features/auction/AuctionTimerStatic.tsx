@@ -5,7 +5,7 @@ import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 const AuctionTimerStatic = ({ endDate }: { endDate: AuctionRow['end_date'] }) => {
   const { status, formattedTime } = formatRemainingTime(endDate);
 
-  return <AuctionTimer remainTime={formattedTime} status={status} className={'mb-3'} />;
+  return <AuctionTimer remainTime={formattedTime} status={status} />;
 };
 
 export default AuctionTimerStatic;
