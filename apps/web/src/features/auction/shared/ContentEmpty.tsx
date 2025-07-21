@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-import MascotImage from 'src/assets/images/mascot.webp';
+import MascotImage from 'src/assets/images/auctionDefault.png';
 import { twMerge } from 'tailwind-merge';
 
 type ContentEmpty = {

@@ -1,5 +1,5 @@
 import { FaChevronRight, FaGavel } from 'react-icons/fa6';
-import { formatYYYYMMDD } from 'src/shared/utils/formatToKoreanDateTime';
+import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import BaseCard from 'src/widgets/BaseCard';
 
 const MyEpisodeListItem = () => {
