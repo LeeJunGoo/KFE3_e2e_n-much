@@ -90,6 +90,7 @@ export const getAuctionCardList = async ({
   order: string | undefined;
   pageParam: number | undefined;
 }) => {
+  //NOTE - pageParam이 0인 경우, false로 나옴
   if (!order && pageParam === undefined) {
     throw new Error('getAllAuctionsWithEpisodeCount: order와 pageParam이 없습니다.');
   }
@@ -110,7 +111,6 @@ export const getAuctionCardList = async ({
   }
 
   const data = await res.json();
-  console.log('fetch', data);
   return data;
 };
 

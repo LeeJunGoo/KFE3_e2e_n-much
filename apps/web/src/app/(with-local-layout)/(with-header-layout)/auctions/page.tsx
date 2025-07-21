@@ -8,7 +8,7 @@ import PageContainer from 'src/shared/ui/PageContainer';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
 //TODO - 파일로 분리하기 (KMH)
-interface PageProps {
+interface CurrentAuctionsPage {
   searchParams: Promise<{ [key: string]: string | undefined }>;
 }
 
@@ -18,7 +18,7 @@ interface EpisodeCount {
 }
 
 //FIXME - Page 컴포넌트 이름 바꾸기
-const Page = async ({ searchParams }: PageProps) => {
+const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
   const queryClient = new QueryClient();
 
   //TODO - page 파라미터 어디서 쓰는지 확인
@@ -54,4 +54,4 @@ const Page = async ({ searchParams }: PageProps) => {
     </PageContainer>
   );
 };
-export default Page;
+export default CurrentAuctionsPage;
