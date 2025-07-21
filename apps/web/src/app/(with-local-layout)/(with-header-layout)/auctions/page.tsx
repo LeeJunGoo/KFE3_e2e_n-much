@@ -1,4 +1,5 @@
 //TODO - 하단의 경매 현황 누르면 url 파라미터로 end_date를 넘기도록 해야 함 (KMH)
+//TODO - 미들웨어 구현하기
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getAuctionCardList } from 'src/entities/auction/api';
@@ -26,11 +27,6 @@ const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
 
   //TODO - 미들웨어로 order가 없는 경우, end_date로 리다이렉트하기 (KMH)
   const selectedOrder = order || 'end_date';
-
-  //TODO - page 파라미터 어디서 쓰는지 확인 (KMH)
-  // if (!page) {
-  //   page = '0';
-  // }
 
   //TODO - 쿼리 키 객체로 만들어서 관리하기 (KMH)
   await queryClient.prefetchInfiniteQuery({

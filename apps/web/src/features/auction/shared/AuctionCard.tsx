@@ -20,6 +20,7 @@ interface AuctionCardProp {
   favorites: number;
 }
 
+//TODO - LINK prefetch 찾아보기 (KMH)
 const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeCount }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
   const { status, remainTime } = formatRemainingTime(endDate);
