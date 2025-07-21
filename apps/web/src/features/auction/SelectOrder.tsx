@@ -32,9 +32,9 @@ const SelectOrder = ({ order }: SelectOrderProp) => {
       <SelectContent>
         <SelectGroup>
           <SelectLabel>정렬 순서</SelectLabel>
-          <SelectItem value="end_date">마감 임박순</SelectItem>
-          <SelectItem value="favorites">인기순</SelectItem>
-          <SelectItem value="created_at">최신순</SelectItem>
+          <SelectItem value="end_date">곧 종료되는 경매</SelectItem>
+          <SelectItem value="favorites">인기 경매</SelectItem>
+          <SelectItem value="created_at">최신 경매</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
