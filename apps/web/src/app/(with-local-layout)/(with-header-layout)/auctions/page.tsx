@@ -1,4 +1,4 @@
-//TODO - 하단의 경매 현황 누르면 url 파라미터로 end_time을 넘기도록 해야 함
+//TODO - 하단의 경매 현황 누르면 url 파라미터로 end_date를 넘기도록 해야 함
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getAuctionCardList } from 'src/entities/auction/api';
@@ -24,10 +24,7 @@ const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
   // let { order, page } = await searchParams;
   let { order } = await searchParams;
 
-  //TODO - 컬럼명 상수화 생각해보기
-  if (!order) {
-    order = 'end_date';
-  }
+  const selectedOrder = order || 'end_date';
 
   //TODO - page 파라미터 어디서 쓰는지 확인
   // if (!page) {
@@ -47,10 +44,10 @@ const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
     <PageContainer>
       <div className="mb-4 flex w-full justify-between">
         <p className="text-foreground text-lg font-semibold">경매 리스트</p>
-        <SelectOrder order={order} />
+        <SelectOrder order={selectedOrder} />
       </div>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <AuctionList order={order} />
+        <AuctionList order={selectedOrder} />
       </HydrationBoundary>
     </PageContainer>
   );
