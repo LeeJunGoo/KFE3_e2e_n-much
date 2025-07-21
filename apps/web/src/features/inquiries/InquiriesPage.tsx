@@ -1,6 +1,7 @@
-import InquiryList from 'src/features/user/mypage/components/inquiries/components/InquiryList';
+import InquiryList from 'src/features/inquiries/components/InquiryList';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
+
 const InquiriesPage = () => {
   return (
     <>

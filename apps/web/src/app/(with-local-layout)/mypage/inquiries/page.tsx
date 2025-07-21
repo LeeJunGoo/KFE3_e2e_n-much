@@ -1,4 +1,4 @@
-import InquiriesPage from 'src/features/user/mypage/components/inquiries/InquiriesPage';
+import InquiriesPage from 'src/features/inquiries/InquiriesPage';
 
 const Inquiries = () => {
   return (
