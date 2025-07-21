@@ -20,12 +20,9 @@ interface EpisodeCount {
 
 const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPage) => {
   const queryClient = new QueryClient();
-
-  //TODO - page 파라미터 어디서 쓰는지 확인
-  // let { order, page } = await searchParams;
   const { order } = await searchParams;
 
-  //TODO - 미들웨어로 order가 없는 경우, end_date로 리다이렉트하기 (KMH)
+  //NOTE - 미들웨어에서 order가 없는 경우, order=end_date로 리다이렉트함 (KNH)
   const selectedOrder = order || 'end_date';
 
   //TODO - 쿼리 키 객체로 만들어서 관리하기 (KMH)
