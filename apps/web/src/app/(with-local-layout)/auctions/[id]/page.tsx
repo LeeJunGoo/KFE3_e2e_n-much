@@ -5,7 +5,7 @@ import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import SellerInfoSection from 'src/features/auction/SellerInfoSection';
 import PageContainer from 'src/shared/ui/PageContainer';
 
-const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+const AuctionDetail = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
 
   // NOTE - 경매 상품 및 경매 업체 정보
@@ -66,4 +66,4 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
   );
 };
 
-export default AuctionDetailPage;
+export default AuctionDetail;
