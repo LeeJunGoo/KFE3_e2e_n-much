@@ -2,6 +2,7 @@ import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import AuctionDetailCarousel from 'src/features/auction/AuctionDetailCarousel';
 import AuctionDetailInfo from 'src/features/auction/AuctionDetailInfo';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
+import BidderRankingInfoSection from 'src/features/auction/BidderRankingInfoSection';
 import SellerInfoSection from 'src/features/auction/SellerInfoSection';
 import PageContainer from 'src/shared/ui/PageContainer';
 
@@ -38,24 +39,8 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
         <AuctionDetailInfo auctionInfo={auctionInfo} />
         {/* 판매자 정보 */}
         <SellerInfoSection auctionInfo={auctionInfo} />
-        {/* 최고 입찰자 정보 */}
-        {/* <AuctionErrorBoundary
-            fallback={
-              <div className="flex h-[200px] items-center justify-center border-2">
-                <h3 className="text-[22px]">⚠️ 최고 입찰자 정보 섹션에서 오류가 발생했습니다.</h3>
-              </div>
-            }
-          >
-            <Suspense
-              fallback={
-                <div className="flex h-[200px] items-center justify-center">
-                  <span className="animate-pulse text-lg text-gray-500">{'🚚 입찰자 정보를 불러오는 중입니다...'}</span>
-                </div>
-              }
-            >
-              <HighestBuyerInfoSection auctionId={auctionId} userInfo={userInfo} />
-            </Suspense>
-          </AuctionErrorBoundary> */}
+        {/* 입찰자 랭킹 정보 */}
+        <BidderRankingInfoSection auctionId={auctionId} />
         {/* 사연 섹션 */}
         {/* <EpisodeDetailSection auctionId={auctionId} userInfo={userInfo} sellerId={seller.seller_id} /> */}
       </div>

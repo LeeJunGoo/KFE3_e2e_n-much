@@ -10,6 +10,7 @@ import {
 import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionUpdate } from 'src/shared/supabase/types';
+import { selectBidderRanking } from 'src/entities/episode/supabase';
 
 type ParamsType = {
   params: Promise<{ id: string }>;
@@ -32,6 +33,8 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
       res = await selectAuctionSummaryInfoWithAddress(id);
     } else if (type === 'auction') {
       res = await selectAuctionInfoWithAddress(id);
+    } else if (type === 'ranking') {
+      res = await selectBidderRanking(id);
     }
 
     return NextResponse.json(res, { status: 200 });

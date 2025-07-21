@@ -130,7 +130,6 @@ export const deleteAuction = async (auctionId: string | undefined) => {
 
 //ANCHOR - 판매자의 총 경매 수 및 현재 진행 중인 갱며 수
 export const selectSellerAuctionCount = async (sellerId: AuctionRow['user_id']) => {
-  // 두 개의 쿼리를 Promise.all을 사용해 병렬로 실행하여 성능을 개선할 수 있습니다.
   const [totalResult, activeResult] = await Promise.all([
     supabase.from('auctions').select('*', { count: 'exact', head: true }).eq('user_id', sellerId),
     supabase.from('auctions').select('*', { count: 'exact', head: true }).eq('user_id', sellerId).eq('status', 'OPEN')

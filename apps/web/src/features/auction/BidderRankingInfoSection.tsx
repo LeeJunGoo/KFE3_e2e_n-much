@@ -1,23 +1,13 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { FaRegCommentDots } from 'react-icons/fa6';
-import { fetchHighestBidder } from 'src/entities/auction/api';
-import UserAvatar from 'src/shared/ui/BaseAvatar';
-import { formatNumber } from 'src/shared/utils/formatNumber';
-import { formatToKoreanDateTime } from 'src/shared/utils/formatToKoreanDateTime';
-import { maskEmail } from 'src/shared/utils/maskEmail';
-import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+import { getBidderRanking } from 'src/entities/auction/api';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const HighestBuyerInfoSection = async ({
-  auctionId,
-  userInfo
-}: {
-  auctionId: AuctionRow['auction_id'];
-  userInfo: UserInfoType;
-}) => {
-  // NOTE - 최고 입찰자의 정보
-  const highestBuyer = await fetchHighestBidder(auctionId);
-  const userNickname = highestBuyer?.buyer.nickname ?? userInfo.social_name;
+const BidderRankingInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+  const highestBuyer = await getBidderRanking(auctionId);
+  const userNickname = '닉네임';
+  // const userNickname = highestBuyer?.buyer.nickname ?? userInfo.social_name;
+  // const date = formatYYYYMMDD();
 
   return (
     <Card className="mb-4 p-5 shadow-sm">
@@ -25,16 +15,16 @@ const HighestBuyerInfoSection = async ({
       {highestBuyer ? (
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <UserAvatar src={highestBuyer.buyer.avatar!} alt={userNickname!} size="sm" />
+            {/* <UserAvatar src={highestBuyer.buyer.avatar!} alt={userNickname!} size="sm" /> */}
             <div>
               <div className="flex items-center gap-1">
                 <p className="text-(--color-text-base) text-sm font-medium">{userNickname}</p>
-                <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(highestBuyer.buyer.email)}&#41;</p>
+                {/* <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(highestBuyer.buyer.email)}&#41;</p> */}
               </div>
-              <p className="text-(--color-warm-gray) text-xs">{formatToKoreanDateTime(highestBuyer.bid_time)}</p>
+              {/* <p className="text-(--color-warm-gray) text-xs">{formatKoreanDate(highestBuyer.bid_time)}</p> */}
             </div>
           </div>
-          <p className="text-(--color-accent) font-bold">{formatNumber(highestBuyer.bid_point)} P</p>
+          {/* <p className="text-(--color-accent) font-bold">{formatNumber(highestBuyer.bid_point)} P</p> */}
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center gap-3 rounded-b-lg bg-slate-50 px-6 py-10 text-center">
@@ -49,4 +39,4 @@ const HighestBuyerInfoSection = async ({
   );
 };
 
-export default HighestBuyerInfoSection;
+export default BidderRankingInfoSection;

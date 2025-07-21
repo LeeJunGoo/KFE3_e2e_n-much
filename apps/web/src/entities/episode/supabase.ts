@@ -119,28 +119,29 @@ export async function deleteEpisode(episode_id: string) {
 }
 
 // NOTE - 최고 입찰자의 정보
-export const selectHighestBidder = async (auction_id: string) => {
+export const selectBidderRanking = async (auction_id: string) => {
   const { data, error } = await supabase
-    .from('episodes')
+    .from('ranking')
     .select(
       `
-      *,
-      buyer:buyer_id (
-        buyer_id,
-        nickname,
-        avatar,
+      rank_position,
+      bid_amount,
+      created_at,
+      users:user_id (
+        id,
+        nick_name,
+        user_avatar,
         email
       )
     `
     )
     .eq('auction_id', auction_id)
-    .order('bid_point', { ascending: false })
-    .limit(1)
+    .order('rank_position', { ascending: false })
     .maybeSingle();
 
   if (error) {
-    console.log('🚀 ~ getHighestBidder ~ error:', error.message);
-    throw new Error('DB: 최고 입찰자 불러오기 에러');
+    console.error('🚀 ~ getHighestBidder ~ error:', error);
+    throw new Error();
   }
 
   return data;
