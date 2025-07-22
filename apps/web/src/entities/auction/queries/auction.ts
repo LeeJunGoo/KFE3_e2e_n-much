@@ -1,7 +1,7 @@
 import { QueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
-import { getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
-import { auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import { getAddressId, getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
+import { addressIdKeys, auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
@@ -96,4 +96,15 @@ export const useGetAuctionListQuery = (order: string) => {
   });
 
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
+};
+
+export const prefetchedAddressId = async (loggedInUserId: string) => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: addressIdKeys.item(loggedInUserId),
+    queryFn: () => getAddressId(loggedInUserId)
+  });
+
+  return { queryClient };
 };
