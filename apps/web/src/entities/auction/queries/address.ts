@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAddressId } from 'src/entities/auction/api';
-import { addressIdKeys } from 'src/entities/auction/queries/query-key-factory';
+import { addressIdKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import type { AddressId } from 'src/entities/auction/types';
 
 export const useGetAddressIdQuery = (loggedInUserId: string | undefined) => {

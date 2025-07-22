@@ -1,5 +1,4 @@
 //TODO - 준구님 컨벤션에 맞추기 (KMH)
-
 import type {
   AuctionInfoWithAddressType,
   AuctionSummaryInfoWithAddressType,
@@ -95,17 +94,36 @@ export const fetchSellerAuctions = async () => {
 };
 
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
-export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { order: string; pageParam: number }) {
-  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count?order=${order}&page=${pageParam}`;
-  const data = await fetch(fetchUrl);
-  const result = await data.json();
+export const getAuctionCardList = async ({
+  order,
+  pageParam
+}: {
+  order: string | undefined;
+  pageParam: number | undefined;
+}) => {
+  //NOTE - pageParam이 0인 경우, false로 나옴
+  if (!order && pageParam === undefined) {
+    throw new Error('getAllAuctionsWithEpisodeCount: order와 pageParam이 없습니다.');
+  }
 
-  if (result.status === 'success') {
-    return result.data;
-  } else {
+  if (!order) {
+    throw new Error('getAllAuctionsWithEpisodeCount: order가 없습니다.');
+  }
+
+  if (pageParam === undefined) {
+    throw new Error('getAllAuctionsWithEpisodeCount: pageParam이 없습니다.');
+  }
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list?order=${order}&page=${pageParam}`
+  );
+  if (!res.ok) {
     throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
   }
-}
+
+  const data = await res.json();
+  return data;
+};
 
 export const getAuction = async (auctionId: string | undefined) => {
   if (!auctionId) {

@@ -6,6 +6,7 @@ export const LATEST_AUCTIONS_COUNT = 10;
 //NOTE - auctionForm에서 사용하는 tansTack query 키
 export const AUCTION_FORM_QUERY_KEY = 'auctionForm';
 export const ADDRESS_ID_QUERY_KEY = 'addressId';
+export const AUCTION_LIST_QUERY_KEY = 'auctionLIST';
 
 //NOTE - auctionForm의 zod 유효성 검사에 사용하는 상수 목록
 export const MIN_TITLE_LETTERS = 5; //NOTE - 제목의 최소 글자 수
@@ -25,3 +26,13 @@ export const TIME_UNIT_PADDING = 2;
 
 //ANCHOR - delay: 지연시간 상수
 export const DEFAULT_TIMER_DELAY = 1000;
+
+//NOTE - 경매 리스트에서 한 페이지당 가져오는 경매 수
+export const ITEM_PER_PAGE = 4;
+
+//NOTE - 날짜 및 시간에 관련된 상수 목록
+export const HOURS_OF_DAY = 24; //NOTE - 24시간
+export const KOR_TIME_ZONE = 'Asia/Seoul'; //NOTE - 한국 time zone
+export const UTC_TIME_ZONE = 'utc'; //NOTE - utc time zone
+
+export const AUCTION_LIST_SKELETON_LENGTH = 10;

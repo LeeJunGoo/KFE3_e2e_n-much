@@ -22,7 +22,7 @@ const FormTitle = ({ control, titleLabel, placeholder, maxTitleLength }: FormTit
       render={({ field }) => (
         <FormItem className="mb-8">
           <FormLabel className="flex gap-0.5">
-            <p className="text-black">{titleLabel}</p>
+            <p>{titleLabel}</p>
             <span className="text-(--color-red) translate-y-0.5">&#42;</span>
           </FormLabel>
           <div className="relative mt-2">

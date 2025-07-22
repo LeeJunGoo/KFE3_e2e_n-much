@@ -1,4 +1,5 @@
 import { decode } from 'base64-arraybuffer';
+import { ITEM_PER_PAGE } from 'src/entities/auction/constants';
 import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
@@ -130,6 +131,19 @@ export const selectSellerAuctionCount = async (sellerId: AuctionRow['user_id']) 
   };
 };
 
+export const selectAuctionsCount = async () => {
+  const { data, error } = await supabase.from('auctions').select('count').eq('status', 'OPEN').single();
+
+  if (error) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+
+  if (!data) return 0;
+
+  return data.count;
+};
+
 //ANCHOR - 경매 데이터 마감 임박, 인기순, 최신순(메인 페이지)
 export const selectAuctionsByMainPageCategory = async (orderParam: string, isAscending: boolean, count: number) => {
   const { data, error } = await supabase
@@ -147,22 +161,19 @@ export const selectAuctionsByMainPageCategory = async (orderParam: string, isAsc
   return data;
 };
 
-// 모든 경매와 경매의 사연 갯수를 불러오기
-export const getAllAuctionsWithEpisodeCountByOrder = async (
-  orderParam: string | null,
-  isAscending: boolean,
-  pageParam: number | null
-) => {
-  const itemsPerPage = 5;
-  const auctionsCount = await getAllAuctionsCount();
+//NOTE - //NOTE - 경매 현황의 경매 리스트 가져오기
+export const selectAuctionCardList = async (order: string | undefined, page: number | undefined) => {
+  const auctionsCount = await selectAuctionsCount();
 
-  if (!orderParam) {
-    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(순서 파라미터가 없습니다.)');
+  if (!order) {
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(order가 없습니다.)');
   }
 
-  if (!pageParam && pageParam !== 0) {
-    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(페이지 파라미터가 없습니다.)');
+  if (!page && page !== 0) {
+    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(page가 없습니다.)');
   }
+
+  const ascending = order === 'favorites' ? false : true;
 
   const { data, error } = await supabase
     .from('auctions')
@@ -171,16 +182,16 @@ export const getAllAuctionsWithEpisodeCountByOrder = async (
     *,episodes(count)
   `
     )
-    .order(orderParam, { ascending: isAscending })
+    .order(order, { ascending })
     .eq('status', 'OPEN')
-    .range(pageParam, pageParam + itemsPerPage);
+    .range(page, page + ITEM_PER_PAGE - 1);
 
   if (error) {
     console.error(error);
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
   }
 
-  const nextId = pageParam < auctionsCount - itemsPerPage ? pageParam + itemsPerPage + 1 : null;
+  const nextId = page < auctionsCount - ITEM_PER_PAGE ? page + ITEM_PER_PAGE + 1 : null;
 
   return { data, nextId };
 };

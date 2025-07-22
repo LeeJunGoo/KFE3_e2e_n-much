@@ -1,10 +1,9 @@
-import { QueryClient, useMutation, useQuery } from '@tanstack/react-query';
-import { getAuction, patchAuction, postAuction } from 'src/entities/auction/api';
-import { auctionFormKeys } from 'src/entities/auction/queries/query-key-factory';
-import type { FetchedAuction } from 'src/entities/auction/types';
+import { QueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
+import { getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
+import { auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
-
-const queryClient = new QueryClient();
 
 export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
   const {
@@ -23,6 +22,8 @@ export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
 };
 
 export const usePostAuctionQuery = (auctionId: string | undefined) => {
+  const queryClient = new QueryClient();
+
   const { mutateAsync: mutatePostAuction, isPending: isPostAuctionPending } = useMutation({
     mutationFn: (formData: AuctionInsert): Promise<AuctionRow> => postAuction(formData),
     onSuccess: () => {
@@ -37,6 +38,8 @@ export const usePostAuctionQuery = (auctionId: string | undefined) => {
 };
 
 export const usePatchAuctionQuery = (auctionId: string | undefined) => {
+  const queryClient = new QueryClient();
+
   const { mutateAsync: mutatePatchAuction, isPending: isPatchAuctionPending } = useMutation({
     mutationFn: (patchMutationParam: {
       auctionIdParam: string | undefined;
@@ -51,4 +54,46 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
     }
   });
   return { mutatePatchAuction, isPatchAuctionPending };
+};
+
+export const prefetchedAuctionList = async (order: string) => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchInfiniteQuery({
+    queryKey: auctionListKeys.order(order),
+    queryFn: ({
+      pageParam
+    }: {
+      pageParam: number;
+    }): Promise<{
+      data: (AuctionRow & EpisodeCount)[];
+      nextId: number;
+    }> => getAuctionCardList({ order, pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId
+  });
+
+  return { queryClient };
+};
+
+export const useGetAuctionListQuery = (order: string) => {
+  const { ref, inView } = useInView();
+  const {
+    data: fetchedAuctions,
+    isError,
+    error,
+    isPending,
+    isFetchingNextPage,
+    fetchNextPage
+  } = useInfiniteQuery({
+    queryKey: auctionListKeys.order(order),
+    queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
+      getAuctionCardList({ order, pageParam }),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
+    staleTime: 0,
+    enabled: Boolean(order) === true
+  });
+
+  return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
 };
