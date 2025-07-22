@@ -26,7 +26,7 @@ const AuctionList = ({ order }: AuctionListProps) => {
       getAuctionCardList({ order, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
-    staleTime: 5 //TODO - 생각해보기 (KMH)
+    staleTime: 0
   });
 
   useEffect(() => {
