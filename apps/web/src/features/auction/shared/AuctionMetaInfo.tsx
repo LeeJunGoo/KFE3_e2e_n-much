@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 type AuctionMetaInfoType = {
   favoritesCount: number;
-  episodesCount: number;
+  episodesCount: number | string;
   className?: string;
 };
 

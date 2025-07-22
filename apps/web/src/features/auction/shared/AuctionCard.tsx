@@ -6,13 +6,11 @@ import { setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaHeart } from 'react-icons/fa';
-import { FaBookOpen } from 'react-icons/fa6';
 import noAuctionImage from 'src/assets/images/noAuctionImage.png';
+import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 import type { AuctionCardProp } from 'src/entities/auction/types';
 
-//TODO - 준구님이랑 이미지와 좋아요 컴포넌트 공통으로 만들 수 있는지 의논하기 (KMH)
 const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeCount }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
   const { status, remainTime } = formatRemainingTime(endDate);
@@ -44,16 +42,11 @@ const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeC
         </div>
         <div className="p-2">
           <h3 className="text-(--color-text-base) mb-1.5 overflow-hidden text-ellipsis text-sm font-medium">{title}</h3>
-          <div className="text-(--color-warm-gray) flex items-center justify-between text-xs">
-            <div className="flex items-center">
-              <FaHeart className="text-(--color-red) mr-1" />
-              <span>{favorites}</span>
-            </div>
-            <div className="flex items-center">
-              <FaBookOpen className="mr-1" />
-              <span>{episodeCount}개의 스토리</span>
-            </div>
-          </div>
+          <AuctionMetaInfo
+            favoritesCount={favorites}
+            episodesCount={`${episodeCount}개의 스토리`}
+            className="justify-between"
+          />
         </div>
       </Link>
     </li>
