@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { FiRepeat } from 'react-icons/fi';
+import { useUpdateUserRole, useUserState } from 'src/entities/auth/stores/authStore';
 import { ROLE_CONFIG } from 'src/entities/user/mypage/main/constants';
 import AddressStatus from 'src/features/user/mypage/components/main/AddressStatus';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
@@ -9,22 +9,24 @@ import BaseBadge from 'src/shared/ui/BaseBadge';
 import PointDisplay from 'src/shared/ui/PointDisplay';
 import { formatKoreanFullDate } from 'src/shared/utils/formatKoreanDate';
 import BaseCard from 'src/widgets/BaseCard';
-import type { RoleType, UserMetadata } from 'src/entities/user/mypage/main/types';
 
-const MyPageUserProfile = ({ data }: UserMetadata) => {
-  const { name, email, avatar_url: avatarUrl } = data;
-  const role = 'buyer';
-  const [currentRole, setCurrentRole] = useState<RoleType>(role);
+const MyPageUserProfile = () => {
+  const user = useUserState();
+  const updateUserRole = useUpdateUserRole();
+
+  const { name, email, avatar_url: avatarUrl } = user?.user_metadata || {};
+  const currentRole = (user?.role || 'buyer') as keyof typeof ROLE_CONFIG;
 
   const currentConfig = ROLE_CONFIG[currentRole];
+  if (!currentConfig) return null;
+
   const roleType = currentConfig.display;
   const badgeVariant = currentConfig.variant;
 
   const handleRoleToggle = () => {
-    const config = ROLE_CONFIG[currentRole];
-    setCurrentRole(config.roleNext);
-
-    toast.success(`${config.roleNextToast}로 변경 되었습니다.`);
+    const newRole = ROLE_CONFIG[currentRole].roleNext;
+    updateUserRole(newRole);
+    toast.success(`${ROLE_CONFIG[currentRole].roleNextToast}로 변경되었습니다.`);
   };
 
   return (

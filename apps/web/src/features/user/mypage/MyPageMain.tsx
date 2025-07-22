@@ -1,6 +1,4 @@
 'use client';
-import { createClient } from '@supabase/supabase-js';
-import { useRouter } from 'next/navigation';
 import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/authStore';
 import LogoutButton from 'src/features/user/mypage/components/main/LogoutButton';
 import MyPageNavigation from 'src/features/user/mypage/components/main/MyPageNavigation';
@@ -21,7 +19,7 @@ const MyPageMain = () => {
   return (
     <PageContainer>
       <div>현재 role: {user?.role}</div>
-      <MyPageUserProfile data={user?.user_metadata} />
+      <MyPageUserProfile />
       <MyPageNavigation />
       <LogoutButton />
     </PageContainer>

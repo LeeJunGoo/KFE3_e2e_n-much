@@ -1,7 +1,8 @@
-import { selectUser } from 'src/entities/auth/supabase';
+import { selectUser, updateUserRole as changeUserRole } from 'src/entities/auth/supabase';
 import { create } from 'zustand';
 import type { User } from '@supabase/supabase-js';
 import type { ExtendedUser } from 'src/entities/auth/types';
+import type { RoleType } from 'src/entities/user/mypage/main/types';
 
 type AuthState = {
   user: ExtendedUser | null;
@@ -10,6 +11,7 @@ type AuthState = {
     setUser: (user: ExtendedUser | User | null) => void;
     setLoading: (loading: boolean) => void;
     fetchUserProfile: (userId: string) => Promise<void>;
+    updateUserRole: (newRole: RoleType) => Promise<void>;
   };
 };
 
@@ -38,6 +40,17 @@ const useAuthStore = create<AuthState>((set, get) => ({
           }
         });
       }
+    },
+    updateUserRole: async (newRole) => {
+      const currentUser = get().user;
+      if (!currentUser) return;
+      await changeUserRole(currentUser.id, newRole);
+      set({
+        user: {
+          ...currentUser,
+          role: newRole
+        }
+      });
     }
   }
 }));
@@ -45,3 +58,4 @@ const useAuthStore = create<AuthState>((set, get) => ({
 export const useUserState = () => useAuthStore((state) => state.user);
 export const useUserLoadingState = () => useAuthStore((state) => state.loading);
 export const useAuthActions = () => useAuthStore((state) => state.actions);
+export const useUpdateUserRole = () => useAuthStore((state) => state.actions.updateUserRole);
