@@ -101,6 +101,27 @@ export async function fetchAllAuctionWithEpisodeCount({ order, pageParam }: { or
   }
 }
 
+// 관심 경매와 해당 경매의 사연 갯수 가져오기 - (ksh)
+export const fetchFavoriteAuctionWithEpisodeCount = async ({
+  order,
+  pageParam,
+  user
+}: {
+  order: string;
+  pageParam: number;
+  user: string;
+}) => {
+  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count?order=${order}&page=${pageParam}&user=${user}`;
+  const data = await fetch(fetchUrl);
+  const result = await data.json();
+
+  if (result.status === 'success') {
+    return result.data;
+  } else {
+    throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
+  }
+};
+
 export async function fetchAuctionById(auctionId: string | undefined) {
   const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions?auction_id=${auctionId}`;
   const data = await fetch(fetchUrl);
