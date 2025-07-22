@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { selectAuctionCardList } from 'src/entities/auction/supabase';
 import type { NextRequest } from 'next/server';
 
-//TODO - 팀원들과 정렬순을 의논해서 수정할 것
+//NOTE - 경매 현황의 경매 리스트 가져오기
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const order = searchParams.get('order');
@@ -17,11 +17,11 @@ export async function GET(request: NextRequest) {
 
   try {
     if (order === 'favorites') {
-      res = await selectAuctionCardList(order, false, Number(page));
+      res = await selectAuctionCardList(order, Number(page));
     } else if (order === 'end_date') {
-      res = await selectAuctionCardList(order, true, Number(page));
+      res = await selectAuctionCardList(order, Number(page));
     } else if (order === 'created_at') {
-      res = await selectAuctionCardList(order, true, Number(page));
+      res = await selectAuctionCardList(order, Number(page));
     }
 
     if (!res) {

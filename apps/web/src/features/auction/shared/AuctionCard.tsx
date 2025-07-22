@@ -1,3 +1,4 @@
+//TODO - 컴포넌트 분리하기 (KMH)
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
