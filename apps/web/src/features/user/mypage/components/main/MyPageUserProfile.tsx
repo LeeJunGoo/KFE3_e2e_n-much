@@ -1,3 +1,4 @@
+'use client';
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { FiRepeat } from 'react-icons/fi';
@@ -14,7 +15,9 @@ const MyPageUserProfile = () => {
   const user = useUserState();
   const updateUserRole = useUpdateUserRole();
 
-  const { name, email, avatar_url: avatarUrl } = user?.user_metadata || {};
+  if (!user) return null;
+
+  const { nick_name: name, email, user_avatar: avatarUrl } = user;
   const currentRole = (user?.role || 'buyer') as keyof typeof ROLE_CONFIG;
 
   const currentConfig = ROLE_CONFIG[currentRole];
@@ -31,6 +34,7 @@ const MyPageUserProfile = () => {
 
   return (
     <BaseCard as="section" variant="primary">
+      <div>현재 role: {user?.role}</div>
       <div className="flex items-start justify-between pb-1">
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
@@ -45,7 +49,7 @@ const MyPageUserProfile = () => {
           <p className="text-(--color-warm-gray) text-sm">{email}</p>
         </div>
         <div className="bg-(--color-primary) relative flex size-14 shrink-0 overflow-hidden rounded-full text-white">
-          <BaseAvatar src={avatarUrl} alt={name} size="xl" />
+          <BaseAvatar src={avatarUrl || ''} alt={name} size="xl" />
         </div>
       </div>
       {currentRole === 'seller' && <AddressStatus />}
