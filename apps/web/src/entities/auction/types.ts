@@ -118,3 +118,8 @@ export interface AuctionCardProp {
   endDate: string;
   favorites: number;
 }
+
+//NOTE - 정렬 카테고리 선택
+export interface SelectOrderProps {
+  order: string;
+}

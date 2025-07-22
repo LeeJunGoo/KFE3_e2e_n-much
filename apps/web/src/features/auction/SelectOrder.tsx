@@ -10,13 +10,9 @@ import {
   SelectValue
 } from '@repo/ui/components/ui/select';
 import { useRouter } from 'next/navigation';
+import type { SelectOrderProps } from 'src/entities/auction/types';
 
-//TODO - 파일로 분리하기 (KMH)
-interface SelectOrderProp {
-  order: string;
-}
-
-const SelectOrder = ({ order }: SelectOrderProp) => {
+const SelectOrder = ({ order }: SelectOrderProps) => {
   const router = useRouter();
   //TODO - 서영님한테 물어보기 w-full md:w-44하니까 레이아웃 이상해짐 (KMH)
   return (
