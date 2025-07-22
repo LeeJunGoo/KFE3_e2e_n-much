@@ -44,44 +44,31 @@ export const updateEpisodeById = async ({ episodeId, title, description }: Episo
   }
 };
 
-//ANCHOR - 경매 물품에 대한 전체 에피소드 리스트 및 개수
-export const selectEpisodesByAuctionId = async (auctionId: AuctionRow['auction_id']) => {
-  const {
-    data: episode,
-    error,
-    count
-  } = await supabase
+//ANCHOR - 경매 물품에 대한 전체 에피소드 개수
+export const selectEpisodesCount = async (auctionId: AuctionRow['auction_id']) => {
+  const { error, count } = await supabase
     .from('episodes')
-    .select(
-      `
-      *,
-      users:user_id (
-        nick_name,
-        user_avatar,
-        email
-      )
-    `,
-      { count: 'exact' }
-    )
-    .eq('auction_id', auctionId)
-    .order('created_at', { ascending: false });
-
+    .select('*', { count: 'exact', head: true })
+    .eq('auction_id', auctionId);
   if (error) {
     console.error('🚀 ~ selectEpisodesByAuctionId ~ error:', error);
     throw new Error();
   }
 
   return {
-    episodeList: episode ?? [],
     episodeCount: count ?? 0
   };
 };
+
+//ANCHOR - 경매 물품에 대한 페이지별 에피소드 리스트 및 사연자 정보
 export const selectEpisodesWithPagination = async (page: number, auctionId: AuctionRow['auction_id']) => {
-  const from = (page - 1) * EPISODES_PER_PAGE;
+  const safePage = Math.max(1, page);
+  const from = (safePage - 1) * EPISODES_PER_PAGE;
   const to = from + EPISODES_PER_PAGE - 1;
 
-  const { data: episode, error } = await supabase
+  const { data: episodeList, error } = await supabase
     .from('episodes')
+
     .select(
       `
       *,
@@ -93,16 +80,15 @@ export const selectEpisodesWithPagination = async (page: number, auctionId: Auct
     `
     )
     .eq('auction_id', auctionId)
-    .range(to, from)
-    .order('created_at', { ascending: false });
+    .order('created_at', { ascending: false })
+    .range(from, to);
 
   if (error) {
-    console.error('🚀 ~ selectEpisodesWithPagination ~ error:', error);
+    console.error('🚀 ~ selectEpisodesWithPagination ~ error:', error.message);
     throw new Error();
   }
-  return {
-    episodeList: episode ?? []
-  };
+
+  return episodeList ?? [];
 };
 
 //NOTE - 특정 에피소드 입찰

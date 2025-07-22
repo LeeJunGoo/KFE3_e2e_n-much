@@ -1,4 +1,3 @@
-import { da } from 'date-fns/locale';
 import type { EpisodeCreateType, EpisodeEditType, EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
 import type { AuctionRow, EpisodeRow } from 'src/shared/supabase/types';
 
@@ -57,6 +56,34 @@ export const patchEpisodeInfo = async ({ episodeId, title, description }: Episod
   return status.message;
 };
 
+//ANCHOR - 경매 물품에 대한 전체 에피소드 개수
+export const getEpisodesCount = async (auction_id: AuctionRow['auction_id']) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=episode_list_count`);
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data: EpisodesListType = await res.json();
+
+  return data;
+};
+
+//ANCHOR - 경매 물품에 대한 페이지별 에피소드 리스트 및 사연자 정보
+export const getEpisodesWithPagination = async (auction_id: AuctionRow['auction_id'], page: number) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=page&page=${page}`);
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data = await res.json();
+
+  return data;
+};
+
 //NOTE - 경매 물품에 대한 에피소드 삭제
 export const fetchDeleteEpisode = async (episode_id: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes`, {
@@ -76,34 +103,6 @@ export const fetchDeleteEpisode = async (episode_id: string) => {
   const data: EpisodeInfo = await res.json();
 
   return data.status;
-};
-
-//ANCHOR - 경매 물품에 대한 전체 에피소드 리스트 및 개수
-export const getEpisodesByAuctionId = async (auction_id: AuctionRow['auction_id']) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=episode_list`);
-
-  if (!res.ok) {
-    const errorResponse = await res.json();
-    throw new Error(errorResponse.error);
-  }
-
-  const data: EpisodesListType = await res.json();
-
-  return data;
-};
-
-//ANCHOR - 경매 물품에 대한 페이지별 에피소드 리스트 및 개수
-export const getEpisodesWithPagination = async (auction_id: AuctionRow['auction_id'], page: number) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=page?page=${page}`);
-
-  if (!res.ok) {
-    const errorResponse = await res.json();
-    throw new Error(errorResponse.error);
-  }
-
-  const data = await res.json();
-
-  return data;
 };
 
 //NOTE - 특정 에피소드 입찰

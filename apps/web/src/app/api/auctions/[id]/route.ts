@@ -7,11 +7,7 @@ import {
   selectAuctionSummaryInfoWithAddress,
   updateAuction
 } from 'src/entities/auction/supabase';
-import {
-  selectBidderRanking,
-  selectEpisodesByAuctionId,
-  selectEpisodesWithPagination
-} from 'src/entities/episode/supabase';
+import { selectBidderRanking, selectEpisodesCount, selectEpisodesWithPagination } from 'src/entities/episode/supabase';
 import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionUpdate } from 'src/shared/supabase/types';
@@ -26,6 +22,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
   const { searchParams } = request.nextUrl;
   const type = searchParams.get('type');
   const page = searchParams.get('page');
+
   let res;
 
   if (!id || !type) {
@@ -38,8 +35,8 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
   try {
     if (type === 'auction_form') {
       res = await selectAuction(id);
-    } else if (type === 'episode_list') {
-      res = await selectEpisodesByAuctionId(id);
+    } else if (type === 'episode_list_count') {
+      res = await selectEpisodesCount(id);
     } else if (type === 'episode_form') {
       res = await selectAuctionSummaryInfoWithAddress(id);
     } else if (type === 'auction') {
@@ -47,7 +44,7 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
     } else if (type === 'ranking') {
       res = await selectBidderRanking(id);
     } else if (type === 'page') {
-      selectEpisodesWithPagination(Number(page), id);
+      res = await selectEpisodesWithPagination(Number(page), id);
     }
 
     return NextResponse.json(res, { status: 200 });

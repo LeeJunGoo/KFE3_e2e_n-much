@@ -26,7 +26,7 @@ const AuctionDetailInfo = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddres
             <p className="text-(--color-text-base) text-xl font-bold">{auctionInfo.current_point.toLocaleString()} P</p>
           </div>
         </div>
-        {/* //FIXME - Seller일 경우만 */}
+        {/* //FIXME - Buyer 유저 및 한 유저당 하나의 사연만 작성 가능 */}
         <div className="flex space-x-3">
           <Link
             href={`/episode/${auctionInfo.auction_id}`}

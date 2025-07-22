@@ -1,5 +1,5 @@
 'use client';
-
+import { useEffect, useState } from 'react';
 import {
   Pagination,
   PaginationContent,
@@ -9,84 +9,69 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
-import { useEffect, useRef, useState } from 'react';
-import type { EpisodeItemProps } from 'src/entities/episode/types';
-import { AuctionRow } from 'src/shared/supabase/types';
-import EpisodeItem from './EpisodeItem';
-import EpisodeEmpty from './shared/EpisodeEmpty';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getEpisodesWithPagination } from 'src/entities/episode/api';
 import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
+import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
+import EpisodeItem from 'src/features/episode/EpisodeItem';
+import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
+import { type AuctionRow } from 'src/shared/supabase/types';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeList = ({
-  episodeList,
-  auction_id,
+  episodesCount,
+  auctionId,
   sellerId
 }: {
-  episodeList: EpisodeItemProps[];
-  auction_id: AuctionRow['auction_id'];
+  episodesCount: number;
+  auctionId: AuctionRow['auction_id'];
   sellerId: AuctionRow['user_id'];
 }) => {
-  const [page, setPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [episodes, setEpisodes] = useState<EpisodeItemProps[]>(episodeList);
-  const [episodesCount, setEpisodesCount] = useState(episodes.length);
-
-  const query = useQueryClient();
-  // const { data } = useQuery({
-  //   queryKey: ['episodes', page],
-  //   queryFn:
-  // });
-
-  const listHeaderRef = useRef<HTMLDivElement>(null);
-  const isInitialRender = useRef(true);
+  const queryClient = useQueryClient();
 
   const totalPages = Math.max(1, Math.ceil(episodesCount / EPISODES_PER_PAGE));
 
-  // 현재 페이지에 보여줄 사연들 계산
-  const startIndex = (currentPage - 1) * EPISODES_PER_PAGE;
-  const endIndex = startIndex + EPISODES_PER_PAGE;
-  const currentEpisodes = episodes.slice(startIndex, endIndex);
+  const { isError, data: episodesList } = useQuery({
+    queryKey: episodesListKeys.item({ auctionId, page: currentPage }),
+    queryFn: () => getEpisodesWithPagination(auctionId, currentPage),
+    placeholderData: keepPreviousData,
+    staleTime: 300000
+  });
+
+  // ANCHOR - 다음 페이지 prefetch
+  useEffect(() => {
+    // 마지막 페이지까지만 데이터를 받음
+    if (currentPage <= totalPages - 1) {
+      const nextPage = currentPage + 1;
+      queryClient.prefetchQuery({
+        queryKey: episodesListKeys.item({ auctionId, page: nextPage }),
+        queryFn: () => getEpisodesWithPagination(auctionId, nextPage)
+      });
+    }
+  }, [currentPage, queryClient, totalPages, auctionId]);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
     }
+
+    //"사연 모음" 타이틀로 스크롤 이동
+    const headerEl = document.getElementById('episode-section-header');
+    if (headerEl) {
+      headerEl.scrollIntoView({ behavior: 'smooth' });
+    }
   };
-  // useEffect(() => {
-  //   if (!auction_id) return;
 
-  //   const fetchEpisodes = async () => {
-  //     try {
-  //       const episodesListData = await fetchEpisodesById(auction_id);
-  //       setEpisodes(episodesListData.episode);
-  //       setEpisodesCount(episodesListData.count);
-  //     } catch (error) {
-  //       if (error instanceof Error) {
-  //         setEpisodes([]);
-  //         throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${error.message}`);
-  //       }
-  //     }
-  //   };
-
-  //   fetchEpisodes();
-  // }, [currentPage, auction_id]);
-
-  useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
-
-    if (listHeaderRef.current) {
-      listHeaderRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [currentPage]);
+  if (isError) {
+    return <EpisodeEmpty />;
+  }
 
   return (
     <>
       {/* 사연 목록 */}
       <ul className="space-y-5 divide-y">
-        {currentEpisodes.map((episode: EpisodeItemProps) => (
+        {episodesList.map((episode: EpisodeItemProps) => (
           <EpisodeItem key={episode.episode_id} episode={episode} sellerId={sellerId} />
         ))}
       </ul>

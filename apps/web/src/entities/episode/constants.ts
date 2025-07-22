@@ -12,4 +12,7 @@ export const MAX_TITLE_LENGTH = 50;
 export const MAX_DESC_LENGTH = 1000;
 
 //ANCHOR - 페이지네이션: 한 페이지에 보일 에피소드 개수
-export const EPISODES_PER_PAGE = 8;
+export const EPISODES_PER_PAGE = 5;
+
+//ANCHOR - episode pagination에서 사용하는 tansTack query Key
+export const EPISODES_LIST_QUERY_KEY = 'episodes';
