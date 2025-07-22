@@ -195,3 +195,13 @@ export async function getUserStories(buyer_id: string) {
 
   return data;
 }
+
+// NOTE - 사용자가 좋아요한 에피소드 목록 조회
+export const getLikeEpisode = async (user_id: string) => {
+  const { data, error } = await supabase.from('episodes').select('*, auctions(title)').contains('likes', [user_id]);
+
+  if (error) {
+    throw new Error('DB: 사용자가 좋아요한 에피소드 목록 조회 에러');
+  }
+  return data ?? [];
+};
