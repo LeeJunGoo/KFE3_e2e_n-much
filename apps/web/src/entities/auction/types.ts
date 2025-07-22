@@ -1,4 +1,6 @@
+import type { auctionFormSchema } from './schema/auctionForm';
 import type { AddressRow, AuctionRow, RankingRow, UserRow } from 'src/shared/supabase/types';
+import type { z } from 'zod';
 
 type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
 type AddressSummaryInfoType = Pick<AddressRow, 'address_id' | 'business_name' | 'road_address' | 'detail_address'>;
@@ -80,6 +82,8 @@ export interface AuctionFormProps {
   auctionIdParam: string | undefined;
   loggedInUserId: string;
 }
+
+export type AuctionFormType = z.infer<typeof auctionFormSchema>;
 
 // export type SortedAuctionItemType = AuctionRow & {
 //   episodes: {

@@ -31,6 +31,7 @@ import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 's
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
+import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
 import {
   convertFromKorToUtcDate,
@@ -41,7 +42,7 @@ import {
   setTimeToDate
 } from 'src/shared/utils/dateFns';
 import { v4 as uuidv4 } from 'uuid';
-import type { AuctionFormProps, PreviewImage } from 'src/entities/auction/types';
+import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
@@ -91,7 +92,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     };
   };
 
-  const form = useForm<z.infer<typeof auctionFormSchema>>({
+  const form = useForm<AuctionFormType>({
     resolver: zodResolver(auctionFormSchema),
     defaultValues: getFormDefaultValues()
   });
