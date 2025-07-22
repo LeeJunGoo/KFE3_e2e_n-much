@@ -12,7 +12,7 @@ import noAuctionImage from 'src/assets/images/noAuctionImage.png';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 import type { AuctionCardProp } from 'src/entities/auction/types';
 
-//TODO - LINK prefetch 찾아보기 (KMH)
+//TODO - 준구님이랑 이미지와 좋아요 컴포넌트 공통으로 만들 수 있는지 의논하기 (KMH)
 const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeCount }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
   const { status, remainTime } = formatRemainingTime(endDate);
@@ -46,7 +46,7 @@ const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeC
           <h3 className="text-(--color-text-base) mb-1.5 overflow-hidden text-ellipsis text-sm font-medium">{title}</h3>
           <div className="text-(--color-warm-gray) flex items-center justify-between text-xs">
             <div className="flex items-center">
-              <FaHeart color="#D84A5F" className="mr-1" />
+              <FaHeart className="text-(--color-red) mr-1" />
               <span>{favorites}</span>
             </div>
             <div className="flex items-center">

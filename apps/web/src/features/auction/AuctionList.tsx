@@ -1,14 +1,15 @@
 'use client';
 
 import { useEffect } from 'react';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { useGetAuctionListQuery } from 'src/entities/auction/queries/auction';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-//TODO - nextjs 캐시로 관리하기 (KMH)
 const AuctionList = ({ order }: AuctionListProps) => {
+  //TODO - nextjs 캐시로 관리하기 (KMH)
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
     useGetAuctionListQuery(order);
 
@@ -24,13 +25,25 @@ const AuctionList = ({ order }: AuctionListProps) => {
     return <p>에러 발생</p>;
   }
 
-  //TODO - 스켈레톤 UJI 사용하기 (KMH)
+  //TODO - 스켈레톤 UJI 물어보기 (KMH)
   if (isPending) {
-    return <p>로딩중...</p>;
+    return (
+      <>
+        <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
+        <ul className="grid grid-cols-2 gap-3">
+          {Array.from({ length: 8 }).map((_, index) => (
+            <li key={index} className="rounded-xs h-[217.994px] w-[310px]">
+              <Skeleton />
+            </li>
+          ))}
+        </ul>
+      </>
+    );
   }
 
+  //TODO - 로딩 스피너 위치 물어보기 (KMH)
   return (
-    <div>
+    <>
       <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
       <ul className="grid grid-cols-2 gap-3">
         {fetchedAuctions &&
@@ -61,12 +74,10 @@ const AuctionList = ({ order }: AuctionListProps) => {
             })
           )}
         <div>
-          <div ref={ref} onClick={() => fetchNextPage()}>
-            {isFetchingNextPage && <LoadingSpinner />}
-          </div>
+          <div ref={ref}>{isFetchingNextPage && <LoadingSpinner />}</div>
         </div>
       </ul>
-    </div>
+    </>
   );
 };
 export default AuctionList;
