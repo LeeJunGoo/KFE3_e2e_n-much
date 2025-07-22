@@ -1,6 +1,6 @@
 import { Card } from '@repo/ui/components/ui/card';
-import Link from 'next/link';
 import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
+import EpisodeWriteButton from 'src/features/episode/EpisodeWriteButton';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import type { AuctionInfoWithAddressType } from 'src/entities/auction/types';
 
@@ -27,13 +27,9 @@ const AuctionDetailInfo = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddres
           </div>
         </div>
         {/* //FIXME - Buyer 유저 및 한 유저당 하나의 사연만 작성 가능 */}
+
         <div className="flex space-x-3">
-          <Link
-            href={`/episode/${auctionInfo.auction_id}`}
-            className="bg-(--color-accent) text-(--color-secondary) hover:bg-(--color-primary) flex-1 rounded-md p-2 text-center transition-colors"
-          >
-            사연 작성하기
-          </Link>
+          <EpisodeWriteButton auctionId={auctionInfo.auction_id} />
         </div>
       </div>
     </Card>

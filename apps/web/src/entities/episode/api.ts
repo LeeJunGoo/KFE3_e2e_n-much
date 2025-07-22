@@ -105,6 +105,21 @@ export const fetchDeleteEpisode = async (episode_id: string) => {
   return data.status;
 };
 
+//ANCHOR - 사연 작성 유효성 검사
+export const getHasUserWrittenEpisode = async (auctionId: AuctionRow['auction_id'], userId: AuctionRow['user_id']) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/buyer?auction_id=${auctionId}&user_id=${userId}`
+  );
+
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error);
+  }
+
+  const data = await res.json();
+  return data;
+};
+
 //NOTE - 특정 에피소드 입찰
 export const fetchUpdateEpisodeBid = async (auction_id: string, episode_id: string, bid_point: number) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/bid`, {

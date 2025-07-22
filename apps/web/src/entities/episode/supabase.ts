@@ -1,7 +1,7 @@
+import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 import { createClient } from 'src/shared/supabase/client/client';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import type { EpisodeCreateType, EpisodeEditType } from 'src/entities/episode/types';
-import { EPISODES_PER_PAGE } from './constants';
 
 const supabase = createClient();
 
@@ -89,6 +89,25 @@ export const selectEpisodesWithPagination = async (page: number, auctionId: Auct
   }
 
   return episodeList ?? [];
+};
+
+//ANCHOR - 사연 작성 유효성 검사
+export const selectHasUserWrittenEpisode = async (
+  auctionId: AuctionRow['auction_id'],
+  userId: AuctionRow['user_id']
+) => {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select('episode_id')
+    .eq('auction_id', auctionId)
+    .eq('user_id', userId);
+  // .maybeSingle(); 현재 테스트로 하나의 계정에 여러 사연을 넣어, 에러 발생
+
+  if (error) {
+    console.error('🚀 ~ hasUserWrittenEpisode ~ error:', error);
+    throw new Error();
+  }
+  return Boolean(data); // 작성 여부
 };
 
 //NOTE - 특정 에피소드 입찰
