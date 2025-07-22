@@ -12,7 +12,7 @@ const AuctionTimerDynamic = ({ endDate }: { endDate: AuctionRow['end_date'] }) =
   const { days, hours, minutes, seconds } = useTimer({
     endDate,
     onCompleted: () => {
-      router.replace('/main');
+      // router.replace('/main');
     }
   });
   let status: AuctionTimerStatus = 'ongoing';

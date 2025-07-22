@@ -91,18 +91,14 @@ export const updateAuction = async (auctionId: string | undefined, auctionFormDa
 };
 
 //NOTE - 경매 물품 삭제
-export const deleteAuction = async (auctionId: string | undefined) => {
-  if (!auctionId) {
-    throw new Error('DB: 경매 삭제 에러(auctionId가 없습니다.)');
-  }
-
-  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auctionId).select().single();
+export const deleteAuctionById = async (auctionId: AuctionRow['auction_id']) => {
+  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auctionId).select('auction_id');
 
   if (error) {
-    console.error('deleteAuction', error);
-    throw new Error('DB: 경매 삭제 에러');
+    console.error('🚀 ~ deleteAuctionById ~ deleteAuctionById:', error);
+    throw new Error();
   }
-  return data;
+  return Boolean(data);
 };
 
 //ANCHOR - 판매자의 총 경매 수 및 현재 진행 중인 경매 수

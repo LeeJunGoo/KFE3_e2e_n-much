@@ -59,28 +59,18 @@ export const getBidderRanking = async (auction_id: AuctionRow['auction_id']) => 
   return data;
 };
 
-//NOTE - 경매 데이터 삭제
-export const fetchDeleteAuction = async (auction_id: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      auction_id
-    })
+//ANCHOR - 경매 데이터 삭제
+export const deleteAuctionInfo = async (auctionId: AuctionRow['auction_id']) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}`, {
+    method: 'DELETE'
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    if (res.status === 400) {
-      console.error(errorData.message);
-      return;
-    }
-    throw new Error('경매 데이터를 삭제하는 과정에서 네트워크 에러가 발생했습니다.');
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
-  // const data: AuctionInfoType = await res.json();
-  // return data.status;
+  const data: boolean = await res.json();
+  return data;
 };
 
 //NOTE - 셀러가 등록한 경매 목록 조회

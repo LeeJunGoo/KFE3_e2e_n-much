@@ -1,7 +1,7 @@
 //TODO - '500: 서버 처리 중 오류가 발생했습니다.' 의논해보기 DB에러가 무시됨 (KMH)
 import { NextResponse } from 'next/server';
 import {
-  deleteAuction,
+  deleteAuctionById,
   selectAuction,
   selectAuctionInfoWithAddress,
   selectAuctionSummaryInfoWithAddress,
@@ -88,19 +88,17 @@ export async function PATCH(request: NextRequest, { params }: ParamsType) {
   }
 }
 
-export async function DELETE(request: NextRequest) {
-  const { auction_id: auctionId } = await request.json();
+export async function DELETE(request: NextRequest, { params }: ParamsType) {
+  const { id: auctionId } = await params;
 
   if (!auctionId) {
     return NextResponse.json({ message: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
   try {
-    const res = await deleteAuction(auctionId);
-    return NextResponse.json(res, { status: 200 });
-  } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
-    }
+    const res = await deleteAuctionById(auctionId);
+    return NextResponse.json(res, { status: 201 });
+  } catch {
+    return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }
