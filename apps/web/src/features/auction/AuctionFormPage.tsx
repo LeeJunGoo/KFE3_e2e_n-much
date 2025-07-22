@@ -17,7 +17,7 @@ const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   //TODO - 마이 페이지에서 주소를 변경할 때, 아래 쿼리 키의 캐시를 지워야 함 (KMH)
   await prefetchAddressId(loggedInUserId, queryClient);
 
-  if (!isEditing && auctionId) {
+  if (!isEditing) {
     return (
       <>
         <DetailPageHeader>{pageTitle}</DetailPageHeader>
