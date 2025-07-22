@@ -1,5 +1,3 @@
-//TODO - 준구님 컨벤션에 맞추기 (KMH)
-
 import type { AuctionInfoWithAddressType, AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 

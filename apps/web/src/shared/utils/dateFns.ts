@@ -1,5 +1,4 @@
-//TODO - 준구님과 의논하기 (KMH)
-//TODO - 여기서 사용하는 상수는 어쩔지 의논하기 (KMH)
+//TODO - 상수 분리하기 (KMH)
 
 import { addHours, format, set } from 'date-fns';
 import { TZDate } from 'react-day-picker';
