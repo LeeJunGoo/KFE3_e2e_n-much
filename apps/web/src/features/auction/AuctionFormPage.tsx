@@ -1,10 +1,9 @@
 //TODO - memo 훅으로 최적화 시도 해보기
-//TODO - 미들웨어에서 로그인한 유저만 접근 가능하도록 수정 (KMH)
-//TODO - 상세 정보에서 수정하기 누르면 미들웨어에서 자기 계정인지 확인해서 필터링하기  (KMH)
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { getAddressId, getAuction } from 'src/entities/auction/api';
 import { addressIdKeys, auctionFormKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import { getServerUser } from 'src/entities/auth/serverAction';
 import AuctionForm from 'src/features/auction/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 import type { AuctionFormPageProps } from 'src/entities/auction/types';
@@ -12,7 +11,8 @@ import type { AuctionFormPageProps } from 'src/entities/auction/types';
 const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   const isEditing = Boolean(auctionId);
   const pageTitle = isEditing ? '경매 수정하기' : '경매 등록하기';
-  const loggedInUserId = 'b021a550-5857-4330-9b0e-ed53ac81c8d6'; //FIXME - 로그인한 정보를 가져오는 함수로 대체하기 (KMH)
+  const userInfo = await getServerUser();
+  const loggedInUserId = userInfo!.id; //NOTE - 미들웨어에서 비로그인시 메인 페이지로 리다이렉트 함
   const queryClient = new QueryClient();
 
   //TODO - 마이 페이지에서 주소를 변경할 때, 아래 쿼리 키의 캐시를 지워야 함 (KMH)
