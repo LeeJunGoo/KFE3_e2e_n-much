@@ -2,9 +2,11 @@
 
 import { useEffect } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
+import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
 import { useGetAuctionListQuery } from 'src/entities/auction/queries/auction';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
+import { v4 as uuidv4 } from 'uuid';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
@@ -25,16 +27,13 @@ const AuctionList = ({ order }: AuctionListProps) => {
     return <p>에러 발생</p>;
   }
 
-  //TODO - 스켈레톤 UJI 물어보기 (KMH)
   if (isPending) {
     return (
       <>
         <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
         <ul className="grid grid-cols-2 gap-3">
-          {Array.from({ length: 8 }).map((_, index) => (
-            <li key={index} className="rounded-xs h-[217.994px] w-[310px]">
-              <Skeleton />
-            </li>
+          {Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
+            <Skeleton key={uuidv4()} className="h-40 w-full" />
           ))}
         </ul>
       </>

@@ -22,7 +22,7 @@ const SelectOrder = ({ order }: SelectOrderProps) => {
       }
       value={order}
     >
-      <SelectTrigger className="w-44 bg-white">
+      <SelectTrigger className="w-full bg-white md:w-44">
         <SelectValue placeholder="정렬 순서 선택" />
       </SelectTrigger>
 

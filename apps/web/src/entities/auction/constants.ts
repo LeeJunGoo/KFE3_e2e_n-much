@@ -24,3 +24,5 @@ export const ITEM_PER_PAGE = 4;
 export const HOURS_OF_DAY = 24; //NOTE - 24시간
 export const KOR_TIME_ZONE = 'Asia/Seoul'; //NOTE - 한국 time zone
 export const UTC_TIME_ZONE = 'utc'; //NOTE - utc time zone
+
+export const AUCTION_LIST_SKELETON_LENGTH = 10;
