@@ -14,10 +14,12 @@ interface ImageUploaderProps {
   setPreviewImages: Dispatch<SetStateAction<{ id: string; data: string; isUrl: boolean }[]>>;
 }
 
+const MAX_UPLOADED_IMAGES = 5;
+
 const ImageUploader = ({ previewImages, setPreviewImages }: ImageUploaderProps) => {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
-      if (previewImages.length + acceptedFiles.length > 5) {
+      if (previewImages.length + acceptedFiles.length > MAX_UPLOADED_IMAGES) {
         alert(previewImages.length + acceptedFiles.length);
         return;
       }
