@@ -1,5 +1,6 @@
+import { da } from 'date-fns/locale';
 import type { EpisodeCreateType, EpisodeEditType, EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
-import type { EpisodeRow } from 'src/shared/supabase/types';
+import type { AuctionRow, EpisodeRow } from 'src/shared/supabase/types';
 
 //ANCHOR - 톡정 에피소드 정보
 export const getEpisodeInfo = async (episode_id: EpisodeRow['episode_id']) => {
@@ -73,22 +74,22 @@ export const fetchDeleteEpisode = async (episode_id: string) => {
   }
 
   const data: EpisodeInfo = await res.json();
-  console.log('🚀 ~ fetchDeleteEpisode ~ data:', data);
 
   return data.status;
 };
 
-//NOTE - 특정 에피소드 및 사연자 정보 / 사연 개수
-export const fetchEpisodesById = async (auction_id: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/?auctionId=${auction_id}`);
+//ANCHOR - 특정 에피소드 및 사연자 정보 / 사연 개수
+export const getEpisodesByAuctionId = async (auction_id: AuctionRow['auction_id']) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=episode_list`);
 
   if (!res.ok) {
-    throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.`);
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
 
   const data: EpisodesListType = await res.json();
 
-  return data.data;
+  return data;
 };
 
 //NOTE - 특정 에피소드 입찰

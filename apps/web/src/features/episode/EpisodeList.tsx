@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import {
   Pagination,
   PaginationContent,
@@ -9,27 +8,27 @@ import {
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
+import { useEffect, useRef, useState } from 'react';
 import { FaRegCommentDots } from 'react-icons/fa';
-import { fetchEpisodesById } from 'src/entities/episode/api';
-import EpisodeItem from './EpisodeItem';
-import type { UserInfoType } from 'src/app/api/auth/user-info/route';
+// import { fetchEpisodesById } from 'src/entities/episode/api';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
-import type { SellerRow } from 'src/shared/supabase/types';
+import { AuctionRow } from 'src/shared/supabase/types';
+import EpisodeItem from './EpisodeItem';
 
 const EPISODES_PER_PAGE = 5;
 
 const EpisodeList = ({
+  episodeList,
   auction_id,
-  userInfo,
   sellerId
 }: {
-  auction_id: string;
-  userInfo: UserInfoType;
-  sellerId: SellerRow['seller_id'];
+  episodeList: EpisodeItemProps[];
+  auction_id: AuctionRow['auction_id'];
+  sellerId: AuctionRow['user_id'];
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [episodes, setEpisodes] = useState<EpisodeItemProps[]>([]);
-  const [episodesCount, setEpisodesCount] = useState(0);
+  const [episodes, setEpisodes] = useState<EpisodeItemProps[]>(episodeList);
+  const [episodesCount, setEpisodesCount] = useState(episodes.length);
 
   const listHeaderRef = useRef<HTMLDivElement>(null);
   const isInitialRender = useRef(true);
@@ -46,24 +45,24 @@ const EpisodeList = ({
       setCurrentPage(page);
     }
   };
-  useEffect(() => {
-    if (!auction_id) return;
+  // useEffect(() => {
+  //   if (!auction_id) return;
 
-    const fetchEpisodes = async () => {
-      try {
-        const episodesListData = await fetchEpisodesById(auction_id);
-        setEpisodes(episodesListData.episode);
-        setEpisodesCount(episodesListData.count);
-      } catch (error) {
-        if (error instanceof Error) {
-          setEpisodes([]);
-          throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${error.message}`);
-        }
-      }
-    };
+  //   const fetchEpisodes = async () => {
+  //     try {
+  //       const episodesListData = await fetchEpisodesById(auction_id);
+  //       setEpisodes(episodesListData.episode);
+  //       setEpisodesCount(episodesListData.count);
+  //     } catch (error) {
+  //       if (error instanceof Error) {
+  //         setEpisodes([]);
+  //         throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${error.message}`);
+  //       }
+  //     }
+  //   };
 
-    fetchEpisodes();
-  }, [currentPage, auction_id]);
+  //   fetchEpisodes();
+  // }, [currentPage, auction_id]);
 
   useEffect(() => {
     if (isInitialRender.current) {
@@ -90,7 +89,7 @@ const EpisodeList = ({
       ) : (
         <ul className="space-y-5 divide-y">
           {currentEpisodes.map((episode: EpisodeItemProps) => (
-            <EpisodeItem key={episode.episode_id} episode={episode} userInfo={userInfo} sellerId={sellerId} />
+            <EpisodeItem key={episode.episode_id} episode={episode} sellerId={sellerId} />
           ))}
         </ul>
       )}

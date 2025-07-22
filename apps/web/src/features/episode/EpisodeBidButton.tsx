@@ -8,10 +8,9 @@ import { toast } from '@repo/ui/components/ui/sonner';
 import { FiAward } from 'react-icons/fi';
 import { fetchUpdateEpisodeBid } from 'src/entities/episode/api';
 import { formatNumber } from 'src/shared/utils/formatNumber';
-import type { UserInfoType } from 'src/app/api/auth/user-info/route';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-const EpisodeBidButton = ({ episode, userInfo }: { episode: EpisodeItemProps; userInfo: UserInfoType }) => {
+const EpisodeBidButton = ({ episode }: { episode: EpisodeItemProps }) => {
   const [showEpisodeModal, setShowEpisodeModal] = useState<boolean>(false);
   const [bidAmount, setBidAmount] = useState<string>('');
 

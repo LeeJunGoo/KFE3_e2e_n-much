@@ -1,12 +1,6 @@
-//TODO - 준구님과 의논하기 (KMH)
-//TODO - 여기서 사용하는 상수는 어쩔지 의논하기 (KMH)
-
 import { addHours, format, set } from 'date-fns';
 import { TZDate } from 'react-day-picker';
-
-export const HOURS_OF_DAY = 24;
-export const KOR_TIME_ZONE = 'Asia/Seoul';
-export const UTC_TIME_ZONE = 'utc';
+import { HOURS_OF_DAY, KOR_TIME_ZONE, UTC_TIME_ZONE } from 'src/entities/auction/constants';
 
 export const getNowKorDate = () => {
   const now = new Date();

@@ -46,7 +46,7 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
           <AuctionMetaInfo
             favoritesCount={favoritesCount}
             episodesCount={episodesCount}
-            className="text-(--color-warm-gray) mt-2"
+            className="text-(--color-warm-gray) mt-2 items-center"
           />
         </div>
       </Link>

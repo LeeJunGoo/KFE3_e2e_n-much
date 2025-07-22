@@ -1,5 +1,6 @@
 'use client';
 import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const SECONDS_TO_MS = 1000;
 const STALE_TIME_SECONDS = 60;
@@ -28,6 +29,11 @@ const getQueryClient = () => {
 const QueryProvider = ({ children }: { children: React.ReactNode }) => {
   const queryClient = getQueryClient();
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      {children}
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  );
 };
 export default QueryProvider;
