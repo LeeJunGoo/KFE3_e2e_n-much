@@ -1,7 +1,7 @@
 import { decode } from 'base64-arraybuffer';
 import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
-import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -14,30 +14,6 @@ export const getAllAuctions = async () => {
     throw new Error('DB : 모든 경매 불러오기 에러');
   }
 
-  return data;
-};
-
-//NOTE - 특정 상품 정보
-export const selectAuctionInfo = async (auction_id: string): Promise<AuctionRow> => {
-  const { data, error } = await supabase.from('auctions').select(`*`).eq('auction_id', auction_id).maybeSingle();
-
-  if (error) {
-    console.error('🚀 ~ getAuction ~ getAuction:', error.message);
-    throw new Error('DB: 특정 경매 불러오기 에러');
-  }
-  //NOTE - 준구님이 고칠 예정 (KMH)
-  return data;
-};
-
-//NOTE - 특정 상품의 기본 주소 정보
-export const selectAuctionDefaultAddress = async (userId: string): Promise<UserRow> => {
-  const { data, error } = await supabase.from('users').select(`*`).eq('id', userId).maybeSingle();
-
-  if (error) {
-    console.error('🚀 ~ selectAuctionDefaultAddress:', error.message);
-    throw new Error('DB: 특정 상품 주소 정보 불러오기 에러');
-  }
-  //NOTE - 준구님이 고칠 예정 (KMH)
   return data;
 };
 
