@@ -1,10 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
-import { getAuctionCardList } from 'src/entities/auction/api';
-import { auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import { useGetAuctionListQuery } from 'src/entities/auction/queries/auction';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
@@ -12,22 +9,8 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 
 //TODO - nextjs 캐시로 관리하기 (KMH)
 const AuctionList = ({ order }: AuctionListProps) => {
-  const { ref, inView } = useInView();
-  const {
-    data: fetchedAuctions,
-    isError,
-    error,
-    isLoading,
-    isFetchingNextPage,
-    fetchNextPage
-  } = useInfiniteQuery({
-    queryKey: auctionListKeys.order(order),
-    queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
-      getAuctionCardList({ order, pageParam }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
-    staleTime: 0
-  });
+  const { fetchedAuctions, isError, error, isLoading, isFetchingNextPage, fetchNextPage, ref, inView } =
+    useGetAuctionListQuery(order);
 
   useEffect(() => {
     if (inView) {
