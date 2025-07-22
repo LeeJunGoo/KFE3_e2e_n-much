@@ -19,3 +19,8 @@ export const BUCKET_FOLDER_NAME = 'images/'; //NOTE - 버켓 폴더 이름
 
 //NOTE - 경매 리스트에서 한 페이지당 가져오는 경매 수
 export const ITEM_PER_PAGE = 4;
+
+//NOTE - 날짜 및 시간에 관련된 상수 목록
+export const HOURS_OF_DAY = 24; //NOTE - 24시간
+export const KOR_TIME_ZONE = 'Asia/Seoul'; //NOTE - 한국 time zone
+export const UTC_TIME_ZONE = 'utc'; //NOTE - utc time zone

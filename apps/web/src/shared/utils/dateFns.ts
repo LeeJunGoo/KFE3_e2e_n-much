@@ -2,10 +2,7 @@
 
 import { addHours, format, set } from 'date-fns';
 import { TZDate } from 'react-day-picker';
-
-export const HOURS_OF_DAY = 24;
-export const KOR_TIME_ZONE = 'Asia/Seoul';
-export const UTC_TIME_ZONE = 'utc';
+import { HOURS_OF_DAY, KOR_TIME_ZONE, UTC_TIME_ZONE } from 'src/entities/auction/constants';
 
 export const getNowKorDate = () => {
   const now = new Date();
