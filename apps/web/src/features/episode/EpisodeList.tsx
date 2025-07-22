@@ -3,17 +3,19 @@
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
 import { useEffect, useRef, useState } from 'react';
-import { FaRegCommentDots } from 'react-icons/fa';
 // import { fetchEpisodesById } from 'src/entities/episode/api';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 import { AuctionRow } from 'src/shared/supabase/types';
 import EpisodeItem from './EpisodeItem';
+import EpisodeEmpty from './shared/EpisodeEmpty';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const EPISODES_PER_PAGE = 5;
 
@@ -26,9 +28,16 @@ const EpisodeList = ({
   auction_id: AuctionRow['auction_id'];
   sellerId: AuctionRow['user_id'];
 }) => {
+  const [page, setPage] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [episodes, setEpisodes] = useState<EpisodeItemProps[]>(episodeList);
   const [episodesCount, setEpisodesCount] = useState(episodes.length);
+
+  const query = useQueryClient();
+  // const { data } = useQuery({
+  //   queryKey: ['episodes', page],
+  //   queryFn:
+  // });
 
   const listHeaderRef = useRef<HTMLDivElement>(null);
   const isInitialRender = useRef(true);
@@ -75,25 +84,20 @@ const EpisodeList = ({
     }
   }, [currentPage]);
 
+  //ANCHOR - 사연이 존재하지 않을 경우
+  if (episodesCount === 0) {
+    <EpisodeEmpty />;
+  }
+
   return (
     <>
       {/* 사연 목록 */}
-      {episodesCount === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-3 rounded-b-lg bg-slate-50 px-6 py-10 text-center">
-          <FaRegCommentDots className="text-4xl text-slate-400" />
-          <div>
-            <p className="font-semibold text-slate-700">아직 사연이 없어요</p>
-            <p className="mt-1 text-sm text-slate-500">가장 먼저 사연을 작성하여 상품을 차지할 기회를 잡아보세요!</p>
-          </div>
-        </div>
-      ) : (
-        <ul className="space-y-5 divide-y">
-          {currentEpisodes.map((episode: EpisodeItemProps) => (
-            <EpisodeItem key={episode.episode_id} episode={episode} sellerId={sellerId} />
-          ))}
-        </ul>
-      )}
-
+      <ul className="space-y-5 divide-y">
+        {currentEpisodes.map((episode: EpisodeItemProps) => (
+          <EpisodeItem key={episode.episode_id} episode={episode} sellerId={sellerId} />
+        ))}
+      </ul>
+      {/* 페이지 네이션 */}
       <div className="px-6 py-4">
         <Pagination>
           <PaginationContent>
@@ -107,6 +111,7 @@ const EpisodeList = ({
                 aria-disabled={currentPage === 1}
               />
             </PaginationItem>
+
             {/* 페이지 번호 동적 생성 */}
             {Array.from({ length: totalPages }, (_, i) => (
               <PaginationItem key={i + 1}>
@@ -122,7 +127,9 @@ const EpisodeList = ({
                 </PaginationLink>
               </PaginationItem>
             ))}
-
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
             <PaginationItem>
               <PaginationNext
                 href="#"
