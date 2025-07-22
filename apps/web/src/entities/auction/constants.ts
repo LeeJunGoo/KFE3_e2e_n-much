@@ -5,6 +5,7 @@ export const LATEST_AUCTIONS_COUNT = 10;
 //NOTE - auctionForm에서 사용하는 tansTack query 키
 export const AUCTION_FORM_QUERY_KEY = 'auctionForm';
 export const ADDRESS_ID_QUERY_KEY = 'addressId';
+export const AUCTION_LIST_QUERY_KEY = 'auctionLIST';
 
 //NOTE - auctionForm의 zod 유효성 검사에 사용하는 상수 목록
 export const MIN_TITLE_LETTERS = 5; //NOTE - 제목의 최소 글자 수

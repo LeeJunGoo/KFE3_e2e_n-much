@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { getAuctionCardList } from 'src/entities/auction/api';
+import { auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import type { AuctionRow } from 'src/shared/supabase/types';
@@ -30,7 +31,7 @@ const AuctionList = ({ order }: AuctionListProps) => {
     isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery({
-    queryKey: ['auctions', order], //TODO - 쿼리 키 객체로 만들어서 관리하기 (KMH)
+    queryKey: auctionListKeys.order(order),
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
       getAuctionCardList({ order, pageParam }),
     initialPageParam: 0,
