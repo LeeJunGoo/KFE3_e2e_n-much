@@ -1,27 +1,12 @@
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { getAuctionCardList } from 'src/entities/auction/api';
-import { auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { prefetchedAuctionList } from 'src/entities/auction/queries/auction';
 import AuctionList from 'src/features/auction/AuctionList';
 import SelectOrder from 'src/features/auction/SelectOrder';
 import PageContainer from 'src/shared/ui/PageContainer';
-import type { AuctionListPageProps, EpisodeCount } from 'src/entities/auction/types';
-import type { AuctionRow } from 'src/shared/supabase/types';
+import type { AuctionListPageProps } from 'src/entities/auction/types';
 
 const AuctionListPage = async ({ order }: AuctionListPageProps) => {
-  const queryClient = new QueryClient();
-  await queryClient.prefetchInfiniteQuery({
-    queryKey: auctionListKeys.order(order),
-    queryFn: ({
-      pageParam
-    }: {
-      pageParam: number;
-    }): Promise<{
-      data: (AuctionRow & EpisodeCount)[];
-      nextId: number;
-    }> => getAuctionCardList({ order, pageParam }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId
-  });
+  const { queryClient } = await prefetchedAuctionList(order);
 
   return (
     <PageContainer>
