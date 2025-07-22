@@ -1,5 +1,5 @@
 'use client';
-import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/authStore';
+import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/useAuthStore';
 import LogoutButton from 'src/features/user/mypage/components/main/LogoutButton';
 import MyPageNavigation from 'src/features/user/mypage/components/main/MyPageNavigation';
 import MyPageUserProfile from 'src/features/user/mypage/components/main/MyPageUserProfile';

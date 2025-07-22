@@ -1,4 +1,10 @@
-import type { EpisodeCreateType, EpisodeEditType, EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
+import type {
+  EpisodeCreateType,
+  EpisodeEditType,
+  EpisodeInfo,
+  EpisodeListType,
+  EpisodesCountType
+} from 'src/entities/episode/types';
 import type { AuctionRow, EpisodeRow } from 'src/shared/supabase/types';
 
 //ANCHOR - 경매 물품에 대한 에피소드 정보
@@ -65,7 +71,7 @@ export const getEpisodesCount = async (auction_id: AuctionRow['auction_id']) => 
     throw new Error(errorResponse.error);
   }
 
-  const data: EpisodesListType = await res.json();
+  const data: EpisodesCountType = await res.json();
 
   return data;
 };
@@ -79,7 +85,7 @@ export const getEpisodesWithPagination = async (auction_id: AuctionRow['auction_
     throw new Error(errorResponse.error);
   }
 
-  const data = await res.json();
+  const data: EpisodeListType = await res.json();
 
   return data;
 };

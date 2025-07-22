@@ -1,4 +1,5 @@
-import type { AddressRow, AuctionRow, RankingRow, UserRow } from 'src/shared/supabase/types';
+import { type UserSummaryInfoType } from 'src/entities/auth/types';
+import type { AddressRow, AuctionRow, RankingRow } from 'src/shared/supabase/types';
 
 type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
 type AddressSummaryInfoType = Pick<AddressRow, 'address_id' | 'business_name' | 'road_address' | 'detail_address'>;
@@ -20,8 +21,6 @@ export type SellerAuctionCountType = {
 };
 
 type RankingSummaryInfoType = Pick<RankingRow, 'rank_position' | 'bid_amount' | 'created_at'>;
-type UserSummaryInfoType = Pick<UserRow, 'email' | 'nick_name' | 'user_avatar' | 'id'>;
-
 export type BidderRankingInfoType = RankingSummaryInfoType & { users: UserSummaryInfoType };
 
 // export type BuyerInfoType = {

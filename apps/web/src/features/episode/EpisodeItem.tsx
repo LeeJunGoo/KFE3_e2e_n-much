@@ -1,10 +1,10 @@
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 import EditDeleteEpisodes from 'src/features/episode/EditDeleteEpisodes';
-import EpisodeMoreButton from 'src/features/episode/EpisodeMoreButton';
 import { AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
+import EpisodeInfoModal from './EpisodeInfoModal';
 
 const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
   const episodeTime = formatYYYYMMDD(episode.created_at);
@@ -21,7 +21,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
     <li className="list-none space-y-1 pb-4">
       <div className="mb-5 flex items-center justify-between">
         {/* 작성자 정보 */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-2">
           <BaseAvatar src={episode.users.user_avatar!} alt={userNickname} size="sm" />
           <div>
             <div className="flex items-center gap-1">
@@ -38,7 +38,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
         <p className="text-md text-(--color-warm-gray) line-clamp-2 leading-relaxed">{episode.description}</p>
       </div>
       <div className="flex items-center justify-between">
-        <EpisodeMoreButton episode={episode} />
+        <EpisodeInfoModal episode={episode} />
         {isEpisodeEditDelete && <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />}
       </div>
     </li>

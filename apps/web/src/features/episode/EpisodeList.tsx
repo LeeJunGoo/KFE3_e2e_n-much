@@ -71,7 +71,7 @@ const EpisodeList = ({
     <>
       {/* 사연 목록 */}
       <ul className="space-y-5 divide-y">
-        {episodesList.map((episode: EpisodeItemProps) => (
+        {episodesList!.map((episode: EpisodeItemProps) => (
           <EpisodeItem key={episode.episode_id} episode={episode} sellerId={sellerId} />
         ))}
       </ul>
