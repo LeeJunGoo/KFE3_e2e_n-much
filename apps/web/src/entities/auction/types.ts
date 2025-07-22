@@ -24,7 +24,6 @@ export type AuctionTimerStatus = 'ongoing' | 'urgent' | 'ended';
 
 // export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
 
-
 export type SellerAuctionCountType = {
   status: string;
   data: {
@@ -93,3 +92,31 @@ export interface AuctionFormProps {
 //   status: string;
 // };
 
+//NOTE - auctionList 관련 페이지 props 목록
+export interface CurrentAuctionsPageProps {
+  searchParams: Promise<{ order: string }>;
+}
+
+export interface AuctionListPageProps {
+  order: string;
+}
+
+//NOTE - auctionCard의 좋아유 갯수
+export interface EpisodeCount {
+  episodes: [{ count: number }];
+}
+
+//NOTE - 경매 리스트 props
+export interface AuctionListProps {
+  order: string;
+}
+
+//NOTE - auctionCard의 props
+export interface AuctionCardProp {
+  auction_id: string;
+  imageSrc: string | undefined;
+  title: string;
+  episodeCount: number;
+  endDate: string;
+  favorites: number;
+}

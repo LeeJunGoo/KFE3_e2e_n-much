@@ -4,16 +4,8 @@ import { auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import AuctionList from 'src/features/auction/AuctionList';
 import SelectOrder from 'src/features/auction/SelectOrder';
 import PageContainer from 'src/shared/ui/PageContainer';
+import type { AuctionListPageProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
-
-interface AuctionListPageProps {
-  order: string;
-}
-
-//TODO - 파일로 분리하기 (KMH)
-interface EpisodeCount {
-  episodes: [{ count: number }];
-}
 
 const AuctionListPage = async ({ order }: AuctionListPageProps) => {
   const queryClient = new QueryClient();

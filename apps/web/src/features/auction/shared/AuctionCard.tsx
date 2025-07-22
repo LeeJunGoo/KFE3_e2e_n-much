@@ -10,16 +10,7 @@ import { FaHeart } from 'react-icons/fa';
 import { FaBookOpen } from 'react-icons/fa6';
 import noAuctionImage from 'src/assets/images/noAuctionImage.png';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
-
-//TODO - 파일로 분리하기 (KMH)
-interface AuctionCardProp {
-  auction_id: string;
-  imageSrc: string | undefined;
-  title: string;
-  episodeCount: number;
-  endDate: string;
-  favorites: number;
-}
+import type { AuctionCardProp } from 'src/entities/auction/types';
 
 //TODO - LINK prefetch 찾아보기 (KMH)
 const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeCount }: AuctionCardProp) => {

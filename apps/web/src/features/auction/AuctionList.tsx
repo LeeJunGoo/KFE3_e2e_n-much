@@ -7,17 +7,8 @@ import { getAuctionCardList } from 'src/entities/auction/api';
 import { auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
+import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
-
-//TODO - 파일로 분리하기 (KMH)
-interface AuctionListProps {
-  order: string;
-}
-
-//TODO - 파일로 분리하기 (KMH)
-interface EpisodeCount {
-  episodes: [{ count: number }];
-}
 
 //TODO - nextjs 캐시로 관리하기 (KMH)
 const AuctionList = ({ order }: AuctionListProps) => {
