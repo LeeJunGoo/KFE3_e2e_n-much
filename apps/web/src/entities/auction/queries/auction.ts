@@ -60,7 +60,7 @@ export const useGetAuctionListQuery = (order: string) => {
     data: fetchedAuctions,
     isError,
     error,
-    isLoading,
+    isPending,
     isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery({
@@ -73,5 +73,5 @@ export const useGetAuctionListQuery = (order: string) => {
     enabled: Boolean(order) === true
   });
 
-  return { fetchedAuctions, isError, error, isLoading, isFetchingNextPage, fetchNextPage, ref, inView };
+  return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
 };

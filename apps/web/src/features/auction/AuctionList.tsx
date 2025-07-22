@@ -9,7 +9,7 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 
 //TODO - nextjs 캐시로 관리하기 (KMH)
 const AuctionList = ({ order }: AuctionListProps) => {
-  const { fetchedAuctions, isError, error, isLoading, isFetchingNextPage, fetchNextPage, ref, inView } =
+  const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
     useGetAuctionListQuery(order);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const AuctionList = ({ order }: AuctionListProps) => {
   }
 
   //TODO - 스켈레톤 UJI 사용하기 (KMH)
-  if (isLoading) {
+  if (isPending) {
     return <p>로딩중...</p>;
   }
 
