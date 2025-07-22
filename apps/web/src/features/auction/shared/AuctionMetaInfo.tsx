@@ -9,7 +9,7 @@ type AuctionMetaInfoType = {
 
 const AuctionMetaInfo = ({ favoritesCount, episodesCount, className }: AuctionMetaInfoType) => {
   return (
-    <div className={twMerge(`flex items-center gap-3 text-sm`, className)}>
+    <div className={twMerge(`flex gap-3 text-sm`, className)}>
       <p className="flex items-center gap-1">
         <FaHeart className="text-(--color-red) mr-1" />
         <span>{favoritesCount}</span>
