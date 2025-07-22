@@ -14,8 +14,6 @@ type AddressInfoType = Omit<AddressRow, 'created_at' | 'is_default' | 'user_id'>
 
 export type AuctionInfoWithAddressType = AuctionInfoType & AddressInfoType;
 
-export type AuctionTimerStatus = 'ongoing' | 'urgent' | 'ended';
-
 // export type BuyerInfoType = {
 //   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
 // };
