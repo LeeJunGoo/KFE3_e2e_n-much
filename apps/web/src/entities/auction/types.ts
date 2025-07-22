@@ -14,8 +14,6 @@ type AddressInfoType = Omit<AddressRow, 'created_at' | 'is_default' | 'user_id'>
 
 export type AuctionInfoWithAddressType = AuctionInfoType & AddressInfoType;
 
-export type AuctionTimerStatus = 'ongoing' | 'urgent' | 'ended';
-
 // export type BuyerInfoType = {
 //   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
 // };
@@ -23,7 +21,6 @@ export type AuctionTimerStatus = 'ongoing' | 'urgent' | 'ended';
 // export type AuctionInfoType = { status: string; data: AuctionRow };
 
 // export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
-
 
 export type SellerAuctionCountType = {
   status: string;
@@ -93,3 +90,36 @@ export interface AuctionFormProps {
 //   status: string;
 // };
 
+//NOTE - auctionList 관련 페이지 props 목록
+export interface CurrentAuctionsPageProps {
+  searchParams: Promise<{ order: string }>;
+}
+
+export interface AuctionListPageProps {
+  order: string;
+}
+
+//NOTE - auctionCard의 좋아유 갯수
+export interface EpisodeCount {
+  episodes: [{ count: number }];
+}
+
+//NOTE - 경매 리스트 props
+export interface AuctionListProps {
+  order: string;
+}
+
+//NOTE - auctionCard의 props
+export interface AuctionCardProp {
+  auctionId: string;
+  imageSrc: string | undefined;
+  title: string;
+  episodeCount: number;
+  endDate: string;
+  favoriteCount: number;
+}
+
+//NOTE - 정렬 카테고리 선택
+export interface SelectOrderProps {
+  order: string;
+}

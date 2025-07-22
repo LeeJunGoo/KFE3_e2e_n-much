@@ -19,8 +19,8 @@ const FormDescription = ({ control, descriptionLabel, placeholder, maxDescLength
     <FormField
       control={control}
       name="description"
-      render={({ field, fieldState }) => (
-        <FormItem className="">
+      render={({ field }) => (
+        <FormItem>
           <FormLabel className="flex gap-0.5">
             <p className="text-black">{descriptionLabel}</p>
             <span className="text-(--color-red) translate-y-0.5">&#42;</span>
@@ -36,7 +36,7 @@ const FormDescription = ({ control, descriptionLabel, placeholder, maxDescLength
             </FormControl>
           </div>
           <div className="relative">
-            {fieldState.invalid && <FormMessage />}
+            <FormMessage />
             <p className={`absolute right-0 top-0 text-xs font-semibold ${descTextColor}`}>
               {description.length}/{maxDescLength}
             </p>
