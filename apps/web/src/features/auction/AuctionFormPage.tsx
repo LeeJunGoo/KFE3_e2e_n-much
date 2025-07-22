@@ -1,9 +1,7 @@
 //TODO - memo 훅으로 최적화 시도 해보기
 
-import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
-import { getAuction } from 'src/entities/auction/api';
-import { prefetchedAddressId } from 'src/entities/auction/queries/auction';
-import { auctionFormKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { prefetchAddressId, prefetchAuctionFormData } from 'src/entities/auction/queries/auction';
 import { getServerUser } from 'src/entities/auth/serverAction';
 import AuctionForm from 'src/features/auction/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
@@ -14,9 +12,10 @@ const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   const pageTitle = isEditing ? '경매 수정하기' : '경매 등록하기';
   const userInfo = await getServerUser();
   const loggedInUserId = userInfo!.id; //NOTE - 미들웨어에서 비로그인시 메인 페이지로 리다이렉트 함
+  const queryClient = new QueryClient();
 
   //TODO - 마이 페이지에서 주소를 변경할 때, 아래 쿼리 키의 캐시를 지워야 함 (KMH)
-  const queryClient = prefetchedAddressId(loggedInUserId);
+  await prefetchAddressId(loggedInUserId, queryClient);
 
   if (!isEditing && auctionId) {
     return (
@@ -27,10 +26,7 @@ const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
     );
   }
 
-  await queryClient.prefetchQuery({
-    queryKey: auctionFormKeys.item(auctionId),
-    queryFn: () => getAuction(auctionId)
-  });
+  await prefetchAuctionFormData(auctionId, queryClient);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

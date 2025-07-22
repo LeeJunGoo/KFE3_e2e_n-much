@@ -98,13 +98,16 @@ export const useGetAuctionListQuery = (order: string) => {
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
 };
 
-export const prefetchedAddressId = async (loggedInUserId: string) => {
-  const queryClient = new QueryClient();
-
+export const prefetchAddressId = async (loggedInUserId: string, queryClient: QueryClient) => {
   await queryClient.prefetchQuery({
     queryKey: addressIdKeys.item(loggedInUserId),
     queryFn: () => getAddressId(loggedInUserId)
   });
+};
 
-  return { queryClient };
+export const prefetchAuctionFormData = async (auctionId: string | undefined, queryClient: QueryClient) => {
+  await queryClient.prefetchQuery({
+    queryKey: auctionFormKeys.item(auctionId),
+    queryFn: () => getAuction(auctionId)
+  });
 };
