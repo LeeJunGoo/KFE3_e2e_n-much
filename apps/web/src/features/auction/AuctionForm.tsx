@@ -23,7 +23,8 @@ import {
   MAX_DESCRIPTION_LETTERS,
   MAX_TITLE_LETTERS,
   MIN_MAX_POINT_NUM,
-  MIN_STARTING_POINT_NUM
+  MIN_STARTING_POINT_NUM,
+  UTC_TIME_ZONE
 } from 'src/entities/auction/constants';
 import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
@@ -37,8 +38,7 @@ import {
   getNowKorDate,
   getTime,
   getTomorrowDate,
-  setTimeToDate,
-  UTC_TIME_ZONE
+  setTimeToDate
 } from 'src/shared/utils/dateFns';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, PreviewImage } from 'src/entities/auction/types';
