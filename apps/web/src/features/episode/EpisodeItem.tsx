@@ -1,9 +1,8 @@
-import DefaultAvatar from 'src/assets/images/avatarDefault.svg';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 import EditDeleteEpisodes from 'src/features/episode/EditDeleteEpisodes';
 import EpisodeMoreButton from 'src/features/episode/EpisodeMoreButton';
 import { AuctionRow } from 'src/shared/supabase/types';
-import UserAvatar from 'src/shared/ui/BaseAvatar';
+import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 
@@ -23,7 +22,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
       <div className="mb-5 flex items-center justify-between">
         {/* 작성자 정보 */}
         <div className="flex items-center">
-          <UserAvatar src={episode.users.user_avatar ?? DefaultAvatar} alt={userNickname} size="sm" />
+          <BaseAvatar src={episode.users.user_avatar!} alt={userNickname} size="sm" />
           <div>
             <div className="flex items-center gap-1">
               <p className="text-(--color-text-base) text-sm font-medium">{userNickname}</p>

@@ -1,5 +1,5 @@
 import { Card } from '@repo/ui/components/ui/card';
-import { getEpisodesByAuctionId, getEpisodesWithPagination } from 'src/entities/episode/api';
+import { getEpisodesByAuctionId } from 'src/entities/episode/api';
 import EpisodeList from 'src/features/episode/EpisodeList';
 import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
 import type { AuctionRow } from 'src/shared/supabase/types';

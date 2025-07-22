@@ -15,8 +15,7 @@ import { AuctionRow } from 'src/shared/supabase/types';
 import EpisodeItem from './EpisodeItem';
 import EpisodeEmpty from './shared/EpisodeEmpty';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-
-const EPISODES_PER_PAGE = 5;
+import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 
 const EpisodeList = ({
   episodeList,
