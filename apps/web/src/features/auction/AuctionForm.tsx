@@ -31,7 +31,6 @@ import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 's
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
-import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
 import {
   convertFromKorToUtcDate,
@@ -419,7 +418,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               )}
             />
             <FormLabel>상품 이미지</FormLabel>
-            <ImageUploader onPreviewImages={setPreviewImages} />
+            <ImageUploader previewImages={previewImages} setPreviewImages={setPreviewImages} />
             <Button type="submit" className="h-12 w-full" variant="base">
               {(isEditing && !isPatchAuctionPending && '수정하기') ||
                 (isEditing && isPatchAuctionPending && '수정중...') ||

@@ -6,26 +6,31 @@ import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
+import type { PreviewImage } from 'src/entities/auction/types';
 
+//TODO - 파일로 분리하기
 interface ImageUploaderProps {
-  onPreviewImages: Dispatch<SetStateAction<{ id: string; data: string; isUrl: boolean }[]>>;
+  previewImages: PreviewImage[];
+  setPreviewImages: Dispatch<SetStateAction<{ id: string; data: string; isUrl: boolean }[]>>;
 }
 
-const ImageUploader = ({ onPreviewImages }: ImageUploaderProps) => {
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      onPreviewImages([]);
+const ImageUploader = ({ previewImages, setPreviewImages }: ImageUploaderProps) => {
+  console.log('previewImages', previewImages.length);
+  const onDrop = (acceptedFiles: File[]) => {
+    if (previewImages.length + acceptedFiles.length > 5) {
+      alert(previewImages.length + acceptedFiles.length);
+      return;
+    }
 
-      acceptedFiles.forEach((file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          onPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false }]);
-        };
-      });
-    },
-    [onPreviewImages]
-  );
+    acceptedFiles.forEach((file) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false }]);
+      };
+    });
+  };
+
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
