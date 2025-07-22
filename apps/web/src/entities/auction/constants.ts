@@ -16,3 +16,6 @@ export const MIN_END_TIME_LETTERS = 1; //NOTE - 경매 종료 시각 입력 여�
 export const MIN_STARTING_POINT_NUM = 0; //NOTE - 최소 경매 시작가
 export const MIN_MAX_POINT_NUM = 0; //NOTE - 최대 경매 시작가
 export const BUCKET_FOLDER_NAME = 'images/'; //NOTE - 버켓 폴더 이름
+
+//NOTE - 경매 리스트에서 한 페이지당 가져오는 경매 수
+export const ITEM_PER_PAGE = 4;

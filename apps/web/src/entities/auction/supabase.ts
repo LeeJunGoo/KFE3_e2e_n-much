@@ -2,6 +2,7 @@ import { decode } from 'base64-arraybuffer';
 import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
+import { ITEM_PER_PAGE } from './constants';
 
 const supabase = createClient();
 
@@ -188,7 +189,6 @@ export const selectAuctionsByMainPageCategory = async (orderParam: string, isAsc
 
 //NOTE - //NOTE - 경매 현황의 경매 리스트 가져오기
 export const selectAuctionCardList = async (order: string | undefined, page: number | undefined) => {
-  const ITEM_PER_PAGE = 4; //TODO - 파일로 분리하기 (KMH)
   const auctionsCount = await selectAuctionsCount();
 
   if (!order) {
