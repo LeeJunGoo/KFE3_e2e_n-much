@@ -1,8 +1,8 @@
 import { decode } from 'base64-arraybuffer';
 import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
-import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
 import { ITEM_PER_PAGE } from './constants';
+import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -210,7 +210,7 @@ export const selectAuctionCardList = async (order: string | undefined, page: num
     )
     .order(order, { ascending })
     .eq('status', 'OPEN')
-    .range(page, page + ITEM_PER_PAGE);
+    .range(page, page + ITEM_PER_PAGE - 1);
 
   if (error) {
     console.error(error);

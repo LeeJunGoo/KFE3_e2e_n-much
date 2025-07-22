@@ -11,13 +11,13 @@ import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 import type { AuctionCardProp } from 'src/entities/auction/types';
 
-const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeCount }: AuctionCardProp) => {
+const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
   const { status, remainTime } = formatRemainingTime(endDate);
 
   return (
     <li className="rounded-button hover:scale-98 active:scale-96 overflow-hidden rounded-xl bg-white shadow-sm transition-transform">
-      <Link href={`/auctions/${auction_id}`} prefetch={true}>
+      <Link href={`/auctions/${auctionId}`} prefetch={true}>
         <div className="relative">
           <div className="relative h-40 w-full">
             {imageSrc ? (
@@ -43,7 +43,7 @@ const AuctionCard = ({ auction_id, imageSrc, title, endDate, favorites, episodeC
         <div className="p-2">
           <h3 className="text-(--color-text-base) mb-1.5 overflow-hidden text-ellipsis text-sm font-medium">{title}</h3>
           <AuctionMetaInfo
-            favoritesCount={favorites}
+            favoritesCount={favoriteCount}
             episodesCount={`${episodeCount}개의 스토리`}
             className="justify-between"
           />

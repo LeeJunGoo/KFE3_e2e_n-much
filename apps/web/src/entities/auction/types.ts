@@ -111,12 +111,12 @@ export interface AuctionListProps {
 
 //NOTE - auctionCard의 props
 export interface AuctionCardProp {
-  auction_id: string;
+  auctionId: string;
   imageSrc: string | undefined;
   title: string;
   episodeCount: number;
   endDate: string;
-  favorites: number;
+  favoriteCount: number;
 }
 
 //NOTE - 정렬 카테고리 선택

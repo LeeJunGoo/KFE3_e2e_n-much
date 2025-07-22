@@ -41,7 +41,6 @@ const AuctionList = ({ order }: AuctionListProps) => {
     );
   }
 
-  //TODO - 로딩 스피너 위치 물어보기 (KMH)
   return (
     <>
       <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
@@ -63,20 +62,20 @@ const AuctionList = ({ order }: AuctionListProps) => {
               return (
                 <AuctionCard
                   key={`${auctionId}`}
-                  auction_id={auctionId}
+                  auctionId={auctionId}
                   imageSrc={imageUrls[0]}
                   title={title}
                   endDate={endDate}
                   episodeCount={episodes[0]['count']}
-                  favorites={favorites.length}
+                  favoriteCount={favorites.length}
                 />
               );
             })
           )}
-        <div>
-          <div ref={ref}>{isFetchingNextPage && <LoadingSpinner />}</div>
-        </div>
       </ul>
+      <div className="flex w-full items-center" ref={ref}>
+        {isFetchingNextPage && <LoadingSpinner />}
+      </div>
     </>
   );
 };
