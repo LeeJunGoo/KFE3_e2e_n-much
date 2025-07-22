@@ -7,9 +7,9 @@ import { signOut } from 'src/entities/user/mypage/main/supabase';
 import ConfirmDialog from 'src/widgets/ConfirmDialog';
 import { twMerge } from 'tailwind-merge';
 
-interface LogoutButtonProps {
+type LogoutButtonProps = {
   className?: string;
-}
+};
 
 const LogoutButton = ({ className }: LogoutButtonProps) => {
   const { push } = useRouter();
@@ -17,7 +17,6 @@ const LogoutButton = ({ className }: LogoutButtonProps) => {
   const handleLogout = async () => {
     try {
       await signOut();
-
       toast.success('로그아웃 되었습니다!');
       push('/');
     } catch (error) {
