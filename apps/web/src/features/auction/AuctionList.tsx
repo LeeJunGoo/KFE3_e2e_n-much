@@ -1,7 +1,5 @@
 'use client';
 
-//TODO - 스피너 적용하기
-
 import { useEffect } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
@@ -21,6 +19,7 @@ interface EpisodeCount {
   episodes: [{ count: number }];
 }
 
+//TODO - nextjs 캐시로 관리하기 (KMH)
 const AuctionList = ({ order }: AuctionListProps) => {
   const { ref, inView } = useInView();
   const {
