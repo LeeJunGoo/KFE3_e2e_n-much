@@ -4,9 +4,9 @@ import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import type { AuctionInfoWithAddressType } from 'src/entities/auction/types';
 
-const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
+const AuctionDetailInfo = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
   const badgeVariant = auctionInfo.status === 'OPEN' ? 'accent' : 'red';
-  const auctionStatus = auctionInfo.status === 'OPEN' ? 'OPEN' : 'CLOSED';
+  const auctionStatus = auctionInfo.status === 'OPEN' ? '진행중' : '종료됨';
 
   return (
     //  경매 정보
@@ -18,12 +18,13 @@ const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressTyp
             {auctionStatus}
           </BaseBadge>
         </div>
-        <p className="text-(--color-warm-gray) mb-3 text-sm">{auctionInfo.description}</p>
-
-        <AuctionTimerDynamic endDate={auctionInfo.end_date} />
-        <div className="mb-4">
-          <p className="text-(--color-warm-gray) text-sm">현재 최고 입찰가</p>
-          <p className="text-(--color-text-base) text-xl font-bold">{auctionInfo.current_point.toLocaleString()} P</p>
+        <div className="space-y-2">
+          <p className="text-(--color-warm-gray) text-sm">{auctionInfo.description}</p>
+          <AuctionTimerDynamic endDate={auctionInfo.end_date} />
+          <div className="mb-4">
+            <p className="text-(--color-warm-gray) text-sm">현재 최고 입찰가</p>
+            <p className="text-(--color-text-base) text-xl font-bold">{auctionInfo.current_point.toLocaleString()} P</p>
+          </div>
         </div>
         {/* //FIXME - Seller일 경우만 */}
         <div className="flex space-x-3">
@@ -39,4 +40,4 @@ const AuctionDetail = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressTyp
   );
 };
 
-export default AuctionDetail;
+export default AuctionDetailInfo;

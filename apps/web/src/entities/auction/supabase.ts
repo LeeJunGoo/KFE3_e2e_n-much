@@ -1,8 +1,8 @@
 import { decode } from 'base64-arraybuffer';
+import { ITEM_PER_PAGE } from 'src/entities/auction/constants';
 import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
-import { ITEM_PER_PAGE } from './constants';
-import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -15,30 +15,6 @@ export const getAllAuctions = async () => {
     throw new Error('DB : 모든 경매 불러오기 에러');
   }
 
-  return data;
-};
-
-//NOTE - 특정 상품 정보
-export const selectAuctionInfo = async (auction_id: string): Promise<AuctionRow> => {
-  const { data, error } = await supabase.from('auctions').select(`*`).eq('auction_id', auction_id).maybeSingle();
-
-  if (error) {
-    console.error('🚀 ~ getAuction ~ getAuction:', error.message);
-    throw new Error('DB: 특정 경매 불러오기 에러');
-  }
-  //NOTE - 준구님이 고칠 예정 (KMH)
-  return data;
-};
-
-//NOTE - 특정 상품의 기본 주소 정보
-export const selectAuctionDefaultAddress = async (userId: string): Promise<UserRow> => {
-  const { data, error } = await supabase.from('users').select(`*`).eq('id', userId).maybeSingle();
-
-  if (error) {
-    console.error('🚀 ~ selectAuctionDefaultAddress:', error.message);
-    throw new Error('DB: 특정 상품 주소 정보 불러오기 에러');
-  }
-  //NOTE - 준구님이 고칠 예정 (KMH)
   return data;
 };
 
@@ -129,26 +105,24 @@ export const deleteAuction = async (auctionId: string | undefined) => {
   return data;
 };
 
-//NOTE - 판매자의 총 경매 수 및 현재 진행 중인 갱며 수
-export const selectSellerAuctionCount = async (sellerId: string) => {
-  const { count: totalCount, error: totalError } = await supabase
-    .from('auctions')
-    .select('*', { count: 'exact', head: true })
-    .eq('seller_id', sellerId);
+//ANCHOR - 판매자의 총 경매 수 및 현재 진행 중인 경매 수
+export const selectSellerAuctionCount = async (sellerId: AuctionRow['user_id']) => {
+  const [totalResult, activeResult] = await Promise.all([
+    supabase.from('auctions').select('*', { count: 'exact', head: true }).eq('user_id', sellerId),
+    supabase.from('auctions').select('*', { count: 'exact', head: true }).eq('user_id', sellerId).eq('status', 'OPEN')
+  ]);
 
-  const { count: activeCount, error: activeError } = await supabase
-    .from('auctions')
-    .select('*', { count: 'exact', head: true })
-    .eq('seller_id', sellerId)
-    .eq('status', 'OPEN');
+  const { count: totalCount, error: totalError } = totalResult;
+  const { count: activeCount, error: activeError } = activeResult;
 
   if (totalError) {
-    console.log('🚀 ~ getSellerAuctionCount ~ totalError:', totalError.message);
-    throw new Error('DB: 경매자의 총 경매 수를 불러오는 과정에서 Error 발생');
+    console.error('🚀 ~ selectSellerAuctionCount ~ totalError:', totalError);
+    throw new Error();
   }
+
   if (activeError) {
-    console.log('🚀 ~ getSellerAuctionCount ~ activeError:', activeError.message);
-    throw new Error('DB: 경매자의 현재 진행중인 경매 수를 불러오는 과정에서 Error 발생');
+    console.error('🚀 ~ selectSellerAuctionCount ~ activeError:', activeError);
+    throw new Error();
   }
 
   return {

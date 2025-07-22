@@ -8,7 +8,7 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 
 type ImageArrayProps = AuctionRow['image_urls'];
 
-const AuctionDetailICarousel = ({ imageUrls }: { imageUrls: ImageArrayProps }) => {
+const AuctionDetailCarousel = ({ imageUrls }: { imageUrls: ImageArrayProps }) => {
   const isImage = imageUrls && imageUrls.length > 0;
 
   return (
@@ -56,4 +56,4 @@ const AuctionDetailICarousel = ({ imageUrls }: { imageUrls: ImageArrayProps }) =
   );
 };
 
-export default AuctionDetailICarousel;
+export default AuctionDetailCarousel;

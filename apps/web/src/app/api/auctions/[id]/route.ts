@@ -1,18 +1,16 @@
-
 //TODO - '500: 서버 처리 중 오류가 발생했습니다.' 의논해보기 DB에러가 무시됨 (KMH)
 import { NextResponse } from 'next/server';
 import {
   deleteAuction,
   selectAuction,
-  selectAuctionInfoForEpisode,
+  selectAuctionInfoWithAddress,
+  selectAuctionSummaryInfoWithAddress,
   updateAuction
 } from 'src/entities/auction/supabase';
-import { selectHighestBidder } from 'src/entities/episode/supabase';
+import { selectBidderRanking, selectEpisodesByAuctionId } from 'src/entities/episode/supabase';
 import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionUpdate } from 'src/shared/supabase/types';
-import { selectAuctionInfoWithAddress, selectAuctionSummaryInfoWithAddress } from 'src/entities/auction/supabase';
-
 
 type ParamsType = {
   params: Promise<{ id: string }>;
@@ -31,10 +29,14 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
   try {
     if (type === 'auction_form') {
       res = await selectAuction(id);
+    } else if (type === 'episode_list') {
+      res = await selectEpisodesByAuctionId(id);
     } else if (type === 'episode_form') {
       res = await selectAuctionSummaryInfoWithAddress(id);
     } else if (type === 'auction') {
       res = await selectAuctionInfoWithAddress(id);
+    } else if (type === 'ranking') {
+      res = await selectBidderRanking(id);
     }
 
     return NextResponse.json(res, { status: 200 });

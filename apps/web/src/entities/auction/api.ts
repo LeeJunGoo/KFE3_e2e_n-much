@@ -1,12 +1,15 @@
-import type { AuctionInfoWithAddressType, AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
+//TODO - 준구님 컨벤션에 맞추기 (KMH)
+import type {
+  AuctionInfoWithAddressType,
+  AuctionSummaryInfoWithAddressType,
+  BidderRankingInfoType,
+  SellerAuctionCountType
+} from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 //ANCHOR - 경매 상세 페이지: 경매 상풍 및 업체 정보
 export const getAuctionInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction`, {
-    cache: 'force-cache',
-    next: { tags: [`auctions-${auctionId}`] }
-  });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction`);
 
   if (!res.ok) {
     const errorResponse = await res.json();
@@ -29,31 +32,31 @@ export const getAuctionSummaryInfoWithAddress = async (auctionId: AuctionRow['au
   return data;
 };
 
-//NOTE - 경매자의 총 경매 수 및 현재 진행중인 경매 수
-export const fetchSellerAuctionCount = async (seller_id: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${seller_id}?type=seller`);
+//ANCHOR - 경매자의 총 경매 수 및 현재 진행중인 경매 수
+export const getSellerAuctionCount = async (seller_id: AuctionRow['user_id']) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/seller?id=${seller_id}`);
 
   if (!res.ok) {
-    throw new Error(`경매 상품에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
 
-  // const result: SellerAuctionCountType = await res.json();
+  const data: SellerAuctionCountType = await res.json();
 
-  // return result.data;
+  return data;
 };
 
-// NOTE - 최고 입찰자의 정보
-export const fetchHighestBidder = async (auction_id: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=buyer`);
+//ANCHOR - 입찰 랭킹의 입찰자의 정보
+export const getBidderRanking = async (auction_id: AuctionRow['auction_id']) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=ranking`);
 
   if (!res.ok) {
-    throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${res.status}`);
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
 
-  // const result: AuctionHighestBidder = await res.json();
-  const result = await res.json(); //FIXME - 타입 에러가 발생해서 기존 내용 주석처리해서 임시 조치함 (KMH)
-
-  return result.data;
+  const data: BidderRankingInfoType[] | null = await res.json();
+  return data;
 };
 
 //NOTE - 경매 데이터 삭제
