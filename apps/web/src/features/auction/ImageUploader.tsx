@@ -15,21 +15,23 @@ interface ImageUploaderProps {
 }
 
 const ImageUploader = ({ previewImages, setPreviewImages }: ImageUploaderProps) => {
-  console.log('previewImages', previewImages.length);
-  const onDrop = (acceptedFiles: File[]) => {
-    if (previewImages.length + acceptedFiles.length > 5) {
-      alert(previewImages.length + acceptedFiles.length);
-      return;
-    }
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (previewImages.length + acceptedFiles.length > 5) {
+        alert(previewImages.length + acceptedFiles.length);
+        return;
+      }
 
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onloadend = () => {
-        setPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false }]);
-      };
-    });
-  };
+      acceptedFiles.forEach((file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          setPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false }]);
+        };
+      });
+    },
+    [previewImages.length, setPreviewImages]
+  );
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
