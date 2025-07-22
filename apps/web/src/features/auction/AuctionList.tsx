@@ -73,7 +73,7 @@ const AuctionList = ({ order }: AuctionListProps) => {
             })
           )}
       </ul>
-      <div className="flex w-full items-center" ref={ref}>
+      <div className="flex w-full justify-center" ref={ref}>
         {isFetchingNextPage && <LoadingSpinner />}
       </div>
     </>
