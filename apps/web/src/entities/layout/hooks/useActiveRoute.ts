@@ -6,7 +6,8 @@ const useActiveRoute = () => {
   return {
     isHome: pathname === '/main',
     isAuctionWrite: pathname.startsWith('/auctions/write'),
-    isAuctions: pathname.startsWith('/auctions') && !pathname.startsWith('/auctions/write'),
+    isChat: pathname.startsWith('/chat'),
+    isAuctions: pathname.startsWith('/auctions'),
     isMypage: pathname.startsWith('/mypage')
   };
 };

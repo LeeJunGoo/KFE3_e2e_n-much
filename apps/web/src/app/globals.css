@@ -21,3 +21,12 @@ body {
 input::selection {
   @apply bg-(--color-primary) text-white;
 }
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}

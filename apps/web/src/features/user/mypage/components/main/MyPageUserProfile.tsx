@@ -7,7 +7,7 @@ import AddressStatus from 'src/features/user/mypage/components/main/AddressStatu
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import PointDisplay from 'src/shared/ui/PointDisplay';
-import { formatKoreanFullDate } from 'src/shared/utils/formatToKoreanDateTime';
+import { formatKoreanFullDate } from 'src/shared/utils/formatKoreanDate';
 import BaseCard from 'src/widgets/BaseCard';
 import type { RoleType, UserMetadata } from 'src/entities/user/mypage/main/types';
 
