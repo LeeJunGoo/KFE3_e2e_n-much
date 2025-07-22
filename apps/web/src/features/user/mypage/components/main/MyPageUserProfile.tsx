@@ -8,7 +8,6 @@ import AddressStatus from 'src/features/user/mypage/components/main/AddressStatu
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import PointDisplay from 'src/shared/ui/PointDisplay';
-import { formatKoreanFullDate } from 'src/shared/utils/formatKoreanDate';
 import BaseCard from 'src/widgets/BaseCard';
 
 const MyPageUserProfile = () => {
@@ -18,8 +17,8 @@ const MyPageUserProfile = () => {
   if (!user) return null;
 
   const { nick_name: name, email, user_avatar: avatarUrl } = user;
-  const currentRole = (user?.role || 'buyer') as keyof typeof ROLE_CONFIG;
 
+  const currentRole = (user?.role || 'buyer') as keyof typeof ROLE_CONFIG;
   const currentConfig = ROLE_CONFIG[currentRole];
   if (!currentConfig) return null;
 
@@ -58,7 +57,6 @@ const MyPageUserProfile = () => {
           <p className="text-sm">보유 포인트</p>
           <PointDisplay amount={1000} />
         </div>
-        <p className="text-(--color-warm-gray) mt-1 text-xs">마지막 업데이트: {formatKoreanFullDate('2025-05-05')}</p>
       </div>
     </BaseCard>
   );
