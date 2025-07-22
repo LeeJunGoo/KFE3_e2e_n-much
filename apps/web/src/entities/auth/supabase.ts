@@ -21,7 +21,7 @@ export const selectSignUp = async (provider: Provider) => {
   }
 };
 
-export const selectUsers = async (userId: string) => {
+export const selectUser = async (userId: string) => {
   const { data, error } = await supabase.from('users').select('*').eq('id', userId).single();
 
   if (error) {

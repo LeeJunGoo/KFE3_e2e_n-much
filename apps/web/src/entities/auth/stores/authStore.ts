@@ -1,4 +1,4 @@
-import { selectUsers } from 'src/entities/auth/supabase';
+import { selectUser } from 'src/entities/auth/supabase';
 import { create } from 'zustand';
 import type { User } from '@supabase/supabase-js';
 import type { ExtendedUser } from 'src/entities/auth/types';
@@ -27,7 +27,7 @@ const useAuthStore = create<AuthState>((set, get) => ({
     setLoading: (loading) => set({ loading }),
 
     fetchUserProfile: async (userId) => {
-      const profile = await selectUsers(userId);
+      const profile = await selectUser(userId);
       const currentUser = get().user;
 
       if (currentUser && profile) {
