@@ -1,10 +1,11 @@
 import { createClient } from 'src/shared/supabase/client/client';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import type { EpisodeCreateType, EpisodeEditType } from 'src/entities/episode/types';
+import { EPISODES_PER_PAGE } from './constants';
 
 const supabase = createClient();
 
-//ANCHOR - 특정 에피소드 정보
+//ANCHOR - 경매 상품에 대한 에피소드 정보
 export const selectEpisodeInfo = async (episode_id: string) => {
   const { data, error } = await supabase.from('episodes').select(`*`).eq('episode_id', episode_id).maybeSingle();
 
@@ -16,7 +17,7 @@ export const selectEpisodeInfo = async (episode_id: string) => {
   return data;
 };
 
-//ANCHOR - 특정 에피소드 등록
+//ANCHOR - 경매 상품에 대한 에피소드 등록
 export const insertEpisode = async ({ auctionId, userId, title, description }: EpisodeCreateType) => {
   const { error } = await supabase.from('episodes').insert([
     {
@@ -33,7 +34,7 @@ export const insertEpisode = async ({ auctionId, userId, title, description }: E
   }
 };
 
-//ANCHOR - 특정 에피소드 수정
+//ANCHOR - 경매 상품에 대한 에피소드 수정
 export const updateEpisodeById = async ({ episodeId, title, description }: EpisodeEditType) => {
   const { error } = await supabase.from('episodes').update({ title, description }).eq('episode_id', episodeId!);
 
@@ -43,7 +44,7 @@ export const updateEpisodeById = async ({ episodeId, title, description }: Episo
   }
 };
 
-//ANCHOR - 경매 상품에 대한 에피소드 및 사연자 정보
+//ANCHOR - 경매 물품에 대한 전체 에피소드 리스트 및 개수
 export const selectEpisodesByAuctionId = async (auctionId: AuctionRow['auction_id']) => {
   const {
     data: episode,
@@ -73,6 +74,34 @@ export const selectEpisodesByAuctionId = async (auctionId: AuctionRow['auction_i
   return {
     episodeList: episode ?? [],
     episodeCount: count ?? 0
+  };
+};
+export const selectEpisodesWithPagination = async (page: number, auctionId: AuctionRow['auction_id']) => {
+  const from = (page - 1) * EPISODES_PER_PAGE;
+  const to = from + EPISODES_PER_PAGE - 1;
+
+  const { data: episode, error } = await supabase
+    .from('episodes')
+    .select(
+      `
+      *,
+      users:user_id (
+        nick_name,
+        user_avatar,
+        email
+      )
+    `
+    )
+    .eq('auction_id', auctionId)
+    .range(to, from)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('🚀 ~ selectEpisodesWithPagination ~ error:', error);
+    throw new Error();
+  }
+  return {
+    episodeList: episode ?? []
   };
 };
 

@@ -10,12 +10,11 @@ import {
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const episodeId = searchParams.get('episodeId');
-  const auctionId = searchParams.get('auctionId');
   const type = searchParams.get('type');
   let res;
 
   try {
-    if (!auctionId && !episodeId) {
+    if (!episodeId) {
       return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
     }
 

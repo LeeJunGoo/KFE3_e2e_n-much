@@ -10,7 +10,6 @@ import {
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
 import { useEffect, useRef, useState } from 'react';
-// import { fetchEpisodesById } from 'src/entities/episode/api';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 import { AuctionRow } from 'src/shared/supabase/types';
 import EpisodeItem from './EpisodeItem';
@@ -83,11 +82,6 @@ const EpisodeList = ({
       listHeaderRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [currentPage]);
-
-  //ANCHOR - 사연이 존재하지 않을 경우
-  if (episodesCount === 0) {
-    <EpisodeEmpty />;
-  }
 
   return (
     <>

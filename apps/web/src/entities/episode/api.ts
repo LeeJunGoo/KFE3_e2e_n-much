@@ -2,7 +2,7 @@ import { da } from 'date-fns/locale';
 import type { EpisodeCreateType, EpisodeEditType, EpisodeInfo, EpisodesListType } from 'src/entities/episode/types';
 import type { AuctionRow, EpisodeRow } from 'src/shared/supabase/types';
 
-//ANCHOR - 톡정 에피소드 정보
+//ANCHOR - 경매 물품에 대한 에피소드 정보
 export const getEpisodeInfo = async (episode_id: EpisodeRow['episode_id']) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/?episodeId=${episode_id}`);
 
@@ -15,7 +15,7 @@ export const getEpisodeInfo = async (episode_id: EpisodeRow['episode_id']) => {
   return data;
 };
 
-//ANCHOR - 톡정 에피소드 등록
+//ANCHOR - 경매 물품에 대한 에피소드 등록
 export const postEpisodeInfo = async ({ auctionId, userId, title, description }: EpisodeCreateType) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes`, {
     headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,7 @@ export const postEpisodeInfo = async ({ auctionId, userId, title, description }:
   return status.message;
 };
 
-//ANCHOR - 톡정 에피소드 수정
+//ANCHOR - 경매 물품에 대한 에피소드 수정
 export const patchEpisodeInfo = async ({ episodeId, title, description }: EpisodeEditType) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes?type=updateEpisode`, {
     headers: { 'Content-Type': 'application/json' },
@@ -57,7 +57,7 @@ export const patchEpisodeInfo = async ({ episodeId, title, description }: Episod
   return status.message;
 };
 
-//NOTE - 톡정 에피소드 삭제
+//NOTE - 경매 물품에 대한 에피소드 삭제
 export const fetchDeleteEpisode = async (episode_id: string) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes`, {
     headers: {
@@ -78,7 +78,7 @@ export const fetchDeleteEpisode = async (episode_id: string) => {
   return data.status;
 };
 
-//ANCHOR - 특정 에피소드 및 사연자 정보 / 사연 개수
+//ANCHOR - 경매 물품에 대한 전체 에피소드 리스트 및 개수
 export const getEpisodesByAuctionId = async (auction_id: AuctionRow['auction_id']) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=episode_list`);
 
@@ -88,6 +88,20 @@ export const getEpisodesByAuctionId = async (auction_id: AuctionRow['auction_id'
   }
 
   const data: EpisodesListType = await res.json();
+
+  return data;
+};
+
+//ANCHOR - 경매 물품에 대한 페이지별 에피소드 리스트 및 개수
+export const getEpisodesWithPagination = async (auction_id: AuctionRow['auction_id'], page: number) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auction_id}?type=page?page=${page}`);
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const data = await res.json();
 
   return data;
 };

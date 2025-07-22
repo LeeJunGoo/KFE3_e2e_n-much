@@ -1,6 +1,7 @@
 import { Card } from '@repo/ui/components/ui/card';
-import { getEpisodesByAuctionId } from 'src/entities/episode/api';
+import { getEpisodesByAuctionId, getEpisodesWithPagination } from 'src/entities/episode/api';
 import EpisodeList from 'src/features/episode/EpisodeList';
+import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
 const EpisodeDetailSection = async ({
@@ -12,6 +13,8 @@ const EpisodeDetailSection = async ({
 }) => {
   //NOTE - 에피소드 리스트 및 개수
   const { episodeList, episodeCount } = await getEpisodesByAuctionId(auctionId);
+  // const pageList = await getEpisodesWithPagination(auctionId, 1);
+  // console.log('🚀 ~ pageList:', pageList);
 
   return (
     <Card className="p-5 shadow-sm">
@@ -24,7 +27,11 @@ const EpisodeDetailSection = async ({
       </div>
 
       {/* 사연 리스트 */}
-      <EpisodeList episodeList={episodeList} auction_id={auctionId} sellerId={sellerId} />
+      {episodeCount === 0 ? (
+        <EpisodeEmpty />
+      ) : (
+        <EpisodeList episodeList={episodeList} auction_id={auctionId} sellerId={sellerId} />
+      )}
     </Card>
   );
 };

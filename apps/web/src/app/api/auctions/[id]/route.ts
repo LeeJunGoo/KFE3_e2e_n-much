@@ -7,7 +7,11 @@ import {
   selectAuctionSummaryInfoWithAddress,
   updateAuction
 } from 'src/entities/auction/supabase';
-import { selectBidderRanking, selectEpisodesByAuctionId } from 'src/entities/episode/supabase';
+import {
+  selectBidderRanking,
+  selectEpisodesByAuctionId,
+  selectEpisodesWithPagination
+} from 'src/entities/episode/supabase';
 import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionUpdate } from 'src/shared/supabase/types';
@@ -18,11 +22,16 @@ type ParamsType = {
 
 export async function GET(request: NextRequest, { params }: ParamsType) {
   const { id } = await params;
+
   const { searchParams } = request.nextUrl;
   const type = searchParams.get('type');
+  const page = searchParams.get('page');
   let res;
 
   if (!id || !type) {
+    return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
+  }
+  if ((type === 'page' && !page) || (type === 'page' && typeof page !== 'string')) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
@@ -37,6 +46,8 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
       res = await selectAuctionInfoWithAddress(id);
     } else if (type === 'ranking') {
       res = await selectBidderRanking(id);
+    } else if (type === 'page') {
+      selectEpisodesWithPagination(Number(page), id);
     }
 
     return NextResponse.json(res, { status: 200 });
