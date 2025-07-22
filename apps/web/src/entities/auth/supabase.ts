@@ -20,3 +20,13 @@ export const selectSignUp = async (provider: Provider) => {
     throw new Error('알 수 없는 오류가 발생했습니다');
   }
 };
+
+export const selectUsers = async (userId: string) => {
+  const { data, error } = await supabase.from('users').select('*').eq('id', userId).single();
+
+  if (error) {
+    console.error('🚀 ~ selectUsers ~ error:', error);
+    throw new Error('DB: 사용자 프로필 조회 에러');
+  }
+  return data;
+};
