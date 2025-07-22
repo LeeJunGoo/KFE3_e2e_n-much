@@ -1,5 +1,3 @@
-//TODO - 상수 분리하기 (KMH)
-
 import { addHours, format, set } from 'date-fns';
 import { TZDate } from 'react-day-picker';
 import { HOURS_OF_DAY, KOR_TIME_ZONE, UTC_TIME_ZONE } from 'src/entities/auction/constants';
