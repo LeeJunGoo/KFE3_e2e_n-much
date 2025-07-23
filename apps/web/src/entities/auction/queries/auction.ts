@@ -51,9 +51,7 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
   return { mutatePatchAuction, isPatchAuctionPending };
 };
 
-export const prefetchedAuctionList = async (order: string) => {
-  const queryClient = new QueryClient();
-
+export const prefetchedAuctionList = async (order: string, queryClient: QueryClient) => {
   await queryClient.prefetchInfiniteQuery({
     queryKey: auctionListKeys.order(order),
     queryFn: ({
@@ -67,8 +65,6 @@ export const prefetchedAuctionList = async (order: string) => {
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId
   });
-
-  return { queryClient };
 };
 
 export const useGetAuctionListQuery = (order: string) => {
