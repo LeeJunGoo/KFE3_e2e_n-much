@@ -190,8 +190,7 @@ export const selectAuctionCardList = async (order: string | undefined, page: num
     console.error(error);
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
   }
-  //TODO - page + ITEM_PER_PAGE + 1에서 +1 빼기 (KMH)
-  const nextId = page < auctionsCount - ITEM_PER_PAGE ? page + ITEM_PER_PAGE + 1 : null;
+  const nextId = page < auctionsCount - ITEM_PER_PAGE ? page + ITEM_PER_PAGE : null;
 
   return { data, nextId };
 };
