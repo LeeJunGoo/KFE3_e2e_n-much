@@ -9,7 +9,6 @@ import { Calendar } from '@repo/ui/components/ui/calendar';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
-import { Textarea } from '@repo/ui/components/ui/textarea';
 import { cn } from '@repo/ui/lib/utils';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
@@ -31,6 +30,7 @@ import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 's
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
+import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
 import {
@@ -44,7 +44,6 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
-import FormDescription from 'src/shared/ui/FormDescription';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -96,16 +95,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const form = useForm<AuctionFormType>({
     resolver: zodResolver(auctionFormSchema),
     defaultValues: getFormDefaultValues()
-  });
-
-  const titleValue = useWatch({
-    control: form.control,
-    name: 'title'
-  });
-
-  const descriptionValue = useWatch({
-    control: form.control,
-    name: 'description'
   });
 
   const endTimeValue = useWatch({
