@@ -1,24 +1,30 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useWatch } from 'react-hook-form';
-import type { Control } from 'react-hook-form';
-import type { DetailFormType } from 'src/entities/episode/schemas';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 
-type FormDescriptionType = {
-  control: Control<DetailFormType>;
+type FormDescriptionType<T extends FieldValues> = {
+  control: Control<T>;
+  name: FieldPath<T>;
   descriptionLabel: string;
   placeholder: string;
   maxDescLength: number;
 };
 
-const FormDescription = ({ control, descriptionLabel, placeholder, maxDescLength }: FormDescriptionType) => {
-  const description = useWatch({ control, name: 'description' });
+const FormDescription = <T extends FieldValues>({
+  control,
+  name,
+  descriptionLabel,
+  placeholder,
+  maxDescLength
+}: FormDescriptionType<T>) => {
+  const description = useWatch({ control, name });
   const descTextColor = description.length >= maxDescLength ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
 
   return (
     <FormField
       control={control}
-      name="description"
+      name={name}
       render={({ field }) => (
         <FormItem>
           <FormLabel className="flex gap-0.5">
