@@ -1,21 +1,24 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/components/ui/dialog';
+import { useState } from 'react';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
+import ContentDescription from 'src/shared/ui/ContentDescription';
+import ContentTitle from 'src/shared/ui/ContentTitle';
 import MoreButton from 'src/shared/ui/MoreButton';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
-import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeInfoModal = ({ episode }: { episode: EpisodeItemProps }) => {
   const [open, setOpen] = useState(false);
+  const episodeTime = formatYYYYMMDD(episode.created_at);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <MoreButton variant="base" onClick={() => setOpen(true)} />
+        <MoreButton variant="text" onClick={() => setOpen(true)} className="p-0" />
       </DialogTrigger>
 
       <DialogContent className="max-w-md" aria-describedby={undefined}>
@@ -24,21 +27,18 @@ const EpisodeInfoModal = ({ episode }: { episode: EpisodeItemProps }) => {
         </DialogHeader>
 
         <div className="py-4">
-          <div className="mb-4 flex items-center">
+          <div className="mb-4 flex items-center gap-2">
             <BaseAvatar src={episode.users.user_avatar!} alt="아바타 이미지입니다." size="sm" />
             <div>
               <div className="flex items-center gap-1">
                 <p className="text-(--color-text-base) text-sm">{episode.users.nick_name}</p>
                 <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(episode.users.email)}&#41;</p>
               </div>
-              <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>
+              <p className="text-(--color-warm-gray) text-xs">{episodeTime}</p>
             </div>
           </div>
-
-          <h3 className="mb-3 text-lg font-bold">{episode.title}</h3>
-          <p className="text-(--color-warm-gray) mb-6 whitespace-pre-line text-sm leading-relaxed">
-            {episode.description}
-          </p>
+          <ContentTitle title={episode.title} variant="base" className="mb-1" />
+          <ContentDescription description={episode.description} variant="ghost" className="mb-6" />
         </div>
 
         <Button

@@ -1,10 +1,12 @@
-import type { EpisodeItemProps } from 'src/entities/episode/types';
 import EditDeleteEpisodes from 'src/features/episode/EditDeleteEpisodes';
-import { AuctionRow } from 'src/shared/supabase/types';
+import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
+import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
+import ContentDescription from 'src/shared/ui/ContentDescription';
+import ContentTitle from 'src/shared/ui/ContentTitle';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
-import EpisodeInfoModal from './EpisodeInfoModal';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
   const episodeTime = formatYYYYMMDD(episode.created_at);
@@ -34,8 +36,8 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
         {/* {isEpisodeBid && <EpisodeBidButton episode={episode} />} */}
       </div>
       <div>
-        <h4 className="text-(((--color-text-base))) mb-1 font-medium">{episode.title}</h4>
-        <p className="text-md text-(--color-warm-gray) line-clamp-2 leading-relaxed">{episode.description}</p>
+        <ContentTitle title={episode.title} variant="base" className="mb-1" />
+        <ContentDescription description={episode.description} variant="ghost" clamp={2} />
       </div>
       <div className="flex items-center justify-between">
         <EpisodeInfoModal episode={episode} />
