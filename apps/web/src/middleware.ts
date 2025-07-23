@@ -45,9 +45,10 @@ export const middleware = async (request: NextRequest) => {
   if (pathName === '/auctions') {
     const order = searchParams.get('order')?.trim();
     const keyword = searchParams.get('keyword')?.trim();
+    const orderList = ['end_date', 'favorites', 'created_at'];
     let isUrlChanged = false;
 
-    if (!order) {
+    if (!order || !orderList.includes(order)) {
       searchParams.set('order', 'end_date');
       isUrlChanged = true;
     }
