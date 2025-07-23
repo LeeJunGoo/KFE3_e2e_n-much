@@ -25,6 +25,7 @@ import { getFormDefaultValues } from 'src/entities/auction/utils/formDefaultValu
 import { validateDate } from 'src/entities/auction/utils/validateDate';
 import FormEndDay from 'src/features/auction/FormEndDay';
 import FormEndTime from 'src/features/auction/FormEndTime';
+import FormMaxPoint from 'src/features/auction/FormMaxPoint';
 import FormStartingPoint from 'src/features/auction/FormStartingPoint';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import FormDescription from 'src/shared/ui/FormDescription';
@@ -34,7 +35,6 @@ import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDat
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
-import FormMaxPoint from './FormMaxPoint';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -126,6 +126,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   };
 
   const onSubmit = async (values: z.infer<typeof auctionFormSchema>) => {
+    console.log('제출');
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
     const korEndDate = setTimeToDate(endDay, endTime);
@@ -272,7 +273,11 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               placeholder="경매의 상한 포인트를 입력하세요."
             />
             <FormLabel>상품 이미지</FormLabel>
-            <ImageUploader previewImages={previewImages} setPreviewImages={setPreviewImages} />
+            <ImageUploader
+              previewImages={previewImages}
+              setPreviewImages={setPreviewImages}
+              setImageUrlsToDelete={setImageUrlsToDelete}
+            />
             <Button type="submit" className="h-12 w-full" variant="base">
               {(isEditing && !isPatchAuctionPending && '수정하기') ||
                 (isEditing && isPatchAuctionPending && '수정중...') ||
@@ -281,7 +286,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
             </Button>
           </form>
         </Form>
-        <ul className="mt-4 grid w-full grid-cols-1 gap-2 md:grid-cols-2">
+        {/* <ul className="mt-4 grid w-full grid-cols-1 gap-2 md:grid-cols-2">
           {previewImages &&
             previewImages.map((previewImage, index) => {
               return (
@@ -295,7 +300,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                       fill
                     />
                     <Button
-                      onClick={() => {
+                      onClick={(e) => {
+                        e.stopPropagation();
                         setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id));
                         if (previewImage.isUrl) {
                           setImageUrlsToDelete((prev) => {
@@ -316,7 +322,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                 </li>
               );
             })}
-        </ul>
+        </ul> */}
       </PageContainer>
     </>
   );
