@@ -44,6 +44,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
+import FormDescription from 'src/shared/ui/FormDescription';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -284,33 +285,13 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               placeholder="경매 상품의 제목을 입력하세요."
               maxTitleLength={MAX_TITLE_LETTERS}
             />
-
-            <div className="relative">
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      상세 내용 <span className="text-(--color-red)">&#42;</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Textarea
-                        className="resize-none bg-white"
-                        rows={5}
-                        placeholder="상품에 대한 자세한 설명을 입력하세요."
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <p className={`absolute right-0 top-0 text-xs font-semibold`}>
-                {descriptionValue.length}/{MAX_DESCRIPTION_LETTERS}
-              </p>
-            </div>
-
+            <FormDescription
+              control={form.control}
+              name="description"
+              descriptionLabel="상세 내용"
+              placeholder="상품에 대한 자세한 설명을 입력하세요."
+              maxDescLength={MAX_DESCRIPTION_LETTERS}
+            />
             <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
               <FormField
                 control={form.control}
