@@ -5,18 +5,12 @@
 import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
-import { Calendar } from '@repo/ui/components/ui/calendar';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
-import { Popover, PopoverContent, PopoverTrigger } from '@repo/ui/components/ui/popover';
-import { cn } from '@repo/ui/lib/utils';
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
 import { useForm, useWatch } from 'react-hook-form';
-import { FaCalendarAlt } from 'react-icons/fa';
 import {
   BUCKET_FOLDER_NAME,
   MAX_DESCRIPTION_LETTERS,
@@ -29,6 +23,7 @@ import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import { getFormDefaultValues } from 'src/entities/auction/utils/formDefaultValues';
 import { validateDate } from 'src/entities/auction/utils/validateDate';
+import FormEndDay from 'src/features/auction/FormEndDay';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
@@ -251,42 +246,13 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               maxDescLength={MAX_DESCRIPTION_LETTERS}
             />
             <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2">
-              <FormField
+              <FormEndDay
                 control={form.control}
                 name="endDay"
-                render={({ field }) => (
-                  <FormItem className="flex w-full flex-col">
-                    <FormLabel>
-                      경매 종료일<span className="text-(--color-red)">&#42;</span>
-                    </FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={'outline'}
-                            className={cn(
-                              'w-full justify-start pl-3 text-left font-normal',
-                              !field.value && 'text-muted-foreground'
-                            )}
-                          >
-                            <FaCalendarAlt className="text-(--color-accent) h-4 w-4 opacity-50" />
-                            {field.value ? format(field.value, 'PPP', { locale: ko }) : <span>Pick a date</span>}
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          disabled={(day) => validateDate(day, form.getValues('endTime'), true)}
-                          captionLayout="dropdown"
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
+                endDayLabel="경매 종료일"
+                placeholder="경매 종료일을 선택하세요."
+                endTime={form.getValues('endTime')}
+                validateDisableDate={validateDate}
               />
               <FormField
                 control={form.control}
