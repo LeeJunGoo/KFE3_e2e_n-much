@@ -4,6 +4,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { deleteEpisodeInfo } from 'src/entities/episode/api';
+import { usePageState } from 'src/entities/episode/stores/usePaginationStore';
 import type { EpisodeRow } from 'src/shared/supabase/types';
 
 const EpisodeActionButtons = ({
@@ -14,6 +15,7 @@ const EpisodeActionButtons = ({
   episodeId: EpisodeRow['episode_id'];
 }) => {
   const router = useRouter();
+  const currentPage = usePageState();
 
   const handleEdit = () => {
     router.push(`/episode/${auctionId}/${episodeId}`);

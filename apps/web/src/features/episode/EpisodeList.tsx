@@ -13,6 +13,7 @@ import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-quer
 import { getEpisodesWithPagination } from 'src/entities/episode/api';
 import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
+import { usePageActions } from 'src/entities/episode/stores/usePaginationStore';
 import EpisodeItem from 'src/features/episode/EpisodeItem';
 import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
 import { type AuctionRow } from 'src/shared/supabase/types';
@@ -27,9 +28,9 @@ const EpisodeList = ({
   auctionId: AuctionRow['auction_id'];
   sellerId: AuctionRow['user_id'];
 }) => {
-  const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
-
+  const [page, setPage] = useState(1);
+  const { setCurrentPage } = usePageActions();
   const totalPages = Math.max(1, Math.ceil(episodesCount / EPISODES_PER_PAGE));
 
   const { isError, data: episodesList } = useQuery({
@@ -51,9 +52,10 @@ const EpisodeList = ({
     }
   }, [page, queryClient, totalPages, auctionId]);
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = (nextPage: number) => {
     if (page >= 1 && page <= totalPages) {
-      setPage(page);
+      setPage(nextPage);
+      setCurrentPage(nextPage);
     }
 
     //"사연 모음" 타이틀로 스크롤 이동

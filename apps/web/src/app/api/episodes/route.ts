@@ -89,13 +89,11 @@ export async function PATCH(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   const { episodeId } = await request.json();
 
-  console.log('🚀 ~ DELETE ~ episodeId:', episodeId);
   if (!episodeId) {
     return NextResponse.json({ message: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
   try {
-    //
     const res = await deleteEpisodeById(episodeId);
     return NextResponse.json(res, { status: 201 });
   } catch {
