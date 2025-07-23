@@ -35,6 +35,7 @@ import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDat
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
+import { getExtension } from 'src/entities/auction/utils/extension';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -100,8 +101,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       if (imageUrls) {
         setPreviewImages(
           imageUrls.map((imageUrl: string) => {
-            const dotIndex = imageUrl.lastIndexOf('.');
-            const ext = imageUrl.substring(dotIndex + 1);
+            const ext = getExtension(imageUrl);
             return { id: uuidv4(), data: imageUrl, isUrl: true, ext };
           })
         );

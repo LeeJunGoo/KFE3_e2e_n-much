@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { BUCKET_FOLDER_NAME, MAX_UPLOADED_IMAGES } from 'src/entities/auction/constants';
+import { getExtension } from 'src/entities/auction/utils/extension';
 import { popToast } from 'src/shared/utils/toast';
 import { v4 as uuidv4 } from 'uuid';
 import type { PreviewImage } from 'src/entities/auction/types';
@@ -30,9 +31,7 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-          const fileName = file.name;
-          const dotIndex = fileName.lastIndexOf('.');
-          const ext = fileName.substring(dotIndex + 1);
+          const ext = getExtension(file.name);
           setPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false, ext }]);
         };
       });
