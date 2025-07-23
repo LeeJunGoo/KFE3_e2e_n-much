@@ -1,7 +1,7 @@
 'use client';
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
-import { useAuthActions, useUserState } from 'src/entities/auth/stores/authStore';
+import { useAuthActions, useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { createClient } from 'src/shared/supabase/client/client';
 import type { User } from '@supabase/supabase-js';
 
@@ -11,26 +11,32 @@ const AuthProvider = ({ user: initialUser, children }: { user: User | null; chil
   const supabase = createClient();
 
   useEffect(() => {
-    //ANCHOR - 초기 렌더링
-    if (initialUser && currentUser?.id !== initialUser.id) {
+    if (initialUser && (!currentUser || currentUser.id !== initialUser.id)) {
       setUser(initialUser);
+      setLoading(false);
+    } else if (!initialUser && !currentUser) {
       setLoading(false);
     }
 
     const {
       data: { subscription }
-    } = supabase.auth.onAuthStateChange((_, session) => {
+    } = supabase.auth.onAuthStateChange((event, session) => {
       const sessionUser = session?.user ?? null;
 
-      //ANCHOR - 현재 상태와 다를 때만 setUser 호출
-      if ((sessionUser && currentUser?.id !== sessionUser.id) || (!sessionUser && currentUser !== null)) {
+      if (event === 'SIGNED_IN' && sessionUser) {
         setUser(sessionUser);
+        setLoading(false);
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+        setLoading(false);
       }
     });
 
-    return () => subscription.unsubscribe();
-  }, [currentUser, supabase, initialUser, setUser, setLoading]);
-
+    return () => {
+      subscription.unsubscribe();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialUser?.id, setUser, setLoading, supabase]);
   return <>{children}</>;
 };
 

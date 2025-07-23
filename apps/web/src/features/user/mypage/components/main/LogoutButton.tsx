@@ -3,29 +3,25 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'src/entities/user/mypage/main/supabase';
 import ConfirmDialog from 'src/widgets/ConfirmDialog';
 import { twMerge } from 'tailwind-merge';
 
-interface LogoutButtonProps {
+type LogoutButtonProps = {
   className?: string;
-}
+};
 
 const LogoutButton = ({ className }: LogoutButtonProps) => {
   const { push } = useRouter();
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await fetchLogout();
-
-  //     toast.success('로그아웃 되었습니다!');
-  //     push('/');
-  //   } catch (error) {
-  //     toast.error(error instanceof Error ? error.message : '로그아웃 실패');
-  //   }
-  // };
-
-  const handleLogout = () => {
-    console.log('테스트 ');
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      toast.success('로그아웃 되었습니다!');
+      push('/');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : '로그아웃 실패');
+    }
   };
 
   return (
