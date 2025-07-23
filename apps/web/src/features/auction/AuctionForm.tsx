@@ -31,6 +31,7 @@ import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 's
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
 import ImageUploader from 'src/features/auction/ImageUploader';
+import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
 import {
   convertFromKorToUtcDate,
@@ -276,26 +277,13 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       <PageContainer>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="relative">
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>
-                      제목<span className="text-(--color-red)">&#42;</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input className="bg-white" placeholder="경매 상품의 제목을 입력하세요." {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <p className={`absolute right-0 top-0 text-xs font-semibold`}>
-                {titleValue.length}/{MAX_TITLE_LETTERS}
-              </p>
-            </div>
+            <FormTitle
+              control={form.control}
+              name={'title'}
+              titleLabel={'제목'}
+              placeholder="경매 상품의 제목을 입력하세요."
+              maxTitleLength={MAX_TITLE_LETTERS}
+            />
 
             <div className="relative">
               <FormField

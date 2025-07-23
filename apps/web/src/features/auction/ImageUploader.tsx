@@ -8,19 +8,19 @@ import { FaCloudUploadAlt } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 import type { PreviewImage } from 'src/entities/auction/types';
 
-//TODO - 파일로 분리하기
+//TODO - 파일로 분리하기 (KMH)
 interface ImageUploaderProps {
   previewImages: PreviewImage[];
   setPreviewImages: Dispatch<SetStateAction<{ id: string; data: string; isUrl: boolean }[]>>;
 }
 
+//TODO - 파일로 분리하기 (KMH)
 const MAX_UPLOADED_IMAGES = 5;
 
 const ImageUploader = ({ previewImages, setPreviewImages }: ImageUploaderProps) => {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (previewImages.length + acceptedFiles.length > MAX_UPLOADED_IMAGES) {
-        alert(previewImages.length + acceptedFiles.length);
         return;
       }
 
