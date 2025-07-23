@@ -36,3 +36,5 @@ export const KOR_TIME_ZONE = 'Asia/Seoul'; //NOTE - 한국 time zone
 export const UTC_TIME_ZONE = 'utc'; //NOTE - utc time zone
 
 export const AUCTION_LIST_SKELETON_LENGTH = 10; //NOTE - 경매 리스트의 스켈레톤 갯수
+
+export const MAX_UPLOADED_IMAGES = 5; //NOTE - 업로드할 수 있는 최대 이미지 갯수

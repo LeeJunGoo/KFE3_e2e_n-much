@@ -1,10 +1,10 @@
-//NOTE - 업로드할 이미지를 드래그하면 UI에 효과줄 수 있음 (isDragActive) (KMH)
 //TODO - 업로드할 이미지 확장자 의논하기 (KMH)
 
 import type { Dispatch, SetStateAction } from 'react';
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
+import { MAX_UPLOADED_IMAGES } from 'src/entities/auction/constants';
 import { v4 as uuidv4 } from 'uuid';
 import type { PreviewImage } from 'src/entities/auction/types';
 
@@ -15,7 +15,6 @@ interface ImageUploaderProps {
 }
 
 //TODO - 파일로 분리하기 (KMH)
-const MAX_UPLOADED_IMAGES = 5;
 
 const ImageUploader = ({ previewImages, setPreviewImages }: ImageUploaderProps) => {
   const onDrop = useCallback(
