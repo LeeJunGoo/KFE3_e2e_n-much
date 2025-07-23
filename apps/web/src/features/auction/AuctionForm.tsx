@@ -34,6 +34,7 @@ import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDat
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
+import FormMaxPoint from './FormMaxPoint';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -264,25 +265,11 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               startingPointLabel="경매 시작 포인트"
               placeholder="경매의 시작 포인트를 입력하세요."
             />
-            <FormField
+            <FormMaxPoint
               control={form.control}
               name="maxPoint"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    경매 상한 포인트 <span className="text-(--color-red)"> &#42;</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-white"
-                      type="number"
-                      placeholder="경매의 상한 포인트를 입력하세요."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              maxPointLabel="경매 상한 포인트"
+              placeholder="경매의 상한 포인트를 입력하세요."
             />
             <FormLabel>상품 이미지</FormLabel>
             <ImageUploader previewImages={previewImages} setPreviewImages={setPreviewImages} />
