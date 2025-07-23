@@ -456,7 +456,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                       className="absolute right-1 top-1"
                       variant="base"
                     >
-                      X
+                      &times;
                     </Button>
                   </div>
                 </li>
