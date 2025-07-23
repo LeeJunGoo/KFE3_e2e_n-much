@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 
 type ContentTitleProps = {
   title: string;
-  variant?: 'base' | 'ghost' | 'accent' | 'primary';
+  variant: 'base' | 'ghost' | 'accent' | 'primary';
   className?: string;
 };
 

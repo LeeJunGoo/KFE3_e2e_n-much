@@ -13,7 +13,6 @@ const EpisodeDetailSection = async ({
   auctionId: AuctionRow['auction_id'];
   sellerId: AuctionRow['user_id'];
 }) => {
-  //NOTE - 에피소드 개수
   const { episodeCount } = await getEpisodesCount(auctionId);
 
   const queryClient = new QueryClient();

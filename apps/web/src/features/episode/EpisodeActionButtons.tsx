@@ -29,7 +29,11 @@ const EpisodeActionButtons = ({
       return;
     }
 
-    await mutateAsync(episodeId);
+    const result = await mutateAsync(episodeId);
+
+    if (result) {
+      router.refresh();
+    }
   };
   return (
     <div className="flex space-x-2">

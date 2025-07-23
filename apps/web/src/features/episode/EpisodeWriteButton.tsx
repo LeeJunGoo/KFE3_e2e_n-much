@@ -5,7 +5,8 @@ import { twMerge } from 'tailwind-merge';
 
 const EpisodeWriteButton = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const userId = 'e40600a6-a437-47b8-840a-ced55b143dc0';
-  const isWritten = await getHasUserWrittenEpisode(auctionId, userId);
+  // const isWritten = await getHasUserWrittenEpisode(auctionId, userId);
+  const isWritten = false;
 
   return (
     <Link

@@ -1,4 +1,5 @@
 import EpisodeActionButtons from 'src/features/episode/EpisodeActionButtons';
+import EpisodeBidModal from 'src/features/episode/EpisodeBidModal';
 import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
@@ -9,8 +10,6 @@ import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
-  const episodeTime = formatYYYYMMDD(episode.created_at);
-
   //FIXME - buyer 필요
   // const isEpisodeBid = userInfo.seller_id === sellerId || episode.buyer_id === userInfo.buyer_id;
   // const isEpisodeEditDelete = episode.buyer_id === userInfo.buyer_id;
@@ -30,10 +29,10 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
               <p className="text-(--color-text-base) text-sm font-medium">{userNickname}</p>
               <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(episode.users.email)}&#41;</p>
             </div>
-            <p className="text-(--color-warm-gray) text-xs">{episodeTime}</p>
+            <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>
           </div>
         </div>
-        {/* {isEpisodeBid && <EpisodeBidButton episode={episode} />} */}
+        {isEpisodeBid && <EpisodeBidModal episode={episode} />}
       </div>
       <div>
         <ContentTitle title={episode.title} variant="base" className="mb-1" />

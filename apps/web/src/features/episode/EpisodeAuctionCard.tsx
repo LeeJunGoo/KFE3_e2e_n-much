@@ -3,12 +3,15 @@ import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import AuctionTimerStatic from 'src/features/auction/AuctionTimerStatic';
 import BaseCard from 'src/widgets/BaseCard';
 import type { AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
+import ContentTitle from 'src/shared/ui/ContentTitle';
+import ContentDescription from 'src/shared/ui/ContentDescription';
 
 const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummaryInfoWithAddressType }) => {
   const imageUrls = auctionInfo.image_urls;
   const auctionTitle = auctionInfo.title;
   const endDate = auctionInfo.end_date;
   const auctionUser = auctionInfo;
+
   const auctionImage = imageUrls && imageUrls.length > 0 ? imageUrls[0] : NotAuctionImage;
 
   return (
@@ -27,9 +30,11 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummary
 
         <div className="flex w-full flex-col justify-between">
           <div>
-            <p className="font-medium">{auctionTitle}</p>
-            <div className="flex items-center">
-              <p className="text-(--color-warm-gray) max-w-[45%] truncate text-sm">{auctionUser.address_id}</p>
+            <ContentTitle title={auctionTitle} variant="base" />
+            <ContentDescription description={auctionUser.business_name} variant="ghost" />
+            <div className="mb-4 flex gap-2">
+              <ContentDescription description={auctionUser.road_address} variant="ghost" />
+              <ContentDescription description={auctionUser.detail_address ?? ''} variant="ghost" />
             </div>
           </div>
           <AuctionTimerStatic endDate={endDate} />
