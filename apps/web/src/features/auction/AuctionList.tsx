@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const AuctionList = ({ order }: AuctionListProps) => {
+const AuctionList = ({ order, keyword }: AuctionListProps) => {
   //TODO - nextjs 캐시로 관리하기 (KMH)
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
     useGetAuctionListQuery(order);

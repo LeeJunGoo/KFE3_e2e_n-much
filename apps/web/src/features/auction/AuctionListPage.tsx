@@ -5,7 +5,7 @@ import SelectOrder from 'src/features/auction/SelectOrder';
 import PageContainer from 'src/shared/ui/PageContainer';
 import type { AuctionListPageProps } from 'src/entities/auction/types';
 
-const AuctionListPage = async ({ order }: AuctionListPageProps) => {
+const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
   const queryClient = new QueryClient();
 
   await prefetchedAuctionList(order, queryClient);
@@ -17,7 +17,7 @@ const AuctionListPage = async ({ order }: AuctionListPageProps) => {
         <SelectOrder order={order} />
       </div>
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <AuctionList order={order} />
+        <AuctionList order={order} keyword={keyword} />
       </HydrationBoundary>
     </PageContainer>
   );
