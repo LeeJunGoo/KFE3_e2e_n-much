@@ -1,14 +1,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
-import type { Control, FieldPath, FieldValues } from 'react-hook-form';
-
-//TODO - 파일로 분리하기 (KMH)
-interface FormStartingPointProps<T extends FieldValues> {
-  control: Control<T>;
-  name: FieldPath<T>;
-  startingPointLabel: string;
-  placeholder: string;
-}
+import type { FieldValues } from 'react-hook-form';
+import type { FormStartingPointProps } from 'src/entities/auction/types';
 
 const FormStartingPoint = <T extends FieldValues>({
   control,

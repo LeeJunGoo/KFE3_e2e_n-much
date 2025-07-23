@@ -1,6 +1,3 @@
-//TODO - 업로드할 이미지 확장자 의논하기 (KMH)
-
-import type { Dispatch, SetStateAction } from 'react';
 import { useCallback } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import Image from 'next/image';
@@ -10,14 +7,7 @@ import { BUCKET_FOLDER_NAME, MAX_UPLOADED_IMAGES } from 'src/entities/auction/co
 import { getExtension } from 'src/entities/auction/utils/extension';
 import { popToast } from 'src/shared/utils/toast';
 import { v4 as uuidv4 } from 'uuid';
-import type { PreviewImage } from 'src/entities/auction/types';
-
-//TODO - 파일로 분리하기 (KMH)
-interface ImageUploaderProps {
-  previewImages: PreviewImage[];
-  setPreviewImages: Dispatch<SetStateAction<PreviewImage[]>>;
-  setImageUrlsToDelete: Dispatch<SetStateAction<string[]>>;
-}
+import type { ImageUploaderProps } from 'src/entities/auction/types';
 
 const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }: ImageUploaderProps) => {
   const onDrop = useCallback(
@@ -52,9 +42,9 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
       {...getRootProps()}
     >
       {previewImages.length > 0 ? (
-        <ul className="grid h-full w-full grid-cols-5 gap-1 bg-amber-500">
+        <ul className="grid h-full w-full grid-cols-5 gap-1">
           {previewImages.map((previewImage) => (
-            <li className="relative h-full w-full border-2 border-black bg-blue-500" key={previewImage.id}>
+            <li className="relative h-full w-full border-2 border-black" key={previewImage.id}>
               <Image
                 alt="업로드할 경매 이미지"
                 src={previewImage.data}

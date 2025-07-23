@@ -1,14 +1,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
-import type { Control, FieldPath, FieldValues } from 'react-hook-form';
-
-//TODO - 파일로 분리하기 (KMH)
-interface FormMaxPointProps<T extends FieldValues> {
-  control: Control<T>;
-  name: FieldPath<T>;
-  maxPointLabel: string;
-  placeholder: string;
-}
+import type { FieldValues } from 'react-hook-form';
+import type { FormMaxPointProps } from 'src/entities/auction/types';
 
 const FormMaxPoint = <T extends FieldValues>({ control, name, maxPointLabel, placeholder }: FormMaxPointProps<T>) => {
   return (

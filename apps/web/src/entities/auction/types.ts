@@ -1,6 +1,8 @@
+import { Dispatch, SetStateAction } from 'react';
 import type { auctionFormSchema } from './schema/auctionForm';
 import type { AddressRow, AuctionRow, RankingRow, UserRow } from 'src/shared/supabase/types';
 import type { z } from 'zod';
+import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
 type AddressSummaryInfoType = Pick<AddressRow, 'address_id' | 'business_name' | 'road_address' | 'detail_address'>;
@@ -130,4 +132,44 @@ export interface AuctionCardProp {
 //NOTE - 정렬 카테고리 선택
 export interface SelectOrderProps {
   order: string;
+}
+
+//NOTE - 이미지를 업로드하는 컴포넌트 props
+export interface ImageUploaderProps {
+  previewImages: PreviewImage[];
+  setPreviewImages: Dispatch<SetStateAction<PreviewImage[]>>;
+  setImageUrlsToDelete: Dispatch<SetStateAction<string[]>>;
+}
+
+//NOTE - auctionForm에서 경매 종료 일을 입력하는 항목
+export interface FormEndDayProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  endDayLabel: string;
+  placeholder: string;
+  endTime: string;
+  validateDisableDate: (day: Date, time: string, isDisableCondition: boolean) => boolean;
+}
+
+//NOTE - auctionForm에서 경매 종료 시각을 입력하는 항목
+export interface FormEndTimeProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  endTimeLabel: string;
+}
+
+//NOTE - auctionForm에서 포인트 상한가를 입력하는 항목
+export interface FormMaxPointProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  maxPointLabel: string;
+  placeholder: string;
+}
+
+//NOTE - auctionForm에서 포인트 시작가를 입력하는 항목
+export interface FormStartingPointProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  startingPointLabel: string;
+  placeholder: string;
 }

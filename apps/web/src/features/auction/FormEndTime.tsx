@@ -1,13 +1,7 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
-import type { Control, FieldPath, FieldValues } from 'react-hook-form';
-
-//TODO - 파일로 분리하기 (KMH)
-interface FormEndTimeProps<T extends FieldValues> {
-  control: Control<T>;
-  name: FieldPath<T>;
-  endTimeLabel: string;
-}
+import type { FieldValues } from 'react-hook-form';
+import type { FormEndTimeProps } from 'src/entities/auction/types';
 
 const FormEndTime = <T extends FieldValues>({ control, name, endTimeLabel }: FormEndTimeProps<T>) => {
   return (

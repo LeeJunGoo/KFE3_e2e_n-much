@@ -6,17 +6,8 @@ import { cn } from '@repo/ui/lib/utils';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { FaCalendarAlt } from 'react-icons/fa';
-import type { Control, FieldPath, FieldValues } from 'react-hook-form';
-
-//TODO - 파일로 분리하기 (KMH)
-interface FormEndDayProps<T extends FieldValues> {
-  control: Control<T>;
-  name: FieldPath<T>;
-  endDayLabel: string;
-  placeholder: string;
-  endTime: string;
-  validateDisableDate: (day: Date, time: string, isDisableCondition: boolean) => boolean;
-}
+import type { FieldValues } from 'react-hook-form';
+import type { FormEndDayProps } from 'src/entities/auction/types';
 
 const FormEndDay = <T extends FieldValues>({
   control,
