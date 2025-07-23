@@ -83,6 +83,7 @@ export interface AuctionFormProps {
   loggedInUserId: string;
 }
 
+//NOTE - auctionForm의 form 타입
 export type AuctionFormType = z.infer<typeof auctionFormSchema>;
 
 // export type SortedAuctionItemType = AuctionRow & {

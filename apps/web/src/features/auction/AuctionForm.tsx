@@ -29,6 +29,7 @@ import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
+import { validateDate } from 'src/entities/auction/utils/validateDate';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
@@ -67,16 +68,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const { mutatePostAuction, isPostAuctionPending } = usePostAuctionQuery(auctionIdParam);
   const { mutatePatchAuction, isPatchAuctionPending } = usePatchAuctionQuery(auctionIdParam);
 
-  //TODO - 어디에 배치할지 의논하기 (KMH)
-  const validateDate = (day: Date | null, time: string | null, isDisableCondition: boolean) => {
-    const formEndDay = day || form.getValues('endDay');
-    const formEndTime = time || form.getValues('endTime');
-    const formDate = setTimeToDate(formEndDay, formEndTime);
-    const korNow = getNowKorDate();
-
-    return isDisableCondition ? formDate < korNow : formDate > korNow;
-  };
-
   const getFormDefaultValues = () => {
     const korToday = getNowKorDate();
     const endDay = getTomorrowDate(korToday);
@@ -94,7 +85,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   const form = useForm<AuctionFormType>({
     resolver: zodResolver(auctionFormSchema),
-    defaultValues: getFormDefaultValues()
+    defaultValues: getFormDefaultValues(),
+    mode: 'onChange'
   });
 
   const endTimeValue = useWatch({
@@ -310,7 +302,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
-                          disabled={(day) => validateDate(day, null, true)}
+                          disabled={(day) => validateDate(day, form.getValues('endTime'), true)}
                           captionLayout="dropdown"
                         />
                       </PopoverContent>
