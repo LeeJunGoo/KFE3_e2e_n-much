@@ -1,26 +1,18 @@
-//TODO - 폼 유효성 검사 상의 (KMH)
-//TODO - 서영님한테 이미지와 버튼 css 물어보기 (KMH)
 'use client';
 
 import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
-import { Input } from '@repo/ui/components/ui/input';
-import Image from 'next/image';
+import { Form, FormLabel } from '@repo/ui/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
 import { useForm, useWatch } from 'react-hook-form';
-import {
-  BUCKET_FOLDER_NAME,
-  MAX_DESCRIPTION_LETTERS,
-  MAX_TITLE_LETTERS,
-  UTC_TIME_ZONE
-} from 'src/entities/auction/constants';
+import { MAX_DESCRIPTION_LETTERS, MAX_TITLE_LETTERS, UTC_TIME_ZONE } from 'src/entities/auction/constants';
 import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
+import { getExtension } from 'src/entities/auction/utils/extension';
 import { getFormDefaultValues } from 'src/entities/auction/utils/formDefaultValues';
 import { validateDate } from 'src/entities/auction/utils/validateDate';
 import FormEndDay from 'src/features/auction/FormEndDay';
@@ -32,10 +24,10 @@ import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDate } from 'src/shared/utils/dateFns';
+import { popToast } from 'src/shared/utils/toast';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
-import { getExtension } from 'src/entities/auction/utils/extension';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = Boolean(auctionIdParam);
@@ -132,7 +124,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   };
 
   const onSubmit = async (values: z.infer<typeof auctionFormSchema>) => {
-    console.log('제출');
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
     const korEndDate = setTimeToDate(endDay, endTime);
@@ -144,7 +135,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       imageUrls = await uploadImagesToDB(previewImages);
       console.log('image url', imageUrls);
     } catch (error) {
-      //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
+      popToast('error', '경매 등록/수정 에러', '이미지를 업로드하는데 실패했습니다.', 'long');
       console.error(error);
     }
 
@@ -153,28 +144,27 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     try {
       await deleteImages(imageUrlsToDelete);
     } catch (error) {
-      //FIXME - 토스로 알림하고 에러 처리하기 (KMH)
+      popToast('error', '경매 등록/수정 에러', '이미지를 삭제하는데 실패했습니다.', 'long');
       console.error(error);
     }
 
-    try {
-      if (!fetchedAddressId) {
-        //TODO - toast로 처리 (KMH)
-        throw new Error('주소를 불러오는데 실패했습니다.');
-      }
+    if (!fetchedAddressId) {
+      popToast('error', '경매 등록/수정 에러', '주소를 불러오는데 실패했습니다.', 'long');
+      throw new Error('주소를 불러오는데 실패했습니다.');
+    }
 
-      if (!isEditing) {
-        const postAuctionParam = {
-          user_id: loggedInUserId,
-          title,
-          description,
-          end_date: utcEndDate.toISOString(),
-          starting_point: Number(startingPoint),
-          max_point: Number(maxPoint),
-          image_urls: imageUrls,
-          address_id: fetchedAddressId
-        };
-
+    if (!isEditing) {
+      const postAuctionParam = {
+        user_id: loggedInUserId,
+        title,
+        description,
+        end_date: utcEndDate.toISOString(),
+        starting_point: Number(startingPoint),
+        max_point: Number(maxPoint),
+        image_urls: imageUrls,
+        address_id: fetchedAddressId
+      };
+      try {
         const data = await mutatePostAuction(postAuctionParam);
         console.log(values);
         console.log('결과', data);
@@ -183,43 +173,40 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
         // router.push(`/auctions/${data.auction_id}`);
         return;
+      } catch (error) {
+        popToast('error', '경매 등록 에러', '경매 등록에 실패했습니다.', 'long');
+        console.error(error);
       }
-
-      if (!fetchedAuction) {
-        //TODO - toast로 처리 (KMH)
-        throw new Error('경매를 불러오는데 실패했습니다.');
-      }
-
-      const patchAuctionParam = {
-        auction_id: auctionIdParam,
-        user_id: loggedInUserId,
-        title,
-        description,
-        end_date: utcEndDate.toISOString(),
-        starting_point: Number(startingPoint),
-        current_point: Number(fetchedAuction.current_point),
-        max_point: Number(maxPoint),
-        image_urls: imageUrls,
-        status: fetchedAuction.status,
-        address_id: fetchedAddressId,
-        updated_at: new TZDate(new Date(), UTC_TIME_ZONE).toISOString()
-      };
-
-      const data = await mutatePatchAuction({ auctionIdParam, patchAuctionParam });
-
-      console.log(values);
-      console.log('결과', data);
-      console.log('옥션아이디', data.auction_id);
-    } catch (error) {
-      console.error(error);
     }
-    if (isEditing) {
-      //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
-      // router.push(`/auctions/${data.auction_id}`);
-    } else {
-      //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
-      // router.push(`/auctions/${newAuctionId}`);
+
+    if (!fetchedAuction) {
+      popToast('error', '경매 수정 에러', '경매 정보를 불러오는데 실패했습니다.', 'long');
+      throw new Error('경매를 불러오는데 실패했습니다.');
     }
+
+    const patchAuctionParam = {
+      auction_id: auctionIdParam,
+      user_id: loggedInUserId,
+      title,
+      description,
+      end_date: utcEndDate.toISOString(),
+      starting_point: Number(startingPoint),
+      current_point: Number(fetchedAuction.current_point),
+      max_point: Number(maxPoint),
+      image_urls: imageUrls,
+      status: fetchedAuction.status,
+      address_id: fetchedAddressId,
+      updated_at: new TZDate(new Date(), UTC_TIME_ZONE).toISOString()
+    };
+
+    const data = await mutatePatchAuction({ auctionIdParam, patchAuctionParam });
+
+    console.log(values);
+    console.log('결과', data);
+    console.log('옥션아이디', data.auction_id);
+
+    //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
+    // router.push(`/auctions/${data.auction_id}`);
   };
 
   //TODO - error가 발생하면 대처가 불가능, 화면을 어떡해 보여줄지 의논하기 (KMH)
@@ -235,7 +222,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     return <p>Loading...</p>;
   }
 
-  //TODO - 준구님이랑 의논해서 공통 컴포넌트로 분리하기 (KMH)
   return (
     <>
       <PageContainer>
@@ -292,43 +278,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
             </Button>
           </form>
         </Form>
-        {/* <ul className="mt-4 grid w-full grid-cols-1 gap-2 md:grid-cols-2">
-          {previewImages &&
-            previewImages.map((previewImage, index) => {
-              return (
-                <li key={previewImage.id} className="relative w-full">
-                  <div className="h-80 w-full border-2 border-black md:w-80">
-                    <Image
-                      alt={`${index + 1}번 째 업로드할 경매 이미지 `}
-                      src={previewImage.data}
-                      className="object-contain"
-                      priority
-                      fill
-                    />
-                    <Button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id));
-                        if (previewImage.isUrl) {
-                          setImageUrlsToDelete((prev) => {
-                            const imageFullPath: string[] = previewImage.data.split('/');
-                            const imagePath = BUCKET_FOLDER_NAME + imageFullPath[imageFullPath.length - 1];
-                            console.log('imageDir', imagePath);
-                            console.log('imagesToDelete', [...prev, imagePath]);
-                            return [...prev, imagePath];
-                          });
-                        }
-                      }}
-                      className="absolute right-1 top-1"
-                      variant="base"
-                    >
-                      &times;
-                    </Button>
-                  </div>
-                </li>
-              );
-            })}
-        </ul> */}
       </PageContainer>
     </>
   );

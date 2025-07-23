@@ -2,6 +2,7 @@ import { QueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/
 import { useInView } from 'react-intersection-observer';
 import { getAddressId, getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
 import { addressIdKeys, auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import { popToast } from 'src/shared/utils/toast';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
@@ -28,10 +29,7 @@ export const usePostAuctionQuery = (auctionId: string | undefined) => {
     mutationFn: (formData: AuctionInsert): Promise<AuctionRow> => postAuction(formData),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: auctionFormKeys.item(auctionId) });
-    },
-    onError: (error) => {
-      //TODO - toast로 error 표시 (KMH)
-      console.error(error);
+      popToast('info', '경매 등록 성공', '경매 등록에 성공했습니다.', 'medium');
     }
   });
   return { mutatePostAuction, isPostAuctionPending };
@@ -47,10 +45,7 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
     }): Promise<AuctionRow> => patchAuction(patchMutationParam.auctionIdParam, patchMutationParam.patchAuctionParam),
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: auctionFormKeys.item(auctionId) });
-    },
-    onError: (error) => {
-      //TODO - toast로 error 표시 (KMH)
-      console.error(error);
+      popToast('info', '경매 수정 성공', '경매 수정에 성공했습니다.', 'medium');
     }
   });
   return { mutatePatchAuction, isPatchAuctionPending };
