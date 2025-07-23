@@ -98,7 +98,13 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       });
 
       if (imageUrls) {
-        setPreviewImages(imageUrls.map((imageUrl: string) => ({ id: uuidv4(), data: imageUrl, isUrl: true })));
+        setPreviewImages(
+          imageUrls.map((imageUrl: string) => {
+            const dotIndex = imageUrl.lastIndexOf('.');
+            const ext = imageUrl.substring(dotIndex + 1);
+            return { id: uuidv4(), data: imageUrl, isUrl: true, ext };
+          })
+        );
       }
 
       if (isFormLoading) {
@@ -115,7 +121,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
     const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
       if (!prevImage.isUrl) {
-        const data = await uploadImageToBucket(prevImage.data);
+        const data = await uploadImageToBucket(prevImage.data, prevImage.ext);
         return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
       }
       return prevImage.data;

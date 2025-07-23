@@ -222,7 +222,7 @@ export async function getSellerAuctions(seller_id: string) {
 }
 
 //TODO - webp로 최적화하기 (KMH)
-export const uploadImageToBucket = async (imageData: string | undefined) => {
+export const uploadImageToBucket = async (imageData: string | undefined, ext: string) => {
   if (!imageData) {
     throw new Error('BUCKET: 이미지 업로드 에러(imageData가 없습니다.)');
   }
@@ -235,7 +235,9 @@ export const uploadImageToBucket = async (imageData: string | undefined) => {
 
   const { data, error } = await supabase.storage
     .from('auction-images')
-    .upload(`images/${uuidv4()}.png`, decode(base64));
+    .upload(`images/${uuidv4()}.${ext}`, decode(base64), {
+      contentType: 'image'
+    });
 
   if (error) {
     console.error('uploadImage', error);

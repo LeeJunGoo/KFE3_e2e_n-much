@@ -30,7 +30,10 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
         const reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onloadend = () => {
-          setPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false }]);
+          const fileName = file.name;
+          const dotIndex = fileName.lastIndexOf('.');
+          const ext = fileName.substring(dotIndex + 1);
+          setPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false, ext }]);
         };
       });
     },

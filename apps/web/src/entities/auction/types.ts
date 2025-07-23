@@ -66,6 +66,7 @@ export interface PreviewImage {
   id: string;
   data: string;
   isUrl: boolean;
+  ext: string;
 }
 
 //NOTE - auctionForm 관련 페이지 props 목록
