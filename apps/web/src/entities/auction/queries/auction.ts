@@ -51,7 +51,6 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
   return { mutatePatchAuction, isPatchAuctionPending };
 };
 
-//TODO - 쿼리 키 캐시에 keyword 경우도 생각하기 (KMH)
 export const prefetchedAuctionList = async (order: string, keyword: string | undefined, queryClient: QueryClient) => {
   await queryClient.prefetchInfiniteQuery({
     queryKey: auctionListKeys.order(order),
@@ -68,8 +67,6 @@ export const prefetchedAuctionList = async (order: string, keyword: string | und
   });
 };
 
-//TODO - keyword가 있을 경우, 없을 경우 둘 다 처리하기 (KMH)
-//TODO - 쿼리 키 캐시에 keyword의 경우도 생각하기 (KMH)
 export const useGetAuctionListQuery = (order: string, keyword: string | undefined) => {
   const { ref, inView } = useInView();
   const {
