@@ -51,7 +51,8 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
   return { mutatePatchAuction, isPatchAuctionPending };
 };
 
-export const prefetchedAuctionList = async (order: string, queryClient: QueryClient) => {
+//TODO - 쿼리 키 캐시에 keyword 경우도 생각하기 (KMH)
+export const prefetchedAuctionList = async (order: string, keyword: string | undefined, queryClient: QueryClient) => {
   await queryClient.prefetchInfiniteQuery({
     queryKey: auctionListKeys.order(order),
     queryFn: ({
@@ -61,13 +62,15 @@ export const prefetchedAuctionList = async (order: string, queryClient: QueryCli
     }): Promise<{
       data: (AuctionRow & EpisodeCount)[];
       nextId: number;
-    }> => getAuctionCardList({ order, pageParam }),
+    }> => getAuctionCardList({ order, keyword, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId
   });
 };
 
-export const useGetAuctionListQuery = (order: string) => {
+//TODO - keyword가 있을 경우, 없을 경우 둘 다 처리하기 (KMH)
+//TODO - 쿼리 키 캐시에 keyword의 경우도 생각하기 (KMH)
+export const useGetAuctionListQuery = (order: string, keyword: string | undefined) => {
   const { ref, inView } = useInView();
   const {
     data: fetchedAuctions,
@@ -79,7 +82,7 @@ export const useGetAuctionListQuery = (order: string) => {
   } = useInfiniteQuery({
     queryKey: auctionListKeys.order(order),
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
-      getAuctionCardList({ order, pageParam }),
+      getAuctionCardList({ order, keyword, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
     staleTime: 0,

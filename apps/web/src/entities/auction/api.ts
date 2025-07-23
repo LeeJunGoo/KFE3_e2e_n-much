@@ -95,9 +95,11 @@ export const fetchSellerAuctions = async () => {
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
 export const getAuctionCardList = async ({
   order,
+  keyword,
   pageParam
 }: {
   order: string | undefined;
+  keyword: string | undefined;
   pageParam: number | undefined;
 }) => {
   //NOTE - pageParam이 0인 경우, false로 나옴
@@ -113,9 +115,15 @@ export const getAuctionCardList = async ({
     throw new Error('getAllAuctionsWithEpisodeCount: pageParam이 없습니다.');
   }
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list?order=${order}&page=${pageParam}`
-  );
+  let url: string | null = null;
+
+  if (keyword?.trim()) {
+    url = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list?order=${order}&page=${pageParam}&keyword=${keyword}`;
+  } else {
+    url = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list?order=${order}&page=${pageParam}`;
+  }
+
+  const res = await fetch(url);
   if (!res.ok) {
     throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
   }

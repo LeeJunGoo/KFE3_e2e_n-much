@@ -8,7 +8,7 @@ import type { AuctionListPageProps } from 'src/entities/auction/types';
 const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
   const queryClient = new QueryClient();
 
-  await prefetchedAuctionList(order, queryClient);
+  await prefetchedAuctionList(order, keyword, queryClient);
 
   return (
     <PageContainer>

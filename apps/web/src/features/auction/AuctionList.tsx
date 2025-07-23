@@ -11,9 +11,10 @@ import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types'
 import type { AuctionRow } from 'src/shared/supabase/types';
 
 const AuctionList = ({ order, keyword }: AuctionListProps) => {
+  console.log('list', order, keyword);
   //TODO - nextjs 캐시로 관리하기 (KMH)
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
-    useGetAuctionListQuery(order);
+    useGetAuctionListQuery(order, keyword);
 
   useEffect(() => {
     if (inView) {

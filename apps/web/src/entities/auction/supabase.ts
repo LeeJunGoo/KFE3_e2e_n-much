@@ -131,8 +131,17 @@ export const selectSellerAuctionCount = async (sellerId: AuctionRow['user_id']) 
   };
 };
 
-export const selectAuctionsCount = async () => {
-  const { data, error } = await supabase.from('auctions').select('count').eq('status', 'OPEN').single();
+export const selectAuctionsCount = async (keyword: string | null) => {
+  if (!keyword) {
+    keyword = '';
+  }
+
+  const { data, error } = await supabase
+    .from('auctions')
+    .select('count')
+    .eq('status', 'OPEN')
+    .ilike('title', `%${keyword}%`)
+    .single();
 
   if (error) {
     console.error(error);
@@ -162,8 +171,8 @@ export const selectAuctionsByMainPageCategory = async (orderParam: string, isAsc
 };
 
 //NOTE - //NOTE - 경매 현황의 경매 리스트 가져오기
-export const selectAuctionCardList = async (order: string | undefined, page: number | undefined) => {
-  const auctionsCount = await selectAuctionsCount();
+export const selectAuctionCardList = async (order: string | null, keyword: string | null, page: number | null) => {
+  const auctionsCount = await selectAuctionsCount(keyword);
 
   if (!order) {
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러(order가 없습니다.)');
@@ -171,6 +180,10 @@ export const selectAuctionCardList = async (order: string | undefined, page: num
 
   if (!page && page !== 0) {
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러(page가 없습니다.)');
+  }
+
+  if (!keyword) {
+    keyword = '';
   }
 
   const ascending = order === 'favorites' ? false : true;
@@ -184,6 +197,7 @@ export const selectAuctionCardList = async (order: string | undefined, page: num
     )
     .order(order, { ascending })
     .eq('status', 'OPEN')
+    .ilike('title', `%${keyword}%`)
     .range(page, page + ITEM_PER_PAGE - 1);
 
   if (error) {
