@@ -7,15 +7,13 @@ export const auctionFormKeys = {
 };
 
 //NOTE - addressId를 가져올 때 사용
-//TODO - auctionFormKeys를 addressId에 맞게 수정하기 (KMH)
 export const addressIdKeys = {
   all: [ADDRESS_ID_QUERY_KEY] as const,
-  item: (userId: string | undefined) => (userId ? ([...auctionFormKeys.all, userId] as const) : [])
+  item: (userId: string | undefined) => (userId ? ([...addressIdKeys.all, userId] as const) : [])
 };
 
 //NOTE - auctionList를 가져올 때 사용
-//TODO - auctionFormKeys를 auctionList에 맞게 수정하기 (KMH)
 export const auctionListKeys = {
   all: [AUCTION_LIST_QUERY_KEY] as const,
-  order: (order: string | undefined) => (order ? ([...auctionFormKeys.all, order] as const) : [])
+  order: (order: string | undefined) => (order ? ([...auctionListKeys.all, order] as const) : [])
 };
