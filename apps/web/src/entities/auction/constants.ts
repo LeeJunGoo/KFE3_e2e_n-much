@@ -35,4 +35,4 @@ export const HOURS_OF_DAY = 24; //NOTE - 24시간
 export const KOR_TIME_ZONE = 'Asia/Seoul'; //NOTE - 한국 time zone
 export const UTC_TIME_ZONE = 'utc'; //NOTE - utc time zone
 
-export const AUCTION_LIST_SKELETON_LENGTH = 10;
+export const AUCTION_LIST_SKELETON_LENGTH = 10; //NOTE - 경매 리스트의 스켈레톤 갯수

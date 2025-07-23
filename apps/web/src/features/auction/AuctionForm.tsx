@@ -21,27 +21,19 @@ import {
   BUCKET_FOLDER_NAME,
   MAX_DESCRIPTION_LETTERS,
   MAX_TITLE_LETTERS,
-  MIN_MAX_POINT_NUM,
-  MIN_STARTING_POINT_NUM,
   UTC_TIME_ZONE
 } from 'src/entities/auction/constants';
 import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
+import { getFormDefaultValues } from 'src/entities/auction/utils/formDefaultValues';
 import { validateDate } from 'src/entities/auction/utils/validateDate';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
-import {
-  convertFromKorToUtcDate,
-  convertFromUtcToKorDate,
-  getNowKorDate,
-  getTime,
-  getTomorrowDate,
-  setTimeToDate
-} from 'src/shared/utils/dateFns';
+import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDate } from 'src/shared/utils/dateFns';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 import type { z } from 'zod';
@@ -67,21 +59,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   const { mutatePostAuction, isPostAuctionPending } = usePostAuctionQuery(auctionIdParam);
   const { mutatePatchAuction, isPatchAuctionPending } = usePatchAuctionQuery(auctionIdParam);
-
-  const getFormDefaultValues = () => {
-    const korToday = getNowKorDate();
-    const endDay = getTomorrowDate(korToday);
-    const endTime = getTime(endDay);
-
-    return {
-      title: '',
-      description: '',
-      endDay,
-      endTime,
-      startingPoint: String(MIN_STARTING_POINT_NUM),
-      maxPoint: String(MIN_MAX_POINT_NUM)
-    };
-  };
 
   const form = useForm<AuctionFormType>({
     resolver: zodResolver(auctionFormSchema),
@@ -132,7 +109,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
-  //TODO - 분리하기 (KMH)
+  //TODO - 파일로 분리하기 (KMH)
   const uploadImagesToDB = async (previewImages: PreviewImage[]) => {
     if (previewImages.length === 0) {
       return [];
