@@ -1,7 +1,9 @@
+'use client';
 import { FaGavel, FaCoins, FaHeart } from 'react-icons/fa';
 import { HiDocumentText } from 'react-icons/hi';
 import { HiChatBubbleLeftRight } from 'react-icons/hi2';
 import { LuHeartHandshake } from 'react-icons/lu';
+import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { ICON_NAMES, MYPAGE_MENU_LIST } from 'src/entities/user/mypage/main/constants';
 import MyPageNavigationList from 'src/features/user/mypage/components/main/MyPageNavigationList';
 
@@ -25,7 +27,10 @@ const getIcon = (iconName: string) => {
 };
 
 const MyPageNavigation = () => {
-  const role = 'buyer';
+  const user = useUserState();
+  if (!user) return null;
+
+  const role = user.role || 'buyer';
   const filteredMenus = MYPAGE_MENU_LIST.filter((menu) => menu.role === role || menu.role === 'common');
 
   return (
