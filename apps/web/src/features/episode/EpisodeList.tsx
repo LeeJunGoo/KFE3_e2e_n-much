@@ -10,23 +10,21 @@ import {
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
 import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
+import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
 import { getEpisodesWithPagination } from 'src/entities/episode/api';
 import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
 import { usePageActions } from 'src/entities/episode/stores/usePaginationStore';
 import EpisodeItem from 'src/features/episode/EpisodeItem';
 import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
-import { type AuctionRow } from 'src/shared/supabase/types';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeList = ({
   episodesCount,
-  auctionId,
-  sellerId
+  auctionInfo
 }: {
   episodesCount: number;
-  auctionId: AuctionRow['auction_id'];
-  sellerId: AuctionRow['user_id'];
+  auctionInfo: AuctionInfoWithAddressType;
 }) => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState(1);
@@ -34,8 +32,8 @@ const EpisodeList = ({
   const totalPages = Math.max(1, Math.ceil(episodesCount / EPISODES_PER_PAGE));
 
   const { isError, data: episodesList } = useQuery({
-    queryKey: episodesListKeys.item({ auctionId, page }),
-    queryFn: () => getEpisodesWithPagination(auctionId, page),
+    queryKey: episodesListKeys.item({ auctionId: auctionInfo.auction_id, page }),
+    queryFn: () => getEpisodesWithPagination(auctionInfo.auction_id, page),
     placeholderData: keepPreviousData,
     staleTime: 300000
   });
@@ -46,11 +44,11 @@ const EpisodeList = ({
     if (page <= totalPages - 1) {
       const nextPage = page + 1;
       queryClient.prefetchQuery({
-        queryKey: episodesListKeys.item({ auctionId, page: nextPage }),
-        queryFn: () => getEpisodesWithPagination(auctionId, nextPage)
+        queryKey: episodesListKeys.item({ auctionId: auctionInfo.auction_id, page: nextPage }),
+        queryFn: () => getEpisodesWithPagination(auctionInfo.auction_id, nextPage)
       });
     }
-  }, [page, queryClient, totalPages, auctionId]);
+  }, [page, queryClient, totalPages, auctionInfo.auction_id]);
 
   const handlePageChange = (nextPage: number) => {
     if (page >= 1 && page <= totalPages) {
@@ -74,7 +72,7 @@ const EpisodeList = ({
       {/* 사연 목록 */}
       <ul className="space-y-5 divide-y">
         {episodesList!.map((episode: EpisodeItemProps) => (
-          <EpisodeItem key={episode.episode_id} episode={episode} sellerId={sellerId} />
+          <EpisodeItem key={episode.episode_id} episode={episode} sellerId={auctionInfo.user_id} />
         ))}
       </ul>
       {/* 페이지 네이션 */}

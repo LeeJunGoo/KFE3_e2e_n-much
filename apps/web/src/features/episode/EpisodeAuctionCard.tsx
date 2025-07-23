@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import AuctionTimerStatic from 'src/features/auction/AuctionTimerStatic';
+import ContentDescription from 'src/shared/ui/ContentDescription';
+import ContentTitle from 'src/shared/ui/ContentTitle';
 import BaseCard from 'src/widgets/BaseCard';
 import type { AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
-import ContentTitle from 'src/shared/ui/ContentTitle';
-import ContentDescription from 'src/shared/ui/ContentDescription';
 
 const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummaryInfoWithAddressType }) => {
   const imageUrls = auctionInfo.image_urls;

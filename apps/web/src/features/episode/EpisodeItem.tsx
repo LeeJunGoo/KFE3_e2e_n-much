@@ -1,3 +1,4 @@
+import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import EpisodeActionButtons from 'src/features/episode/EpisodeActionButtons';
 import EpisodeBidModal from 'src/features/episode/EpisodeBidModal';
 import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
@@ -10,13 +11,12 @@ import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
-  //FIXME - buyer 필요
-  // const isEpisodeBid = userInfo.seller_id === sellerId || episode.buyer_id === userInfo.buyer_id;
-  // const isEpisodeEditDelete = episode.buyer_id === userInfo.buyer_id;
-  // const userNickname = episode.buyer.nickname ?? userInfo.social_name;
-  const isEpisodeBid = true;
-  const isEpisodeEditDelete = true;
-  const userNickname = 'Buyer 닉네임';
+  const user = useUserState();
+
+  const isUser = episode.user_id === user?.id;
+  const isSeller = sellerId && user?.id;
+  const isEpisodeActions = episode.user_id === user?.id;
+  const userNickname = episode.users.nick_name ?? user?.nick_name;
 
   return (
     <li className="list-none space-y-1 pb-4">
@@ -32,7 +32,8 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
             <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>
           </div>
         </div>
-        {isEpisodeBid && <EpisodeBidModal episode={episode} />}
+        {/* 사연자 및 경매 물품의 판매자일 경우에만 입찰하기 버튼 활성화 */}
+        {isUser && isSeller && <EpisodeBidModal episode={episode} />}
       </div>
       <div>
         <ContentTitle title={episode.title} variant="base" className="mb-1" />
@@ -40,7 +41,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
       </div>
       <div className="flex items-center justify-between">
         <EpisodeInfoModal episode={episode} />
-        {isEpisodeEditDelete && <EpisodeActionButtons auctionId={episode.auction_id} episodeId={episode.episode_id} />}
+        {isEpisodeActions && <EpisodeActionButtons auctionId={episode.auction_id} episodeId={episode.episode_id} />}
       </div>
     </li>
   );

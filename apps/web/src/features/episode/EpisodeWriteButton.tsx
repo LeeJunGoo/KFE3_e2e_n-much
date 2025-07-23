@@ -1,26 +1,27 @@
+import { Button } from '@repo/ui/components/ui/button';
 import Link from 'next/link';
-import { getHasUserWrittenEpisode } from 'src/entities/episode/api';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import { twMerge } from 'tailwind-merge';
 
-const EpisodeWriteButton = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
-  const userId = 'e40600a6-a437-47b8-840a-ced55b143dc0';
-  // const isWritten = await getHasUserWrittenEpisode(auctionId, userId);
-  const isWritten = false;
-
-  return (
-    <Link
-      href={isWritten ? '#' : `/episode/${auctionId}`}
-      aria-disabled={isWritten}
-      className={twMerge(
-        'flex-1 rounded-md p-2 text-center transition-colors',
-        isWritten
-          ? 'bg-(--color-light-gray) text-(--color-secondary) pointer-events-none cursor-not-allowed'
-          : 'bg-(--color-accent) text-(--color-secondary) hover:bg-(--color-primary)'
-      )}
-    >
-      {isWritten ? '사연 작성 완료' : '사연 작성하기'}
-    </Link>
+const EpisodeWriteButton = ({
+  auctionId,
+  isWritten,
+  className
+}: {
+  auctionId: AuctionRow['auction_id'];
+  isWritten: boolean;
+  className?: string;
+}) => {
+  return isWritten ? (
+    // 사연이 이미 작성된 경우: '사연 작성 완료' 비활성 버튼 표시
+    <Button variant="inActive" size="lg" disabled className={twMerge('w-full', className)}>
+      사연 작성 완료
+    </Button>
+  ) : (
+    // 사연을 아직 작성하지 않은 경우: '사연 작성하기' 링크 버튼 표시
+    <Button asChild variant="inActive" size="lg" className={twMerge('w-full', className)}>
+      <Link href={`/episode/${auctionId}`}>사연 작성하기</Link>
+    </Button>
   );
 };
 

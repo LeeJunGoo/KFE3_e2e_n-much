@@ -11,7 +11,7 @@ type EpisodeBidButtonProps = {
 
 const EpisodeBidButton = ({ onClick, variant, className }: EpisodeBidButtonProps) => {
   return (
-    <Button size="sm" className="bg-[#8E74F9] hover:bg-[#3f3562]" onClick={onClick}>
+    <Button size="sm" variant={variant} onClick={onClick}>
       <FiAward />
       <span>입찰하기</span>
     </Button>

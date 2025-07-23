@@ -1,17 +1,18 @@
 import { Card } from '@repo/ui/components/ui/card';
 import Link from 'next/link';
-import { getSellerAuctionCount } from 'src/entities/auction/api';
-import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
+import { getAuctionInfoWithAddress, getSellerAuctionCount } from 'src/entities/auction/api';
+import { type AuctionRow } from 'src/shared/supabase/types';
 import UserAvatar from 'src/shared/ui/BaseAvatar';
 
-const SellerInfoSection = async ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
+const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+  const auctionInfo = await getAuctionInfoWithAddress(auctionId); //ANCHOR - 경매 상품 및 경매 업체 정보
   const { totalAuctions, activeAuctions } = await getSellerAuctionCount(auctionInfo.user_id);
 
   return (
     <Card className="mb-4 p-5 shadow-sm">
       <div className="flex justify-between">
         <h3 className="text-(--color-text-base) font-medium">판매자 정보</h3>
-        {/* //FIXME - 문의하기 페이지 이동 */}
+        {/* // FIXME - 문의하기 페이지 이동 */}
         <Link
           href={'/inquiries/write'}
           className="text-(--color-warm-gray) hover:text-(--color-accent) text-sm font-semibold transition-colors"

@@ -1,15 +1,14 @@
 'use client';
-
+import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/components/ui/dialog';
-import { useState } from 'react';
-import type { EpisodeItemProps } from 'src/entities/episode/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import ContentDescription from 'src/shared/ui/ContentDescription';
 import ContentTitle from 'src/shared/ui/ContentTitle';
 import MoreButton from 'src/shared/ui/MoreButton';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeInfoModal = ({ episode }: { episode: EpisodeItemProps }) => {
   const [open, setOpen] = useState(false);

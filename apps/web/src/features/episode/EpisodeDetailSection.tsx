@@ -1,25 +1,21 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getEpisodesCount, getEpisodesWithPagination } from 'src/entities/episode/api';
 import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
 import EpisodeList from 'src/features/episode/EpisodeList';
 import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
-import type { AuctionRow } from 'src/shared/supabase/types';
+import { type AuctionRow } from 'src/shared/supabase/types';
 
-const EpisodeDetailSection = async ({
-  auctionId,
-  sellerId
-}: {
-  auctionId: AuctionRow['auction_id'];
-  sellerId: AuctionRow['user_id'];
-}) => {
-  const { episodeCount } = await getEpisodesCount(auctionId);
+const EpisodeDetailSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+  const auctionInfo = await getAuctionInfoWithAddress(auctionId); //ANCHOR - 경매 상품 및 경매 업체 정보
+  const { episodeCount } = await getEpisodesCount(auctionId); //ANCHOR - 경매 상품에 대한 사연 개수
 
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: episodesListKeys.item({ auctionId, page: 1 }),
-    queryFn: () => getEpisodesWithPagination(auctionId, 1)
+    queryFn: () => getEpisodesWithPagination(auctionInfo.auction_id, 1)
   });
 
   const dehydratedState = dehydrate(queryClient);
@@ -39,7 +35,7 @@ const EpisodeDetailSection = async ({
         <EpisodeEmpty />
       ) : (
         <HydrationBoundary state={dehydratedState}>
-          <EpisodeList episodesCount={episodeCount} auctionId={auctionId} sellerId={sellerId} />
+          <EpisodeList episodesCount={episodeCount} auctionInfo={auctionInfo} />
         </HydrationBoundary>
       )}
     </Card>

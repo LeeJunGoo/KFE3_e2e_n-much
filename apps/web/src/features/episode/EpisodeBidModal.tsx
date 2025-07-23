@@ -23,8 +23,7 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
             onClick={() => {
               setOpen(true);
             }}
-            variant="active"
-            className="bg-[#8E74F9] text-xs hover:bg-[#3f3562]"
+            variant="inActive"
           />
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
