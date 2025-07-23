@@ -1,57 +1,27 @@
 'use client';
 
-//TODO - 스피너 적용하기
-
 import { useEffect } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useInView } from 'react-intersection-observer';
-import { fetchAllAuctionWithEpisodeCount, fetchFavoriteAuctionWithEpisodeCount } from 'src/entities/auction/api';
-import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/authStore';
-import AuctionCard from 'src/features/user/mypage/components/favorites/components/AuctionCardClone';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
+import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
+import { useGetFavoriteAuctionListQuery } from 'src/entities/auction/queries/auction';
+import { useUserState } from 'src/entities/auth/stores/authStore';
+import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
+import { v4 as uuidv4 } from 'uuid';
+import AuctionCardClone from './AuctionCardClone';
+import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-interface EpisodeCount {
-  episodes: [{ count: number }];
-}
+const AuctionListClone = ({ order }: AuctionListProps) => {
+  //TODO - nextjs 캐시로 관리하기 (KMH)
 
-const AuctionListClone = ({ order }: { order: string }) => {
   const userData = useUserState();
-  const isUserloading = useUserLoadingState();
-
+  // console.log('userData:', userData);
   const user: string = userData?.id as string;
 
-  const { ref, inView } = useInView();
-  const {
-    data: auctions,
-    isError,
-    isLoading,
-    fetchNextPage
-  } = useInfiniteQuery({
-    queryKey: ['auctions', order, user],
-    queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
-      fetchFavoriteAuctionWithEpisodeCount({ order, pageParam, user }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage) => lastPage.nextId,
-    staleTime: 5,
-    enabled: !!user
-  });
-  console.log('auctions:', auctions);
+  const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
+    useGetFavoriteAuctionListQuery(order, user);
 
-  // const {
-  //   data: test,
-  //   isError,
-  //   isLoading,
-  //   isFetchingNextPage,
-  //   fetchNextPage
-  // } = useInfiniteQuery({
-  //   queryKey: ['auctions', order],
-  //   queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
-  //     fetchAllAuctionWithEpisodeCount({ order, pageParam }),
-  //   initialPageParam: 0,
-  //   getNextPageParam: (lastPage) => lastPage.nextId,
-  //   staleTime: 5
-  // });
-  // console.log('test:', test);
+  console.log('fetchedAuctions:', fetchedAuctions);
 
   useEffect(() => {
     if (inView) {
@@ -59,64 +29,61 @@ const AuctionListClone = ({ order }: { order: string }) => {
     }
   }, [fetchNextPage, inView]);
 
-  if (isUserloading) {
-    // 스켈레톤
-  }
-
+  //TODO - 에러 발생을 이미지로 표시하기 (KMH)
   if (isError) {
+    console.error(error);
     return <p>에러 발생</p>;
   }
 
-  if (isLoading) {
-    return <p>로딩중...</p>;
+  if (isPending) {
+    return (
+      <>
+        <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
+        <ul className="grid grid-cols-2 gap-3">
+          {Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
+            <Skeleton key={uuidv4()} className="h-40 w-full" />
+          ))}
+        </ul>
+      </>
+    );
   }
 
   return (
-    <div>
-      <h3 className="pb-2 pt-1 text-sm">{`총 ${auctions?.pages.reduce((total, page) => total + page.data.length, 0)}개의 경매가 있습니다`}</h3>
+    <>
+      <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
       <ul className="grid grid-cols-2 gap-3">
-        {auctions &&
-          auctions.pages.map((page) =>
+        {fetchedAuctions &&
+          fetchedAuctions.pages.map((page) =>
             page.data.map((auction: AuctionRow & EpisodeCount) => {
-              const {
-                auction_id: actionId,
-                status,
-                title,
-                current_point: currentPoint,
-                end_date: endDate,
-                episodes,
-                address_id: address
-              } = auction;
+              const { auction_id: auctionId, title, end_date: endDate, episodes } = auction;
               let { image_urls: imageUrls, favorites } = auction;
 
               if (!imageUrls) {
                 imageUrls = [];
               }
+
               if (!favorites) {
                 favorites = [];
               }
 
               return (
-                <AuctionCard
-                  key={`${actionId}`}
-                  auction_id={actionId}
-                  address={address}
-                  status={status}
+                <AuctionCardClone
+                  key={`${auctionId}`}
+                  auctionId={auctionId}
                   imageSrc={imageUrls[0]}
                   title={title}
-                  currentPoint={currentPoint}
                   endDate={endDate}
                   episodeCount={episodes[0]['count']}
-                  favorites={favorites.length}
+                  favoriteCount={favorites.length}
                 />
               );
             })
           )}
-        <div>
-          <div ref={ref} onClick={() => fetchNextPage()}></div>
-        </div>
       </ul>
-    </div>
+      <div className="flex w-full justify-center" ref={ref}>
+        {isFetchingNextPage && <LoadingSpinner />}
+      </div>
+    </>
   );
 };
 export default AuctionListClone;

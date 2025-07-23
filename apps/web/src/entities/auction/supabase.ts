@@ -197,41 +197,45 @@ export const selectAuctionCardList = async (order: string | undefined, page: num
 };
 
 // 관심 경매와 경매의 사연 갯수를 불러오기 - (ksh)
-export const getFavoriteAuctionsWithEpisodeCountByOrder = async (
-  userParam: string, // 추가된 인자
-  orderParam: string | null,
-  isAscending: boolean,
-  pageParam: number | null
+export const selectFavoriteAuctionCardList = async (
+  order: string | undefined,
+  page: number | undefined,
+  user: string | undefined
 ) => {
-  const itemsPerPage = 5;
-  const auctionsCount = await getAllAuctionsCount();
+  const auctionsCount = await selectAuctionsCount();
 
-  if (!orderParam) {
-    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(순서 파라미터가 없습니다.)');
+  if (!order) {
+    throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(order가 없습니다.)');
   }
 
-  if (!pageParam && pageParam !== 0) {
-    throw new Error('DB: 경매와 사연 갯수 불러오기 에러(페이지 파라미터가 없습니다.)');
+  if (!page && page !== 0) {
+    throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(page가 없습니다.)');
   }
+
+  if (!user) {
+    throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(user가 없습니다.)');
+  }
+
+  const ascending = order === 'favorites' ? false : true;
 
   const { data, error } = await supabase
     .from('auctions')
     .select(
       `
-      *,episodes(count)
-      `
+    *,episodes(count)
+  `
     )
-    .contains('favorites', [userParam])
+    .contains('favorites', [user])
     .eq('status', 'OPEN')
-    .order(orderParam, { ascending: isAscending })
-    .range(pageParam, pageParam + itemsPerPage);
+    .order(order, { ascending })
+    .range(page, page + ITEM_PER_PAGE - 1);
 
   if (error) {
     console.error(error);
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
   }
 
-  const nextId = pageParam < auctionsCount - itemsPerPage ? pageParam + itemsPerPage + 1 : null;
+  const nextId = page < auctionsCount - ITEM_PER_PAGE ? page + ITEM_PER_PAGE + 1 : null;
 
   return { data, nextId };
 };

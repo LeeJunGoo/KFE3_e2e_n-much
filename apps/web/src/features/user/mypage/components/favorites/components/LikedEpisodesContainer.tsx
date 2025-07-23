@@ -1,7 +1,7 @@
 import { getServerUser } from 'src/entities/auth/serverAction';
 import { getLikeEpisode } from 'src/entities/episode/supabase';
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
-import { formatYYYYMMDD } from 'src/shared/utils/formatToKoreanDateTime';
+import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 
 // episodes 데이터
 // const test = {
@@ -27,26 +27,29 @@ const LikedEpisodesContainer = async () => {
   const episodes = await getLikeEpisode(userId);
 
   return (
-    <ul>
-      {episodes &&
-        episodes.map((episode) => {
-          const episodeId: string = episode.episode_id;
-          const episodeTitle: string = episode.title;
-          const auctionTitle: string = episode.auctions?.title as string;
-          const episodeDate: string = formatYYYYMMDD(episode.created_at) as string;
-          const episodeStatus: boolean | null = episode.winning_bid;
+    <>
+      <h3 className="pb-2 pt-1 text-sm">{`총 ${episodes ? episodes.length : 0}개의 사연이 있습니다`}</h3>
+      <ul>
+        {episodes &&
+          episodes.map((episode) => {
+            const episodeId: string = episode.episode_id;
+            const episodeTitle: string = episode.title;
+            const auctionTitle: string = episode.auctions?.title as string;
+            const episodeDate: string = formatYYYYMMDD(episode.created_at) as string;
+            const episodeStatus: boolean | null = episode.winning_bid;
 
-          return (
-            <MyEpisodeListItem
-              key={episodeId}
-              episodeTitle={episodeTitle}
-              auctionTitle={auctionTitle}
-              episodeDate={episodeDate}
-              episodeStatus={episodeStatus}
-            />
-          );
-        })}
-    </ul>
+            return (
+              <MyEpisodeListItem
+                key={episodeId}
+                episodeTitle={episodeTitle}
+                auctionTitle={auctionTitle}
+                episodeDate={episodeDate}
+                episodeStatus={episodeStatus}
+              />
+            );
+          })}
+      </ul>
+    </>
   );
 };
 

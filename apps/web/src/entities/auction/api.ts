@@ -126,24 +126,42 @@ export const getAuctionCardList = async ({
 };
 
 // 관심 경매와 해당 경매의 사연 갯수 가져오기 - (ksh)
-export const getFaboriteAuctionCardList = async ({
+export const getFavoriteAuctionCardList = async ({
   order,
   pageParam,
   user
 }: {
-  order: string;
-  pageParam: number;
-  user: string;
+  order: string | undefined;
+  pageParam: number | undefined;
+  user: string | undefined;
 }) => {
-  const fetchUrl = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions_with_episode_count?order=${order}&page=${pageParam}&user=${user}`;
-  const data = await fetch(fetchUrl);
-  const result = await data.json();
-
-  if (result.status === 'success') {
-    return result.data;
-  } else {
-    throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
+  //NOTE - pageParam이 0인 경우, false로 나옴
+  if (!order && pageParam === undefined && !user) {
+    throw new Error('getFaboriteAuctionCardList: order와 pageParamr과 user가 없습니다.');
   }
+
+  if (!order) {
+    throw new Error('getFaboriteAuctionCardList: order가 없습니다.');
+  }
+
+  if (pageParam === undefined) {
+    throw new Error('getFaboriteAuctionCardList: pageParam이 없습니다.');
+  }
+
+  if (!user) {
+    throw new Error('getFaboriteAuctionCardList: user가 없습니다.');
+  }
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list_favorite?order=${order}&page=${pageParam}&user=${user}`
+  );
+
+  if (!res.ok) {
+    throw new Error('관심 경매와 해당 경매의 사연 갯수 fetch 실패');
+  }
+
+  const data = await res.json();
+  return data;
 };
 
 export const getAuction = async (auctionId: string | undefined) => {
