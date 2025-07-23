@@ -24,6 +24,7 @@ import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase
 import { getFormDefaultValues } from 'src/entities/auction/utils/formDefaultValues';
 import { validateDate } from 'src/entities/auction/utils/validateDate';
 import FormEndDay from 'src/features/auction/FormEndDay';
+import FormEndTime from 'src/features/auction/FormEndTime';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
@@ -254,21 +255,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                 endTime={form.getValues('endTime')}
                 validateDisableDate={validateDate}
               />
-              <FormField
-                control={form.control}
-                name="endTime"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormLabel>
-                      경매 종료 시간<span className="text-(--color-red)">&#42;</span>
-                    </FormLabel>
-                    <FormControl>
-                      <Input className="h-9 bg-white" type="time" step="1" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <FormEndTime control={form.control} name="endTime" endTimeLabel="경매 종료 시간" />
             </div>
             <FormField
               control={form.control}

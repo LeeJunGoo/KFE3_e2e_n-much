@@ -8,14 +8,15 @@ import { ko } from 'date-fns/locale';
 import { FaCalendarAlt } from 'react-icons/fa';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 
-type FormTitleType<T extends FieldValues> = {
+//TODO - 파일로 분리하기 (KMH)
+interface FormEndDayProps<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
   endDayLabel: string;
   placeholder: string;
   endTime: string;
   validateDisableDate: (day: Date, time: string, isDisableCondition: boolean) => boolean;
-};
+}
 
 const FormEndDay = <T extends FieldValues>({
   control,
@@ -24,7 +25,7 @@ const FormEndDay = <T extends FieldValues>({
   placeholder,
   endTime,
   validateDisableDate
-}: FormTitleType<T>) => {
+}: FormEndDayProps<T>) => {
   return (
     <FormField
       control={control}
