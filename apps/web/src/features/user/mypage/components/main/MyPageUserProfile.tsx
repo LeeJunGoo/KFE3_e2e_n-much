@@ -2,7 +2,7 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { FiRepeat } from 'react-icons/fi';
-import { useUpdateUserRole, useUserState } from 'src/entities/auth/stores/authStore';
+import { useUpdateUserRole, useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { ROLE_CONFIG } from 'src/entities/user/mypage/main/constants';
 import AddressStatus from 'src/features/user/mypage/components/main/AddressStatus';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
