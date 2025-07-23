@@ -28,7 +28,7 @@ export const usePostAuctionQuery = (auctionId: string | undefined) => {
   const { mutateAsync: mutatePostAuction, isPending: isPostAuctionPending } = useMutation({
     mutationFn: (formData: AuctionInsert): Promise<AuctionRow> => postAuction(formData),
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: auctionFormKeys.item(auctionId) });
+      queryClient.invalidateQueries({ queryKey: auctionFormKeys.item(auctionId) });
       popToast('info', '경매 등록 성공', '경매 등록에 성공했습니다.', 'medium');
     }
   });
@@ -44,7 +44,7 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
       patchAuctionParam: AuctionUpdate;
     }): Promise<AuctionRow> => patchAuction(patchMutationParam.auctionIdParam, patchMutationParam.patchAuctionParam),
     onSuccess: () => {
-      queryClient.removeQueries({ queryKey: auctionFormKeys.item(auctionId) });
+      queryClient.invalidateQueries({ queryKey: auctionFormKeys.item(auctionId) });
       popToast('info', '경매 수정 성공', '경매 수정에 성공했습니다.', 'medium');
     }
   });
