@@ -27,47 +27,33 @@ const AuctionList = ({ order }: AuctionListProps) => {
     return <p>에러 발생</p>;
   }
 
-  //TODO - 경매 리스트를 대체하도록 수정 (KMH)
-  if (isPending) {
-    return (
-      <>
-        <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
-        <ul className="grid grid-cols-2 gap-3">
-          {Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
-            <Skeleton key={uuidv4()} className="h-40 w-full" />
-          ))}
-        </ul>
-      </>
-    );
-  }
-
   return (
     <>
       <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
-      <ul className="grid grid-cols-2 gap-3">
+      <ul className="grid grid-cols-2 gap-2">
+        {isPending &&
+          Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
+            <Skeleton key={uuidv4()} className="h-40 w-full" />
+          ))}
         {fetchedAuctions &&
+          !isPending &&
           fetchedAuctions.pages.map((page) =>
             page.data.map((auction: AuctionRow & EpisodeCount) => {
               const { auction_id: auctionId, title, end_date: endDate, episodes } = auction;
-              let { image_urls: imageUrls, favorites } = auction;
-
-              if (!imageUrls) {
-                imageUrls = [];
-              }
-
-              if (!favorites) {
-                favorites = [];
-              }
+              const { image_urls: imageUrls, favorites } = auction;
+              const episodeCount = episodes[0]['count'];
+              const favoriteCount = favorites.length;
+              const previewImage = imageUrls[0];
 
               return (
                 <AuctionCard
                   key={`${auctionId}`}
                   auctionId={auctionId}
-                  imageSrc={imageUrls[0]}
+                  imageSrc={previewImage}
                   title={title}
                   endDate={endDate}
-                  episodeCount={episodes[0]['count']}
-                  favoriteCount={favorites.length}
+                  episodeCount={episodeCount}
+                  favoriteCount={favoriteCount}
                 />
               );
             })
