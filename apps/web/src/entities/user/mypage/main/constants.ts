@@ -18,8 +18,8 @@ export const MYPAGE_MENU_LIST = [
   { role: 'seller', label: '내 경매 보기', href: '/mypage/auctions', icon: ICON_NAMES.GAVEL },
   { role: 'common', label: '포인트 사용 내역', href: '/mypage/points', icon: ICON_NAMES.COINS },
   { role: 'common', label: '찜 목록', href: '/mypage/favorites', icon: ICON_NAMES.HEART },
-  { role: 'buyer', label: '1:1 문의 내역', href: '/', icon: ICON_NAMES.CHAT },
-  { role: 'common', label: 'Vidding 팀에게 문의하기', href: '/', icon: ICON_NAMES.HANDSHAKE }
+  { role: 'buyer', label: '1:1 문의 내역', href: '/mypage/inquiries', icon: ICON_NAMES.CHAT },
+  { role: 'common', label: 'Vidding 팀에게 문의하기', href: '/mypage/contact', icon: ICON_NAMES.HANDSHAKE }
 ];
 
 // MyPageUserProfile.tsx

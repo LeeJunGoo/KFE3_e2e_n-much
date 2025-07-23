@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { AiFillHome, AiOutlineSearch, AiFillPlusCircle } from 'react-icons/ai';
+import { AiFillHome, AiOutlineSearch } from 'react-icons/ai';
 import { FaUser } from 'react-icons/fa';
+import { HiChatBubbleOvalLeftEllipsis } from 'react-icons/hi2';
 import { RiAuctionFill } from 'react-icons/ri';
 import { useActiveRoute } from 'src/entities/layout/hooks/useActiveRoute';
 import type { MobileNavigationListProps } from 'src/entities/layout/types';
@@ -14,7 +15,7 @@ const baseClass = 'flex flex-col items-center gap-0.5 py-2 w-full cursor-pointer
 const getTextColor = (isActive: boolean) => (isActive ? COLORS.ACTIVE : COLORS.INACTIVE);
 
 const MobileNavigationList = ({ isSearchOpen, setIsSearchOpen }: MobileNavigationListProps) => {
-  const { isHome, isAuctionWrite, isAuctions, isMypage } = useActiveRoute();
+  const { isHome, isChat, isAuctions, isMypage } = useActiveRoute();
 
   return (
     <nav
@@ -36,15 +37,15 @@ const MobileNavigationList = ({ isSearchOpen, setIsSearchOpen }: MobileNavigatio
           </div>
         </li>
         <li className="flex-1">
-          <Link href="/auctions/write" className={`${baseClass} ${getTextColor(isAuctionWrite)}`}>
-            <AiFillPlusCircle size={22} />
-            <span className="mt-1 text-xs">경매등록</span>
-          </Link>
-        </li>
-        <li className="flex-1">
           <Link href="/auctions" className={`${baseClass} ${getTextColor(isAuctions)}`}>
             <RiAuctionFill size={22} />
             <span className="mt-1 text-xs">경매현황</span>
+          </Link>
+        </li>
+        <li className="flex-1">
+          <Link href="/chat" className={`${baseClass} ${getTextColor(isChat)}`}>
+            <HiChatBubbleOvalLeftEllipsis size={22} />
+            <span className="mt-1 text-xs">채팅</span>
           </Link>
         </li>
         <li className="flex-1">

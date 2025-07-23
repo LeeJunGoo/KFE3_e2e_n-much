@@ -1,51 +1,23 @@
-//NOTE - 마감 임박: 1일
-//FIXME - 이미지 없음에 기본 이미지 넣기
-//FIXME - 경매 상태 정하기
+//TODO - 컴포넌트 분리하기 (KMH)
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
-import { differenceInHours, formatDistanceToNow, setDefaultOptions } from 'date-fns';
+import { setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
-import { TZDate } from 'react-day-picker';
-import { FaHeart } from 'react-icons/fa';
-import { FaBookOpen } from 'react-icons/fa6';
 import noAuctionImage from 'src/assets/images/noAuctionImage.png';
-import { formatNumber } from 'src/shared/utils/formatNumber';
+import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
+import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
+import type { AuctionCardProp } from 'src/entities/auction/types';
 
-interface AuctionCardProp {
-  auction_id: string;
-  status: string;
-  imageSrc: string | undefined;
-  title: string;
-  currentPoint: number;
-  episodeCount: number;
-  endDate: string;
-  favorites: number;
-  address: string | undefined;
-}
-
-export default function AuctionCard({
-  auction_id,
-  imageSrc,
-  title,
-  endDate,
-  favorites,
-  episodeCount,
-  status,
-  address,
-  currentPoint
-}: AuctionCardProp) {
+const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
-  const now = new TZDate(new Date(), 'Asia/Seoul');
-  const auctionTime = new TZDate(endDate, 'Asia/Seoul');
-  const diffDay = differenceInHours(now, auctionTime);
-  const remainTime = formatDistanceToNow(auctionTime, { addSuffix: true });
+  const { status, remainTime } = formatRemainingTime(endDate);
 
   return (
-    <li className="!rounded-button overflow-hidden rounded-xl bg-white shadow-sm transition-transform hover:scale-[0.98] active:scale-[0.96]">
-      <Link href={`/auctions/${auction_id}`}>
+    <li className="rounded-button hover:scale-98 active:scale-96 overflow-hidden rounded-xl bg-white shadow-sm transition-transform">
+      <Link href={`/auctions/${auctionId}`} prefetch={true}>
         <div className="relative">
           <div className="relative h-40 w-full">
             {imageSrc ? (
@@ -54,41 +26,30 @@ export default function AuctionCard({
                 fill
                 alt={`${title} 이미지`}
                 className="object-cover"
-                sizes="(min-width: 768px) 400px, 100vw"
+                sizes="(min-width: 768px) 400px, 100vw" //TODO - 이것도 고쳐야하는지 물어보기 (KMH)
               />
             ) : (
               <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
             )}
           </div>
-
           <Badge
             className={`absolute bottom-2 right-2 ${
-              status === 'OPEN' && -24 < diffDay && diffDay < 0
-                ? 'bg-[#D84A5F] hover:bg-[#D84A5F]'
-                : 'bg-[#5B80C2] hover:bg-[#5B80C2]'
+              status === 'urgent' ? 'bg-(--color-red)' : 'bg-(--color-accent)'
             } px-2 py-1 font-normal text-white`}
           >
             {remainTime}
           </Badge>
         </div>
         <div className="p-2">
-          <h3 className="mb-1.5 overflow-hidden text-ellipsis text-sm font-medium text-[#1F1F25]">{title}</h3>
-          <div className="text-(--color-warm-gray) mb-2 flex items-center justify-between text-xs">
-            <address className="max-w-[65%] truncate">{address} </address>
-            <span className="text-(--color-accent) font-semibold">{formatNumber(currentPoint)}&nbsp;P</span>
-          </div>
-          <div className="text-(--color-warm-gray) flex items-center justify-between text-xs">
-            <div className="flex items-center">
-              <FaHeart color="#D84A5F" className="mr-1" />
-              <span>{favorites}</span>
-            </div>
-            <div className="flex items-center">
-              <FaBookOpen className="mr-1" />
-              <span>{episodeCount}개의 스토리</span>
-            </div>
-          </div>
+          <h3 className="text-(--color-text-base) mb-1.5 overflow-hidden text-ellipsis text-sm font-medium">{title}</h3>
+          <AuctionMetaInfo
+            favoritesCount={favoriteCount}
+            episodesCount={`${episodeCount}개의 스토리`}
+            className="justify-between"
+          />
         </div>
       </Link>
     </li>
   );
-}
+};
+export default AuctionCard;

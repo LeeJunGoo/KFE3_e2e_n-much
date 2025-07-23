@@ -11,7 +11,7 @@ import DetailPageHeader from 'src/widgets/DetailPageHeader';
 
 const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   const [auctionId, episodeId] = (await params).id;
-  let initialEpisodeInfo: EpisodeRow | null = null; // 조건부에 따라 수정 및 등록 페이지로 나누기
+  let initialEpisodeInfo: EpisodeRow | null = null;
 
   // NOTE - 경매 상품 및 업체 정보
   const auctionInfo = await getAuctionSummaryInfoWithAddress(auctionId!);
