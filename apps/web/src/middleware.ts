@@ -48,15 +48,18 @@ export const middleware = async (request: NextRequest) => {
     const orderList = ['end_date', 'favorites', 'created_at'];
     let isUrlChanged = false;
 
+    //NOTE - order 값이 없거나 카테고리에 없으면 end_date로 변경
     if (!order || !orderList.includes(order)) {
       searchParams.set('order', 'end_date');
       isUrlChanged = true;
     }
 
+    //NOTE - keyword가 없으면 keyword 쿼리 스트링 제거
     if (!keyword) {
       searchParams.delete('keyword');
     }
 
+    //NOTE - url이 바뀌지 않으면 원래 url로 이동
     if (!isUrlChanged) {
       return NextResponse.next();
     }
