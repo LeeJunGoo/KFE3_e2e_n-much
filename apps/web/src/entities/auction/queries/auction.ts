@@ -9,7 +9,7 @@ import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supaba
 export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
   const {
     data: fetchedAuction,
-    isLoading: isAuctionFetching,
+    isPending: isAuctionFetching,
     isError: isAuctionFetchingError,
     error: fetchingAuctionError
   } = useQuery({
