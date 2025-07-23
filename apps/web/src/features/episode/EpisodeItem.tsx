@@ -1,4 +1,4 @@
-import EditDeleteEpisodes from 'src/features/episode/EditDeleteEpisodes';
+import EpisodeActionButtons from 'src/features/episode/EpisodeActionButtons';
 import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
@@ -41,7 +41,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
       </div>
       <div className="flex items-center justify-between">
         <EpisodeInfoModal episode={episode} />
-        {isEpisodeEditDelete && <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />}
+        {isEpisodeEditDelete && <EpisodeActionButtons auctionId={episode.auction_id} episodeId={episode.episode_id} />}
       </div>
     </li>
   );

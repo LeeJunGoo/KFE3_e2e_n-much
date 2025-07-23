@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { deleteAuctionInfo } from 'src/entities/auction/api';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+const AuctionActionButtons = ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const router = useRouter();
 
   const handleAuctionDelete = async () => {
@@ -43,4 +43,4 @@ const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] 
   );
 };
 
-export default EditDeleteActions;
+export default AuctionActionButtons;

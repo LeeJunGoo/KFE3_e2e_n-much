@@ -1,4 +1,4 @@
-import EditDeleteActions from 'src/features/auction/EditDeleteActions';
+import AuctionActionButtons from 'src/features/auction/AuctionActionButtons';
 import GoBackButton from 'src/shared/ui/GoBackButton';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
@@ -11,7 +11,7 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
         </div>
         {/* //FIXME - 유저 정보 */}
         {/* {isSeller && <EditDeleteActions auctionId={auctionId} />} */}
-        {<EditDeleteActions auctionId={auctionId} />}
+        {<AuctionActionButtons auctionId={auctionId} />}
       </nav>
     </>
   );

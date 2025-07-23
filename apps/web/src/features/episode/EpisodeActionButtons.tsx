@@ -5,9 +5,9 @@ import { useRouter } from 'next/navigation';
 import { fetchDeleteEpisode } from 'src/entities/episode/api';
 import type { EpisodeRow } from 'src/shared/supabase/types';
 
-const EditDeleteEpisodes = ({
-  auction_id,
-  episode_id
+const EpisodeActionButtons = ({
+  auctionId,
+  episodeId
 }: {
   auction_id: EpisodeRow['auction_id'];
   episode_id: EpisodeRow['episode_id'];
@@ -50,4 +50,4 @@ const EditDeleteEpisodes = ({
   );
 };
 
-export default EditDeleteEpisodes;
+export default EpisodeActionButtons;
