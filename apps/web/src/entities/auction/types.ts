@@ -133,6 +133,7 @@ export interface AuctionCardProp {
 
 //NOTE - 정렬 카테고리 선택
 export interface SelectOrderProps {
+  keyword: string | undefined;
   order: string;
 }
 
