@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
 import { useGetFavoriteAuctionListQuery } from 'src/entities/auction/queries/auction';
-import { useUserState } from 'src/entities/auth/stores/authStore';
+import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
 import AuctionCardClone from './AuctionCardClone';
@@ -15,7 +15,6 @@ const AuctionListClone = ({ order }: AuctionListProps) => {
   //TODO - nextjs 캐시로 관리하기 (KMH)
 
   const userData = useUserState();
-  // console.log('userData:', userData);
   const user: string = userData?.id as string;
 
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
