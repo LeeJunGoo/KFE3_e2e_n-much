@@ -90,7 +90,7 @@ export const updateAuction = async (auctionId: string | undefined, auctionFormDa
   return data;
 };
 
-//NOTE - 경매 물품 삭제
+//ANCHOR - 경매 물품 삭제
 export const deleteAuctionById = async (auctionId: AuctionRow['auction_id']) => {
   const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auctionId).select('auction_id');
 
@@ -157,7 +157,7 @@ export const selectAuctionsByMainPageCategory = async (orderParam: string, isAsc
   return data;
 };
 
-//NOTE - //NOTE - 경매 현황의 경매 리스트 가져오기
+//NOTE - 경매 현황의 경매 리스트 가져오기
 export const selectAuctionCardList = async (order: string | undefined, page: number | undefined) => {
   const auctionsCount = await selectAuctionsCount();
 

@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import {
-  deleteEpisode,
+  deleteEpisodeById,
   insertEpisode,
   selectEpisodeInfo,
   selectWinningEpisode,
@@ -87,11 +87,18 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const { episode_id } = await request.json();
+  const { episodeId } = await request.json();
+
+  console.log('🚀 ~ DELETE ~ episodeId:', episodeId);
+  if (!episodeId) {
+    return NextResponse.json({ message: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
+  }
+
   try {
-    const res = await deleteEpisode(episode_id);
-    return NextResponse.json({ status: 'success', data: res });
-  } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
+    //
+    const res = await deleteEpisodeById(episodeId);
+    return NextResponse.json(res, { status: 201 });
+  } catch {
+    return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

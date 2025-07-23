@@ -27,14 +27,14 @@ const EpisodeList = ({
   auctionId: AuctionRow['auction_id'];
   sellerId: AuctionRow['user_id'];
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
 
   const totalPages = Math.max(1, Math.ceil(episodesCount / EPISODES_PER_PAGE));
 
   const { isError, data: episodesList } = useQuery({
-    queryKey: episodesListKeys.item({ auctionId, page: currentPage }),
-    queryFn: () => getEpisodesWithPagination(auctionId, currentPage),
+    queryKey: episodesListKeys.item({ auctionId, page }),
+    queryFn: () => getEpisodesWithPagination(auctionId, page),
     placeholderData: keepPreviousData,
     staleTime: 300000
   });
@@ -42,18 +42,18 @@ const EpisodeList = ({
   // ANCHOR - 다음 페이지 prefetch
   useEffect(() => {
     // 마지막 페이지까지만 데이터를 받음
-    if (currentPage <= totalPages - 1) {
-      const nextPage = currentPage + 1;
+    if (page <= totalPages - 1) {
+      const nextPage = page + 1;
       queryClient.prefetchQuery({
         queryKey: episodesListKeys.item({ auctionId, page: nextPage }),
         queryFn: () => getEpisodesWithPagination(auctionId, nextPage)
       });
     }
-  }, [currentPage, queryClient, totalPages, auctionId]);
+  }, [page, queryClient, totalPages, auctionId]);
 
   const handlePageChange = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+      setPage(page);
     }
 
     //"사연 모음" 타이틀로 스크롤 이동
@@ -84,9 +84,9 @@ const EpisodeList = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  handlePageChange(currentPage - 1);
+                  handlePageChange(page - 1);
                 }}
-                aria-disabled={currentPage === 1}
+                aria-disabled={page === 1}
               />
             </PaginationItem>
 
@@ -95,7 +95,7 @@ const EpisodeList = ({
               <PaginationItem key={i + 1}>
                 <PaginationLink
                   href="#"
-                  isActive={currentPage === i + 1}
+                  isActive={page === i + 1}
                   onClick={(e) => {
                     e.preventDefault();
                     handlePageChange(i + 1);
@@ -113,9 +113,9 @@ const EpisodeList = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  handlePageChange(currentPage + 1);
+                  handlePageChange(page + 1);
                 }}
-                aria-disabled={currentPage === totalPages}
+                aria-disabled={page === totalPages}
               />
             </PaginationItem>
           </PaginationContent>

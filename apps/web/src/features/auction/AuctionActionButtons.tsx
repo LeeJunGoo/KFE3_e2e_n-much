@@ -19,8 +19,8 @@ const AuctionActionButtons = ({ auctionId }: { auctionId: AuctionRow['auction_id
     try {
       const result = await deleteAuctionInfo(auctionId);
       if (result) {
-        router.push('/main');
         toast.success('정상적으로 삭제 되었습니다.');
+        router.push('/main');
       }
     } catch (error) {
       if (error instanceof Error) {

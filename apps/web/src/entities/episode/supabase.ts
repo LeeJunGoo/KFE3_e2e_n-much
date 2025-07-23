@@ -1,6 +1,6 @@
 import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 import { createClient } from 'src/shared/supabase/client/client';
-import { type AuctionRow } from 'src/shared/supabase/types';
+import { EpisodeRow, type AuctionRow } from 'src/shared/supabase/types';
 import type { EpisodeCreateType, EpisodeEditType } from 'src/entities/episode/types';
 
 const supabase = createClient();
@@ -145,17 +145,17 @@ export async function selectWinningEpisode(episode_id: string, winning_bid: bool
   return data;
 }
 
-//NOTE - 톡정 에피소드 삭제
-export async function deleteEpisode(episode_id: string) {
-  const { data, error } = await supabase.from('episodes').delete().eq('episode_id', episode_id).select();
+//ANCHOR - 경매 물품에 대한 에피소드 삭제
+export const deleteEpisodeById = async (episodeId: EpisodeRow['episode_id']) => {
+  const { data, error } = await supabase.from('episodes').delete().eq('episode_id', episodeId).select('episode_id');
 
   if (error) {
-    console.log('🚀 ~ deleteEpisode ~ error:', error.message);
-    throw new Error('DB: 사연 삭제 에러');
+    console.error('🚀 ~ deleteEpisodeById ~ deleteAuctionById:', error);
+    throw new Error();
   }
 
-  return data;
-}
+  return Boolean(data);
+};
 
 //ANCHOR - 입찰 랭킹의 입찰자의 정보
 export const selectBidderRanking = async (auction_id: string) => {

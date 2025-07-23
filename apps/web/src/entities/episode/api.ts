@@ -90,25 +90,22 @@ export const getEpisodesWithPagination = async (auction_id: AuctionRow['auction_
   return data;
 };
 
-//NOTE - 경매 물품에 대한 에피소드 삭제
-export const fetchDeleteEpisode = async (episode_id: string) => {
+//ANCHOR - 경매 물품에 대한 에피소드 삭제
+export const deleteEpisodeInfo = async (episodeId: EpisodeRow['episode_id']) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes`, {
     headers: {
       'Content-Type': 'application/json'
     },
     method: 'DELETE',
-    body: JSON.stringify({
-      episode_id
-    })
+    body: JSON.stringify({ episodeId })
   });
 
   if (!res.ok) {
-    throw new Error('사연을 삭제하는 과정에서 네트워크 오류가 발생했습니다.');
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
-
-  const data: EpisodeInfo = await res.json();
-
-  return data.status;
+  const data: boolean = await res.json();
+  return data;
 };
 
 //ANCHOR - 사연 작성 유효성 검사

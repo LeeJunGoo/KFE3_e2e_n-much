@@ -1,21 +1,22 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
+import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
-import { fetchDeleteEpisode } from 'src/entities/episode/api';
+import { deleteEpisodeInfo } from 'src/entities/episode/api';
 import type { EpisodeRow } from 'src/shared/supabase/types';
 
 const EpisodeActionButtons = ({
   auctionId,
   episodeId
 }: {
-  auction_id: EpisodeRow['auction_id'];
-  episode_id: EpisodeRow['episode_id'];
+  auctionId: EpisodeRow['auction_id'];
+  episodeId: EpisodeRow['episode_id'];
 }) => {
   const router = useRouter();
 
   const handleEdit = () => {
-    router.push(`/episode/${auction_id}/${episode_id}`);
+    router.push(`/episode/${auctionId}/${episodeId}`);
   };
 
   const handleDelete = async () => {
@@ -26,21 +27,23 @@ const EpisodeActionButtons = ({
     }
 
     try {
-      const result = await fetchDeleteEpisode(episode_id);
+      const result = await deleteEpisodeInfo(episodeId);
 
-      if (result === 'success') {
-        alert('삭제 되었습니다.');
+      if (result) {
+        toast.success('정상적으로 삭제 되었습니다.');
         window.location.reload();
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(error.message);
+        toast.error('경매 물품을  삭제하지 못했습니다. 다시 시도해주세요.');
+        console.error(error.message);
+        router.refresh();
       }
     }
   };
   return (
     <div className="flex space-x-2">
-      <Button onClick={handleEdit} variant="text" size="sm" className="-px-3 text-(--color-light-gray) text-xs">
+      <Button onClick={handleEdit} variant="text" size="sm" className="-px-3 text-xs">
         수정
       </Button>
       <Button onClick={handleDelete} variant="text" size="sm" className="text-(--color-red) text-xs">
