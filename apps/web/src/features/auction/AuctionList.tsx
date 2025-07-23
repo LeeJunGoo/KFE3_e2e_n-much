@@ -30,7 +30,13 @@ const AuctionList = ({ order, keyword }: AuctionListProps) => {
 
   return (
     <>
-      <h3 className="pb-2 pt-1 text-sm">{`총 ${fetchedAuctions ? fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0) : 0}개의 경매가 있습니다`}</h3>
+      <h3 className="pb-2 pt-1 text-sm">
+        {fetchedAuctions
+          ? keyword
+            ? `${keyword}에 대한 검색 결과입니다.`
+            : `총 ${fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0)}개의 경매가 있습니다.`
+          : '총 0개의 경매가 있습니다'}
+      </h3>
       <ul className="grid grid-cols-2 gap-2">
         {isPending &&
           Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
