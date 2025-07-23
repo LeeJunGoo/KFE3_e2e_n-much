@@ -11,9 +11,10 @@ import { MAX_DESCRIPTION_LETTERS, MAX_TITLE_LETTERS, UTC_TIME_ZONE } from 'src/e
 import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
-import { deleteImages, uploadImageToBucket } from 'src/entities/auction/supabase';
+import { deleteImages } from 'src/entities/auction/supabase';
 import { getExtension } from 'src/entities/auction/utils/extension';
 import { getFormDefaultValues } from 'src/entities/auction/utils/formDefaultValues';
+import { uploadImagesToDB } from 'src/entities/auction/utils/uploadImages';
 import { validateDate } from 'src/entities/auction/utils/validateDate';
 import FormEndDay from 'src/features/auction/FormEndDay';
 import FormEndTime from 'src/features/auction/FormEndTime';
@@ -104,24 +105,6 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       }
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
-
-  //TODO - 파일로 분리하기 (KMH)
-  const uploadImagesToDB = async (previewImages: PreviewImage[]) => {
-    if (previewImages.length === 0) {
-      return [];
-    }
-
-    const imageUploadPromise = previewImages.map(async (prevImage): Promise<string> => {
-      if (!prevImage.isUrl) {
-        const data = await uploadImageToBucket(prevImage.data, prevImage.ext);
-        return `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${data.fullPath}`;
-      }
-      return prevImage.data;
-    });
-
-    const imageUrls = await Promise.all(imageUploadPromise);
-    return imageUrls;
-  };
 
   const onSubmit = async (values: z.infer<typeof auctionFormSchema>) => {
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
