@@ -25,6 +25,7 @@ import { getFormDefaultValues } from 'src/entities/auction/utils/formDefaultValu
 import { validateDate } from 'src/entities/auction/utils/validateDate';
 import FormEndDay from 'src/features/auction/FormEndDay';
 import FormEndTime from 'src/features/auction/FormEndTime';
+import FormStartingPoint from 'src/features/auction/FormStartingPoint';
 import ImageUploader from 'src/features/auction/ImageUploader';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
@@ -257,25 +258,11 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               />
               <FormEndTime control={form.control} name="endTime" endTimeLabel="경매 종료 시간" />
             </div>
-            <FormField
+            <FormStartingPoint
               control={form.control}
               name="startingPoint"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    경매 시작 포인트 <span className="text-(--color-red)"> &#42;</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-white"
-                      type="number"
-                      placeholder="경매의 시작 포인트를 입력하세요."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              startingPointLabel="경매 시작 포인트"
+              placeholder="경매의 시작 포인트를 입력하세요."
             />
             <FormField
               control={form.control}
