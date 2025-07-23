@@ -26,7 +26,7 @@ const AuctionDetailInfo = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddres
             <p className="text-(--color-text-base) text-xl font-bold">{auctionInfo.current_point.toLocaleString()} P</p>
           </div>
         </div>
-        {/* //FIXME - Buyer 유저*/}
+        {/* //FIXME - Buyer 유저 */}
         <div className="flex space-x-3">
           <EpisodeWriteButton auctionId={auctionInfo.auction_id} />
         </div>

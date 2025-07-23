@@ -1,9 +1,8 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
-import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
-import { deleteEpisodeInfo } from 'src/entities/episode/api';
+import { useDeleteEpisodeMutation } from 'src/entities/episode/queries/episode';
 import { usePageState } from 'src/entities/episode/stores/usePaginationStore';
 import type { EpisodeRow } from 'src/shared/supabase/types';
 
@@ -17,6 +16,8 @@ const EpisodeActionButtons = ({
   const router = useRouter();
   const currentPage = usePageState();
 
+  const { mutateAsync, isPending } = useDeleteEpisodeMutation({ auctionId, currentPage });
+
   const handleEdit = () => {
     router.push(`/episode/${auctionId}/${episodeId}`);
   };
@@ -28,27 +29,20 @@ const EpisodeActionButtons = ({
       return;
     }
 
-    try {
-      const result = await deleteEpisodeInfo(episodeId);
-
-      if (result) {
-        toast.success('정상적으로 삭제 되었습니다.');
-        window.location.reload();
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error('경매 물품을  삭제하지 못했습니다. 다시 시도해주세요.');
-        console.error(error.message);
-        router.refresh();
-      }
-    }
+    await mutateAsync(episodeId);
   };
   return (
     <div className="flex space-x-2">
       <Button onClick={handleEdit} variant="text" size="sm" className="-px-3 text-xs">
         수정
       </Button>
-      <Button onClick={handleDelete} variant="text" size="sm" className="text-(--color-red) text-xs">
+      <Button
+        onClick={handleDelete}
+        variant="text"
+        size="sm"
+        className="text-(--color-red) text-xs"
+        disabled={isPending}
+      >
         삭제
       </Button>
     </div>
