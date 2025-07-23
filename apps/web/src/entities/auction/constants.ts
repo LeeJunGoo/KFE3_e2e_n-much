@@ -38,3 +38,8 @@ export const UTC_TIME_ZONE = 'utc'; //NOTE - utc time zone
 export const AUCTION_LIST_SKELETON_LENGTH = 10; //NOTE - 경매 리스트의 스켈레톤 갯수
 
 export const MAX_UPLOADED_IMAGES = 5; //NOTE - 업로드할 수 있는 최대 이미지 갯수
+
+//NOTE - toast 알림 시간(ms 단위)
+export const SHORT_TOAST_DURATION = 2000;
+export const MEDIUM_TOAST_DURATION = 3000;
+export const LONG_TOAST_DURATION = 4000;

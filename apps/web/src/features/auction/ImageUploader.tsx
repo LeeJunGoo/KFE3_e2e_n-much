@@ -2,24 +2,25 @@
 
 import type { Dispatch, SetStateAction } from 'react';
 import { useCallback } from 'react';
+import { toast } from '@repo/ui/components/ui/sonner';
 import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { MAX_UPLOADED_IMAGES } from 'src/entities/auction/constants';
+import { popToast } from 'src/shared/utils/toast';
 import { v4 as uuidv4 } from 'uuid';
 import type { PreviewImage } from 'src/entities/auction/types';
 
 //TODO - 파일로 분리하기 (KMH)
 interface ImageUploaderProps {
   previewImages: PreviewImage[];
-  setPreviewImages: Dispatch<SetStateAction<{ id: string; data: string; isUrl: boolean }[]>>;
+  setPreviewImages: Dispatch<SetStateAction<PreviewImage[]>>;
 }
-
-//TODO - 파일로 분리하기 (KMH)
 
 const ImageUploader = ({ previewImages, setPreviewImages }: ImageUploaderProps) => {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (previewImages.length + acceptedFiles.length > MAX_UPLOADED_IMAGES) {
+        popToast('error', '이미지 업로드 에러', '업로드 가능한 이미지 갯수를 초과했습니다. (최대 5개)', 'medium');
         return;
       }
 
