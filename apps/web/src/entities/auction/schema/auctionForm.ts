@@ -35,3 +35,29 @@ export const auctionFormSchema = z.object({
     .string()
     .refine((value) => Number(value) > MIN_MAX_POINT_NUM, { message: '최대 포인트는 0보다 커야 합니다.' })
 });
+
+export const postAuctionSchema = z.object({
+  user_id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  end_date: z.string(),
+  starting_point: z.number(),
+  max_point: z.number(),
+  image_urls: z.array(z.string()),
+  address_id: z.string()
+});
+
+export const patchAuctionSchema = z.object({
+  auction_id: z.string(),
+  user_id: z.string(),
+  title: z.string(),
+  description: z.string(),
+  end_date: z.string(),
+  starting_point: z.number(),
+  current_point: z.number(),
+  max_point: z.number(),
+  image_urls: z.array(z.string()),
+  status: z.string(),
+  address_id: z.string(),
+  updated_at: z.string()
+});

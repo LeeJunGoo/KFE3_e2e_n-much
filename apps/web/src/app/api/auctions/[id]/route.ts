@@ -1,5 +1,5 @@
-//TODO - '500: 서버 처리 중 오류가 발생했습니다.' 의논해보기 DB에러가 무시됨 (KMH)
 import { NextResponse } from 'next/server';
+import { patchAuctionSchema } from 'src/entities/auction/schema/auctionForm';
 import {
   deleteAuction,
   selectAuction,
@@ -8,7 +8,6 @@ import {
   updateAuction
 } from 'src/entities/auction/supabase';
 import { selectBidderRanking, selectEpisodesByAuctionId } from 'src/entities/episode/supabase';
-import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionUpdate } from 'src/shared/supabase/types';
 
@@ -44,22 +43,6 @@ export async function GET(request: NextRequest, { params }: ParamsType) {
     return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }
-
-//TODO - 분리하기 (KMH)
-const patchAuctionSchema = z.object({
-  auction_id: z.string(),
-  user_id: z.string(),
-  title: z.string(),
-  description: z.string(),
-  end_date: z.string(),
-  starting_point: z.number(),
-  current_point: z.number(),
-  max_point: z.number(),
-  image_urls: z.array(z.string()),
-  status: z.string(),
-  address_id: z.string(),
-  updated_at: z.string()
-});
 
 export async function PATCH(request: NextRequest, { params }: ParamsType) {
   const { id } = await params;
