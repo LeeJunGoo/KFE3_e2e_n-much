@@ -4,6 +4,8 @@ import AuctionList from 'src/features/auction/AuctionList';
 import SelectOrder from 'src/features/auction/SelectOrder';
 import PageContainer from 'src/shared/ui/PageContainer';
 import PageTitle from 'src/shared/ui/PageTitle';
+import GoTopButton from 'src/shared/utils/goTopButton';
+import WriteAuctionButton from './WriteAuctionButton';
 import type { AuctionListPageProps } from 'src/entities/auction/types';
 
 const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
@@ -20,6 +22,8 @@ const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
       <HydrationBoundary state={dehydrate(queryClient)}>
         <AuctionList order={order} keyword={keyword} />
       </HydrationBoundary>
+      <WriteAuctionButton />
+      <GoTopButton />
     </PageContainer>
   );
 };
