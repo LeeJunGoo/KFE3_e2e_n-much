@@ -6,7 +6,7 @@ export const LATEST_AUCTIONS_COUNT = 10;
 //NOTE - auctionForm에서 사용하는 tansTack query 키
 export const AUCTION_FORM_QUERY_KEY = 'auctionForm';
 export const ADDRESS_ID_QUERY_KEY = 'addressId';
-export const AUCTION_LIST_QUERY_KEY = 'auctionLIST';
+export const AUCTION_LIST_QUERY_KEY = 'auctionList';
 
 //NOTE - auctionForm의 zod 유효성 검사에 사용하는 상수 목록
 export const MIN_TITLE_LETTERS = 5; //NOTE - 제목의 최소 글자 수
@@ -35,4 +35,11 @@ export const HOURS_OF_DAY = 24; //NOTE - 24시간
 export const KOR_TIME_ZONE = 'Asia/Seoul'; //NOTE - 한국 time zone
 export const UTC_TIME_ZONE = 'utc'; //NOTE - utc time zone
 
-export const AUCTION_LIST_SKELETON_LENGTH = 10;
+export const AUCTION_LIST_SKELETON_LENGTH = 10; //NOTE - 경매 리스트의 스켈레톤 갯수
+
+export const MAX_UPLOADED_IMAGES = 5; //NOTE - 업로드할 수 있는 최대 이미지 갯수
+
+//NOTE - toast 알림 시간(ms 단위)
+export const SHORT_TOAST_DURATION = 2000;
+export const MEDIUM_TOAST_DURATION = 3000;
+export const LONG_TOAST_DURATION = 4000;

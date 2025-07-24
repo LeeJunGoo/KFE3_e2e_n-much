@@ -1,4 +1,3 @@
-//TODO - 컴포넌트 분리하기 (KMH)
 'use client';
 
 import { Badge } from '@repo/ui/components/ui/badge';
@@ -26,7 +25,7 @@ const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episo
                 fill
                 alt={`${title} 이미지`}
                 className="object-cover"
-                sizes="(min-width: 768px) 400px, 100vw" //TODO - 이것도 고쳐야하는지 물어보기 (KMH)
+                sizes="(min-width: 768px) 400px, 100vw"
               />
             ) : (
               <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
