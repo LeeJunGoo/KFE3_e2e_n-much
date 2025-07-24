@@ -5,6 +5,7 @@ import { FiRepeat } from 'react-icons/fi';
 import { useUpdateUserRole, useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { ROLE_CONFIG } from 'src/entities/user/mypage/main/constants';
 import AddressStatus from 'src/features/user/mypage/components/main/AddressStatus';
+import MyPageUserProfileSkeleton from 'src/features/user/mypage/components/main/skeleton/MyPageUserProfileSkeleton';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import PointDisplay from 'src/shared/ui/PointDisplay';
@@ -14,7 +15,7 @@ const MyPageUserProfile = () => {
   const user = useUserState();
   const updateUserRole = useUpdateUserRole();
 
-  if (!user) return null;
+  if (!user) return <MyPageUserProfileSkeleton />;
 
   const { nick_name: name, email, user_avatar: avatarUrl } = user;
 
