@@ -1,18 +1,12 @@
-// import { useQuery } from '@tanstack/react-query';
-// import { episodeQueryKeys } from '../hooks/keys/episodes';
-// import { fetchUserBiddingCount } from 'src/entities/episode/api';
-// import { getUserStoriesClient } from 'src/entities/episode/supabase';
+import { useQuery } from '@tanstack/react-query';
+import { getUserEpisodes } from 'src/entities/user/mypage/episodes/api';
+import { episodeQueryKeys } from 'src/entities/user/mypage/episodes/queries/keys';
+import type { UserRow } from 'src/shared/supabase/types';
 
-// export const useGetUserBiddingCount = () => {
-//   return useQuery({
-//     queryKey: episodeQueryKeys.biddingCount(),
-//     queryFn: fetchUserBiddingCount
-//   });
-// };
-
-// export const useGetUserStories = () => {
-//   return useQuery({
-//     queryKey: episodeQueryKeys.userStories(),
-//     queryFn: getUserStoriesClient
-//   });
-// };
+export const useGetUserEpisodes = (userId?: UserRow['id']) => {
+  return useQuery({
+    queryKey: episodeQueryKeys.user(userId || ''),
+    queryFn: () => getUserEpisodes(userId!),
+    enabled: !!userId
+  });
+};
