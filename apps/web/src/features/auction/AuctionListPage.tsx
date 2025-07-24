@@ -6,6 +6,7 @@ import PageContainer from 'src/shared/ui/PageContainer';
 import type { AuctionListPageProps } from 'src/entities/auction/types';
 
 const AuctionListPage = async ({ order }: AuctionListPageProps) => {
+  //FIXME - 경매 리스트를 prefetch하는 메서드 구조 변경하기 (KMH)
   const { queryClient } = await prefetchedAuctionList(order);
 
   return (

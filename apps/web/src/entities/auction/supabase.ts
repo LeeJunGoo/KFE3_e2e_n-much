@@ -190,7 +190,7 @@ export const selectAuctionCardList = async (order: string | undefined, page: num
     console.error(error);
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
   }
-
+  //TODO - page + ITEM_PER_PAGE + 1에서 +1 빼기 (KMH)
   const nextId = page < auctionsCount - ITEM_PER_PAGE ? page + ITEM_PER_PAGE + 1 : null;
 
   return { data, nextId };
@@ -222,7 +222,7 @@ export async function getSellerAuctions(seller_id: string) {
 }
 
 //TODO - webp로 최적화하기 (KMH)
-export const uploadImageToBucket = async (imageData: string | undefined) => {
+export const uploadImageToBucket = async (imageData: string | undefined, ext: string) => {
   if (!imageData) {
     throw new Error('BUCKET: 이미지 업로드 에러(imageData가 없습니다.)');
   }
@@ -235,8 +235,8 @@ export const uploadImageToBucket = async (imageData: string | undefined) => {
 
   const { data, error } = await supabase.storage
     .from('auction-images')
-    .upload(`images/${uuidv4()}.png`, decode(base64), {
-      contentType: 'image/png'
+    .upload(`images/${uuidv4()}.${ext}`, decode(base64), {
+      contentType: 'image'
     });
 
   if (error) {

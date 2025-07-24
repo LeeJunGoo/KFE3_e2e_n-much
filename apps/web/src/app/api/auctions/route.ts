@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
+import { postAuctionSchema } from 'src/entities/auction/schema/auctionForm';
 import { getAllAuctions, selectAuction, getSellerAuctions, insertAuction } from 'src/entities/auction/supabase';
 import { createServer } from 'src/shared/supabase/client/server';
-import { z } from 'zod';
 import type { NextRequest } from 'next/server';
 import type { AuctionInsert } from 'src/shared/supabase/types';
 
@@ -37,18 +37,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
   }
 }
-
-//TODO - 분리하기 (KMH)
-const postAuctionSchema = z.object({
-  user_id: z.string(),
-  title: z.string(),
-  description: z.string(),
-  end_date: z.string(),
-  starting_point: z.number(),
-  max_point: z.number(),
-  image_urls: z.array(z.string()),
-  address_id: z.string()
-});
 
 export async function POST(request: NextRequest) {
   const auctionData: AuctionInsert = await request.json();

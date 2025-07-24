@@ -27,6 +27,7 @@ const AuctionList = ({ order }: AuctionListProps) => {
     return <p>에러 발생</p>;
   }
 
+  //TODO - 경매 리스트를 대체하도록 수정 (KMH)
   if (isPending) {
     return (
       <>
