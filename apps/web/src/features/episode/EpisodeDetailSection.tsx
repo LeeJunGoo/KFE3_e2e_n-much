@@ -14,7 +14,7 @@ const EpisodeDetailSection = async ({
   const { episodeList, episodeCount } = await getEpisodesByAuctionId(auctionId);
 
   return (
-    <Card className="p-5 shadow-sm">
+    <Card className="p-5 shadow-sm" id="episodes">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-(--color-text-base) font-medium">사연 모음</h3>
         <p className="text-(--color-accent) flex gap-1 text-sm font-semibold">
