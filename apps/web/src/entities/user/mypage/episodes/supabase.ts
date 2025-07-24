@@ -20,7 +20,7 @@ export const selectEpisodesByUserId = async (userId: UserRow['id']) => {
 
   if (error) {
     console.error('🚀 ~ selectEpisodesByUserId ~ error:', error);
-    throw new Error();
+    throw new Error('DB: 사용자 에피소드 목록 조회 에러');
   }
 
   return episodes ?? [];

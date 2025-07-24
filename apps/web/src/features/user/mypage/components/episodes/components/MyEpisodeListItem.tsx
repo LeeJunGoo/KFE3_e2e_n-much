@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { FaChevronRight, FaGavel } from 'react-icons/fa6';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
-import { getAuctionStatusText } from 'src/shared/utils/getAuctionStatusText';
+import { getAuctionStatusText, getAuctionStatusVariant } from 'src/shared/utils/getAuctionStatusText';
 import BaseCard from 'src/widgets/BaseCard';
 import type { MyEpisodeListItemProps } from 'src/entities/user/mypage/episodes/types';
 
@@ -21,7 +21,9 @@ const MyEpisodeListItem = ({ episode }: MyEpisodeListItemProps) => {
         <div className="flex flex-1 flex-col gap-1">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-medium">{title}</h3>
-            <BaseBadge variant="accent">{getAuctionStatusText(auctionStatus)}</BaseBadge>
+            <BaseBadge variant={getAuctionStatusVariant(auctionStatus)}>
+              {getAuctionStatusText(auctionStatus)}
+            </BaseBadge>
           </div>
           <p className="text-(--color-warm-gray) text-sm">작성일: {formatYYYYMMDD(createdAt)}</p>
           <div className="bg-(--color-secondary) group-hover:bg-(--color-accent)/30 mt-2 rounded-lg p-3 transition-colors duration-200">
