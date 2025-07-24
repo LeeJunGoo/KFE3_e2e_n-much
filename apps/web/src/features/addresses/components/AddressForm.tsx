@@ -1,7 +1,13 @@
+'use client';
+
+import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@repo/ui/components/ui/dialog';
 import { Input } from '@repo/ui/components/ui/input';
 
 const AddressForm = () => {
+  const [daumPostCodeModal, setDaumPostCodeModal] = useState<boolean>(false);
+
   return (
     <form>
       <div className="flex flex-col">
@@ -18,9 +24,17 @@ const AddressForm = () => {
         </label>
         <div className="mb-2 flex items-stretch gap-2">
           <Input type="text" placeholder="우편번호" maxLength={10} readOnly />
-          <Button variant="active" className="h-auto px-10">
+          <Button onClick={() => setDaumPostCodeModal(true)} variant="active" className="h-auto px-10">
             주소 검색
           </Button>
+          <Dialog open={daumPostCodeModal} onOpenChange={setDaumPostCodeModal}>
+            <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+              <DialogHeader>
+                <DialogTitle className="mb-4 text-center text-lg font-bold">{'주소검색'}</DialogTitle>
+              </DialogHeader>
+              <div>아무거나</div>
+            </DialogContent>
+          </Dialog>
         </div>
         <Input type="text" placeholder="기본 주소" className="mb-2" maxLength={50} readOnly />
         <Input type="text" placeholder="나머지 주소 (선택 입력 가능)" maxLength={50} />
