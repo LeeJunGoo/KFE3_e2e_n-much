@@ -51,7 +51,7 @@ export const selectEpisodesCount = async (auctionId: AuctionRow['auction_id']) =
     .select('*', { count: 'exact', head: true })
     .eq('auction_id', auctionId);
   if (error) {
-    console.error('🚀 ~ selectEpisodesByAuctionId ~ error:', error);
+    console.error('🚀 ~ selectEpisodesCount ~ error:', error);
     throw new Error();
   }
 
