@@ -11,6 +11,7 @@ const AuctionTimerDynamic = ({ endDate }: { endDate: AuctionRow['end_date'] }) =
   const router = useRouter();
   const { days, hours, minutes, seconds } = useTimer({
     endDate,
+    //FIXME - 추후 리얼타임 고민해보기
     onCompleted: () => {
       router.replace('/main');
     }

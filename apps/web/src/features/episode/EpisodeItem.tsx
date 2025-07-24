@@ -34,7 +34,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
           </div>
         </div>
         <div className="flex flex-col items-end gap-1">
-          {/* 사연자 및 경매 물품의 판매자일 경우에만 입찰하기 버튼 활성화 */}
+          {/* 입찰하기 버튼  */}
           {isUser && isSeller && <EpisodeBidModal episode={episode} />}
           {/* 좋아요 버튼 */}
           <EpisodeLikeToggle episode={episode} />
@@ -46,7 +46,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
       </div>
       <div className="flex items-center justify-between">
         <EpisodeInfoModal episode={episode} />
-
+        {/* 수정 및 삭제 */}
         {isEpisodeActions && <EpisodeActionButtons auctionId={episode.auction_id} episodeId={episode.episode_id} />}
       </div>
     </li>
