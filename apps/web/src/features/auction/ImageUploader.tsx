@@ -54,7 +54,7 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
               />
               <Button
                 type="button"
-                className="absolute right-1 top-1 h-4 w-4"
+                className="absolute right-1 top-1 size-4"
                 variant="base"
                 onClick={(e) => {
                   e.stopPropagation();
@@ -78,7 +78,7 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
         </ul>
       ) : (
         <div className="mx-auto my-auto flex-col justify-center pb-8 pt-8 align-middle">
-          <FaCloudUploadAlt className="text-(--color-accent) mx-auto mb-4 h-14 w-14" />
+          <FaCloudUploadAlt className="text-(--color-accent) mx-auto mb-4 size-14" />
           <p className="text-md mb-4 text-center">이미지를 끌어다 놓거나</p>
           <p className="bg-(--color-secondary) text-(--color-primary) rounded-sm p-2 text-center text-sm">
             파일 선택하기
