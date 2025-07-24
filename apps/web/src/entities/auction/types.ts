@@ -102,11 +102,12 @@ export type AuctionFormType = z.infer<typeof auctionFormSchema>;
 
 //NOTE - auctionList 관련 페이지 props 목록
 export interface CurrentAuctionsPageProps {
-  searchParams: Promise<{ order: string }>;
+  searchParams: Promise<{ order: string; keyword: string | undefined }>;
 }
 
 export interface AuctionListPageProps {
   order: string;
+  keyword: string | undefined;
 }
 
 //NOTE - auctionCard의 좋아유 갯수
@@ -117,6 +118,7 @@ export interface EpisodeCount {
 //NOTE - 경매 리스트 props
 export interface AuctionListProps {
   order: string;
+  keyword: string | undefined;
 }
 
 //NOTE - auctionCard의 props
@@ -131,6 +133,7 @@ export interface AuctionCardProp {
 
 //NOTE - 정렬 카테고리 선택
 export interface SelectOrderProps {
+  keyword: string | undefined;
   order: string;
 }
 

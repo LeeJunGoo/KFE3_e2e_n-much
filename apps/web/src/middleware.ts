@@ -16,7 +16,7 @@ export const middleware = async (request: NextRequest) => {
 
   //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
   if (pathName === '/auctions/write') {
-    const auctionId = searchParams.get('auction_id');
+    const auctionId = searchParams.get('auction_id')?.trim();
     const userInfo = await getServerUser();
 
     //NOTE - 로그인 안 한 경우, 로그인 페이지로 이동
@@ -42,9 +42,29 @@ export const middleware = async (request: NextRequest) => {
     }
   }
 
-  if (pathName === '/auctions' && !searchParams.get('order')) {
-    return NextResponse.redirect(new URL('/auctions?order=end_date', request.url));
-  }
+  if (pathName === '/auctions') {
+    const order = searchParams.get('order')?.trim();
+    const keyword = searchParams.get('keyword')?.trim();
+    const orderList = ['end_date', 'favorites', 'created_at'];
+    let isUrlChanged = false;
 
-  return NextResponse.rewrite(request.url);
+    //NOTE - order 값이 없거나 카테고리에 없으면 end_date로 변경
+    if (!order || !orderList.includes(order)) {
+      searchParams.set('order', 'end_date');
+      isUrlChanged = true;
+    }
+
+    //NOTE - keyword가 없으면 keyword 쿼리 스트링 제거
+    if (!keyword) {
+      searchParams.delete('keyword');
+    }
+
+    //NOTE - url이 바뀌지 않으면 원래 url로 이동
+    if (!isUrlChanged) {
+      return NextResponse.next();
+    }
+
+    return NextResponse.redirect(request.nextUrl);
+  }
+  return NextResponse.next();
 };

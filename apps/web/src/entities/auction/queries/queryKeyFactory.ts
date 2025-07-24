@@ -3,17 +3,22 @@ import { ADDRESS_ID_QUERY_KEY, AUCTION_FORM_QUERY_KEY, AUCTION_LIST_QUERY_KEY } 
 //NOTE - auctionForm에 들어갈 데이터를 가져오는데 사용
 export const auctionFormKeys = {
   all: [AUCTION_FORM_QUERY_KEY] as const,
-  item: (auctionId: string | undefined) => (auctionId ? ([...auctionFormKeys.all, auctionId] as const) : [])
+  item: (auctionId: string | undefined) =>
+    auctionId ? ([...auctionFormKeys.all, auctionId] as const) : ([...auctionFormKeys.all] as const)
 };
 
 //NOTE - addressId를 가져올 때 사용
 export const addressIdKeys = {
   all: [ADDRESS_ID_QUERY_KEY] as const,
-  item: (userId: string | undefined) => (userId ? ([...addressIdKeys.all, userId] as const) : [])
+  item: (userId: string | undefined) =>
+    userId ? ([...addressIdKeys.all, userId] as const) : ([...addressIdKeys.all] as const)
 };
 
 //NOTE - auctionList를 가져올 때 사용
 export const auctionListKeys = {
   all: [AUCTION_LIST_QUERY_KEY] as const,
-  order: (order: string | undefined) => (order ? ([...auctionListKeys.all, order] as const) : [])
+  order: (order: string | undefined) =>
+    order ? ([...auctionListKeys.all, order] as const) : ([...auctionListKeys.all] as const),
+  keyword: (order: string | undefined, keyword: string | undefined) =>
+    keyword ? ([...auctionListKeys.order(order), keyword] as const) : ([...auctionListKeys.order(order)] as const)
 };
