@@ -67,12 +67,14 @@ const EpisodeForm = ({
       <form onSubmit={form.handleSubmit(handleEpisodeUpsert)} className="mt-6">
         <FormTitle
           control={form.control}
+          name={'title'}
           titleLabel="사연 제목"
           placeholder="사연 제목을 입력하세요."
           maxTitleLength={MAX_TITLE_LENGTH}
         />
         <FormDescription
           control={form.control}
+          name={'description'}
           descriptionLabel="사연 내용"
           placeholder="이 경험이 당신에게 왜 특별한지 적어주세요...."
           maxDescLength={MAX_DESC_LENGTH}

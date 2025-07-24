@@ -5,27 +5,25 @@ import { FaHeart } from 'react-icons/fa';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-type EpisodeLikeToggleProps = {
-  episode: EpisodeItemProps;
-};
-
-const EpisodeLikeToggle = ({ episode }: EpisodeLikeToggleProps) => {
+const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
   // 유저 정보
   const user = useUserState();
   // 좋아요 likes['userid', 'userId']
   const likes = episode.likes;
   // 좋아요 클릭 여부
   const isLiked = episode.likes[0];
-
   const [liked, setLiked] = useState(isLiked ?? false);
 
-  const handleLike = () => {
+  // 클릭 여부에 따라 아이콘 색상 변경
+  const iconColor = liked ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
+
+  const handleToggle = () => {
     setLiked((state) => !state);
   };
 
   return (
-    <Button variant="text" className="opacity-70" disabled={false} onClick={handleLike}>
-      {liked ? <FaHeart className="text-(--color-red) transition" /> : <FaHeart className="text-gray-400 transition" />}
+    <Button variant="text" className="opacity-70" disabled={false} onClick={handleToggle}>
+      <FaHeart className={`${iconColor} transition`} />
     </Button>
   );
 };

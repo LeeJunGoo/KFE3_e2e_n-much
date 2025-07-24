@@ -2,6 +2,7 @@ import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import EpisodeActionButtons from 'src/features/episode/EpisodeActionButtons';
 import EpisodeBidModal from 'src/features/episode/EpisodeBidModal';
 import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
+import EpisodeLikeToggle from 'src/features/episode/EpisodeLikeButton';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import ContentDescription from 'src/shared/ui/ContentDescription';
@@ -9,7 +10,6 @@ import ContentTitle from 'src/shared/ui/ContentTitle';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
-import EpisodeLikeToggle from './EpisodeLikeButton';
 
 const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
   const user = useUserState();
@@ -36,6 +36,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
         <div className="flex flex-col items-end gap-1">
           {/* 사연자 및 경매 물품의 판매자일 경우에만 입찰하기 버튼 활성화 */}
           {isUser && isSeller && <EpisodeBidModal episode={episode} />}
+          {/* 좋아요 버튼 */}
           <EpisodeLikeToggle episode={episode} />
         </div>
       </div>

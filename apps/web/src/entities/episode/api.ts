@@ -120,7 +120,7 @@ export const getHasUserWrittenEpisode = async (auctionId: AuctionRow['auction_id
     throw new Error(errorData.error);
   }
 
-  const data = await res.json();
+  const data: boolean = await res.json();
   return data;
 };
 

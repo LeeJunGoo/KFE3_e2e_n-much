@@ -21,8 +21,8 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummary
           <Image
             src={auctionImage!}
             alt="테스트 이미지입니다."
-            width={80}
-            height={80}
+            width={110}
+            height={110}
             className="object-cover"
             priority
           />

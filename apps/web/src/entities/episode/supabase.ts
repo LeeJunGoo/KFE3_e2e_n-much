@@ -104,13 +104,12 @@ export const selectHasUserWrittenEpisode = async (
     .eq('auction_id', auctionId)
     .eq('user_id', userId)
     .maybeSingle();
-  // .maybeSingle(); 테스트 중에 한 유저가 여러 데이터를 사입하여 에러가 발생
 
   if (error) {
     console.error('🚀 ~ hasUserWrittenEpisode ~ error:', error);
     throw new Error();
   }
-  return Boolean(data); // 작성 여부
+  return Boolean(data);
 };
 
 //ANCHOR -  - 사연 입찰

@@ -2,13 +2,14 @@ import { Card } from '@repo/ui/components/ui/card';
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
 import { selectUser } from 'src/entities/auth/supabase';
-import { getHasUserWrittenEpisode, getUserBidPointAmount } from 'src/entities/episode/api';
+import { getHasUserWrittenEpisode } from 'src/entities/episode/api';
 import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
 import EpisodeWriteButton from 'src/features/episode/EpisodeWriteButton';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import ContentDescription from 'src/shared/ui/ContentDescription';
 import ContentTitle from 'src/shared/ui/ContentTitle';
+import { formatNumber } from 'src/shared/utils/formatNumber';
 
 const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const auctionInfo = await getAuctionInfoWithAddress(auctionId); //ANCHOR - 경매 상품 및 경매 업체 정보
@@ -23,7 +24,6 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
   const isBuyer = profile.role === 'buyer';
 
   return (
-    //  경매 정보
     <Card className="mb-4 rounded-t-2xl p-5 shadow-md">
       <div className="mb-2">
         <div className="mb-2 flex items-start justify-between">
@@ -37,7 +37,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
           <AuctionTimerDynamic endDate={auctionInfo.end_date} />
           <div className="mt-10">
             <ContentDescription description="현재 최고 입찰가" variant="ghost" />
-            <p className="text-(--color-text-base) text-xl font-bold">{auctionInfo.current_point.toLocaleString()} P</p>
+            <p className="text-(--color-text-base) text-xl font-bold">{formatNumber(auctionInfo.current_point)} P</p>
           </div>
         </div>
         {isBuyer && <EpisodeWriteButton auctionId={auctionInfo.auction_id} isWritten={isWritten} className="mt-3" />}

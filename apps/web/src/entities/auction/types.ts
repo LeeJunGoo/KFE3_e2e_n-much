@@ -10,14 +10,9 @@ type AddressSummaryInfoType = Pick<AddressRow, 'address_id' | 'business_name' | 
 
 export type AuctionSummaryInfoWithAddressType = AuctionSummaryInfoType & AddressSummaryInfoType;
 
-type AuctionInfoType = Omit<
-  AuctionRow,
-  'address_id' | 'created_at' | 'favorites' | 'highest_bidder_id' | 'starting_point' | 'updated_at'
->;
-
 type AddressInfoType = Omit<AddressRow, 'created_at' | 'is_default' | 'user_id'>;
 
-export type AuctionInfoWithAddressType = AuctionInfoType & AddressInfoType;
+export type AuctionInfoWithAddressType = AuctionRow & AddressInfoType;
 
 export type SellerAuctionCountType = {
   totalAuctions: number;
@@ -28,10 +23,6 @@ type RankingSummaryInfoType = Pick<RankingRow, 'rank_position' | 'bid_amount' | 
 export type BidderRankingInfoType = RankingSummaryInfoType & { users: UserSummaryInfoType };
 
 export type AuctionBidPointAmount = Pick<AuctionRow, 'starting_point' | 'current_point' | 'max_point'>;
-
-// export type AuctionInfoType = { status: string; data: AuctionRow };
-
-// export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
 
 export type SortedAuctionItemType = AuctionRow & {
   episodes: {
