@@ -1,7 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAddressId } from 'src/entities/auction/api';
 import { addressIdKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import type { QueryClient } from '@tanstack/react-query';
 import type { AddressId } from 'src/entities/auction/types';
+
+export const prefetchAddressId = async (loggedInUserId: string, queryClient: QueryClient) => {
+  await queryClient.prefetchQuery({
+    queryKey: addressIdKeys.item(loggedInUserId),
+    queryFn: () => getAddressId(loggedInUserId)
+  });
+};
 
 export const useGetAddressIdQuery = (loggedInUserId: string) => {
   const {
