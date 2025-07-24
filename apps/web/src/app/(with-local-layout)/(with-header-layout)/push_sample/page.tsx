@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect } from 'react';
+import { Button } from '@repo/ui/components/ui/button';
 import OneSignal from 'react-onesignal';
 import type {
   NotificationClickEvent,
@@ -10,9 +11,10 @@ import type {
 
 const page = () => {
   useEffect(() => {
+    //NOTE - 아래 초기화 과정을 통해서 oneSignal 앱에 자동으로 가입함
     OneSignal.init({
-      appId: process.env.NEXT_PUBLIC_APP_ID!,
-      safari_web_id: process.env.NEXT_PUBLIC_SAFARI_WEB_ID!,
+      appId: process.env.NEXT_PUBLIC_APP_ID!, //NOTE - 대시 보드 참조
+      safari_web_id: process.env.NEXT_PUBLIC_SAFARI_WEB_ID!, //NOTE - 사파리 ID (대시 보드 참조)
       allowLocalhostAsSecureOrigin: true, //NOTE - 개발자 모드(localhost 사용 가능)
       welcomeNotification: { title: '환영 인사', message: '환영합니다.' }, //NOTE - 환영 알림
       webhooks: {
@@ -57,7 +59,54 @@ const page = () => {
     alert(`fore`);
   }, []);
 
-  return <>sample</>;
+  return (
+    <>
+      <div>sample</div>
+      <Button
+        onClick={async () => {
+          try {
+            const res = await fetch('https://api.onesignal.com/notifications', {
+              headers: {
+                'Content-Type': 'application/json',
+                //NOTE - API키 생성해서 넣어야 함 (대시 보드에 있음)
+                Authorization: `${process.env.NEXT_PUBLIC_SAFARI_API_KEY}`
+                //NOTE - thunder client로 보내면 정상작동 (CORS 정책때문에 안 돼는듯....)
+                // charset: 'utf-8'
+              },
+              method: 'POST',
+              body: JSON.stringify({
+                //NOTE - 대시 보드 참조
+                app_id: `${process.env.NEXT_PUBLIC_APP_ID}`,
+                //NOTE - push 알림
+                target_channel: 'push',
+                //NOTE - 알림 이름
+                name: 'Testing basic setup',
+                //NOTE - 알림 제목
+                headings: {
+                  en: 'hello~'
+                },
+                //NOTE - 알림 내용
+                contents: {
+                  en: 'hello world!'
+                },
+                //NOTE - 세그먼트를 설정하면 세그먼트에 해당하는 사용자에게만 알람 보내기 가능 (채팅 방이랑 비슷함)
+                included_segments: ['Test Users'],
+                //NOTE - 알림에 이미지 넣을 수 있음
+                chrome_web_image: 'https://avatars.githubusercontent.com/u/11823027?s=200&v=4'
+              })
+            });
+            const data = await res.json();
+            console.log('data', data);
+          } catch (error) {
+            alert('error');
+            console.error(error);
+          }
+        }}
+      >
+        push 알림 보내기
+      </Button>
+    </>
+  );
 };
 
 export default page;
