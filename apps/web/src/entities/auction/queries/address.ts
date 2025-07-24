@@ -6,7 +6,7 @@ import type { AddressId } from 'src/entities/auction/types';
 export const useGetAddressIdQuery = (loggedInUserId: string | undefined) => {
   const {
     data: fetchedAddressId,
-    isLoading: isAddressIdFetching,
+    isPending: isAddressIdFetching,
     isError: isAddressIdFetchingError,
     error: fetchingAddressIdError
   } = useQuery({

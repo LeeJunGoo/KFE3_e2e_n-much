@@ -1,24 +1,30 @@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
 import { useWatch } from 'react-hook-form';
-import type { Control } from 'react-hook-form';
-import type { DetailFormType } from 'src/entities/episode/schemas';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 
-type FormTitleType = {
-  control: Control<DetailFormType>;
+type FormTitleType<T extends FieldValues> = {
+  control: Control<T>;
+  name: FieldPath<T>;
   titleLabel: string;
   placeholder: string;
   maxTitleLength: number;
 };
 
-const FormTitle = ({ control, titleLabel, placeholder, maxTitleLength }: FormTitleType) => {
-  const title = useWatch({ control, name: 'title' });
+const FormTitle = <T extends FieldValues>({
+  control,
+  name,
+  titleLabel,
+  placeholder,
+  maxTitleLength
+}: FormTitleType<T>) => {
+  const title = useWatch({ control, name });
   const titleTextColor = title.length >= maxTitleLength ? 'text-(--color-red)' : 'text-(--color-warm-gray)';
 
   return (
     <FormField
       control={control}
-      name="title"
+      name={name}
       render={({ field }) => (
         <FormItem className="mb-8">
           <FormLabel className="flex gap-0.5">

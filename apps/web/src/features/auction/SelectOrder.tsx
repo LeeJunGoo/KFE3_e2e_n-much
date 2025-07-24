@@ -12,14 +12,22 @@ import {
 import { useRouter } from 'next/navigation';
 import type { SelectOrderProps } from 'src/entities/auction/types';
 
-const SelectOrder = ({ order }: SelectOrderProps) => {
+const SelectOrder = ({ order, keyword }: SelectOrderProps) => {
   const router = useRouter();
+
+  if (!keyword?.trim()) {
+    keyword = '';
+  }
+
   //TODO - 서영님한테 물어보기 w-full md:w-44하니까 레이아웃 이상해짐 (KMH)
   return (
     <Select
-      onValueChange={(changedOrder) =>
-        router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auctions?order=${changedOrder}`)
-      }
+      onValueChange={(changedOrder) => {
+        if (keyword) {
+          return router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auctions?order=${changedOrder}&keyword=${keyword}`);
+        }
+        return router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auctions?order=${changedOrder}`);
+      }}
       value={order}
     >
       <SelectTrigger className="w-full bg-white md:w-44">

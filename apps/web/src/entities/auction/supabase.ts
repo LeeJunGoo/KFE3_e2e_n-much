@@ -6,18 +6,6 @@ import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supaba
 
 const supabase = createClient();
 
-//NOTE - 전체 경매 상품 정보
-export const getAllAuctions = async () => {
-  const { data, error } = await supabase.from('auctions').select(`*`);
-
-  if (error) {
-    console.error('🚀 ~ getAllAuctions:', error.message);
-    throw new Error('DB : 모든 경매 불러오기 에러');
-  }
-
-  return data;
-};
-
 //ANCHOR - 에피소드 등록 페이지: 특정 상품 정보 및 업체 정보
 export const selectAuctionSummaryInfoWithAddress = async (auctionId: string) => {
   const { data, error } = await supabase.rpc('get_auction_summary_with_address', {
@@ -127,8 +115,17 @@ export const selectSellerAuctionCount = async (sellerId: AuctionRow['user_id']) 
   };
 };
 
-export const selectAuctionsCount = async () => {
-  const { data, error } = await supabase.from('auctions').select('count').eq('status', 'OPEN').single();
+export const selectAuctionsCount = async (keyword: string | null) => {
+  if (!keyword) {
+    keyword = '';
+  }
+
+  const { data, error } = await supabase
+    .from('auctions')
+    .select('count')
+    .eq('status', 'OPEN')
+    .ilike('title', `%${keyword}%`)
+    .single();
 
   if (error) {
     console.error(error);
@@ -158,8 +155,8 @@ export const selectAuctionsByMainPageCategory = async (orderParam: string, isAsc
 };
 
 //NOTE - 경매 현황의 경매 리스트 가져오기
-export const selectAuctionCardList = async (order: string | undefined, page: number | undefined) => {
-  const auctionsCount = await selectAuctionsCount();
+export const selectAuctionCardList = async (order: string | null, keyword: string | null, page: number | null) => {
+  const auctionsCount = await selectAuctionsCount(keyword);
 
   if (!order) {
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러(order가 없습니다.)');
@@ -167,6 +164,10 @@ export const selectAuctionCardList = async (order: string | undefined, page: num
 
   if (!page && page !== 0) {
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러(page가 없습니다.)');
+  }
+
+  if (!keyword) {
+    keyword = '';
   }
 
   const ascending = order === 'favorites' ? false : true;
@@ -180,14 +181,14 @@ export const selectAuctionCardList = async (order: string | undefined, page: num
     )
     .order(order, { ascending })
     .eq('status', 'OPEN')
+    .ilike('title', `%${keyword}%`)
     .range(page, page + ITEM_PER_PAGE - 1);
 
   if (error) {
     console.error(error);
     throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
   }
-
-  const nextId = page < auctionsCount - ITEM_PER_PAGE ? page + ITEM_PER_PAGE + 1 : null;
+  const nextId = page < auctionsCount - ITEM_PER_PAGE ? page + ITEM_PER_PAGE : null;
 
   return { data, nextId };
 };
@@ -202,23 +203,8 @@ export const getAuctionsByKeyword = async (keyword: string) => {
   return data;
 };
 
-// NOTE - 셀러가 등록한 경매 목록 조회
-export async function getSellerAuctions(seller_id: string) {
-  const { data, error } = await supabase
-    .from('auctions')
-    .select('*')
-    .eq('seller_id', seller_id)
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    throw new Error('DB: 셀러 경매 목록 조회 에러');
-  }
-
-  return data;
-}
-
 //TODO - webp로 최적화하기 (KMH)
-export const uploadImageToBucket = async (imageData: string | undefined) => {
+export const uploadImageToBucket = async (imageData: string | undefined, ext: string) => {
   if (!imageData) {
     throw new Error('BUCKET: 이미지 업로드 에러(imageData가 없습니다.)');
   }
@@ -231,8 +217,8 @@ export const uploadImageToBucket = async (imageData: string | undefined) => {
 
   const { data, error } = await supabase.storage
     .from('auction-images')
-    .upload(`images/${uuidv4()}.png`, decode(base64), {
-      contentType: 'image/png'
+    .upload(`images/${uuidv4()}.${ext}`, decode(base64), {
+      contentType: 'image'
     });
 
   if (error) {

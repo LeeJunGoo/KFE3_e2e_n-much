@@ -7,9 +7,10 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const order = searchParams.get('order');
   const page = searchParams.get('page');
+  const keyword = searchParams.get('keyword');
   let res = null;
 
-  console.log('order', order, 'page', page);
+  console.log('order', order, 'page', page, 'keyword', keyword, typeof keyword);
 
   if (!order || !page) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
@@ -17,11 +18,11 @@ export async function GET(request: NextRequest) {
 
   try {
     if (order === 'favorites') {
-      res = await selectAuctionCardList(order, Number(page));
+      res = await selectAuctionCardList(order, keyword, Number(page));
     } else if (order === 'end_date') {
-      res = await selectAuctionCardList(order, Number(page));
+      res = await selectAuctionCardList(order, keyword, Number(page));
     } else if (order === 'created_at') {
-      res = await selectAuctionCardList(order, Number(page));
+      res = await selectAuctionCardList(order, keyword, Number(page));
     }
 
     if (!res) {
