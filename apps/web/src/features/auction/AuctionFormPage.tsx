@@ -16,13 +16,13 @@ const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
 
   //TODO - 마이 페이지에서 주소를 변경할 때, 아래 쿼리 키의 캐시를 지워야 함 (KMH)
   await prefetchAddressId(loggedInUserId, queryClient);
-
+  console.log('Cache state:', queryClient.getQueryCache().getAll());
   if (!isEditing) {
     return (
-      <>
+      <HydrationBoundary state={dehydrate(queryClient)}>
         <DetailPageHeader>{pageTitle}</DetailPageHeader>
         <AuctionForm auctionIdParam={undefined} loggedInUserId={loggedInUserId} />
-      </>
+      </HydrationBoundary>
     );
   }
 
