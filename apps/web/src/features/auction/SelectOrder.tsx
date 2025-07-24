@@ -30,7 +30,7 @@ const SelectOrder = ({ order, keyword }: SelectOrderProps) => {
       }}
       value={order}
     >
-      <SelectTrigger className="w-full bg-white md:w-44">
+      <SelectTrigger className={'ml-auto w-full md:!w-80'}>
         <SelectValue placeholder="정렬 순서 선택" />
       </SelectTrigger>
 
