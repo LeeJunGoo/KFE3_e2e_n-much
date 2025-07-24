@@ -7,11 +7,11 @@ import { Input } from '@repo/ui/components/ui/input';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useForm } from 'react-hook-form';
 import { type AuctionBidPointAmount } from 'src/entities/auction/types';
+import { SELLER_MAX_POINT, SELLER_MIN_POINT } from 'src/entities/episode/constants';
+import { usePatchEpisodeBidMutation } from 'src/entities/episode/queries/episode';
 import { bidPointSchema, type FormValues } from 'src/entities/episode/schemas';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
-import { useAuthActions, useUserState } from 'src/entities/auth/stores/useAuthStore';
-import { SELLER_MAX_POINT, SELLER_MIN_POINT } from 'src/entities/episode/constants';
 
 type EpisodeBidModalFormProps = {
   auctionPoint: AuctionBidPointAmount;
@@ -24,7 +24,6 @@ type EpisodeBidModalFormProps = {
 const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }: EpisodeBidModalFormProps) => {
   const minBid = role === 'buyer' ? auctionPoint.starting_point : SELLER_MIN_POINT;
   const maxBid = role === 'buyer' ? auctionPoint.max_point : SELLER_MAX_POINT;
-  const currentPoint = auctionPoint.current_point;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(bidPointSchema(minBid, maxBid)),
@@ -34,27 +33,22 @@ const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }
   });
   const { handleSubmit, reset } = form;
 
+  const { mutateAsync, isPending, isError } = usePatchEpisodeBidMutation();
+
   const handleOnSubmit = async ({ bidAmount }: FormValues) => {
     if (bidAmount > userPoint) {
       toast.error('보유 포인트가 부족합니다.');
       return;
     }
+    const totalBid = episode.bid_point! + bidAmount;
 
-    try {
-      const totalBid = episode.bid_point! + bidAmount;
+    mutateAsync({ episodeId: episode.episode_id, bidPoint: totalBid });
+
+    if (isPending) {
       toast.loading(`${formatNumber(bidAmount)}P를 추가 입찰하여 총 ${formatNumber(totalBid)}P로 입찰을 시도합니다.`);
+    }
 
-      const result = false; // FIXME: API 연동
-
-      if (result) {
-        toast.success('입찰을 성공하셨습니다.');
-        window.location.reload();
-      } else {
-        throw new Error('API call failed');
-      }
-    } catch {
-      toast.error('입찰에 실패했습니다. 다시 시도해주세요.');
-    } finally {
+    if (isError) {
       reset();
     }
   };
@@ -68,8 +62,8 @@ const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }
             name="bidAmount"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor={field.name} className="text-(--color-warm-gray) w-fit">
-                  입찰 금액
+                <FormLabel htmlFor={field.name} className="w-fit">
+                  <span className="text-(--color-warm-gray)">입찰 금액</span>
                 </FormLabel>
                 <div className="text-(--color-warm-gray) mb-1 text-sm">상한가: {formatNumber(maxBid)} P</div>
                 <Input
@@ -117,6 +111,7 @@ const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }
           <Button
             className="!rounded-button bg-(--color-accent) hover:bg-(--color-primary) flex-1 text-white"
             type="submit"
+            disabled={isPending}
           >
             입찰하기
           </Button>

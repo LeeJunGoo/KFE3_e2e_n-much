@@ -1,11 +1,11 @@
 import { QueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
+import { AUCTION_BID_POINT_AMOUNT } from 'src/entities/auction/constants';
 import { auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import { getAuctionBidPointAmount } from 'src/entities/episode/api';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
-import { AUCTION_BID_POINT_AMOUNT } from '../constants';
-import { getAuctionBidPointAmount } from 'src/entities/episode/api';
 
 export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
   const {

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import {
   Dialog,
@@ -10,15 +11,14 @@ import {
   DialogTrigger
 } from '@repo/ui/components/ui/dialog';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { useAuctionBidPointAmount } from 'src/entities/auction/queries/auction';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useUserBidPointAmount } from 'src/entities/episode/queries/episode';
-import type { EpisodeItemProps } from 'src/entities/episode/types';
 import EpisodeBidButton from 'src/features/episode/EpisodeBidButton';
 import EpisodeBidModalForm from 'src/features/episode/EpisodeBidModalForm';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import ContentEmpty from '../auction/shared/ContentEmpty';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
   const [open, setOpen] = useState(false);

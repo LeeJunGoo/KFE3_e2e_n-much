@@ -149,15 +149,14 @@ export const getAuctionBidPointAmount = async (auctionId: AuctionRow['auction_id
   return data;
 };
 
-//NOTE - 특정 에피소드 입찰
-export const fetchUpdateEpisodeBid = async (auction_id: string, episode_id: string, bid_point: number) => {
+//ANCHOR - 사연 입찰
+export const patchEpisodeBid = async (episodeId: EpisodeRow['episode_id'], bidPoint: EpisodeRow['bid_point']) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/bid`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'PATCH',
     body: JSON.stringify({
-      auction_id,
-      episode_id,
-      bid_point // 계산된 최종 입찰가
+      episodeId,
+      bidPoint
     })
   });
 
@@ -166,9 +165,8 @@ export const fetchUpdateEpisodeBid = async (auction_id: string, episode_id: stri
     throw new Error(errorData.error);
   }
 
-  const data: EpisodeInfo = await res.json();
-
-  return data.status;
+  const data: boolean = await res.json();
+  return data;
 };
 
 //NOTE - 특정 에피소드 낙찰

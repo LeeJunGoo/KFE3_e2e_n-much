@@ -22,8 +22,9 @@ export const bidPointSchema = (min: number, max: number) =>
       .number({
         required_error: '입찰 금액 또는 숫자만 입력해주세요.'
       })
-      .min(min, `하한가는 ${formatNumber(min)}P 입니다.`)
-      .max(max, `상한가는 ${formatNumber(max)}P 입니다.`)
+      .refine((val) => val >= min && val <= max, {
+        message: `입찰 금액은 ${formatNumber(min)}P 이상, ${formatNumber(max)}P 이하여야 합니다.`
+      })
   });
 // FormValues 타입을 동적으로 추론
 export type FormValues = z.infer<ReturnType<typeof bidPointSchema>>;

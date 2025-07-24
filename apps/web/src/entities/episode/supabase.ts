@@ -1,7 +1,7 @@
 import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 import { createClient } from 'src/shared/supabase/client/client';
-import { EpisodeRow, UserRow, type AuctionRow } from 'src/shared/supabase/types';
 import type { EpisodeCreateType, EpisodeEditType } from 'src/entities/episode/types';
+import type { EpisodeRow, UserRow, AuctionRow } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -113,39 +113,21 @@ export const selectHasUserWrittenEpisode = async (
   return Boolean(data); // 작성 여부
 };
 
-//NOTE - 특정 에피소드 입찰
-export async function updateEpisodeBidPoint(episode_id: string, bid_point: number) {
+//ANCHOR -  - 사연 입찰
+export const updateEpisodeBid = async (episodeId: string, bidPoint: number) => {
   const { data, error } = await supabase
     .from('episodes')
-    .update({ bid_point })
-    .eq('episode_id', episode_id)
+    .update({ bid_point: bidPoint })
+    .eq('episode_id', episodeId)
     .select()
-    .single();
+    .maybeSingle();
 
   if (error) {
-    console.log('🚀 ~ updateEpisodeBidPoint ~ error:', error.message);
-    throw new Error('DB: 입찰하기 에러');
+    console.error('🚀 ~ updateEpisodeBid ~ error:', error);
+    throw new Error();
   }
-
-  return data;
-}
-
-//NOTE - 특정 에피소드 낙찰
-export async function selectWinningEpisode(episode_id: string, winning_bid: boolean) {
-  const { data, error } = await supabase
-    .from('episodes')
-    .update({ winning_bid })
-    .eq('episode_id', episode_id)
-    .select()
-    .single();
-
-  if (error) {
-    console.log('🚀 ~ selectWinningEpisode ~ error:', error.message);
-    throw new Error('DB: 사연 수정 에러');
-  }
-
-  return data;
-}
+  return Boolean(data); // 작성 여부
+};
 
 //ANCHOR - 경매 물품에 대한 에피소드 삭제
 export const deleteEpisodeById = async (episodeId: EpisodeRow['episode_id']) => {
@@ -186,56 +168,6 @@ export const selectBidderRanking = async (auction_id: string) => {
 
   return data;
 };
-
-// NOTE - 사용자 참여 중인 경매 개수 조회
-export async function getUserBiddingCount(buyer_id: string) {
-  const { data, error } = await supabase
-    .from('episodes')
-    .select(
-      `
-      episode_id,
-      auctions!inner(status)
-    `
-    )
-    .eq('buyer_id', buyer_id)
-    .eq('auctions.status', 'OPEN');
-
-  if (error) {
-    throw new Error('DB: 참여 중인 경매 개수 조회 에러');
-  }
-
-  return data?.length || 0;
-}
-
-// NOTE - 사용자가 작성한 스토리 목록 조회
-export async function getUserStories(buyer_id: string) {
-  const { data, error } = await supabase
-    .from('episodes')
-    .select(
-      `
-      episode_id,
-      title,
-      description,
-      created_at,
-      status,
-      bid_point,
-      auctions!inner(
-        auction_id,
-        title,
-        status,
-        end_time
-      )
-    `
-    )
-    .eq('buyer_id', buyer_id)
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    throw new Error('DB: 사용자 스토리 목록 조회 에러');
-  }
-
-  return data;
-}
 
 //ANCHOR - 사용자의 보유 포인트
 export const selectUserBidPointAmount = async (userId: UserRow['id']) => {
