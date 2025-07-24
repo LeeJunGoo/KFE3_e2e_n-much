@@ -6,10 +6,18 @@ import { popToast } from 'src/shared/utils/popToast';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
+export const prefetchAuctionFormData = async (auctionId: string, queryClient: QueryClient) => {
+  await queryClient.prefetchQuery({
+    queryKey: auctionFormKeys.item(auctionId),
+    queryFn: () => getAuction(auctionId),
+    staleTime: Infinity
+  });
+};
+
 export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
   const {
     data: fetchedAuction,
-    isPending: isAuctionFetching,
+    isLoading: isAuctionFetching,
     isError: isAuctionFetchingError,
     error: fetchingAuctionError
   } = useQuery({
@@ -93,11 +101,4 @@ export const useGetAuctionListQuery = (order: string, keyword: string | undefine
   });
 
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
-};
-
-export const prefetchAuctionFormData = async (auctionId: string, queryClient: QueryClient) => {
-  await queryClient.prefetchQuery({
-    queryKey: auctionFormKeys.item(auctionId),
-    queryFn: () => getAuction(auctionId)
-  });
 };
