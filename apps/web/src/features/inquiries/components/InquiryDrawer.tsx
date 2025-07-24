@@ -15,7 +15,7 @@ const InquiryDrawer = ({ open, setOpen, actionId }: InquiryDrawerProps) => {
   const route = useRouter();
 
   const handleInquiryClick = () => {
-    route.push(`/inquiries/write?auction_id=${actionId}`);
+    route.push(`/inquiries/${actionId}`);
   };
 
   return (

@@ -1,28 +1,5 @@
 //TODO - DB 테이블 생성 후 작업 예정
-// import type { InquiryInsert, InquiryRow, InquiryUpdate } from 'src/shared/supabase/types/index';
-export type InquiryRow = {
-  inquiry_id: string;
-  auction_id: string;
-  user_id: string;
-  title: string;
-  description: string;
-};
-
-type InquiryInsert = {
-  inquiry_id?: string;
-  auction_id: string;
-  user_id: string;
-  title: string;
-  description: string;
-};
-
-type InquiryUpdate = {
-  inquiry_id?: string;
-  auction_id?: string;
-  user_id?: string;
-  title: string;
-  description: string;
-};
+import type { InquiryInsert, InquiryRow, InquiryUpdate } from 'src/shared/supabase/types/index';
 
 //NOTE -  - 문의 등록
 export type InquiryCreateType = {

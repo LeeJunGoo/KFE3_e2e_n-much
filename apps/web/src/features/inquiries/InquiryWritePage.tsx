@@ -1,40 +1,26 @@
 import { notFound } from 'next/navigation';
 import { getAuctionSummaryInfoWithAddress } from 'src/entities/auction/api';
+import { getInquiryInfo } from 'src/entities/inquiry/api';
 import EpisodeAuctionCard from 'src/features/episode/EpisodeAuctionCard';
 import InquiryForm from 'src/features/inquiries/components/InquiryForm';
 import { createServer } from 'src/shared/supabase/client/server';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
+import type { InquiryRow } from 'src/shared/supabase/types';
 
-//TODO - DB 테이블 생성 후 이동 예정
-type InquiryRow = {
-  inquiry_id: string;
-  auction_id: string;
-  user_id: string;
-  title: string;
-  description: string;
-};
-
-const InquiryWritePage = async ({ searchParams }: { searchParams: Promise<{ auction_id: string }> }) => {
-  const auctionId = (await searchParams).auction_id;
+const InquiryWritePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
+  const [auctionId, inquiryId] = (await params).id;
   let initialInquiryInfo: InquiryRow | null = null;
 
   // NOTE - 경매 상품 및 업체 정보
   const auctionInfo = await getAuctionSummaryInfoWithAddress(auctionId!);
 
-  //NOTE - episodeId true: 수정, false: 등록
-  if (auctionId) {
+  //NOTE - true: 수정, false: 등록
+  if (inquiryId) {
     //TODO - DB 테이블 생성 후 작업 예정
-    // initialInquriyInfo = await getInquriyInfo(auctionId);
-
-    initialInquiryInfo = {
-      inquiry_id: '1',
-      auction_id: auctionId,
-      user_id: 'user-1',
-      title: '테스트',
-      description: '테스트입니다.'
-    };
+    initialInquiryInfo = await getInquiryInfo(inquiryId);
   }
+  // console.log(initialInquiryInfo);
 
   //NOTE - 로그인된 유저 정보
   const supabase = await createServer();
