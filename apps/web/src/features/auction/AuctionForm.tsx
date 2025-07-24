@@ -31,7 +31,7 @@ import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entiti
 import type { z } from 'zod';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
-  const isEditing: boolean = Boolean(auctionIdParam);
+  const isEditing: boolean = !!auctionIdParam;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);

@@ -13,9 +13,9 @@ export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
     isError: isAuctionFetchingError,
     error: fetchingAuctionError
   } = useQuery({
-    queryKey: auctionFormKeys.item(auctionIdParam),
-    queryFn: (): Promise<FetchedAuction> => getAuction(auctionIdParam),
-    enabled: Boolean(auctionIdParam) === true,
+    queryKey: auctionFormKeys.item(auctionIdParam as string),
+    queryFn: (): Promise<FetchedAuction> => getAuction(auctionIdParam as string),
+    enabled: !!auctionIdParam,
     staleTime: Infinity
   });
 
