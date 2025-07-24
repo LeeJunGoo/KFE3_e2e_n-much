@@ -9,6 +9,7 @@ import ContentTitle from 'src/shared/ui/ContentTitle';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
+import EpisodeLikeToggle from './EpisodeLikeButton';
 
 const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
   const user = useUserState();
@@ -32,8 +33,11 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
             <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>
           </div>
         </div>
-        {/* 사연자 및 경매 물품의 판매자일 경우에만 입찰하기 버튼 활성화 */}
-        {isUser && isSeller && <EpisodeBidModal episode={episode} />}
+        <div className="flex flex-col items-end gap-1">
+          {/* 사연자 및 경매 물품의 판매자일 경우에만 입찰하기 버튼 활성화 */}
+          {isUser && isSeller && <EpisodeBidModal episode={episode} />}
+          <EpisodeLikeToggle episode={episode} />
+        </div>
       </div>
       <div>
         <ContentTitle title={episode.title} variant="base" className="mb-1" />
