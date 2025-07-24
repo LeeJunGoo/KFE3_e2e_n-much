@@ -1,7 +1,7 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { getSellerAuctionCount } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
-import InquiryDrawer from 'src/features/auction/InquiryDrawer';
+import InquiryDrawerTrigger from 'src/features/auction/InquiryDrawerTrigger';
 import UserAvatar from 'src/shared/ui/BaseAvatar';
 
 const SellerInfoSection = async ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
@@ -12,7 +12,7 @@ const SellerInfoSection = async ({ auctionInfo }: { auctionInfo: AuctionInfoWith
       <div className="flex justify-between">
         <h3 className="text-(--color-text-base) font-medium">판매자 정보</h3>
         {/* //NOTE - ... 버튼 > InquryDrawer 오픈 */}
-        <InquiryDrawer />
+        <InquiryDrawerTrigger actionId={auctionInfo.auction_id} />
       </div>
       <div className="mb-4 flex items-center gap-2">
         <UserAvatar src={auctionInfo.company_image!} alt={auctionInfo.business_name!} size="sm" />
