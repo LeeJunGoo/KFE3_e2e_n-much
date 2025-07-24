@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { BUCKET_FOLDER_NAME, MAX_UPLOADED_IMAGES } from 'src/entities/auction/constants';
 import { getExtension } from 'src/entities/auction/utils/extension';
-import { popToast } from 'src/shared/utils/toast';
+import { popToast } from 'src/shared/utils/popToast';
 import { v4 as uuidv4 } from 'uuid';
 import type { ImageUploaderProps } from 'src/entities/auction/types';
 

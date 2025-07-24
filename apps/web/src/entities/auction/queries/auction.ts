@@ -2,7 +2,7 @@ import { QueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/
 import { useInView } from 'react-intersection-observer';
 import { getAddressId, getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
 import { addressIdKeys, auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
-import { popToast } from 'src/shared/utils/toast';
+import { popToast } from 'src/shared/utils/popToast';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
