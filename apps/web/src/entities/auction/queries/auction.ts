@@ -96,7 +96,7 @@ export const prefetchAddressId = async (loggedInUserId: string, queryClient: Que
   });
 };
 
-export const prefetchAuctionFormData = async (auctionId: string | undefined, queryClient: QueryClient) => {
+export const prefetchAuctionFormData = async (auctionId: string, queryClient: QueryClient) => {
   await queryClient.prefetchQuery({
     queryKey: auctionFormKeys.item(auctionId),
     queryFn: () => getAuction(auctionId)

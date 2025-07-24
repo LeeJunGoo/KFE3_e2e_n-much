@@ -8,7 +8,7 @@ import DetailPageHeader from 'src/widgets/DetailPageHeader';
 import type { AuctionFormPageProps } from 'src/entities/auction/types';
 
 const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
-  const isEditing = Boolean(auctionId);
+  const isEditing = !!auctionId;
   const pageTitle = isEditing ? '경매 수정하기' : '경매 등록하기';
   const userInfo = await getServerUser();
   const loggedInUserId = userInfo!.id; //NOTE - 미들웨어에서 비로그인시 메인 페이지로 리다이렉트 함
