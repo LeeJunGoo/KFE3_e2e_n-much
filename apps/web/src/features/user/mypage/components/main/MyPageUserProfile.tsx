@@ -17,7 +17,7 @@ const MyPageUserProfile = () => {
 
   if (!user) return <MyPageUserProfileSkeleton />;
 
-  const { nick_name: name, email, user_avatar: avatarUrl } = user;
+  const { nick_name: name, email, user_avatar: avatarUrl, point } = user;
 
   const currentRole = (user?.role || 'buyer') as keyof typeof ROLE_CONFIG;
   const currentConfig = ROLE_CONFIG[currentRole];
@@ -49,14 +49,14 @@ const MyPageUserProfile = () => {
           <p className="text-(--color-warm-gray) text-sm">{email}</p>
         </div>
         <div className="bg-(--color-primary) relative flex size-14 shrink-0 overflow-hidden rounded-full text-white">
-          <BaseAvatar src={avatarUrl || ''} alt={name} size="xl" />
+          <BaseAvatar src={avatarUrl || ''} alt={name ? `${name} 프로필 이미지` : '사용자 프로필 이미지'} size="xl" />
         </div>
       </div>
       {currentRole === 'seller' && <AddressStatus />}
       <div className="border-(--color-warm-gray)/30 border-t pt-4">
         <div className="flex items-center justify-between">
           <p className="text-sm">보유 포인트</p>
-          <PointDisplay amount={1000} />
+          <PointDisplay amount={point} />
         </div>
       </div>
     </BaseCard>
