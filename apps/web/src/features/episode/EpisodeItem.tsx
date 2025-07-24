@@ -41,6 +41,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
       </div>
       <div className="flex items-center justify-between">
         <EpisodeInfoModal episode={episode} />
+
         {isEpisodeActions && <EpisodeActionButtons auctionId={episode.auction_id} episodeId={episode.episode_id} />}
       </div>
     </li>

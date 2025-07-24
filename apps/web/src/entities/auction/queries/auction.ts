@@ -4,6 +4,8 @@ import { getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/e
 import { auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
+import { AUCTION_BID_POINT_AMOUNT } from '../constants';
+import { getAuctionBidPointAmount } from 'src/entities/episode/api';
 
 export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
   const {
@@ -96,4 +98,12 @@ export const useGetAuctionListQuery = (order: string) => {
   });
 
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
+};
+
+export const useAuctionBidPointAmount = (auctionId: AuctionRow['auction_id'], options?: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: [AUCTION_BID_POINT_AMOUNT, auctionId],
+    queryFn: () => getAuctionBidPointAmount(auctionId),
+    enabled: options?.enabled ?? true
+  });
 };

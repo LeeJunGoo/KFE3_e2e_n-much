@@ -14,5 +14,14 @@ export const MAX_DESC_LENGTH = 1000;
 //ANCHOR - 페이지네이션: 한 페이지에 보일 에피소드 개수
 export const EPISODES_PER_PAGE = 5;
 
+//ANCHOR - 판매자의 최소 입찰 포인트
+export const SELLER_MIN_POINT = 1;
+
+//ANCHOR - 판매자의 최대 입찰 포인트
+export const SELLER_MAX_POINT = 500;
+
 //ANCHOR - episode pagination에서 사용하는 tansTack query Key
 export const EPISODES_LIST_QUERY_KEY = 'episodes';
+
+//ANCHOR - episode user의 보유 포인트
+export const USER_BID_POINT_AMOUNT = 'userBidPointAmount';

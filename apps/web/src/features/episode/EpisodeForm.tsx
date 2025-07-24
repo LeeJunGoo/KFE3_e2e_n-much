@@ -50,8 +50,8 @@ const EpisodeForm = ({
       if (status === 'success') {
         setIsRedirecting(true);
         const message = isEditMode ? '사연을 수정하였습니다.' : '사연을 등록하였습니다.';
-        toast.success(message);
         router.push(`/auctions/${auctionId}`);
+        toast.success(message);
       }
     } catch (error) {
       const message = isEditMode ? '사연을 수정하지 못했습니다.' : '사연을 등록하지 못했습니다.';

@@ -1,5 +1,6 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { FiAward } from 'react-icons/fi';
+import { useBidModalActions } from 'src/entities/episode/stores/useBidModalStore';
 
 type Variant = 'ghost' | 'outline' | 'destructive' | 'base' | 'secondary' | 'active' | 'inActive' | 'text';
 
@@ -11,7 +12,7 @@ type EpisodeBidButtonProps = {
 
 const EpisodeBidButton = ({ onClick, variant, className }: EpisodeBidButtonProps) => {
   return (
-    <Button size="sm" variant={variant} onClick={onClick}>
+    <Button size="sm" variant={variant} onClick={onClick} className={className}>
       <FiAward />
       <span>입찰하기</span>
     </Button>

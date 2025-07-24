@@ -36,3 +36,6 @@ export const KOR_TIME_ZONE = 'Asia/Seoul'; //NOTE - 한국 time zone
 export const UTC_TIME_ZONE = 'utc'; //NOTE - utc time zone
 
 export const AUCTION_LIST_SKELETON_LENGTH = 10;
+
+//ANCHOR - 현재 경매 물품의 입찰가, 하한가, 상한가
+export const AUCTION_BID_POINT_AMOUNT = 'auctionBidPointAmount';

@@ -23,9 +23,7 @@ export type SellerAuctionCountType = {
 type RankingSummaryInfoType = Pick<RankingRow, 'rank_position' | 'bid_amount' | 'created_at'>;
 export type BidderRankingInfoType = RankingSummaryInfoType & { users: UserSummaryInfoType };
 
-// export type BuyerInfoType = {
-//   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
-// };
+export type AuctionBidPointAmount = Pick<AuctionRow, 'starting_point' | 'current_point' | 'max_point'>;
 
 // export type AuctionInfoType = { status: string; data: AuctionRow };
 

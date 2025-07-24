@@ -1,6 +1,6 @@
 import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 import { createClient } from 'src/shared/supabase/client/client';
-import { EpisodeRow, type AuctionRow } from 'src/shared/supabase/types';
+import { EpisodeRow, UserRow, type AuctionRow } from 'src/shared/supabase/types';
 import type { EpisodeCreateType, EpisodeEditType } from 'src/entities/episode/types';
 
 const supabase = createClient();
@@ -99,10 +99,12 @@ export const selectHasUserWrittenEpisode = async (
 ) => {
   const { data, error } = await supabase
     .from('episodes')
+
     .select('episode_id')
     .eq('auction_id', auctionId)
-    .eq('user_id', userId);
-  // .maybeSingle(); 현재 테스트로 하나의 계정에 여러 사연을 넣어, 에러 발생
+    .eq('user_id', userId)
+    .maybeSingle();
+  // .maybeSingle(); 테스트 중에 한 유저가 여러 데이터를 사입하여 에러가 발생
 
   if (error) {
     console.error('🚀 ~ hasUserWrittenEpisode ~ error:', error);
@@ -234,3 +236,39 @@ export async function getUserStories(buyer_id: string) {
 
   return data;
 }
+
+//ANCHOR - 사용자의 보유 포인트
+export const selectUserBidPointAmount = async (userId: UserRow['id']) => {
+  const { data, error } = await supabase
+    .from('points')
+    .select('balance_after')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false }) // 가장 최근
+    .limit(1)
+    .maybeSingle();
+
+  if (error) {
+    console.error('🚀 ~ selectUserBidPoint ~ error:', error);
+    throw new Error();
+  }
+
+  const userBidPoint = data?.balance_after ?? 0;
+
+  return userBidPoint;
+};
+
+//FIXME - 현재 유저가 사용한 포인트
+// export const selectUserBidPoint = async (auctionId: AuctionRow['auction_id'], userId: UserRow['id']) => {
+//   const { data: userBidPoint, error } = await supabase
+//     .from('user_bid_totals')
+//     .select('*')
+//     .eq('auction_id', auctionId)
+//     .eq('user_id', userId)
+//     .maybeSingle();
+
+//   if (error) {
+//     console.error('🚀 ~ selectBidderRanking ~ error:', error);
+//     throw new Error();
+//   }
+//   return userBidPoint;
+// };

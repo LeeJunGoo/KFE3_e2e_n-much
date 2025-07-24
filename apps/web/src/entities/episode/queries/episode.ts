@@ -1,8 +1,9 @@
 import { toast } from '@repo/ui/components/ui/sonner';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteEpisodeInfo } from 'src/entities/episode/api';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { deleteEpisodeInfo, getUserBidPointAmount } from 'src/entities/episode/api';
+import { USER_BID_POINT_AMOUNT } from 'src/entities/episode/constants';
 import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
-import type { EpisodeRow } from 'src/shared/supabase/types';
+import type { AuctionRow, EpisodeRow, UserRow } from 'src/shared/supabase/types';
 
 export const useDeleteEpisodeMutation = ({
   auctionId,
@@ -25,5 +26,17 @@ export const useDeleteEpisodeMutation = ({
       toast.error('경매 물품을  삭제하지 못했습니다. 다시 시도해주세요.');
       console.error(error.message);
     }
+  });
+};
+
+export const useUserBidPointAmount = (
+  auctionId: AuctionRow['auction_id'],
+  userId: UserRow['id'],
+  options?: { enabled?: boolean }
+) => {
+  return useQuery({
+    queryKey: [USER_BID_POINT_AMOUNT, auctionId, userId],
+    queryFn: () => getUserBidPointAmount(userId),
+    enabled: options?.enabled ?? true
   });
 };

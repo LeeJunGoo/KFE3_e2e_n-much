@@ -294,3 +294,18 @@ export const selectAddressId = async (userId: string | undefined) => {
   }
   return data;
 };
+
+//ANCHOR - 현재 경매 물품의 입찰가, 하한가, 상한가
+export const selectAuctionBidPointAmount = async (auctionId: AuctionRow['auction_id']) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(`starting_point, current_point, max_point`)
+    .eq('auction_id', auctionId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('🚀 ~ selectAuctionBidPointAmount:', error);
+    throw new Error();
+  }
+  return data;
+};

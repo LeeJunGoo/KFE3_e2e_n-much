@@ -1,142 +1,129 @@
-// 'use client';
+'use client';
 
-// import { Button } from '@repo/ui/components/ui/button';
-// import { Input } from '@repo/ui/components/ui/input';
-// import { Form, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
-// import { useForm } from 'react-hook-form';
-// import { z } from 'zod';
-// import { toast } from '@repo/ui/components/ui/sonner';
-// import { zodResolver } from '@hookform/resolvers/zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/components/ui/button';
+import { Form, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
+import { Input } from '@repo/ui/components/ui/input';
+import { toast } from '@repo/ui/components/ui/sonner';
+import { useForm } from 'react-hook-form';
+import { type AuctionBidPointAmount } from 'src/entities/auction/types';
+import { bidPointSchema, type FormValues } from 'src/entities/episode/schemas';
+import { formatNumber } from 'src/shared/utils/formatNumber';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
+import { useAuthActions, useUserState } from 'src/entities/auth/stores/useAuthStore';
+import { SELLER_MAX_POINT, SELLER_MIN_POINT } from 'src/entities/episode/constants';
 
-// import { fetchUpdateEpisodeBid } from 'src/entities/episode/api';
-// import { formatNumber } from 'src/shared/utils/formatNumber';
-// import type { EpisodeItemProps } from 'src/entities/episode/types';
+type EpisodeBidModalFormProps = {
+  auctionPoint: AuctionBidPointAmount;
+  userPoint: number;
+  role: string;
+  episode: EpisodeItemProps;
+  onClose: () => void;
+};
 
-// const getSchema = (minBid: number) =>
-//   z.object({
-//     bidAmount: z
-//       .string()
-//       .min(1, '입찰 금액을 입력해주세요.')
-//       .transform((val) => parseInt(val, 10))
-//       .refine((val) => !isNaN(val) && val > minBid, `입찰가는 ${minBid + 1}P 이상이어야 합니다.`)
-//   });
+const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }: EpisodeBidModalFormProps) => {
+  const minBid = role === 'buyer' ? auctionPoint.starting_point : SELLER_MIN_POINT;
+  const maxBid = role === 'buyer' ? auctionPoint.max_point : SELLER_MAX_POINT;
+  const currentPoint = auctionPoint.current_point;
 
-// type Props = {
-//   episode: EpisodeItemProps;
-//   onClose: () => void;
-// };
+  const form = useForm<FormValues>({
+    resolver: zodResolver(bidPointSchema(minBid, maxBid)),
+    defaultValues: {
+      bidAmount: undefined
+    }
+  });
+  const { handleSubmit, reset } = form;
 
-// const schema = getSchema(100);
-// type FormValues = z.infer<typeof schema>;
+  const handleOnSubmit = async ({ bidAmount }: FormValues) => {
+    if (bidAmount > userPoint) {
+      toast.error('보유 포인트가 부족합니다.');
+      return;
+    }
 
-// const EpisodeBidModalForm = ({ episode, onClose }: Props) => {
-//   const userInfo = { point: 10000 }; // TODO: 유저 상태 연동
-//   const form = useForm<FormValues>({
-//     //FIXME - 현재 입찰 포인트
-//     // resolver: zodResolver(getSchema(episode.bid_point)),
-//     resolver: zodResolver(schema),
-//     defaultValues: {
-//       bidAmount: 0
-//     }
-//   });
-//   const form = useForm<FormValues>({
-//   resolver: zodResolver(schema),
-//   defaultValues: {
-//     bidAmount: 0
-//   }
-// });
+    try {
+      const totalBid = episode.bid_point! + bidAmount;
+      toast.loading(`${formatNumber(bidAmount)}P를 추가 입찰하여 총 ${formatNumber(totalBid)}P로 입찰을 시도합니다.`);
 
-//   const { handleSubmit, reset } = form;
+      const result = false; // FIXME: API 연동
 
-//   const onSubmit = async ({ bidAmount }: { bidAmount: number }) => {
-//     if (bidAmount > userInfo.point) {
-//       toast.error('보유 포인트가 부족합니다.');
-//       return;
-//     }
+      if (result) {
+        toast.success('입찰을 성공하셨습니다.');
+        window.location.reload();
+      } else {
+        throw new Error('API call failed');
+      }
+    } catch {
+      toast.error('입찰에 실패했습니다. 다시 시도해주세요.');
+    } finally {
+      reset();
+    }
+  };
 
-//     try {
-//       //FIXME - 현재 입찰 포인트
-//       //   const totalBid = episode.bid_point + bidAmount;
-//       const totalBid = 0 + bidAmount;
-//       toast.loading(`${formatNumber(bidAmount)}P를 추가 입찰하여 총 ${formatNumber(totalBid)}P로 입찰을 시도합니다.`);
+  return (
+    <Form {...form}>
+      <form onSubmit={handleSubmit(handleOnSubmit)}>
+        <div className="mb-6">
+          <FormField
+            control={form.control}
+            name="bidAmount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor={field.name} className="text-(--color-warm-gray) w-fit">
+                  입찰 금액
+                </FormLabel>
+                <div className="text-(--color-warm-gray) mb-1 text-sm">상한가: {formatNumber(maxBid)} P</div>
+                <Input
+                  id={field.name}
+                  type="text"
+                  inputMode="numeric"
+                  placeholder={`${formatNumber(minBid)} P 이상 입찰 금액을 입력하세요`}
+                  className="text-center"
+                  {...field}
+                  value={field.value ?? ''}
+                  maxLength={6}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    const parsed = Number(raw);
+                    if (!Number.isNaN(parsed) && /^\d+$/.test(raw)) {
+                      field.onChange(parsed);
+                      form.clearErrors('bidAmount'); // 정상 입력 시 에러 제거
+                    } else if (raw === '') {
+                      field.onChange(undefined);
+                      form.clearErrors('bidAmount'); // 공란도 에러 제거
+                    } else {
+                      field.onChange(undefined);
+                      form.setError('bidAmount', {
+                        type: 'manual',
+                        message: '입찰 금액 또는 숫자만 입력해주세요.'
+                      });
+                    }
+                  }}
+                />
+                <div className="text-(--color-warm-gray) mb-1 text-sm">하한가: {formatNumber(minBid)} P</div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
-//       //FIXME - 에피소드 입찰
-//       //   const result = await fetchUpdateEpisodeBid(episode.auction_id, episode.episode_id, bidAmount);
-
-//       const result = false;
-//       if (result) {
-//         toast.success('입찰을 성공하셨습니다.');
-//         window.location.reload();
-//       }
-//     } catch {
-//       toast.error('입찰에 실패했습니다. 다시 시도해주세요.');
-//     } finally {
-//       onClose();
-//       reset();
-//     }
-//   };
-
-//   return (
-//     <>
-//       <div className="mb-5 text-center">
-//         <p className="text-muted mb-1 text-sm">현재 보유 포인트</p>
-//         <p className="text-xl font-bold">{formatNumber(userInfo.point)} P</p>
-//       </div>
-
-//       <Form {...form}>
-//         <form onSubmit={handleSubmit(onSubmit)}>
-//           <div className="mb-5 text-center">
-//             <p className="text-(--color-warm-gray) mb-1 text-sm">현재 보유 포인트</p>
-//             <p className="text-(--color-text-base) text-xl font-bold">{userInfo.point} P</p>
-//           </div>
-//           <div className="mb-5">
-//             <p className="text-(--color-accent) mb-2 text-sm">현재 최고 입찰가: {formatNumber(200)} P</p>
-//             <FormField
-//               control={form.control}
-//               name="bidAmount"
-//               render={({ field }) => (
-//                 <FormItem>
-//                   <FormLabel>입찰 금액</FormLabel>
-//                   <Input
-//                     type="number"
-//                     //FIXME - 에피소드 현재 입찰가
-//                     placeholder={`${100 + 1}P 이상 입찰 금액을 입력하세요`}
-//                     //FIXME - 에피소드 현재 입찰가
-//                     //   min={episode.bid_point + 1}
-//                     {...field}
-//                   />
-//                   <FormMessage />
-//                 </FormItem>
-//               )}
-//             />
-//           </div>
-//           <div className="flex space-x-3">
-//             <Button
-//               className="!rounded-button bg-(--color-secondary) text-(--color-text-base) hover:bg-(--color-warm-gray) flex-1"
-//               onClick={onClose}
-//               type="button"
-//             >
-//               취소
-//             </Button>
-//             <Button
-//               className="!rounded-button bg-(--color-accent) hover:bg-(--color-primary) flex-1 text-white"
-//               type="submit"
-//             >
-//               입찰하기
-//             </Button>
-//           </div>
-//         </form>
-//       </Form>
-//     </>
-//   );
-// };
-
-// export default EpisodeBidModalForm;
-
-import React from 'react';
-
-const EpisodeBidModalForm = () => {
-  return <div>EpisodeBidModalForm</div>;
+        <div className="flex space-x-3">
+          <Button
+            className="!rounded-button bg-(--color-secondary) text-(--color-text-base) hover:bg-(--color-warm-gray) flex-1"
+            onClick={onClose}
+            type="button"
+          >
+            취소
+          </Button>
+          <Button
+            className="!rounded-button bg-(--color-accent) hover:bg-(--color-primary) flex-1 text-white"
+            type="submit"
+          >
+            입찰하기
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
 };
 
 export default EpisodeBidModalForm;
