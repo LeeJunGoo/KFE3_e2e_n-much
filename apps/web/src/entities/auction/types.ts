@@ -184,9 +184,3 @@ export interface UseTriggerCrossFieldsParams<T extends FieldValues> {
   fieldB: FieldPath<T>;
   trigger: (name?: FieldPath<T> | FieldPath<T>[]) => Promise<boolean>;
 }
-
-//NOTE - 각 폼의 항목을 서로 트리가 하는 기능의 반환 깂
-export interface UseTriggerCrossFieldsReturn<T extends FieldValues, A extends FieldPath<T>, B extends FieldPath<T>> {
-  fieldAValue: FieldPathValue<T, A>;
-  fieldBValue: FieldPathValue<T, B>;
-}

@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { useWatch } from 'react-hook-form';
 import type { FieldValues } from 'react-hook-form';
-import type { UseTriggerCrossFieldsParams, UseTriggerCrossFieldsReturn } from 'src/entities/auction/types';
+import type { UseTriggerCrossFieldsParams } from 'src/entities/auction/types';
 
 export const useTriggerCrossFields = <T extends FieldValues>({
   control,
   fieldA,
   fieldB,
   trigger
-}: UseTriggerCrossFieldsParams<T>): UseTriggerCrossFieldsReturn<T, typeof fieldA, typeof fieldB> => {
+}: UseTriggerCrossFieldsParams<T>) => {
   const fieldAValue = useWatch({
     control,
     name: fieldA
@@ -26,6 +26,4 @@ export const useTriggerCrossFields = <T extends FieldValues>({
   useEffect(() => {
     trigger(fieldB);
   }, [fieldB, fieldAValue, trigger]);
-
-  return { fieldAValue, fieldBValue };
 };

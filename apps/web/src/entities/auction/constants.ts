@@ -18,6 +18,10 @@ export const MIN_STARTING_POINT_NUM = 0; //NOTE - 최소 경매 시작가
 export const MIN_MAX_POINT_NUM = 0; //NOTE - 최대 경매 시작가
 export const BUCKET_FOLDER_NAME = 'images/'; //NOTE - 버켓 폴더 이름
 
+//NOTE - auctionForm의 초기 포인트 상수
+export const INIT_STARTING_POINT_NUM = 1000;
+export const INIT_MAX_POINT_NUM = 10000;
+
 //ANCHOR - 초를 밀리초로 변환하기 위한 상수
 export const MILLISECONDS = 1000;
 

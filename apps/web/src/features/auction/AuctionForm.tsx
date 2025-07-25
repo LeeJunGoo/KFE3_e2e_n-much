@@ -29,7 +29,6 @@ import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDat
 import { popToast } from 'src/shared/utils/popToast';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
-import type { z } from 'zod';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = !!auctionIdParam;
@@ -59,10 +58,17 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     mode: 'onChange'
   });
 
-  const { fieldBValue: endTimeValue } = useTriggerCrossFields({
+  useTriggerCrossFields({
     control: form.control,
     fieldA: 'endDay',
     fieldB: 'endTime',
+    trigger: form.trigger
+  });
+
+  useTriggerCrossFields({
+    control: form.control,
+    fieldA: 'startingPoint',
+    fieldB: 'maxPoint',
     trigger: form.trigger
   });
 
@@ -228,7 +234,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                 name="endDay"
                 endDayLabel="경매 종료일"
                 placeholder="경매 종료일을 선택하세요."
-                endTime={endTimeValue as string}
+                endTime={form.getValues('endTime') as string}
                 validateDisableDate={validateDate}
               />
               <FormEndTime control={form.control} name="endTime" endTimeLabel="경매 종료 시간" />

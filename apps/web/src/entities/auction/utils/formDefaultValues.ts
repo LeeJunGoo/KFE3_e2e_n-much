@@ -1,5 +1,5 @@
+import { INIT_MAX_POINT_NUM, INIT_STARTING_POINT_NUM } from 'src/entities/auction/constants';
 import { getNowKorDate, getTime, getTomorrowDate } from 'src/shared/utils/dateFns';
-import { MIN_MAX_POINT_NUM, MIN_STARTING_POINT_NUM } from '../constants';
 
 export const getFormDefaultValues = () => {
   const korToday = getNowKorDate();
@@ -11,7 +11,7 @@ export const getFormDefaultValues = () => {
     description: '',
     endDay,
     endTime,
-    startingPoint: String(MIN_STARTING_POINT_NUM),
-    maxPoint: String(MIN_MAX_POINT_NUM)
+    startingPoint: String(INIT_STARTING_POINT_NUM),
+    maxPoint: String(INIT_MAX_POINT_NUM)
   };
 };
