@@ -257,7 +257,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               setPreviewImages={setPreviewImages}
               setImageUrlsToDelete={setImageUrlsToDelete}
             />
-            <Button type="submit" className="h-12 w-full" variant="base">
+            <Button
+              type="submit"
+              className="h-12 w-full"
+              variant="base"
+              disabled={isPostAuctionPending || isPatchAuctionPending}
+            >
               {(isEditing && !isPatchAuctionPending && '수정하기') ||
                 (isEditing && isPatchAuctionPending && '수정중...') ||
                 (!isEditing && !isPostAuctionPending && '등록하기') ||

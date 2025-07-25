@@ -15,8 +15,7 @@ export const addressIdKeys = {
 //NOTE - auctionList를 가져올 때 사용
 export const auctionListKeys = {
   all: [AUCTION_LIST_QUERY_KEY] as const,
-  order: (order: string | undefined) =>
-    order ? ([...auctionListKeys.all, order] as const) : ([...auctionListKeys.all] as const),
-  keyword: (order: string | undefined, keyword: string | undefined) =>
+  order: (order: string) => [...auctionListKeys.all, order] as const,
+  keyword: (order: string, keyword: string | undefined) =>
     keyword ? ([...auctionListKeys.order(order), keyword] as const) : ([...auctionListKeys.order(order)] as const)
 };
