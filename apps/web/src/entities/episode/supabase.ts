@@ -112,7 +112,7 @@ export const selectHasUserWrittenEpisode = async (
   return Boolean(data);
 };
 
-//ANCHOR -  - 사연 입찰
+//ANCHOR - 사연 입찰
 export const updateEpisodeBid = async (episodeId: string, bidPoint: number) => {
   const { data, error } = await supabase
     .from('episodes')
@@ -174,7 +174,7 @@ export const selectUserBidPointAmount = async (userId: UserRow['id']) => {
     .from('points')
     .select('balance_after')
     .eq('user_id', userId)
-    .order('created_at', { ascending: false }) // 가장 최근
+    .order('created_at', { ascending: false })
     .limit(1)
     .maybeSingle();
 
@@ -184,7 +184,6 @@ export const selectUserBidPointAmount = async (userId: UserRow['id']) => {
   }
 
   const userBidPoint = data?.balance_after ?? 0;
-
   return userBidPoint;
 };
 

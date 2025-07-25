@@ -12,6 +12,7 @@ import { usePatchEpisodeBidMutation } from 'src/entities/episode/queries/episode
 import { bidPointSchema, type FormValues } from 'src/entities/episode/schemas';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
+import { useRouter } from 'next/navigation';
 
 type EpisodeBidModalFormProps = {
   auctionPoint: AuctionBidPointAmount;
@@ -24,34 +25,36 @@ type EpisodeBidModalFormProps = {
 const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }: EpisodeBidModalFormProps) => {
   const minBid = role === 'buyer' ? auctionPoint.starting_point : SELLER_MIN_POINT;
   const maxBid = role === 'buyer' ? auctionPoint.max_point : SELLER_MAX_POINT;
+  const router = useRouter();
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(bidPointSchema(minBid, maxBid)),
+    resolver: zodResolver(bidPointSchema(minBid, maxBid, userPoint)),
     defaultValues: {
       bidAmount: undefined
-    }
+    },
+    mode: 'onChange'
   });
-  const { handleSubmit, reset } = form;
+  const { handleSubmit, reset, formState } = form;
 
-  const { mutateAsync, isPending, isError } = usePatchEpisodeBidMutation();
+  const { mutateAsync, isPending, isError, isSuccess } = usePatchEpisodeBidMutation();
 
+  //
   const handleOnSubmit = async ({ bidAmount }: FormValues) => {
-    if (bidAmount > userPoint) {
-      toast.error('보유 포인트가 부족합니다.');
-      return;
-    }
     const totalBid = episode.bid_point! + bidAmount;
-
     mutateAsync({ episodeId: episode.episode_id, bidPoint: totalBid });
-
-    if (isPending) {
-      toast.loading(`${formatNumber(bidAmount)}P를 추가 입찰하여 총 ${formatNumber(totalBid)}P로 입찰을 시도합니다.`);
-    }
-
-    if (isError) {
-      reset();
-    }
   };
+
+  if (isPending) {
+    // toast.loading(`${formatNumber(bidAmount)}P를 추가 입찰하여 총 ${formatNumber(totalBid)}P로 입찰을 시도합니다.`);
+  }
+
+  if (isError) {
+    reset();
+  }
+
+  if (isSuccess) {
+    onClose();
+  }
 
   return (
     <Form {...form}>
@@ -111,7 +114,7 @@ const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }
           <Button
             className="!rounded-button bg-(--color-accent) hover:bg-(--color-primary) flex-1 text-white"
             type="submit"
-            disabled={isPending}
+            disabled={isPending || !formState.isValid || formState.isSubmitting}
           >
             입찰하기
           </Button>

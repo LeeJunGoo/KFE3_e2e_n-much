@@ -16,7 +16,7 @@ export const episodeFormSchema = z.object({
 export type DetailFormType = z.infer<typeof episodeFormSchema>;
 
 // Zod 스키마를 동적으로 생성하는 함수
-export const bidPointSchema = (min: number, max: number) =>
+export const bidPointSchema = (min: number, max: number, userPoint: number) =>
   z.object({
     bidAmount: z
       .number({
@@ -24,6 +24,9 @@ export const bidPointSchema = (min: number, max: number) =>
       })
       .refine((val) => val >= min && val <= max, {
         message: `입찰 금액은 ${formatNumber(min)}P 이상, ${formatNumber(max)}P 이하여야 합니다.`
+      })
+      .refine((val) => val <= userPoint, {
+        message: `보유 포인트가 부족합니다.`
       })
   });
 // FormValues 타입을 동적으로 추론
