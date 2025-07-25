@@ -6,8 +6,9 @@ import { Button } from '@repo/ui/components/ui/button';
 import { Form, FormLabel } from '@repo/ui/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { MAX_DESCRIPTION_LETTERS, MAX_TITLE_LETTERS, UTC_TIME_ZONE } from 'src/entities/auction/constants';
+import { useTriggerCrossFields } from 'src/entities/auction/hooks/useTriggerCrossFields';
 import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
@@ -58,23 +59,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     mode: 'onChange'
   });
 
-  const endTimeValue = useWatch({
+  const { fieldBValue: endTimeValue } = useTriggerCrossFields({
     control: form.control,
-    name: 'endTime'
+    fieldA: 'endDay',
+    fieldB: 'endTime',
+    trigger: form.trigger
   });
-
-  const endDayValue = useWatch({
-    control: form.control,
-    name: 'endDay'
-  });
-
-  useEffect(() => {
-    form.trigger('endTime');
-  }, [form, endDayValue]);
-
-  useEffect(() => {
-    form.trigger('endDay');
-  }, [form, endTimeValue]);
 
   useEffect(() => {
     if (isEditing && fetchedAuction) {
@@ -238,7 +228,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                 name="endDay"
                 endDayLabel="경매 종료일"
                 placeholder="경매 종료일을 선택하세요."
-                endTime={form.getValues('endTime')}
+                endTime={endTimeValue as string}
                 validateDisableDate={validateDate}
               />
               <FormEndTime control={form.control} name="endTime" endTimeLabel="경매 종료 시간" />

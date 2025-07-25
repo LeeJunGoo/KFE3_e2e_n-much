@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction } from 'react';
-import type { auctionFormSchema } from './schema/auctionForm';
+import type { Dispatch, SetStateAction } from 'react';
+import type { Control, FieldPath, FieldPathValue, FieldValues } from 'react-hook-form';
+import type { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import type { AddressRow, AuctionRow, RankingRow, UserRow } from 'src/shared/supabase/types';
 import type { z } from 'zod';
-import { Control, FieldPath, FieldValues } from 'react-hook-form';
 
 type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
 type AddressSummaryInfoType = Pick<AddressRow, 'address_id' | 'business_name' | 'road_address' | 'detail_address'>;
@@ -175,4 +175,18 @@ export interface FormStartingPointProps<T extends FieldValues> {
   name: FieldPath<T>;
   startingPointLabel: string;
   placeholder: string;
+}
+
+//NOTE - 각 폼의 항목을 서로 트리가 하는 기능의 매개 변수
+export interface UseTriggerCrossFieldsParams<T extends FieldValues> {
+  control: Control<T>;
+  fieldA: FieldPath<T>;
+  fieldB: FieldPath<T>;
+  trigger: (name?: FieldPath<T> | FieldPath<T>[]) => Promise<boolean>;
+}
+
+//NOTE - 각 폼의 항목을 서로 트리가 하는 기능의 반환 깂
+export interface UseTriggerCrossFieldsReturn<T extends FieldValues, A extends FieldPath<T>, B extends FieldPath<T>> {
+  fieldAValue: FieldPathValue<T, A>;
+  fieldBValue: FieldPathValue<T, B>;
 }
