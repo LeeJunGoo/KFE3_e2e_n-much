@@ -22,7 +22,7 @@ export const MYPAGE_MENU_LIST = [
   {
     role: 'common',
     label: 'Vidding 팀에게 문의하기',
-    href: 'https://docs.google.com/forms/d/e/1FAIpQLScQRT8AnFtPgabSuszAOa8k9ZLqnbYkRrLm9EaQWaRyqk32DQ/viewform?usp=dialog',
+    href: 'https://forms.gle/t8WppAkisnc8WJXLA',
     icon: ICON_NAMES.HANDSHAKE
   }
 ];
