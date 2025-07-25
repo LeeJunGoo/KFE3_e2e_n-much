@@ -4,7 +4,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { prefetchAddressId } from 'src/entities/auction/queries/address';
 import { prefetchAuctionFormData } from 'src/entities/auction/queries/auction';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import AuctionForm from 'src/features/auction/AuctionForm';
+import AuctionForm from 'src/features/auction/form/components/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 import type { AuctionFormPageProps } from 'src/entities/auction/types';
 
