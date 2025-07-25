@@ -1,40 +1,18 @@
-import { useCallback } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import Image from 'next/image';
-import { useDropzone } from 'react-dropzone';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { BUCKET_FOLDER_NAME, MAX_UPLOADED_IMAGES } from 'src/entities/auction/constants';
-import { getExtension } from 'src/entities/auction/utils/extension';
-import { popToast } from 'src/shared/utils/popToast';
-import { v4 as uuidv4 } from 'uuid';
+import { useImageUpload } from 'src/entities/auction/hooks/useImageUpload';
 import type { ImageUploaderProps } from 'src/entities/auction/types';
 
 const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }: ImageUploaderProps) => {
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      if (previewImages.length + acceptedFiles.length > MAX_UPLOADED_IMAGES) {
-        popToast('error', '이미지 업로드 에러', '업로드 가능한 이미지 갯수를 초과했습니다. (최대 5개)', 'medium');
-        return;
-      }
-
-      acceptedFiles.forEach((file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          const ext = getExtension(file.name);
-          setPreviewImages((prev) => [...prev, { id: uuidv4(), data: reader.result as string, isUrl: false, ext }]);
-        };
-      });
-    },
-    [previewImages.length, setPreviewImages]
+  const { getRootProps, getInputProps, handleImageToDelete } = useImageUpload(
+    previewImages,
+    setPreviewImages,
+    setImageUrlsToDelete,
+    BUCKET_FOLDER_NAME,
+    MAX_UPLOADED_IMAGES
   );
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: {
-      'image/*': ['.jpeg', '.jpg', 'gif', '.png', '.webp']
-    }
-  });
 
   return (
     <div
@@ -58,17 +36,7 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
                 variant="base"
                 onClick={(e) => {
                   e.stopPropagation();
-                  e.stopPropagation();
-                  setPreviewImages((prev) => prev.filter((image) => image.id !== previewImage.id));
-                  if (previewImage.isUrl) {
-                    setImageUrlsToDelete((prev) => {
-                      const imageFullPath: string[] = previewImage.data.split('/');
-                      const imagePath = BUCKET_FOLDER_NAME + imageFullPath[imageFullPath.length - 1];
-                      console.log('imageDir', imagePath);
-                      console.log('imagesToDelete', [...prev, imagePath]);
-                      return [...prev, imagePath];
-                    });
-                  }
+                  handleImageToDelete(previewImage);
                 }}
               >
                 &times;

@@ -104,7 +104,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
-  const onSubmit = async (values: z.infer<typeof auctionFormSchema>) => {
+  const onSubmit = async (values: AuctionFormType) => {
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
     const korEndDate = setTimeToDate(endDay, endTime);
