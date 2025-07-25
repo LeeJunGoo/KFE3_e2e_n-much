@@ -1,8 +1,12 @@
-import { EPISODES_LIST_QUERY_KEY } from 'src/entities/episode/constants';
-
-//ANCHOR - episode pagination에서 사용하는 tansTack query Key
+//ANCHOR - episode list
 export const episodesListKeys = {
-  all: [EPISODES_LIST_QUERY_KEY] as const,
+  all: ['episodes'] as const,
   item: ({ auctionId, page }: { auctionId: string | null; page: number }) =>
     auctionId ? ([...episodesListKeys.all, auctionId, page] as const) : []
 };
+
+//ANCHOR - episode user의 보유 포인트
+export const USER_BID_POINT_AMOUNT_KEY = 'userBidPointAmount';
+
+//ANCHOR - 사연에 대한 경매 참여자(Buyer)의 총입찰 포인트
+export const USER_TOTAL_BID_POINT_AMOUNT_KEY = 'userTotalBidPoint';

@@ -45,7 +45,7 @@ const EpisodeBidModalForm = ({
     mode: 'onChange'
   });
   const { handleSubmit, reset, formState } = form;
-  const { mutateAsync, isPending } = usePatchEpisodeBidMutation();
+  const { mutateAsync, isPending } = usePatchEpisodeBidMutation(episode.auction_id, episode.user_id);
 
   const handleOnSubmit = async ({ bidAmount }: FormValues) => {
     const totalBid = episode.bid_point! + bidAmount;

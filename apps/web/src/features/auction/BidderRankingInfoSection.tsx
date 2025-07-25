@@ -6,9 +6,7 @@ import PageTitle from 'src/shared/ui/PageTitle';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
 const BidderRankingInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
-  //FIXME - 랭킹 변화 x 수정 필요
   const bidderRankings = await getBidderRanking(auctionId);
-  // console.log('🚀 ~ BidderRankingInfoSection ~ bidderRankings:', bidderRankings);
   const isBidder = bidderRankings && bidderRankings.length > 0;
 
   return (

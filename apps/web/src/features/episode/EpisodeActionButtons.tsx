@@ -30,7 +30,6 @@ const EpisodeActionButtons = ({
     }
 
     await mutateAsync(episodeId);
-
     router.refresh();
   };
   return (

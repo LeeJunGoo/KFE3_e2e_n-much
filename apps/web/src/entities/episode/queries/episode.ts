@@ -1,13 +1,17 @@
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { AUCTION_BID_POINT_AMOUNT } from 'src/entities/auction/constants';
 import {
   deleteEpisodeInfo,
   getEpisodeTotalBidPointByUser,
   getUserPointAmount,
   patchEpisodeBid
 } from 'src/entities/episode/api';
-import { USER_BID_POINT_AMOUNT, USER_TOTAL_BID_POINT_AMOUNT } from 'src/entities/episode/constants';
-import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
+import {
+  episodesListKeys,
+  USER_BID_POINT_AMOUNT_KEY,
+  USER_TOTAL_BID_POINT_AMOUNT_KEY
+} from 'src/entities/episode/queries/keys/queryKeyFactory';
 import type { AuctionRow, EpisodeRow, UserRow } from 'src/shared/supabase/types';
 
 export const useDeleteEpisodeMutation = ({
@@ -39,7 +43,7 @@ export const useDeleteEpisodeMutation = ({
   });
 };
 
-export const usePatchEpisodeBidMutation = () => {
+export const usePatchEpisodeBidMutation = (auctionId: string | null, userId: string | null) => {
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -52,7 +56,16 @@ export const usePatchEpisodeBidMutation = () => {
     onSuccess: (_, __, context) => {
       if (context?.toastId) toast.dismiss(context.toastId);
       toast.success('입찰을 성공하셨습니다.');
-      queryClient.invalidateQueries({});
+      queryClient.invalidateQueries({
+        queryKey: [USER_BID_POINT_AMOUNT_KEY, auctionId, userId]
+      });
+      queryClient.invalidateQueries({
+        queryKey: [USER_TOTAL_BID_POINT_AMOUNT_KEY, auctionId, userId]
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [AUCTION_BID_POINT_AMOUNT, auctionId]
+      });
     },
     onError: (_, __, context) => {
       if (context?.toastId) toast.dismiss(context.toastId);
@@ -67,7 +80,7 @@ export const useUserPointQuery = (
   options?: { enabled?: boolean }
 ) => {
   return useQuery({
-    queryKey: [USER_BID_POINT_AMOUNT, auctionId, userId],
+    queryKey: [USER_BID_POINT_AMOUNT_KEY, auctionId, userId],
     queryFn: () => getUserPointAmount(userId),
     enabled: options?.enabled ?? true
   });
@@ -79,7 +92,7 @@ export const useEpisodeTotalBidPointByUserQuery = (
   options?: { enabled?: boolean }
 ) => {
   return useQuery({
-    queryKey: [USER_TOTAL_BID_POINT_AMOUNT, auctionId, userId],
+    queryKey: [USER_TOTAL_BID_POINT_AMOUNT_KEY, auctionId, userId],
     queryFn: () => getEpisodeTotalBidPointByUser(auctionId, userId),
     enabled: options?.enabled ?? true
   });
