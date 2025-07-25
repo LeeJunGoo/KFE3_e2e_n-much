@@ -1,48 +1,19 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import {
-  deleteEpisode,
-  insertEpisode,
-  selectEpisodeInfo,
-  selectWinningEpisode,
-  updateEpisodeById
-} from 'src/entities/episode/supabase';
+import { deleteEpisodeById, insertEpisode, selectEpisodeInfo, updateEpisodeById } from 'src/entities/episode/supabase';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const episodeId = searchParams.get('episodeId');
-  const auctionId = searchParams.get('auctionId');
-  const type = searchParams.get('type');
   let res;
 
   try {
-    if (!auctionId && !episodeId) {
+    if (!episodeId) {
       return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
     }
 
     if (episodeId) {
       res = await selectEpisodeInfo(episodeId);
     }
-
-    // if (type === 'biddingCount') {
-    //   const supabase = await createServer();
-    //   const {
-    //     data: { user }
-    //   } = await supabase.auth.getUser();
-    //   if (!user) {
-    //     throw new Error('로그인된 사용자가 없습니다');
-    //   }
-    //   res = await getUserBiddingCount(user.id);
-    // }
-    // if (type === 'userStories') {
-    //   const supabase = await createServer();
-    //   const {
-    //     data: { user }
-    //   } = await supabase.auth.getUser();
-    //   if (!user) {
-    //     throw new Error('로그인된 사용자가 없습니다');
-    //   }
-    //   res = await getUserStories(user.id);
-    // }
 
     return NextResponse.json(res, { status: 200 });
   } catch {
@@ -64,7 +35,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const { episodeId, title, description, winning_bid } = await request.json();
+  const { episodeId, title, description } = await request.json();
   const { searchParams } = request.nextUrl;
   const type = searchParams.get('type');
 
@@ -77,10 +48,6 @@ export async function PATCH(request: NextRequest) {
       await updateEpisodeById({ episodeId, title, description });
     }
 
-    if (type === 'winningEpisode') {
-      await selectWinningEpisode(episodeId, winning_bid);
-    }
-
     return NextResponse.json({ message: 'success' }, { status: 200 });
   } catch {
     return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
@@ -88,11 +55,16 @@ export async function PATCH(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const { episode_id } = await request.json();
+  const { episodeId } = await request.json();
+
+  if (!episodeId) {
+    return NextResponse.json({ message: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
+  }
+
   try {
-    const res = await deleteEpisode(episode_id);
-    return NextResponse.json({ status: 'success', data: res });
-  } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
+    const res = await deleteEpisodeById(episodeId);
+    return NextResponse.json(res, { status: 201 });
+  } catch {
+    return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

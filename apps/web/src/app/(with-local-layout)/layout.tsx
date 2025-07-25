@@ -5,6 +5,7 @@ const layout = ({ children }: { children: ReactNode }) => {
   return (
     <>
       {children}
+      <div id="modal-root"></div>
       <MobileNavigation />
     </>
   );

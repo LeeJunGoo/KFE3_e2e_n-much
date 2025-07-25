@@ -1,7 +1,9 @@
 import { QueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { getAddressId, getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
+import { AUCTION_BID_POINT_AMOUNT } from 'src/entities/auction/constants';
 import { addressIdKeys, auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
+import { getAuctionBidPointAmount } from 'src/entities/episode/api';
 import { popToast } from 'src/shared/utils/toast';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
@@ -87,6 +89,14 @@ export const useGetAuctionListQuery = (order: string, keyword: string | undefine
   });
 
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
+};
+
+export const useAuctionBidPointAmount = (auctionId: AuctionRow['auction_id'], options?: { enabled?: boolean }) => {
+  return useQuery({
+    queryKey: [AUCTION_BID_POINT_AMOUNT, auctionId],
+    queryFn: () => getAuctionBidPointAmount(auctionId),
+    enabled: options?.enabled ?? true
+  });
 };
 
 export const prefetchAddressId = async (loggedInUserId: string, queryClient: QueryClient) => {

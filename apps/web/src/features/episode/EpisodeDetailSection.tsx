@@ -1,20 +1,27 @@
 import { Card } from '@repo/ui/components/ui/card';
-import { getEpisodesByAuctionId } from 'src/entities/episode/api';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
+import { getEpisodesCount, getEpisodesWithPagination } from 'src/entities/episode/api';
+import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
 import EpisodeList from 'src/features/episode/EpisodeList';
-import type { AuctionRow } from 'src/shared/supabase/types';
+import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
+import { type AuctionRow } from 'src/shared/supabase/types';
 
-const EpisodeDetailSection = async ({
-  auctionId,
-  sellerId
-}: {
-  auctionId: AuctionRow['auction_id'];
-  sellerId: AuctionRow['user_id'];
-}) => {
-  //NOTE - 에피소드 리스트 및 개수
-  const { episodeList, episodeCount } = await getEpisodesByAuctionId(auctionId);
+const EpisodeDetailSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+  const auctionInfo = await getAuctionInfoWithAddress(auctionId); //ANCHOR - 경매 상품 및 경매 업체 정보
+  const { episodeCount } = await getEpisodesCount(auctionId); //ANCHOR - 경매 상품에 대한 사연 개수
+
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: episodesListKeys.item({ auctionId, page: 1 }),
+    queryFn: () => getEpisodesWithPagination(auctionInfo.auction_id, 1)
+  });
+
+  const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Card className="p-5 shadow-sm">
+    <Card id="episode-section-header" className="p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-(--color-text-base) font-medium">사연 모음</h3>
         <p className="text-(--color-accent) flex gap-1 text-sm font-semibold">
@@ -24,7 +31,13 @@ const EpisodeDetailSection = async ({
       </div>
 
       {/* 사연 리스트 */}
-      <EpisodeList episodeList={episodeList} auction_id={auctionId} sellerId={sellerId} />
+      {episodeCount === 0 ? (
+        <EpisodeEmpty />
+      ) : (
+        <HydrationBoundary state={dehydratedState}>
+          <EpisodeList episodesCount={episodeCount} auctionInfo={auctionInfo} />
+        </HydrationBoundary>
+      )}
     </Card>
   );
 };

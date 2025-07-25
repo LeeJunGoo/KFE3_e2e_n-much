@@ -1,7 +1,7 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { twMerge } from 'tailwind-merge';
 
-type Variant = 'ghost' | 'outline' | 'destructive' | 'base' | 'secondary' | 'active' | 'inActive';
+type Variant = 'ghost' | 'outline' | 'destructive' | 'base' | 'secondary' | 'active' | 'inActive' | 'text';
 
 type MoreButtonProps = {
   onClick: () => void;
