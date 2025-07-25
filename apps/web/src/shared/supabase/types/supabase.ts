@@ -137,6 +137,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "auctions_address_id_fkey"
+            columns: ["address_id"]
+            isOneToOne: false
+            referencedRelation: "addresses"
+            referencedColumns: ["address_id"]
+          },
+          {
             foreignKeyName: "auctions_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false

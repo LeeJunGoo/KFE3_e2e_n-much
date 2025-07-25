@@ -56,7 +56,7 @@ const InquiryForm = ({
 
       if (status === 'success') {
         setIsRedirecting(true);
-        const message = isEditMode ? '문의를 수정하였습니다.' : '문의를 등록하였습니다.';
+        const message = isEditMode ? '문의를 수정했습니다.' : '문의를 등록했습니다.';
         toast.success(message);
         router.push(`/mypage/inquiries`);
       }
