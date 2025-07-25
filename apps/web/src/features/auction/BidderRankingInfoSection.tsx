@@ -8,14 +8,15 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 const BidderRankingInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   //FIXME - 랭킹 변화 x 수정 필요
   const bidderRankings = await getBidderRanking(auctionId);
+  // console.log('🚀 ~ BidderRankingInfoSection ~ bidderRankings:', bidderRankings);
   const isBidder = bidderRankings && bidderRankings.length > 0;
 
   return (
     <Card className="mb-4 p-5 shadow-sm">
       <PageTitle className="font-medium" size="md" order="left">
-        현재 최고 입찰
+        입찰 랭킹 순위
       </PageTitle>
-      {/* {isBidder ? <BidderRankingList bidderRankingList={bidderRankings} /> : <BidEmpty />} */}
+      {isBidder ? <BidderRankingList bidderRankingList={bidderRankings} /> : <BidEmpty />}
     </Card>
   );
 };

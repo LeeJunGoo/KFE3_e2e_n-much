@@ -23,17 +23,15 @@ const EpisodeActionButtons = ({
   };
 
   const handleDelete = async () => {
-    const confirmed = window.confirm('정말 이 경매를 삭제하시겠습니까?');
+    const confirmed = window.confirm('정말 이 사연를 삭제하시겠습니까?');
 
     if (!confirmed) {
       return;
     }
 
-    const result = await mutateAsync(episodeId);
+    await mutateAsync(episodeId);
 
-    if (result) {
-      router.refresh();
-    }
+    router.refresh();
   };
   return (
     <div className="flex space-x-2">

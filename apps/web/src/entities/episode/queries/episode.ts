@@ -21,15 +21,20 @@ export const useDeleteEpisodeMutation = ({
 
   return useMutation({
     mutationFn: (episodeId: EpisodeRow['episode_id']) => deleteEpisodeInfo(episodeId),
-    onSuccess: () => {
+    onMutate: () => {
+      const toastId = toast.loading('사연을 삭제중입니다. 잠시만 기다려주세요');
+      return { toastId };
+    },
+    onSuccess: (_, __, context) => {
+      if (context?.toastId) toast.dismiss(context.toastId);
       toast.success('정상적으로 삭제 되었습니다.');
       queryClient.invalidateQueries({
         queryKey: episodesListKeys.item({ auctionId, page: currentPage })
       });
     },
-    onError: (error) => {
-      toast.error('경매 물품을  삭제하지 못했습니다. 다시 시도해주세요.');
-      console.error(error.message);
+    onError: (_, __, context) => {
+      if (context?.toastId) toast.dismiss(context.toastId);
+      toast.error('사연을 삭제하지 못했습니다. 다시 시도해주세요.');
     }
   });
 };
@@ -49,7 +54,7 @@ export const usePatchEpisodeBidMutation = () => {
       toast.success('입찰을 성공하셨습니다.');
       queryClient.invalidateQueries({});
     },
-    onError: (error, _, context) => {
+    onError: (_, __, context) => {
       if (context?.toastId) toast.dismiss(context.toastId);
       toast.error('사연 입찰에 실패하였습니다. 다시 시도해주세요.');
     }
