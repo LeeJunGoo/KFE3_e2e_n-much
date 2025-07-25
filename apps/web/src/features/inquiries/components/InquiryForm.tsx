@@ -74,12 +74,14 @@ const InquiryForm = ({
       <form onSubmit={form.handleSubmit(handleInquiryUpsert)} className="mt-6">
         <FormTitle
           control={form.control}
+          name={'title'}
           titleLabel="문의 제목"
           placeholder="문의 제목을 입력하세요."
           maxTitleLength={MAX_TITLE_LENGTH}
         />
         <FormDescription
           control={form.control}
+          name={'description'}
           descriptionLabel="문의 내용"
           placeholder="문의하고 싶은 내용을 적어주세요."
           maxDescLength={MAX_DESC_LENGTH}

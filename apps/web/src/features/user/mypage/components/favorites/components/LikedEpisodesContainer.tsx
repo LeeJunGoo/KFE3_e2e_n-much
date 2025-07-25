@@ -1,7 +1,7 @@
 import { getServerUser } from 'src/entities/auth/serverAction';
 import { getLikeEpisode } from 'src/entities/episode/supabase';
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
-import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
+import type { EpisodeWithAuction } from 'src/entities/user/mypage/episodes/types';
 
 // episodes 데이터
 // const test = {
@@ -24,7 +24,9 @@ import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 const LikedEpisodesContainer = async () => {
   const user = await getServerUser();
   const userId: string = user?.id as string;
-  const episodes = await getLikeEpisode(userId);
+
+  //TODO - supabase 쿼리 함수를 직접 호출, api 요청으로 변경 예정
+  const episodes: EpisodeWithAuction[] = await getLikeEpisode(userId);
 
   return (
     <>
@@ -32,21 +34,7 @@ const LikedEpisodesContainer = async () => {
       <ul>
         {episodes &&
           episodes.map((episode) => {
-            const episodeId: string = episode.episode_id;
-            const episodeTitle: string = episode.title;
-            const auctionTitle: string = episode.auctions?.title as string;
-            const episodeDate: string = formatYYYYMMDD(episode.created_at) as string;
-            const episodeStatus: boolean | null = episode.winning_bid;
-
-            return (
-              <MyEpisodeListItem
-                key={episodeId}
-                episodeTitle={episodeTitle}
-                auctionTitle={auctionTitle}
-                episodeDate={episodeDate}
-                episodeStatus={episodeStatus}
-              />
-            );
+            return <MyEpisodeListItem key={episode.episode_id} episode={episode} />;
           })}
       </ul>
     </>

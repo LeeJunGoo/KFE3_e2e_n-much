@@ -202,3 +202,16 @@ export const selectUserBidPointAmount = async (userId: UserRow['id']) => {
 //   }
 //   return userBidPoint;
 // };
+
+// NOTE - 사용자가 좋아요한 에피소드 목록 조회 (KSH)
+export const getLikeEpisode = async (user_id: UserRow['id']) => {
+  const { data, error } = await supabase
+    .from('episodes')
+    .select('*, auctions(title,status)')
+    .contains('likes', [user_id]);
+
+  if (error) {
+    throw new Error('DB: 사용자가 좋아요한 에피소드 목록 조회 에러');
+  }
+  return data ?? [];
+};

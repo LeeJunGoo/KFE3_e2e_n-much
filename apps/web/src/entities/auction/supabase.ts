@@ -199,7 +199,7 @@ export const selectFavoriteAuctionCardList = async (
   page: number | undefined,
   user: string | undefined
 ) => {
-  const auctionsCount = await selectAuctionsCount();
+  const auctionsCount = await selectAuctionsCount('');
 
   if (!order) {
     throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(order가 없습니다.)');
