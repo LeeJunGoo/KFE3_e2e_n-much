@@ -2,7 +2,7 @@ import Image from 'next/image';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import AuctionTimerStatic from 'src/features/auction/AuctionTimerStatic';
 import ContentDescription from 'src/shared/ui/ContentDescription';
-import ContentTitle from 'src/shared/ui/ContentTitle';
+import PageTitle from 'src/shared/ui/PageTitle';
 import BaseCard from 'src/widgets/BaseCard';
 import type { AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
 
@@ -30,7 +30,7 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummary
 
         <div className="flex w-full flex-col justify-between">
           <div>
-            <ContentTitle title={auctionTitle} variant="base" />
+            <PageTitle variant="base">{auctionTitle}</PageTitle>
             <ContentDescription description={auctionUser.business_name} variant="ghost" />
             <div className="mb-4 flex gap-2">
               <ContentDescription description={auctionUser.road_address} variant="ghost" />

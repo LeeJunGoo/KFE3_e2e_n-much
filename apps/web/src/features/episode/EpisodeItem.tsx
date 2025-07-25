@@ -6,7 +6,7 @@ import EpisodeLikeToggle from 'src/features/episode/EpisodeLikeButton';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import ContentDescription from 'src/shared/ui/ContentDescription';
-import ContentTitle from 'src/shared/ui/ContentTitle';
+import PageTitle from 'src/shared/ui/PageTitle';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
@@ -41,7 +41,9 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
         </div>
       </div>
       <div>
-        <ContentTitle title={episode.title} variant="base" className="mb-1" />
+        <PageTitle as="h4" className="mb-1">
+          {episode.title}
+        </PageTitle>
         <ContentDescription description={episode.description} variant="ghost" clamp={2} />
       </div>
       <div className="flex items-center justify-between">

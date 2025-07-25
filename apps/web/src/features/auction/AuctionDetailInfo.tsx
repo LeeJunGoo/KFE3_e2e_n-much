@@ -8,7 +8,7 @@ import EpisodeWriteButton from 'src/features/episode/EpisodeWriteButton';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import ContentDescription from 'src/shared/ui/ContentDescription';
-import ContentTitle from 'src/shared/ui/ContentTitle';
+import PageTitle from 'src/shared/ui/PageTitle';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 
 const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
@@ -27,7 +27,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
     <Card className="mb-4 rounded-t-2xl p-5 shadow-md">
       <div className="mb-2">
         <div className="mb-2 flex items-start justify-between">
-          <ContentTitle title={auctionInfo.title} variant="base" className="font-bold" />
+          <PageTitle>{auctionInfo.title}</PageTitle>
           <BaseBadge variant={badgeVariant} className="ml-2">
             {auctionStatus}
           </BaseBadge>
