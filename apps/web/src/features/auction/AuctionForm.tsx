@@ -63,9 +63,17 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     name: 'endTime'
   });
 
+  const endDayValue = useWatch({
+    control: form.control,
+    name: 'endDay'
+  });
+
+  useEffect(() => {
+    form.trigger('endTime');
+  }, [form, endDayValue]);
+
   useEffect(() => {
     form.trigger('endDay');
-    form.trigger('endTime');
   }, [form, endTimeValue]);
 
   useEffect(() => {
