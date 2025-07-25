@@ -1,3 +1,4 @@
+// InquiryForm에서 사용
 export const MIN_TITLE_LENGTH = 2;
 export const MIN_DESC_LENGTH = 5;
 

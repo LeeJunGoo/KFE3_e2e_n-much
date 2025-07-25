@@ -13,16 +13,7 @@ import FormActionButton from 'src/shared/ui/FormActionButton';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import type { DetailFormType } from 'src/entities/inquiry/schemas';
-import type { AuctionRow, UserRow } from 'src/shared/supabase/types';
-
-//TODO - DB 테이블 생성 후 이동 예정
-type InquiryRow = {
-  inquiry_id: string;
-  auction_id?: string;
-  user_id: string;
-  title: string;
-  description: string;
-};
+import type { AuctionRow, InquiryRow, UserRow } from 'src/shared/supabase/types';
 
 const InquiryForm = ({
   initialInquiryInfo,
