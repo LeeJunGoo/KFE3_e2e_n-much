@@ -11,13 +11,13 @@ import {
   DialogTrigger
 } from '@repo/ui/components/ui/dialog';
 import { useRouter } from 'next/navigation';
-import { useAuctionBidPointAmount } from 'src/entities/auction/queries/auction';
+import { useAuctionBidPointQuery } from 'src/entities/auction/queries/auction';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
-import { useUserBidPointAmount } from 'src/entities/episode/queries/episode';
+import { useEpisodeTotalBidPointByUserQuery, useUserPointQuery } from 'src/entities/episode/queries/episode';
+import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import EpisodeBidButton from 'src/features/episode/EpisodeBidButton';
 import EpisodeBidModalForm from 'src/features/episode/EpisodeBidModalForm';
 import { formatNumber } from 'src/shared/utils/formatNumber';
-import ContentEmpty from '../auction/shared/ContentEmpty';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
@@ -28,18 +28,24 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
     data: userPoint,
     isPending: isUserPending,
     isError: isUserError
-  } = useUserBidPointAmount(episode.auction_id!, user!.id, { enabled: open });
+  } = useUserPointQuery(episode.auction_id!, user!.id, { enabled: open });
 
   const {
     data: auctionPoint,
     isPending: isAuctionPending,
     isError: isaActionError
-  } = useAuctionBidPointAmount(episode.auction_id!, { enabled: open });
+  } = useAuctionBidPointQuery(episode.auction_id!, { enabled: open });
 
-  const isLoading = isUserPending || isAuctionPending;
-  const isError = isUserError || isaActionError;
+  const {
+    data: userTotalBidPoint,
+    isPending: isBidPending,
+    isError: isBidError
+  } = useEpisodeTotalBidPointByUserQuery(episode.auction_id!, user!.id, { enabled: open });
 
-  if (isLoading && open) {
+  const isTotalLoading = isUserPending || isAuctionPending || isBidPending;
+  const isTotalError = isUserError || isaActionError || isBidError;
+
+  if (isTotalLoading && open) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTitle hidden />
@@ -54,7 +60,7 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
     );
   }
 
-  if (isError) {
+  if (isTotalError && open) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
@@ -86,7 +92,8 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
             variant="inActive"
           />
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
+
+        <DialogContent aria-describedby={undefined} className="p-10">
           <div className="flex flex-col items-center gap-4 pt-4">
             <DialogHeader className="mb-4">
               <DialogTitle>{episode.title}</DialogTitle>
@@ -104,6 +111,7 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
           <EpisodeBidModalForm
             auctionPoint={auctionPoint!}
             userPoint={userPoint!}
+            userTotalBidPoint={userTotalBidPoint!}
             episode={episode}
             role={user!.role}
             onClose={() => setOpen(false)}

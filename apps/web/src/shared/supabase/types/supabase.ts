@@ -428,6 +428,29 @@ export type Database = {
           },
         ]
       }
+      valid_user_bid_totals: {
+        Row: {
+          auction_id: string | null
+          total_bid_points: number | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "episodes_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["auction_id"]
+          },
+          {
+            foreignKeyName: "episodes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       get_auction_detail_with_address: {

@@ -25,3 +25,6 @@ export const EPISODES_LIST_QUERY_KEY = 'episodes';
 
 //ANCHOR - episode user의 보유 포인트
 export const USER_BID_POINT_AMOUNT = 'userBidPointAmount';
+
+//ANCHOR - 사연에 대한 경매 참여자(Buyer)의 총입찰 포인트
+export const USER_TOTAL_BID_POINT_AMOUNT = 'userTotalBidPoint';

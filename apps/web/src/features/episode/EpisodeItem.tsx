@@ -33,7 +33,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
             <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>
           </div>
         </div>
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end justify-center">
           {/* 입찰하기 버튼  */}
           {isUser && isSeller && <EpisodeBidModal episode={episode} />}
           {/* 좋아요 버튼 */}
