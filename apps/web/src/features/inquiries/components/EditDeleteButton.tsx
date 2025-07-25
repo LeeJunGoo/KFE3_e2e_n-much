@@ -8,12 +8,12 @@ import { deleteInquiryInfo } from 'src/entities/inquiry/api';
 import ConfirmDialog from 'src/widgets/ConfirmDialog';
 import type { AuctionRow, InquiryRow } from 'src/shared/supabase/types';
 
-interface InquiryEditDeleteButtonProps {
+interface EditDeleteButtonProps {
   auctionId: AuctionRow['auction_id'];
   inquiryId: InquiryRow['inquiry_id'];
 }
 
-const InquiryEditDeleteButton = ({ auctionId, inquiryId }: InquiryEditDeleteButtonProps) => {
+const EditDeleteButton = ({ auctionId, inquiryId }: EditDeleteButtonProps) => {
   const router = useRouter();
 
   const handleEditClick = () => {
@@ -50,4 +50,4 @@ const InquiryEditDeleteButton = ({ auctionId, inquiryId }: InquiryEditDeleteButt
   );
 };
 
-export default InquiryEditDeleteButton;
+export default EditDeleteButton;

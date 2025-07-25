@@ -5,8 +5,9 @@ import { Button } from '@repo/ui/components/ui/button';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { MAX_DESCRIPTION_LENGTH } from 'src/entities/inquiry/constants';
 import { truncateText } from 'src/shared/utils/truncateText';
+import type { InquiryRow } from 'src/shared/supabase/types';
 
-const DescriptionSection = ({ description }: { description: string }) => {
+const DescriptionWithMoreButton = ({ description }: { description: InquiryRow['description'] }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const { text: trunctedDescription, isTruncated } = truncateText(description, MAX_DESCRIPTION_LENGTH);
@@ -38,4 +39,4 @@ const DescriptionSection = ({ description }: { description: string }) => {
   );
 };
 
-export default DescriptionSection;
+export default DescriptionWithMoreButton;
