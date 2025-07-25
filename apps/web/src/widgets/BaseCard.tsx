@@ -28,7 +28,7 @@ const BaseCard = ({ as: el = 'div', href, className = '', variant = 'default', c
 
   const Tag = el;
   return (
-    <Tag className={twMerge(baseClass, variantStyles[variant], className)} {...props}>
+    <Tag className={twMerge(baseClass, variantStyles[variant], className)} {...(href && { href })} {...props}>
       {children}
     </Tag>
   );

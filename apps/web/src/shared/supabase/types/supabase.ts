@@ -368,6 +368,7 @@ export type Database = {
           email: string
           id: string
           nick_name: string
+          point: number
           role: string
           user_avatar: string | null
         }
@@ -377,6 +378,7 @@ export type Database = {
           email: string
           id?: string
           nick_name: string
+          point?: number
           role: string
           user_avatar?: string | null
         }
@@ -386,6 +388,7 @@ export type Database = {
           email?: string
           id?: string
           nick_name?: string
+          point?: number
           role?: string
           user_avatar?: string | null
         }
