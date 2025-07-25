@@ -7,7 +7,7 @@ import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
 import EpisodeWriteButton from 'src/features/episode/EpisodeWriteButton';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseBadge from 'src/shared/ui/BaseBadge';
-import ContentDescription from 'src/shared/ui/ContentDescription';
+import PageDescription from 'src/shared/ui/PageDescription';
 import PageTitle from 'src/shared/ui/PageTitle';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 
@@ -27,16 +27,16 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
     <Card className="mb-4 rounded-t-2xl p-5 shadow-md">
       <div className="mb-2">
         <div className="mb-2 flex items-start justify-between">
-          <PageTitle>{auctionInfo.title}</PageTitle>
+          <PageTitle size="lg">{auctionInfo.title}</PageTitle>
           <BaseBadge variant={badgeVariant} className="ml-2">
             {auctionStatus}
           </BaseBadge>
         </div>
         <div className="space-y-2">
-          <ContentDescription description={auctionInfo.description} variant="ghost" />
+          <PageDescription variant="ghost">{auctionInfo.description}</PageDescription>
           <AuctionTimerDynamic endDate={auctionInfo.end_date} />
           <div className="mt-10">
-            <ContentDescription description="현재 최고 입찰가" variant="ghost" />
+            <PageDescription variant="ghost">현재 최고 입찰가</PageDescription>
             <p className="text-(--color-text-base) text-xl font-bold">{formatNumber(auctionInfo.current_point)} P</p>
           </div>
         </div>

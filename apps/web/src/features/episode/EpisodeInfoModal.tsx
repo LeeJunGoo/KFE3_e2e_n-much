@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/components/ui/dialog';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
-import ContentDescription from 'src/shared/ui/ContentDescription';
 import MoreButton from 'src/shared/ui/MoreButton';
+import PageDescription from 'src/shared/ui/PageDescription';
 import PageTitle from 'src/shared/ui/PageTitle';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
@@ -36,8 +36,12 @@ const EpisodeInfoModal = ({ episode }: { episode: EpisodeItemProps }) => {
               <p className="text-(--color-warm-gray) text-xs">{episodeTime}</p>
             </div>
           </div>
-          <PageTitle className="mb-1">episode.title</PageTitle>
-          <ContentDescription description={episode.description} variant="ghost" className="mb-6" />
+          <PageTitle className="mb-1 font-medium" order="left" size="lg">
+            episode.title
+          </PageTitle>
+          <PageDescription variant="ghost" className="mb-6">
+            {episode.description}
+          </PageDescription>
         </div>
 
         <Button

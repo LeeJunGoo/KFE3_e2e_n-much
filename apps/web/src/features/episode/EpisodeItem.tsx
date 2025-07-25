@@ -5,7 +5,7 @@ import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
 import EpisodeLikeToggle from 'src/features/episode/EpisodeLikeButton';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
-import ContentDescription from 'src/shared/ui/ContentDescription';
+import PageDescription from 'src/shared/ui/PageDescription';
 import PageTitle from 'src/shared/ui/PageTitle';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
@@ -20,10 +20,10 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
   const userNickname = episode.users.nick_name ?? user?.nick_name;
 
   return (
-    <li className="list-none space-y-1 pb-4">
-      <div className="mb-5 flex items-center justify-between">
+    <li className="list-none">
+      <div className="flex justify-between">
         {/* 작성자 정보 */}
-        <div className="flex items-center gap-2">
+        <div className="flex gap-2 py-4">
           <BaseAvatar src={episode.users.user_avatar!} alt={userNickname} size="sm" />
           <div>
             <div className="flex items-center gap-1">
@@ -33,7 +33,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
             <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>
           </div>
         </div>
-        <div className="flex flex-col items-end gap-1">
+        <div className="flex flex-col items-end">
           {/* 입찰하기 버튼  */}
           {isUser && isSeller && <EpisodeBidModal episode={episode} />}
           {/* 좋아요 버튼 */}
@@ -41,10 +41,12 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
         </div>
       </div>
       <div>
-        <PageTitle as="h4" className="mb-1">
+        <PageTitle as="h4" className="mb-1 font-medium" order="left" size="md">
           {episode.title}
         </PageTitle>
-        <ContentDescription description={episode.description} variant="ghost" clamp={2} />
+        <PageDescription variant="ghost" clamp={2}>
+          {episode.description}
+        </PageDescription>
       </div>
       <div className="flex items-center justify-between">
         <EpisodeInfoModal episode={episode} />

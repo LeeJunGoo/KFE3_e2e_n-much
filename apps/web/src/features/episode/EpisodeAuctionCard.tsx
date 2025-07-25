@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import AuctionTimerStatic from 'src/features/auction/AuctionTimerStatic';
-import ContentDescription from 'src/shared/ui/ContentDescription';
+import PageDescription from 'src/shared/ui/PageDescription';
 import PageTitle from 'src/shared/ui/PageTitle';
 import BaseCard from 'src/widgets/BaseCard';
 import type { AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
@@ -30,11 +30,13 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummary
 
         <div className="flex w-full flex-col justify-between">
           <div>
-            <PageTitle variant="base">{auctionTitle}</PageTitle>
-            <ContentDescription description={auctionUser.business_name} variant="ghost" />
+            <PageTitle order="left" size="md">
+              {auctionTitle}
+            </PageTitle>
+            <PageDescription variant="ghost">{auctionUser.business_name}</PageDescription>
             <div className="mb-4 flex gap-2">
-              <ContentDescription description={auctionUser.road_address} variant="ghost" />
-              <ContentDescription description={auctionUser.detail_address ?? ''} variant="ghost" />
+              <PageDescription variant="ghost">{auctionUser.road_address}</PageDescription>
+              <PageDescription variant="ghost">{auctionUser.detail_address} </PageDescription>
             </div>
           </div>
           <AuctionTimerStatic endDate={endDate} />
