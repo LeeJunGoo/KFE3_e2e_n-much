@@ -6,18 +6,6 @@ import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supaba
 
 const supabase = createClient();
 
-//NOTE - 전체 경매 상품 정보
-export const getAllAuctions = async () => {
-  const { data, error } = await supabase.from('auctions').select(`*`);
-
-  if (error) {
-    console.error('🚀 ~ getAllAuctions:', error.message);
-    throw new Error('DB : 모든 경매 불러오기 에러');
-  }
-
-  return data;
-};
-
 //ANCHOR - 에피소드 등록 페이지: 특정 상품 정보 및 업체 정보
 export const selectAuctionSummaryInfoWithAddress = async (auctionId: string) => {
   const { data, error } = await supabase.rpc('get_auction_summary_with_address', {
@@ -90,19 +78,15 @@ export const updateAuction = async (auctionId: string | undefined, auctionFormDa
   return data;
 };
 
-//NOTE - 경매 물품 삭제
-export const deleteAuction = async (auctionId: string | undefined) => {
-  if (!auctionId) {
-    throw new Error('DB: 경매 삭제 에러(auctionId가 없습니다.)');
-  }
-
-  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auctionId).select().single();
+//ANCHOR - 경매 물품 삭제
+export const deleteAuctionById = async (auctionId: AuctionRow['auction_id']) => {
+  const { data, error } = await supabase.from('auctions').delete().eq('auction_id', auctionId).select('auction_id');
 
   if (error) {
-    console.error('deleteAuction', error);
-    throw new Error('DB: 경매 삭제 에러');
+    console.error('🚀 ~ deleteAuctionById ~ deleteAuctionById:', error);
+    throw new Error();
   }
-  return data;
+  return Boolean(data);
 };
 
 //ANCHOR - 판매자의 총 경매 수 및 현재 진행 중인 경매 수
@@ -170,7 +154,7 @@ export const selectAuctionsByMainPageCategory = async (orderParam: string, isAsc
   return data;
 };
 
-//NOTE - //NOTE - 경매 현황의 경매 리스트 가져오기
+//NOTE - 경매 현황의 경매 리스트 가져오기
 export const selectAuctionCardList = async (order: string | null, keyword: string | null, page: number | null) => {
   const auctionsCount = await selectAuctionsCount(keyword);
 
@@ -218,21 +202,6 @@ export const getAuctionsByKeyword = async (keyword: string) => {
   }
   return data;
 };
-
-// NOTE - 셀러가 등록한 경매 목록 조회
-export async function getSellerAuctions(seller_id: string) {
-  const { data, error } = await supabase
-    .from('auctions')
-    .select('*')
-    .eq('seller_id', seller_id)
-    .order('created_at', { ascending: false });
-
-  if (error) {
-    throw new Error('DB: 셀러 경매 목록 조회 에러');
-  }
-
-  return data;
-}
 
 //TODO - webp로 최적화하기 (KMH)
 export const uploadImageToBucket = async (imageData: string | undefined, ext: string) => {
@@ -308,6 +277,21 @@ export const selectAddressId = async (userId: string | undefined) => {
   if (error) {
     console.error('selectAddressId', error);
     throw new Error('DB: 주소 불러오기 에러');
+  }
+  return data;
+};
+
+//ANCHOR - 현재 경매 물품의 입찰가, 하한가, 상한가
+export const selectAuctionBidPointAmount = async (auctionId: AuctionRow['auction_id']) => {
+  const { data, error } = await supabase
+    .from('auctions')
+    .select(`starting_point, current_point, max_point`)
+    .eq('auction_id', auctionId)
+    .maybeSingle();
+
+  if (error) {
+    console.error('🚀 ~ selectAuctionBidPointAmount:', error);
+    throw new Error();
   }
   return data;
 };

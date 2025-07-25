@@ -9,8 +9,8 @@ const BidderRankingList = ({ bidderRankingList }: { bidderRankingList: BidderRan
   const userNickname = '닉네임';
   return (
     <ul>
-      {bidderRankingList.map((bidder) => (
-        <li key={bidder.users.id} className="flex items-center justify-between">
+      {bidderRankingList.map((bidder, index) => (
+        <li key={`${bidder.users.id}${index}`} className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <BaseAvatar src={bidder.users.user_avatar!} alt={userNickname!} size="sm" />
             <div>

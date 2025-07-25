@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { IoTime } from 'react-icons/io5';
 import { useTimer } from 'src/entities/auction/hooks/useTimer';
 import { type AuctionTimerStatus } from 'src/entities/auction/types';
@@ -7,7 +8,14 @@ import AuctionTimer from 'src/features/auction/shared/AuctionTimer';
 import { type AuctionRow } from 'src/shared/supabase/types';
 
 const AuctionTimerDynamic = ({ endDate }: { endDate: AuctionRow['end_date'] }) => {
-  const { days, hours, minutes, seconds } = useTimer({ endDate });
+  const router = useRouter();
+  const { days, hours, minutes, seconds } = useTimer({
+    endDate,
+    //FIXME - 추후 리얼타임 고민해보기
+    onCompleted: () => {
+      router.replace('/main');
+    }
+  });
   let status: AuctionTimerStatus = 'ongoing';
   let formattedTime = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;
 
