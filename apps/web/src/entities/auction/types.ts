@@ -1,4 +1,9 @@
-import type { AddressRow, AuctionRow, RankingRow, UserRow } from 'src/shared/supabase/types';
+import type { Dispatch, SetStateAction } from 'react';
+import { type UserSummaryInfoType } from 'src/entities/auth/types';
+import type { auctionFormSchema } from './schema/auctionForm';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { AddressRow, AuctionRow, RankingRow } from 'src/shared/supabase/types';
+import type { z } from 'zod';
 
 export type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
 export type AddressSummaryInfoType = Pick<
@@ -8,14 +13,9 @@ export type AddressSummaryInfoType = Pick<
 
 export type AuctionSummaryInfoWithAddressType = AuctionSummaryInfoType & AddressSummaryInfoType;
 
-type AuctionInfoType = Omit<
-  AuctionRow,
-  'address_id' | 'created_at' | 'favorites' | 'highest_bidder_id' | 'starting_point' | 'updated_at'
->;
-
 type AddressInfoType = Omit<AddressRow, 'created_at' | 'is_default' | 'user_id'>;
 
-export type AuctionInfoWithAddressType = AuctionInfoType & AddressInfoType;
+export type AuctionInfoWithAddressType = AuctionRow & AddressInfoType;
 
 export type SellerAuctionCountType = {
   totalAuctions: number;
@@ -23,17 +23,9 @@ export type SellerAuctionCountType = {
 };
 
 type RankingSummaryInfoType = Pick<RankingRow, 'rank_position' | 'bid_amount' | 'created_at'>;
-type UserSummaryInfoType = Pick<UserRow, 'email' | 'nick_name' | 'user_avatar' | 'id'>;
-
 export type BidderRankingInfoType = RankingSummaryInfoType & { users: UserSummaryInfoType };
 
-// export type BuyerInfoType = {
-//   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
-// };
-
-// export type AuctionInfoType = { status: string; data: AuctionRow };
-
-// export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
+export type AuctionBidPointAmount = Pick<AuctionRow, 'starting_point' | 'current_point' | 'max_point'>;
 
 export type SortedAuctionItemType = AuctionRow & {
   episodes: {
@@ -67,6 +59,7 @@ export interface PreviewImage {
   id: string;
   data: string;
   isUrl: boolean;
+  ext: string;
 }
 
 //NOTE - auctionForm 관련 페이지 props 목록
@@ -84,6 +77,9 @@ export interface AuctionFormProps {
   loggedInUserId: string;
 }
 
+//NOTE - auctionForm의 form 타입
+export type AuctionFormType = z.infer<typeof auctionFormSchema>;
+
 // export type SortedAuctionItemType = AuctionRow & {
 //   episodes: {
 //     count: number;
@@ -97,11 +93,12 @@ export interface AuctionFormProps {
 
 //NOTE - auctionList 관련 페이지 props 목록
 export interface CurrentAuctionsPageProps {
-  searchParams: Promise<{ order: string }>;
+  searchParams: Promise<{ order: string; keyword: string | undefined }>;
 }
 
 export interface AuctionListPageProps {
   order: string;
+  keyword: string | undefined;
 }
 
 //NOTE - auctionCard의 좋아유 갯수
@@ -112,6 +109,7 @@ export interface EpisodeCount {
 //NOTE - 경매 리스트 props
 export interface AuctionListProps {
   order: string;
+  keyword: string | undefined;
 }
 
 //NOTE - auctionCard의 props
@@ -126,5 +124,46 @@ export interface AuctionCardProp {
 
 //NOTE - 정렬 카테고리 선택
 export interface SelectOrderProps {
+  keyword: string | undefined;
   order: string;
+}
+
+//NOTE - 이미지를 업로드하는 컴포넌트 props
+export interface ImageUploaderProps {
+  previewImages: PreviewImage[];
+  setPreviewImages: Dispatch<SetStateAction<PreviewImage[]>>;
+  setImageUrlsToDelete: Dispatch<SetStateAction<string[]>>;
+}
+
+//NOTE - auctionForm에서 경매 종료 일을 입력하는 항목
+export interface FormEndDayProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  endDayLabel: string;
+  placeholder: string;
+  endTime: string;
+  validateDisableDate: (day: Date, time: string, isDisableCondition: boolean) => boolean;
+}
+
+//NOTE - auctionForm에서 경매 종료 시각을 입력하는 항목
+export interface FormEndTimeProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  endTimeLabel: string;
+}
+
+//NOTE - auctionForm에서 포인트 상한가를 입력하는 항목
+export interface FormMaxPointProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  maxPointLabel: string;
+  placeholder: string;
+}
+
+//NOTE - auctionForm에서 포인트 시작가를 입력하는 항목
+export interface FormStartingPointProps<T extends FieldValues> {
+  control: Control<T>;
+  name: FieldPath<T>;
+  startingPointLabel: string;
+  placeholder: string;
 }

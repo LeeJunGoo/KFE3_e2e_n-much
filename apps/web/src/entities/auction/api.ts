@@ -1,4 +1,3 @@
-//TODO - 준구님 컨벤션에 맞추기 (KMH)
 import type {
   AuctionInfoWithAddressType,
   AuctionSummaryInfoWithAddressType,
@@ -59,28 +58,18 @@ export const getBidderRanking = async (auction_id: AuctionRow['auction_id']) => 
   return data;
 };
 
-//NOTE - 경매 데이터 삭제
-export const fetchDeleteAuction = async (auction_id: string) => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      auction_id
-    })
+//ANCHOR - 경매 데이터 삭제
+export const deleteAuctionInfo = async (auctionId: AuctionRow['auction_id']) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}`, {
+    method: 'DELETE'
   });
 
   if (!res.ok) {
-    const errorData = await res.json();
-    if (res.status === 400) {
-      console.error(errorData.message);
-      return;
-    }
-    throw new Error('경매 데이터를 삭제하는 과정에서 네트워크 에러가 발생했습니다.');
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
-  // const data: AuctionInfoType = await res.json();
-  // return data.status;
+  const data: boolean = await res.json();
+  return data;
 };
 
 //NOTE - 셀러가 등록한 경매 목록 조회
@@ -96,9 +85,11 @@ export const fetchSellerAuctions = async () => {
 // 모든 경매와 해당 경매의 사연 갯수 가져오기
 export const getAuctionCardList = async ({
   order,
+  keyword,
   pageParam
 }: {
   order: string | undefined;
+  keyword: string | undefined;
   pageParam: number | undefined;
 }) => {
   //NOTE - pageParam이 0인 경우, false로 나옴
@@ -114,9 +105,15 @@ export const getAuctionCardList = async ({
     throw new Error('getAllAuctionsWithEpisodeCount: pageParam이 없습니다.');
   }
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list?order=${order}&page=${pageParam}`
-  );
+  let url: string | null = null;
+
+  if (keyword?.trim()) {
+    url = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list?order=${order}&page=${pageParam}&keyword=${keyword}`;
+  } else {
+    url = `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list?order=${order}&page=${pageParam}`;
+  }
+
+  const res = await fetch(url);
   if (!res.ok) {
     throw new Error('모든 경매와 해당 경매의 사연 갯수 fetch 실패');
   }

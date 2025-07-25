@@ -6,6 +6,7 @@ import { LuHeartHandshake } from 'react-icons/lu';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { ICON_NAMES, MYPAGE_MENU_LIST } from 'src/entities/user/mypage/main/constants';
 import MyPageNavigationList from 'src/features/user/mypage/components/main/MyPageNavigationList';
+import MyPageNavigationSkeleton from 'src/features/user/mypage/components/main/skeleton/MyPageNavigationSkeleton';
 
 const getIcon = (iconName: string) => {
   switch (iconName) {
@@ -28,7 +29,7 @@ const getIcon = (iconName: string) => {
 
 const MyPageNavigation = () => {
   const user = useUserState();
-  if (!user) return null;
+  if (!user) return <MyPageNavigationSkeleton />;
 
   const role = user.role || 'buyer';
   const filteredMenus = MYPAGE_MENU_LIST.filter((menu) => menu.role === role || menu.role === 'common');

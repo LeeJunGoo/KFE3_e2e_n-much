@@ -32,3 +32,6 @@ export type RankingRow = Database['public']['Tables']['ranking']['Row']; // 데�
 export type InquiryRow = Database['public']['Tables']['inquiries']['Row']; // 데이터 조회(GET)
 export type InquiryInsert = Database['public']['Tables']['inquiries']['Insert']; // 데이터 추가(POST)
 export type InquiryUpdate = Database['public']['Tables']['inquiries']['Update']; // 데이터 수정(PATCH)
+
+//NOTE - supabase bid_totals type
+export type UserBidPointRow = Database['public']['Views']['user_bid_totals']['Row']; // 데이터 조회(GET)

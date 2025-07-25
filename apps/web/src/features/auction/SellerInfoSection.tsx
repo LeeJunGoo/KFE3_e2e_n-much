@@ -1,10 +1,11 @@
 import { Card } from '@repo/ui/components/ui/card';
-import { getSellerAuctionCount } from 'src/entities/auction/api';
-import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
-import InquiryDrawerTrigger from 'src/features/auction/InquiryDrawerTrigger';
+import { getAuctionInfoWithAddress, getSellerAuctionCount } from 'src/entities/auction/api';
+import { type AuctionRow } from 'src/shared/supabase/types';
 import UserAvatar from 'src/shared/ui/BaseAvatar';
+import InquiryDrawerTrigger from './InquiryDrawerTrigger';
 
-const SellerInfoSection = async ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
+const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+  const auctionInfo = await getAuctionInfoWithAddress(auctionId);
   const { totalAuctions, activeAuctions } = await getSellerAuctionCount(auctionInfo.user_id);
 
   return (

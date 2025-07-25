@@ -11,22 +11,8 @@ import GoTopButton from 'src/shared/utils/goTopButton';
 const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id: auctionId } = await params;
 
-  // NOTE - 경매 상품 및 경매 업체 정보
+  // //ANCHOR - 경매 상품 및 경매 업체 정보
   const auctionInfo = await getAuctionInfoWithAddress(auctionId);
-
-  // const { image_urls, address, seller } = auctionInfo;
-
-  // const supabase = await createServer();
-  // const {
-  //   data: { user }
-  // } = await supabase.auth.getUser();
-
-  // if (!user) {
-  //   return;
-  // }
-
-  // NOTE - 로그인된 유저 정보
-  // const userInfo: UserInfoType = await fetchDetailPageUserInfo(user.id);
 
   return (
     <>
@@ -39,13 +25,13 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
         </div>
         <div className="-translate-y-14 px-4">
           {/* 경매 상품 정보 */}
-          <AuctionDetailInfo auctionInfo={auctionInfo} />
+          <AuctionDetailInfo auctionId={auctionId} />
           {/* 판매자 정보 */}
-          <SellerInfoSection auctionInfo={auctionInfo} />
+          <SellerInfoSection auctionId={auctionId} />
           {/* 입찰자 랭킹 정보 */}
           <BidderRankingInfoSection auctionId={auctionId} />
           {/* 사연 섹션 */}
-          <EpisodeDetailSection auctionId={auctionId} sellerId={auctionInfo.user_id} />
+          <EpisodeDetailSection auctionId={auctionId} />
         </div>
         <GoTopButton />
       </PageContainer>
