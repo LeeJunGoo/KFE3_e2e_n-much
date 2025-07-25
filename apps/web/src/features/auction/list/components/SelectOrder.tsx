@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation';
 import type { SelectOrderProps } from 'src/entities/auction/types';
 
 const SelectOrder = ({ order, keyword }: SelectOrderProps) => {
-  const router = useRouter();
+  const { push } = useRouter();
 
   if (!keyword?.trim()) {
     keyword = '';
@@ -24,9 +24,9 @@ const SelectOrder = ({ order, keyword }: SelectOrderProps) => {
     <Select
       onValueChange={(changedOrder) => {
         if (keyword) {
-          return router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auctions?order=${changedOrder}&keyword=${keyword}`);
+          return push(`/auctions?order=${changedOrder}&keyword=${keyword}`);
         }
-        return router.push(`${process.env.NEXT_PUBLIC_SERVER_URL}/auctions?order=${changedOrder}`);
+        return push(`/auctions?order=${changedOrder}`);
       }}
       value={order}
     >
