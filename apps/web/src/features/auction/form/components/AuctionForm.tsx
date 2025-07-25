@@ -36,7 +36,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
   const [imageUrlsToDelete, setImageUrlsToDelete] = useState<string[]>([]);
-  const router = useRouter();
+  const router = useRouter(); //TODO - push로 구조 분해 할당하기
 
   console.log('로그인한 유저 id', loggedInUserId);
   console.log('auctionIdParam', auctionIdParam);
