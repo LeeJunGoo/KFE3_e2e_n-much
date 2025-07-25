@@ -15,7 +15,7 @@ const MyEpisodeListItem = ({ episode }: MyEpisodeListItemProps) => {
     <li>
       <BaseCard
         as={Link}
-        href={`/auctions/${auctionId}#episodes`}
+        href={`/auctions/${auctionId}#episode-section-header`}
         className="hover:bg-(--color-accent)/10 group mb-4 flex cursor-pointer transition-colors duration-200"
       >
         <div className="flex flex-1 flex-col gap-1">

@@ -1,99 +1,81 @@
 'use client';
-
+import { useEffect, useState } from 'react';
 import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious
 } from '@repo/ui/components/ui/pagination';
-import { useEffect, useRef, useState } from 'react';
-import { FaRegCommentDots } from 'react-icons/fa';
-// import { fetchEpisodesById } from 'src/entities/episode/api';
+import { keepPreviousData, useQuery, useQueryClient } from '@tanstack/react-query';
+import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
+import { getEpisodesWithPagination } from 'src/entities/episode/api';
+import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
+import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
+import { usePageActions } from 'src/entities/episode/stores/usePaginationStore';
+import EpisodeItem from 'src/features/episode/EpisodeItem';
+import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
-import { AuctionRow } from 'src/shared/supabase/types';
-import EpisodeItem from './EpisodeItem';
-
-const EPISODES_PER_PAGE = 5;
 
 const EpisodeList = ({
-  episodeList,
-  auction_id,
-  sellerId
+  episodesCount,
+  auctionInfo
 }: {
-  episodeList: EpisodeItemProps[];
-  auction_id: AuctionRow['auction_id'];
-  sellerId: AuctionRow['user_id'];
+  episodesCount: number;
+  auctionInfo: AuctionInfoWithAddressType;
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [episodes, setEpisodes] = useState<EpisodeItemProps[]>(episodeList);
-  const [episodesCount, setEpisodesCount] = useState(episodes.length);
-
-  const listHeaderRef = useRef<HTMLDivElement>(null);
-  const isInitialRender = useRef(true);
-
+  const queryClient = useQueryClient();
+  const [page, setPage] = useState(1);
+  const { setCurrentPage } = usePageActions();
   const totalPages = Math.max(1, Math.ceil(episodesCount / EPISODES_PER_PAGE));
 
-  // 현재 페이지에 보여줄 사연들 계산
-  const startIndex = (currentPage - 1) * EPISODES_PER_PAGE;
-  const endIndex = startIndex + EPISODES_PER_PAGE;
-  const currentEpisodes = episodes.slice(startIndex, endIndex);
+  const { isError, data: episodesList } = useQuery({
+    queryKey: episodesListKeys.item({ auctionId: auctionInfo.auction_id, page }),
+    queryFn: () => getEpisodesWithPagination(auctionInfo.auction_id, page),
+    placeholderData: keepPreviousData,
+    staleTime: 300000
+  });
 
-  const handlePageChange = (page: number) => {
+  // ANCHOR - 다음 페이지 prefetch
+  useEffect(() => {
+    // 마지막 페이지까지만 데이터를 받음
+    if (page <= totalPages - 1) {
+      const nextPage = page + 1;
+      queryClient.prefetchQuery({
+        queryKey: episodesListKeys.item({ auctionId: auctionInfo.auction_id, page: nextPage }),
+        queryFn: () => getEpisodesWithPagination(auctionInfo.auction_id, nextPage)
+      });
+    }
+  }, [page, queryClient, totalPages, auctionInfo.auction_id]);
+
+  const handlePageChange = (nextPage: number) => {
     if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
+      setPage(nextPage);
+      setCurrentPage(nextPage);
+    }
+
+    //"사연 모음" 타이틀로 스크롤 이동
+    const headerEl = document.getElementById('episode-section-header');
+    if (headerEl) {
+      headerEl.scrollIntoView({ behavior: 'smooth' });
     }
   };
-  // useEffect(() => {
-  //   if (!auction_id) return;
 
-  //   const fetchEpisodes = async () => {
-  //     try {
-  //       const episodesListData = await fetchEpisodesById(auction_id);
-  //       setEpisodes(episodesListData.episode);
-  //       setEpisodesCount(episodesListData.count);
-  //     } catch (error) {
-  //       if (error instanceof Error) {
-  //         setEpisodes([]);
-  //         throw new Error(`입찰자에 대한 정보를 불러오지 못했습니다.: ${error.message}`);
-  //       }
-  //     }
-  //   };
-
-  //   fetchEpisodes();
-  // }, [currentPage, auction_id]);
-
-  useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-      return;
-    }
-
-    if (listHeaderRef.current) {
-      listHeaderRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [currentPage]);
+  if (isError) {
+    return <EpisodeEmpty />;
+  }
 
   return (
     <>
       {/* 사연 목록 */}
-      {episodesCount === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-3 rounded-b-lg bg-slate-50 px-6 py-10 text-center">
-          <FaRegCommentDots className="text-4xl text-slate-400" />
-          <div>
-            <p className="font-semibold text-slate-700">아직 사연이 없어요</p>
-            <p className="mt-1 text-sm text-slate-500">가장 먼저 사연을 작성하여 상품을 차지할 기회를 잡아보세요!</p>
-          </div>
-        </div>
-      ) : (
-        <ul className="space-y-5 divide-y">
-          {currentEpisodes.map((episode: EpisodeItemProps) => (
-            <EpisodeItem key={episode.episode_id} episode={episode} sellerId={sellerId} />
-          ))}
-        </ul>
-      )}
-
+      <ul className="space-y-5 divide-y">
+        {episodesList!.map((episode: EpisodeItemProps, index) => (
+          <EpisodeItem key={`${episode.episode_id}${index}`} episode={episode} sellerId={auctionInfo.user_id} />
+        ))}
+      </ul>
+      {/* 페이지 네이션 */}
       <div className="px-6 py-4">
         <Pagination>
           <PaginationContent>
@@ -102,17 +84,18 @@ const EpisodeList = ({
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  handlePageChange(currentPage - 1);
+                  handlePageChange(page - 1);
                 }}
-                aria-disabled={currentPage === 1}
+                className={page <= 1 ? 'pointer-events-none opacity-50' : ''}
               />
             </PaginationItem>
+
             {/* 페이지 번호 동적 생성 */}
             {Array.from({ length: totalPages }, (_, i) => (
               <PaginationItem key={i + 1}>
                 <PaginationLink
                   href="#"
-                  isActive={currentPage === i + 1}
+                  isActive={page === i + 1}
                   onClick={(e) => {
                     e.preventDefault();
                     handlePageChange(i + 1);
@@ -122,15 +105,17 @@ const EpisodeList = ({
                 </PaginationLink>
               </PaginationItem>
             ))}
-
+            <PaginationItem>
+              <PaginationEllipsis />
+            </PaginationItem>
             <PaginationItem>
               <PaginationNext
                 href="#"
                 onClick={(e) => {
                   e.preventDefault();
-                  handlePageChange(currentPage + 1);
+                  handlePageChange(page + 1);
                 }}
-                aria-disabled={currentPage === totalPages}
+                className={page >= totalPages ? 'pointer-events-none opacity-50' : ''}
               />
             </PaginationItem>
           </PaginationContent>

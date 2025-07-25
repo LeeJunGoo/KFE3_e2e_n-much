@@ -27,3 +27,6 @@ export type KeywordUpdate = Database['public']['Tables']['keywords']['Update']; 
 
 //NOTE - supabase Ranking type
 export type RankingRow = Database['public']['Tables']['ranking']['Row']; // 데이터 조회(GET)
+
+//NOTE - supabase bid_totals type
+export type UserBidPointRow = Database['public']['Views']['user_bid_totals']['Row']; // 데이터 조회(GET)
