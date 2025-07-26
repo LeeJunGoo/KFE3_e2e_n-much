@@ -6,7 +6,7 @@ import type {
   EpisodeListType,
   EpisodesCountType
 } from 'src/entities/episode/types';
-import type { AuctionRow, EpisodeRow, PointRow, UserRow } from 'src/shared/supabase/types';
+import type { AuctionRow, EpisodeRow, PointRow, UserBidPointRow, UserRow } from 'src/shared/supabase/types';
 
 //ANCHOR - 경매 물품에 대한 에피소드 정보
 export const getEpisodeInfo = async (episode_id: EpisodeRow['episode_id']) => {
@@ -124,8 +124,25 @@ export const getHasUserWrittenEpisode = async (auctionId: AuctionRow['auction_id
   return data;
 };
 
+//ANCHOR - 사연에 대한 경매 참여자(Buyer)의 총입찰 포인트
+export const getEpisodeTotalBidPointByUser = async (
+  auctionId: AuctionRow['auction_id'],
+  userId: EpisodeRow['user_id']
+) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/bid?auction_id=${auctionId}&user_id=${userId}`
+  );
+  if (!res.ok) {
+    const errorData = await res.json();
+    throw new Error(errorData.error);
+  }
+
+  const data: UserBidPointRow['total_bid_points'] = await res.json();
+  return data;
+};
+
 //ANCHOR - 사용자의 보유 포인트
-export const getUserBidPointAmount = async (userId: UserRow['id']) => {
+export const getUserPointAmount = async (userId: UserRow['id']) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/bid?user_id=${userId}`);
   if (!res.ok) {
     const errorData = await res.json();
