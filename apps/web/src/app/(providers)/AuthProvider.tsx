@@ -37,6 +37,7 @@ const AuthProvider = ({ user: initialUser, children }: { user: User | null; chil
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialUser?.id, setUser, setLoading, supabase]);
+
   return <>{children}</>;
 };
 
