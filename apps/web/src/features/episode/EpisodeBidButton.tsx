@@ -1,6 +1,5 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { FiAward } from 'react-icons/fi';
-import { useBidModalActions } from 'src/entities/episode/stores/useBidModalStore';
 
 type Variant = 'ghost' | 'outline' | 'destructive' | 'base' | 'secondary' | 'active' | 'inActive' | 'text';
 

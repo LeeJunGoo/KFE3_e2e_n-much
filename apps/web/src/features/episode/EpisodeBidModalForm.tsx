@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
 import { Form, FormField, FormItem, FormLabel, FormMessage } from '@repo/ui/components/ui/form';
 import { Input } from '@repo/ui/components/ui/input';
-import { toast } from '@repo/ui/components/ui/sonner';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { type AuctionBidPointAmount } from 'src/entities/auction/types';
 import { SELLER_MAX_POINT, SELLER_MIN_POINT } from 'src/entities/episode/constants';
@@ -12,49 +12,51 @@ import { usePatchEpisodeBidMutation } from 'src/entities/episode/queries/episode
 import { bidPointSchema, type FormValues } from 'src/entities/episode/schemas';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
-import { useRouter } from 'next/navigation';
 
 type EpisodeBidModalFormProps = {
   auctionPoint: AuctionBidPointAmount;
   userPoint: number;
+  userTotalBidPoint: number;
   role: string;
   episode: EpisodeItemProps;
   onClose: () => void;
 };
 
-const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }: EpisodeBidModalFormProps) => {
+const EpisodeBidModalForm = ({
+  auctionPoint,
+  userPoint,
+  userTotalBidPoint,
+  role,
+  episode,
+  onClose
+}: EpisodeBidModalFormProps) => {
+  const router = useRouter();
   const minBid = role === 'buyer' ? auctionPoint.starting_point : SELLER_MIN_POINT;
   const maxBid = role === 'buyer' ? auctionPoint.max_point : SELLER_MAX_POINT;
-  const router = useRouter();
+
+  const prevTotalBidPoint = Math.abs(userTotalBidPoint); // 음수를 양수로 변경
+  const possibleTotalBidPoint = Math.max(0, maxBid - prevTotalBidPoint);
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(bidPointSchema(minBid, maxBid, userPoint)),
+    resolver: zodResolver(bidPointSchema(minBid, maxBid, userPoint, prevTotalBidPoint)),
     defaultValues: {
       bidAmount: undefined
     },
     mode: 'onChange'
   });
   const { handleSubmit, reset, formState } = form;
+  const { mutateAsync, isPending } = usePatchEpisodeBidMutation(episode.auction_id, episode.user_id);
 
-  const { mutateAsync, isPending, isError, isSuccess } = usePatchEpisodeBidMutation();
-
-  //
   const handleOnSubmit = async ({ bidAmount }: FormValues) => {
     const totalBid = episode.bid_point! + bidAmount;
-    mutateAsync({ episodeId: episode.episode_id, bidPoint: totalBid });
+    try {
+      await mutateAsync({ episodeId: episode.episode_id, bidPoint: totalBid });
+      router.refresh();
+      onClose();
+    } catch {
+      reset();
+    }
   };
-
-  if (isPending) {
-    // toast.loading(`${formatNumber(bidAmount)}P를 추가 입찰하여 총 ${formatNumber(totalBid)}P로 입찰을 시도합니다.`);
-  }
-
-  if (isError) {
-    reset();
-  }
-
-  if (isSuccess) {
-    onClose();
-  }
 
   return (
     <Form {...form}>
@@ -65,10 +67,12 @@ const EpisodeBidModalForm = ({ auctionPoint, userPoint, role, episode, onClose }
             name="bidAmount"
             render={({ field }) => (
               <FormItem>
+                <div className="text-(--color-warm-gray) text-sm">상한가: {formatNumber(maxBid)} P</div>
                 <FormLabel htmlFor={field.name} className="w-fit">
-                  <span className="text-(--color-warm-gray)">입찰 금액</span>
+                  <span className="text-(--color-warm-gray)">
+                    입찰 가능한 최대 금액: {formatNumber(possibleTotalBidPoint)}&nbsp;P
+                  </span>
                 </FormLabel>
-                <div className="text-(--color-warm-gray) mb-1 text-sm">상한가: {formatNumber(maxBid)} P</div>
                 <Input
                   id={field.name}
                   type="text"
