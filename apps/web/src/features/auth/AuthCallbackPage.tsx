@@ -2,56 +2,53 @@
 import { useEffect, useRef } from 'react';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
-import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/useAuthStore';
+import { useAuthActions } from 'src/entities/auth/stores/useAuthStore';
+import { upsertUser } from 'src/entities/auth/supabase';
 import { createClient } from 'src/shared/supabase/client/client';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 
 const AuthCallbackPage = () => {
   const router = useRouter();
-  const user = useUserState();
-  const loading = useUserLoadingState();
+  const { setUser, setLoading } = useAuthActions();
   const hasProcessed = useRef(false);
 
   useEffect(() => {
     const handleCallback = async () => {
-      if (loading || hasProcessed.current) return;
+      if (hasProcessed.current) return;
+      hasProcessed.current = true;
+      try {
+        const supabase = createClient();
+        const { data, error } = await supabase.auth.getSession();
 
-      if (user) {
-        hasProcessed.current = true;
-
-        try {
-          const supabase = createClient();
-
-          if (!user.email) {
-            router.push('/');
-            return;
-          }
-
-          const { data: existingUser } = await supabase.from('users').select('id').eq('id', user.id).single();
-
-          if (!existingUser) {
-            await supabase.from('users').insert({
-              id: user.id,
-              nick_name: user.user_metadata?.name || user.email.split('@')[0],
-              email: user.email,
-              role: 'buyer',
-              user_avatar: user.user_metadata?.avatar_url || ''
-            });
-          }
-          toast.success('로그인 되었습니다!');
-          router.push('/main');
-        } catch (error) {
-          console.error('사용자 설정 오류:', error);
-          toast.error('로그인 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.');
-          router.push('/');
+        if (error) {
+          console.error('Auth 에러:', error);
+          router.replace('/');
+          return;
         }
-      } else {
-        router.push('/');
+
+        const user = data.session?.user;
+
+        if (!user?.email) {
+          router.replace('/');
+          return;
+        }
+
+        const completeUser = await upsertUser(user);
+
+        setUser(completeUser);
+        setLoading(false);
+
+        toast.success('로그인 되었습니다!');
+        router.replace('/main');
+      } catch (error) {
+        console.error('콜백 처리 에러:', error);
+        setLoading(false);
+        router.replace('/');
       }
     };
 
     handleCallback();
-  }, [user, loading, router]);
+  }, [router, setUser, setLoading]);
 
   return (
     <section className="flex flex-col items-center justify-center gap-1">
