@@ -260,7 +260,6 @@ export const updateFavoriteAuction = async ({
     console.error('updateAuction', error);
     throw new Error('DB: 관심 경매 추가 에러');
   }
-  console.log('data:', data);
   return data;
 };
 
