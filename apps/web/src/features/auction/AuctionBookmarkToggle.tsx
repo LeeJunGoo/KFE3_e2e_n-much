@@ -1,37 +1,68 @@
 'use client';
+
 import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { type User } from '@supabase/supabase-js';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaBookmark } from 'react-icons/fa6';
+import { postFavorite } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
 
 const AuctionBookmarkToggle = ({
   auctionInfo,
+  auctionId,
   userInfo
 }: {
   auctionInfo: AuctionInfoWithAddressType;
+  auctionId: string;
   userInfo: User | null;
 }) => {
-  // 유저 정보
-  console.log(userInfo?.email);
+  const userId = userInfo!.id;
+  const currentfavorites = auctionInfo.favorites;
+  const isIncluedes = currentfavorites.includes(userId);
 
-  // 찜한 유저의 정보 ['userid', 'userId']
-  console.log(auctionInfo.favorites);
+  const [favoriteMark, setFavoriteMark] = useState(isIncluedes);
 
-  // 현재 유저의 찜 클릭 여부
-  const isBookMarked = auctionInfo.favorites[0];
-  const [bookmarked, setBookmarked] = useState(isBookMarked ?? false);
+  const updatedFavorites = favoriteMark
+    ? currentfavorites.filter((item) => item !== userId)
+    : [...currentfavorites, userId];
 
-  // 클릭 여부에 따라 아이콘 색상 변경
-  const iconColor = bookmarked ? 'fill-text-(--color-accent)' : 'text-(--color-warm-gray)';
+  const queryClient = useQueryClient();
 
-  const handleToggle = () => {
-    setBookmarked((state) => !state);
+  const mutate = useMutation<string, Error, { auctionId: string; updatedFavorites: string[] }, void>({
+    mutationFn: async ({ auctionId, updatedFavorites }) => {
+      const result = await postFavorite({ auctionId, updatedFavorites });
+      return result;
+    },
+    onMutate: () => {
+      setFavoriteMark((state) => !state);
+    },
+    onError: (error) => {
+      console.error(error.message);
+      setFavoriteMark((state) => !state);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['favoriteAuctionList', userId] });
+    }
+  });
+
+  const handleFavoriteMarkClick = async () => {
+    try {
+      const result = await mutate.mutateAsync({ auctionId, updatedFavorites });
+      console.log('result: ', result);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
   };
 
   return (
-    <Button variant="text" disabled={false} onClick={handleToggle}>
-      <FaBookmark size={100} className={`${iconColor} size-7 transition`} />
+    <Button variant="text" onClick={handleFavoriteMarkClick}>
+      <FaBookmark
+        size={100}
+        className={`${favoriteMark ? 'fill-text-(--color-accent)' : 'text-(--color-warm-gray)'} size-7 transition`}
+      />
     </Button>
   );
 };

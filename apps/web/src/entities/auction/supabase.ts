@@ -237,6 +237,33 @@ export const selectFavoriteAuctionCardList = async (
   return { data, nextId };
 };
 
+// 관심 경매 추가 - (ksh)
+export const updateFavoriteAuction = async ({
+  auctionId,
+  updatedFavorites
+}: {
+  auctionId: string;
+  updatedFavorites: string[];
+}) => {
+  if (!auctionId && !updatedFavorites) {
+    throw new Error('DB: 관심 경매 추가 에러(auctionId와 updatedFavorites가 없습니다.)');
+  }
+
+  const { data, error } = await supabase
+    .from('auctions')
+    .update({ favorites: updatedFavorites })
+    .eq('auction_id', auctionId)
+    .select('favorites')
+    .single();
+
+  if (error) {
+    console.error('updateAuction', error);
+    throw new Error('DB: 관심 경매 추가 에러');
+  }
+  console.log('data:', data);
+  return data;
+};
+
 // 키워드가 타이틀에 포함되는 경매리스트를 불러오기
 export const getAuctionsByKeyword = async (keyword: string) => {
   const { data, error } = await supabase.from('auctions').select('*').ilike('title', `%${keyword}%`);

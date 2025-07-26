@@ -4,7 +4,7 @@ import type {
   BidderRankingInfoType,
   SellerAuctionCountType
 } from 'src/entities/auction/types';
-import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
 
 //ANCHOR - 경매 상세 페이지: 경매 상풍 및 업체 정보
 export const getAuctionInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
@@ -150,11 +150,42 @@ export const getFavoriteAuctionCardList = async ({
   }
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list_favorite?order=${order}&page=${pageParam}&user=${user}`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/auction_card_list/favorite?order=${order}&page=${pageParam}&user=${user}`
   );
 
   if (!res.ok) {
     throw new Error('관심 경매와 해당 경매의 사연 갯수 fetch 실패');
+  }
+
+  const data = await res.json();
+  return data;
+};
+
+// 관심 경매 추가 - (ksh)
+export const postFavorite = async ({
+  auctionId,
+  updatedFavorites
+}: {
+  auctionId: string;
+  updatedFavorites: string[];
+}) => {
+  if (!auctionId) {
+    throw new Error('postFavorite: auctionId가 없습니다.');
+  }
+
+  if (!updatedFavorites) {
+    throw new Error('postFavorite: updatedFavorites가 없습니다.');
+  }
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/favorite`, {
+    headers: { 'Content-Type': 'application/json' },
+    method: 'POST',
+    body: JSON.stringify({ auctionId, updatedFavorites })
+  });
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
 
   const data = await res.json();

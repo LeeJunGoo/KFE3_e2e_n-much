@@ -109,7 +109,7 @@ export const useGetFavoriteAuctionListQuery = (order: string, user: string) => {
     isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery({
-    queryKey: [...auctionListKeys.order(order), user],
+    queryKey: ['favoriteAuctionList', user],
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
       getFavoriteAuctionCardList({ order, pageParam, user }),
     initialPageParam: 0,
