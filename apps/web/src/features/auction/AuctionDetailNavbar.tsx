@@ -15,7 +15,7 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
   const isUser = auctionInfo.user_id === userInfo?.id;
 
   // 현재 유저가 입찰 참여자(buyer)인지의 여부
-  const isBuyer = profile.role === 'buyer';
+  const isBuyer = profile!.role === 'buyer';
 
   return (
     <>

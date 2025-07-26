@@ -21,7 +21,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
   const profile = await selectUser(userInfo!.id);
   const isWritten = await getHasUserWrittenEpisode(auctionInfo.auction_id, userInfo!.id);
 
-  const isBuyer = profile.role === 'buyer';
+  const isBuyer = profile!.role === 'buyer';
 
   return (
     <Card className="mb-4 rounded-t-2xl p-5 shadow-md">
