@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { updateFavoriteAuction } from 'src/entities/auction/supabase';
+import { updateFavoriteAuction } from 'src/entities/user/mypage/auctions/supabase';
 import type { NextRequest } from 'next/server';
 
 export async function POST(request: NextRequest) {

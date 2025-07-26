@@ -5,8 +5,8 @@ import { Button } from '@repo/ui/components/ui/button';
 import { type User } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaBookmark } from 'react-icons/fa6';
-import { postFavorite } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
+import { postFavorite } from 'src/entities/user/mypage/auctions/api';
 
 const AuctionFavoriteMarkToggle = ({
   auctionInfo,

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { selectFavoriteAuctionCardList } from 'src/entities/auction/supabase';
+import { selectFavoriteAuctionCardList } from 'src/entities/user/mypage/auctions/supabase';
 import type { NextRequest } from 'next/server';
 
 //NOTE - 관심 경매의 경매 리스트 가져오기

@@ -122,37 +122,6 @@ export const getAuctionCardList = async ({
   return data;
 };
 
-// 관심 경매 추가 - KSH
-export const postFavorite = async ({
-  auctionId,
-  updatedFavorites
-}: {
-  auctionId: string;
-  updatedFavorites: string[];
-}) => {
-  if (!auctionId) {
-    throw new Error('postFavorite: auctionId가 없습니다.');
-  }
-
-  if (!updatedFavorites) {
-    throw new Error('postFavorite: updatedFavorites가 없습니다.');
-  }
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/favorites`, {
-    headers: { 'Content-Type': 'application/json' },
-    method: 'POST',
-    body: JSON.stringify({ auctionId, updatedFavorites })
-  });
-
-  if (!res.ok) {
-    const errorResponse = await res.json();
-    throw new Error(errorResponse.error);
-  }
-
-  const data = await res.json();
-  return data;
-};
-
 export const getAuction = async (auctionId: string | undefined) => {
   if (!auctionId) {
     throw new Error('selectAuction: auctionId가 없습니다.');

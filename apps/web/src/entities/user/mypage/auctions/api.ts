@@ -10,7 +10,7 @@ export const getUserAuctions = async (userId: string) => {
   return data;
 };
 
-// 사용자의 관심 경매와 해당 경매의 사연 갯수 가져오기 (getAuctionCardList 참고) - KSH
+// 관심 경매와 해당 경매의 사연 갯수 가져오기 (getAuctionCardList 참고) - KSH
 export const getFavoriteAuctionCardList = async ({
   order,
   pageParam,
@@ -42,6 +42,37 @@ export const getFavoriteAuctionCardList = async ({
 
   if (!res.ok) {
     throw new Error('관심 경매와 해당 경매의 사연 갯수 fetch 실패');
+  }
+
+  const data = await res.json();
+  return data;
+};
+
+// 관심 경매 추가 - KSH
+export const postFavorite = async ({
+  auctionId,
+  updatedFavorites
+}: {
+  auctionId: string;
+  updatedFavorites: string[];
+}) => {
+  if (!auctionId) {
+    throw new Error('postFavorite: auctionId가 없습니다.');
+  }
+
+  if (!updatedFavorites) {
+    throw new Error('postFavorite: updatedFavorites가 없습니다.');
+  }
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/favorites`, {
+    headers: { 'Content-Type': 'application/json' },
+    method: 'POST',
+    body: JSON.stringify({ auctionId, updatedFavorites })
+  });
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
   }
 
   const data = await res.json();
