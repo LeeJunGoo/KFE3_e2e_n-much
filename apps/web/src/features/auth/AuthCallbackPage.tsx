@@ -7,6 +7,8 @@ import { upsertUser } from 'src/entities/auth/supabase';
 import { createClient } from 'src/shared/supabase/client/client';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 
+const POINT_TRIGGER_DELAY_MS = 1000;
+
 const AuthCallbackPage = () => {
   const router = useRouter();
   const { setUser, setLoading } = useAuthActions();
@@ -16,6 +18,7 @@ const AuthCallbackPage = () => {
     const handleCallback = async () => {
       if (hasProcessed.current) return;
       hasProcessed.current = true;
+
       try {
         const supabase = createClient();
         const { data, error } = await supabase.auth.getSession();
@@ -33,7 +36,22 @@ const AuthCallbackPage = () => {
           return;
         }
 
-        const completeUser = await upsertUser(user);
+        let completeUser = await upsertUser(user);
+
+        // 신규 사용자이고 포인트가 0이면 트리거 대기
+        if (completeUser.point === 0) {
+          // 1초 후 다시 조회 (트리거 실행 시간 대기)
+          await new Promise((resolve) => setTimeout(resolve, POINT_TRIGGER_DELAY_MS));
+
+          const { data: updatedUserData } = await supabase.from('users').select('*').eq('id', user.id).single();
+
+          if (updatedUserData) {
+            completeUser = {
+              ...user,
+              ...updatedUserData
+            };
+          }
+        }
 
         setUser(completeUser);
         setLoading(false);
