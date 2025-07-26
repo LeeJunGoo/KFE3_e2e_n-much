@@ -42,7 +42,7 @@ const AuctionFavoriteMarkToggle = ({
       setFavoriteMark((state) => !state);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['favoriteAuctionList', userId] });
+      queryClient.invalidateQueries({ queryKey: ['favoriteAuctions', userId] });
     }
   });
 

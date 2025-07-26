@@ -33,7 +33,7 @@ export const selectAuctionsByUserId = async (userId: string) => {
 export const selectFavoriteAuctionCardList = async (
   order: string | undefined,
   page: number | undefined,
-  user: string | undefined
+  userId: string | undefined
 ) => {
   const auctionsCount = await selectAuctionsCount('');
 
@@ -45,8 +45,8 @@ export const selectFavoriteAuctionCardList = async (
     throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(page가 없습니다.)');
   }
 
-  if (!user) {
-    throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(user가 없습니다.)');
+  if (!userId) {
+    throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(userId가 없습니다.)');
   }
 
   const ascending = order === 'favorites' ? false : true;
@@ -58,7 +58,7 @@ export const selectFavoriteAuctionCardList = async (
     *,episodes(count)
   `
     )
-    .contains('favorites', [user])
+    .contains('favorites', [userId])
     .eq('status', 'OPEN')
     .order(order, { ascending })
     .range(page, page + ITEM_PER_PAGE - 1);

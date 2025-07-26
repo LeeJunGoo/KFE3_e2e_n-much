@@ -14,14 +14,14 @@ export const getUserAuctions = async (userId: string) => {
 export const getFavoriteAuctionCardList = async ({
   order,
   pageParam,
-  user
+  userId
 }: {
   order: string | undefined;
   pageParam: number | undefined;
-  user: string | undefined;
+  userId: string | undefined;
 }) => {
-  if (!order && pageParam === undefined && !user) {
-    throw new Error('getFaboriteAuctionCardList: order와 pageParamr과 user가 없습니다.');
+  if (!order && pageParam === undefined && !userId) {
+    throw new Error('getFaboriteAuctionCardList: order와 pageParamr과 userId가 없습니다.');
   }
 
   if (!order) {
@@ -32,12 +32,12 @@ export const getFavoriteAuctionCardList = async ({
     throw new Error('getFaboriteAuctionCardList: pageParam이 없습니다.');
   }
 
-  if (!user) {
-    throw new Error('getFaboriteAuctionCardList: user가 없습니다.');
+  if (!userId) {
+    throw new Error('getFaboriteAuctionCardList: userId가 없습니다.');
   }
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/user/auctions/favorites?order=${order}&page=${pageParam}&user=${user}`
+    `${process.env.NEXT_PUBLIC_API_SERVER_URL}/user/auctions/favorites?order=${order}&page=${pageParam}&userId=${userId}`
   );
 
   if (!res.ok) {

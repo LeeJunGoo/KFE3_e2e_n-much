@@ -14,7 +14,7 @@ export const useGetUserAuctions = (userId?: UserRow['id']) => {
 };
 
 // (useGetAuctionListQuery 참고) - KSH
-export const useGetUserFavoriteAuctions = (order: string, user: string) => {
+export const useGetUserFavoriteAuctions = (order: string, userId: string) => {
   const { ref, inView } = useInView();
   const {
     data: fetchedAuctions,
@@ -24,13 +24,13 @@ export const useGetUserFavoriteAuctions = (order: string, user: string) => {
     isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery({
-    queryKey: ['favoriteAuctionList', user],
+    queryKey: ['favoriteAuctions', userId],
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
-      getFavoriteAuctionCardList({ order, pageParam, user }),
+      getFavoriteAuctionCardList({ order, pageParam, userId }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
     staleTime: 0,
-    enabled: Boolean(order) === true && Boolean(user) === true
+    enabled: Boolean(order) === true && Boolean(userId) === true
   });
 
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };

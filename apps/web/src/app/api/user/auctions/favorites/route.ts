@@ -7,20 +7,20 @@ export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const order = searchParams.get('order');
   const page = searchParams.get('page');
-  const user = searchParams.get('user');
+  const userId = searchParams.get('userId');
   let res = null;
 
-  if (!order || !page || !user) {
+  if (!order || !page || !userId) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
   try {
     if (order === 'favorites') {
-      res = await selectFavoriteAuctionCardList(order, Number(page), user);
+      res = await selectFavoriteAuctionCardList(order, Number(page), userId);
     } else if (order === 'end_date') {
-      res = await selectFavoriteAuctionCardList(order, Number(page), user);
+      res = await selectFavoriteAuctionCardList(order, Number(page), userId);
     } else if (order === 'created_at') {
-      res = await selectFavoriteAuctionCardList(order, Number(page), user);
+      res = await selectFavoriteAuctionCardList(order, Number(page), userId);
     }
 
     if (!res) {

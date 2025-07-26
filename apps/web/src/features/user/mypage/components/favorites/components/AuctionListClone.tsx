@@ -15,12 +15,10 @@ const AuctionListClone = ({ order }: AuctionListProps) => {
   //TODO - nextjs 캐시로 관리하기 (KMH)
 
   const userData = useUserState();
-  const user: string = userData?.id as string;
+  const userId: string = userData!.id;
 
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
-    useGetUserFavoriteAuctions(order, user);
-
-  console.log('fetchedAuctions:', fetchedAuctions);
+    useGetUserFavoriteAuctions(order, userId);
 
   useEffect(() => {
     if (inView) {
