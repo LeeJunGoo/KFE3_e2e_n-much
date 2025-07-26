@@ -8,7 +8,7 @@ import { FaBookmark } from 'react-icons/fa6';
 import { postFavorite } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
 
-const AuctionBookmarkToggle = ({
+const AuctionFavoriteMarkToggle = ({
   auctionInfo,
   auctionId,
   userInfo
@@ -67,4 +67,4 @@ const AuctionBookmarkToggle = ({
   );
 };
 
-export default AuctionBookmarkToggle;
+export default AuctionFavoriteMarkToggle;
