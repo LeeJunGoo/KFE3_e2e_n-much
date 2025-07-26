@@ -3,12 +3,14 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@repo/ui/components/ui/dialog';
 import { Input } from '@repo/ui/components/ui/input';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { DaumPostcodeEmbed } from 'react-daum-postcode';
 
 const AddressForm = () => {
   const [zonecode, setZonecode] = useState('');
   const [address, setAddress] = useState('');
+  const { push } = useRouter();
 
   const handleComplete = (data: {
     address: string;
@@ -70,7 +72,14 @@ const AddressForm = () => {
         <Input type="text" placeholder="나머지 주소 (선택 입력 가능)" maxLength={50} />
       </div>
       <div className="absolute bottom-0 left-0 right-0 w-full bg-white p-4">
-        <Button variant="base" className="w-full">
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            push('/mypage');
+          }}
+          variant="base"
+          className="w-full"
+        >
           등록하기
         </Button>
       </div>
