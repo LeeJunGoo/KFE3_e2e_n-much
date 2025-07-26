@@ -1,21 +1,13 @@
 import PageTitle from 'src/shared/ui/PageTitle';
-import PointDisplay from 'src/shared/ui/PointDisplay';
-import BaseCard from 'src/widgets/BaseCard';
+import PointHistoryList from './PointHistoryList';
 
 const PointHistory = () => {
   return (
     <>
-      <PageTitle as="h3" className="mb-2 mt-8 font-semibold">
+      <PageTitle as="h3" className="text-md mb-3 mt-8 text-left font-semibold">
         거래 내역
       </PageTitle>
-      <ul className="space-y-3">
-        <BaseCard as="li" className="flex items-center justify-between">
-          <p>빈티지 아이템 경매 참여</p>
-          <PointDisplay amount={1000} className="font-semibold" />
-          {/* <ActivityItem activity={activity} size="md" /> */}
-          {/* {'amount' in activity ? <PointSummary amount={activity.amount} balance={2730} /> : null} */}
-        </BaseCard>
-      </ul>
+      <PointHistoryList />
     </>
   );
 };
