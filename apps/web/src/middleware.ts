@@ -11,6 +11,16 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.next();
   }
 
+  //NOTE - 마이페이지 접근 시 로그인 체크
+  if (pathName === '/mypage' || pathName.startsWith('/mypage/')) {
+    const userInfo = await getServerUser();
+
+    //NOTE - 로그인 안 한 경우, 온보딩 페이지로 이동
+    if (!userInfo) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  }
+
   //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
   if (pathName === '/auctions/write') {
     const auctionId = searchParams.get('auction_id')?.trim();
