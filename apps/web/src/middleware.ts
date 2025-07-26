@@ -1,17 +1,14 @@
 import { NextResponse } from 'next/server';
-import { getServerUser, selectUserIdByAuctionId } from 'src/entities/auth/serverAction';
+import { selectUserIdByAuctionId } from 'src/entities/auction/serverActions';
+import { getServerUser } from 'src/entities/auth/serverAction';
 import type { NextRequest } from 'next/server';
 
 export const middleware = async (request: NextRequest) => {
   const pathName = request.nextUrl.pathname;
   const { searchParams } = request.nextUrl;
 
-  //NOTE - 로그인한 경우, 메인 페이지로 이동
-  if (pathName === '/') {
-    const userInfo = await getServerUser();
-    if (userInfo) {
-      return NextResponse.redirect(new URL('/main', request.url));
-    }
+  if (pathName === '/auth/callback') {
+    return NextResponse.next();
   }
 
   //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
@@ -33,7 +30,6 @@ export const middleware = async (request: NextRequest) => {
     try {
       const userId = userInfo.id;
       const authorId: string = await selectUserIdByAuctionId(auctionId);
-
       if (authorId !== userId) {
         return NextResponse.redirect(new URL('/main', request.url));
       }
@@ -66,5 +62,6 @@ export const middleware = async (request: NextRequest) => {
 
     return NextResponse.redirect(request.nextUrl);
   }
+
   return NextResponse.next();
 };
