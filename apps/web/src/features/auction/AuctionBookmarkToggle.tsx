@@ -12,12 +12,6 @@ const AuctionBookmarkToggle = ({
   auctionInfo: AuctionInfoWithAddressType;
   userInfo: User | null;
 }) => {
-  // 유저 정보
-  console.log(userInfo?.email);
-
-  // 찜한 유저의 정보 ['userid', 'userId']
-  console.log(auctionInfo.favorites);
-
   // 현재 유저의 찜 클릭 여부
   const isBookMarked = auctionInfo.favorites[0];
   const [bookmarked, setBookmarked] = useState(isBookMarked ?? false);

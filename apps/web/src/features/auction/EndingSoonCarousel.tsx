@@ -18,15 +18,15 @@ const EndingSoonCarousel = ({ endingSoonAuctions }: { endingSoonAuctions: Sorted
             <CarouselItem key={auction.auction_id} className="basis-3/5 pl-4">
               {/* //FIXME - 전체적인 UI 수정 */}
               <AuctionCard
-                auction_id={auction.auction_id}
-                status={auction.status}
+                auctionId={auction.auction_id}
+                // status={auction.status}
                 imageSrc={auction.image_urls?.[0] ?? NotAuctionImage.src}
                 title={auction.title}
-                currentPoint={auction.current_point}
+                // currentPoint={auction.current_point}
                 endDate={auction.end_date}
                 episodeCount={auction.episodes?.length ?? 0}
-                favorites={auction.favorites?.length ?? 0}
-                address={auction.address_id!}
+                favoriteCount={auction.favorites?.length ?? 0}
+                // address={auction.address_id!}
               />
             </CarouselItem>
           ))}

@@ -187,18 +187,18 @@ export const selectUserBidPointAmount = async (userId: UserRow['id']) => {
   return userBidPoint;
 };
 
-//FIXME - 현재 유저가 사용한 포인트
-// export const selectUserBidPoint = async (auctionId: AuctionRow['auction_id'], userId: UserRow['id']) => {
-//   const { data: userBidPoint, error } = await supabase
-//     .from('user_bid_totals')
-//     .select('*')
-//     .eq('auction_id', auctionId)
-//     .eq('user_id', userId)
-//     .maybeSingle();
+//ANCHOR - 사연에 대한 경매 참여자(Buyer)의 총입찰 포인트
+export const selectUserTotalBidPoint = async (auctionId: AuctionRow['auction_id'], userId: UserRow['id']) => {
+  const { data: userBidPoint, error } = await supabase
+    .from('valid_user_bid_totals')
+    .select('total_bid_points')
+    .eq('auction_id', auctionId)
+    .eq('user_id', userId)
+    .maybeSingle();
 
-//   if (error) {
-//     console.error('🚀 ~ selectBidderRanking ~ error:', error);
-//     throw new Error();
-//   }
-//   return userBidPoint;
-// };
+  if (error) {
+    console.error('🚀 ~ selectUserBidPoint ~ error:', error);
+    throw new Error();
+  }
+  return userBidPoint?.total_bid_points ?? 0;
+};

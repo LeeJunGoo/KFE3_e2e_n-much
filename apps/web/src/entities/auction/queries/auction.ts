@@ -91,7 +91,7 @@ export const useGetAuctionListQuery = (order: string, keyword: string | undefine
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
 };
 
-export const useAuctionBidPointAmount = (auctionId: AuctionRow['auction_id'], options?: { enabled?: boolean }) => {
+export const useAuctionBidPointQuery = (auctionId: AuctionRow['auction_id'], options?: { enabled?: boolean }) => {
   return useQuery({
     queryKey: [AUCTION_BID_POINT_AMOUNT, auctionId],
     queryFn: () => getAuctionBidPointAmount(auctionId),

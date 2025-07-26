@@ -1,12 +1,13 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { selectAuctionBidPointAmount } from 'src/entities/auction/supabase';
-import { selectUserBidPointAmount, updateEpisodeBid } from 'src/entities/episode/supabase';
+import { selectUserBidPointAmount, selectUserTotalBidPoint, updateEpisodeBid } from 'src/entities/episode/supabase';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
 
   const userId = searchParams.get('user_id');
   const auctionId = searchParams.get('auction_id');
+
   let res;
 
   if (!userId && !auctionId) {
@@ -20,6 +21,10 @@ export async function GET(request: NextRequest) {
 
     if (auctionId) {
       res = await selectAuctionBidPointAmount(auctionId);
+    }
+
+    if (auctionId && userId) {
+      res = await selectUserTotalBidPoint(auctionId, userId!);
     }
 
     return NextResponse.json(res, { status: 201 });
