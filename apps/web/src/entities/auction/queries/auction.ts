@@ -1,13 +1,6 @@
 import { QueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
-import {
-  getAddressId,
-  getAuction,
-  getAuctionCardList,
-  getFavoriteAuctionCardList,
-  patchAuction,
-  postAuction
-} from 'src/entities/auction/api';
+import { getAddressId, getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
 import { AUCTION_BID_POINT_AMOUNT } from 'src/entities/auction/constants';
 import { addressIdKeys, auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import { getAuctionBidPointAmount } from 'src/entities/episode/api';
@@ -93,29 +86,6 @@ export const useGetAuctionListQuery = (order: string, keyword: string | undefine
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
     staleTime: 0,
     enabled: Boolean(order) === true
-  });
-
-  return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
-};
-
-// KSH
-export const useGetFavoriteAuctionListQuery = (order: string, user: string) => {
-  const { ref, inView } = useInView();
-  const {
-    data: fetchedAuctions,
-    isError,
-    error,
-    isPending,
-    isFetchingNextPage,
-    fetchNextPage
-  } = useInfiniteQuery({
-    queryKey: ['favoriteAuctionList', user],
-    queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
-      getFavoriteAuctionCardList({ order, pageParam, user }),
-    initialPageParam: 0,
-    getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
-    staleTime: 0,
-    enabled: Boolean(order) === true && Boolean(user) === true
   });
 
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };

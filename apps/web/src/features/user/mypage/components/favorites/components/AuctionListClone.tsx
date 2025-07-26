@@ -3,8 +3,8 @@
 import { useEffect } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
-import { useGetFavoriteAuctionListQuery } from 'src/entities/auction/queries/auction';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
+import { useGetUserFavoriteAuctions } from 'src/entities/user/mypage/auctions/queries/useAuctions';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
 import AuctionCardClone from './AuctionCardClone';
@@ -18,7 +18,7 @@ const AuctionListClone = ({ order }: AuctionListProps) => {
   const user: string = userData?.id as string;
 
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
-    useGetFavoriteAuctionListQuery(order, user);
+    useGetUserFavoriteAuctions(order, user);
 
   console.log('fetchedAuctions:', fetchedAuctions);
 

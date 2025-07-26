@@ -237,7 +237,7 @@ export const selectFavoriteAuctionCardList = async (
   return { data, nextId };
 };
 
-// 관심 경매 추가 - (ksh)
+// 관심 경매 추가 - KSH
 export const updateFavoriteAuction = async ({
   auctionId,
   updatedFavorites
