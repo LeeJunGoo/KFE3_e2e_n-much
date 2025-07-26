@@ -3,10 +3,10 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
-import { fetchDeleteAuction } from 'src/entities/auction/api';
+import { deleteAuctionInfo } from 'src/entities/auction/api';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+const AuctionActionButtons = ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const router = useRouter();
 
   const handleAuctionDelete = async () => {
@@ -17,14 +17,15 @@ const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] 
     }
 
     try {
-      const result = await fetchDeleteAuction(auctionId);
-      if (result === 'success') {
-        router.push('/');
+      const result = await deleteAuctionInfo(auctionId);
+      if (result) {
         toast.success('정상적으로 삭제 되었습니다.');
+        router.push('/main');
       }
     } catch (error) {
       if (error instanceof Error) {
         toast.error('경매 물품을  삭제하지 못했습니다. 다시 시도해주세요.');
+        console.error(error.message);
         router.refresh();
       }
     }
@@ -42,4 +43,4 @@ const EditDeleteActions = ({ auctionId }: { auctionId: AuctionRow['auction_id'] 
   );
 };
 
-export default EditDeleteActions;
+export default AuctionActionButtons;

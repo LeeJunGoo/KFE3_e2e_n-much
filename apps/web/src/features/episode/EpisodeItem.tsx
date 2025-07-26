@@ -1,46 +1,57 @@
-import DefaultAvatar from 'src/assets/images/avatarDefault.svg';
-import type { EpisodeItemProps } from 'src/entities/episode/types';
-import EditDeleteEpisodes from 'src/features/episode/EditDeleteEpisodes';
-import EpisodeMoreButton from 'src/features/episode/EpisodeMoreButton';
-import { AuctionRow } from 'src/shared/supabase/types';
-import UserAvatar from 'src/shared/ui/BaseAvatar';
+import { useUserState } from 'src/entities/auth/stores/useAuthStore';
+import EpisodeActionButtons from 'src/features/episode/EpisodeActionButtons';
+import EpisodeBidModal from 'src/features/episode/EpisodeBidModal';
+import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
+import EpisodeLikeToggle from 'src/features/episode/EpisodeLikeButton';
+import { type AuctionRow } from 'src/shared/supabase/types';
+import BaseAvatar from 'src/shared/ui/BaseAvatar';
+import PageDescription from 'src/shared/ui/PageDescription';
+import PageTitle from 'src/shared/ui/PageTitle';
 import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
+import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
-  const episodeTime = formatYYYYMMDD(episode.created_at);
+  const user = useUserState();
 
-  //FIXME - buyer 필요
-  // const isEpisodeBid = userInfo.seller_id === sellerId || episode.buyer_id === userInfo.buyer_id;
-  // const isEpisodeEditDelete = episode.buyer_id === userInfo.buyer_id;
-  // const userNickname = episode.buyer.nickname ?? userInfo.social_name;
-  const isEpisodeBid = true;
-  const isEpisodeEditDelete = true;
-  const userNickname = 'Buyer 닉네임';
+  const isUser = episode.user_id === user?.id;
+  const isSeller = sellerId && user?.id;
+  const isEpisodeActions = episode.user_id === user?.id;
+  const userNickname = episode.users.nick_name ?? user?.nick_name;
 
   return (
-    <li className="list-none space-y-1 pb-4">
-      <div className="mb-5 flex items-center justify-between">
+    <li className="list-none">
+      <div className="flex justify-between">
         {/* 작성자 정보 */}
-        <div className="flex items-center">
-          <UserAvatar src={episode.users.user_avatar ?? DefaultAvatar} alt={userNickname} size="sm" />
+        <div className="flex gap-2 py-4">
+          <BaseAvatar src={episode.users.user_avatar!} alt={userNickname} size="sm" />
           <div>
             <div className="flex items-center gap-1">
               <p className="text-(--color-text-base) text-sm font-medium">{userNickname}</p>
               <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(episode.users.email)}&#41;</p>
             </div>
-            <p className="text-(--color-warm-gray) text-xs">{episodeTime}</p>
+            <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>
           </div>
         </div>
-        {/* {isEpisodeBid && <EpisodeBidButton episode={episode} />} */}
+        <div className="flex flex-col items-end justify-center">
+          {/* 입찰하기 버튼  */}
+          {isUser && isSeller && <EpisodeBidModal episode={episode} />}
+          {/* 좋아요 버튼 */}
+          <EpisodeLikeToggle episode={episode} />
+        </div>
       </div>
       <div>
-        <h4 className="text-(((--color-text-base))) mb-1 font-medium">{episode.title}</h4>
-        <p className="text-md text-(--color-warm-gray) line-clamp-2 leading-relaxed">{episode.description}</p>
+        <PageTitle as="h4" className="mb-1 font-medium" order="left" size="md">
+          {episode.title}
+        </PageTitle>
+        <PageDescription variant="ghost" clamp={2}>
+          {episode.description}
+        </PageDescription>
       </div>
       <div className="flex items-center justify-between">
-        <EpisodeMoreButton episode={episode} />
-        {isEpisodeEditDelete && <EditDeleteEpisodes auction_id={episode.auction_id} episode_id={episode.episode_id} />}
+        <EpisodeInfoModal episode={episode} />
+        {/* 수정 및 삭제 */}
+        {isEpisodeActions && <EpisodeActionButtons auctionId={episode.auction_id} episodeId={episode.episode_id} />}
       </div>
     </li>
   );

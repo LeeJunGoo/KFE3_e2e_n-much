@@ -1,7 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react';
-import type { Control, FieldPath, FieldPathValue, FieldValues } from 'react-hook-form';
-import type { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
-import type { AddressRow, AuctionRow, RankingRow, UserRow } from 'src/shared/supabase/types';
+import { type UserSummaryInfoType } from 'src/entities/auth/types';
+import type { auctionFormSchema } from './schema/auctionForm';
+import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { AddressRow, AuctionRow, RankingRow } from 'src/shared/supabase/types';
 import type { z } from 'zod';
 
 type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
@@ -9,14 +10,9 @@ type AddressSummaryInfoType = Pick<AddressRow, 'address_id' | 'business_name' | 
 
 export type AuctionSummaryInfoWithAddressType = AuctionSummaryInfoType & AddressSummaryInfoType;
 
-type AuctionInfoType = Omit<
-  AuctionRow,
-  'address_id' | 'created_at' | 'favorites' | 'highest_bidder_id' | 'starting_point' | 'updated_at'
->;
-
 type AddressInfoType = Omit<AddressRow, 'created_at' | 'is_default' | 'user_id'>;
 
-export type AuctionInfoWithAddressType = AuctionInfoType & AddressInfoType;
+export type AuctionInfoWithAddressType = AuctionRow & AddressInfoType;
 
 export type SellerAuctionCountType = {
   totalAuctions: number;
@@ -24,17 +20,9 @@ export type SellerAuctionCountType = {
 };
 
 type RankingSummaryInfoType = Pick<RankingRow, 'rank_position' | 'bid_amount' | 'created_at'>;
-type UserSummaryInfoType = Pick<UserRow, 'email' | 'nick_name' | 'user_avatar' | 'id'>;
-
 export type BidderRankingInfoType = RankingSummaryInfoType & { users: UserSummaryInfoType };
 
-// export type BuyerInfoType = {
-//   buyer: Pick<BuyerRow, 'buyer_id' | 'avatar' | 'nickname' | 'email'>;
-// };
-
-// export type AuctionInfoType = { status: string; data: AuctionRow };
-
-// export type AuctionHighestBidder = { status: string; data: EpisodeRow & BuyerInfoType };
+export type AuctionBidPointAmount = Pick<AuctionRow, 'starting_point' | 'current_point' | 'max_point'>;
 
 export type SortedAuctionItemType = AuctionRow & {
   episodes: {

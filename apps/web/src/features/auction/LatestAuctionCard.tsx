@@ -4,6 +4,7 @@ import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import { type SortedAuctionItemType } from 'src/entities/auction/types';
 import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import BaseBadge from 'src/shared/ui/BaseBadge';
+import PageDescription from 'src/shared/ui/PageDescription';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 
 const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
@@ -37,7 +38,7 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
         <div className="ml-2 flex-1">
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="mr-2 flex-1 font-medium">{auction.title}</h3>
+              <PageDescription>{auction.title}</PageDescription>
             </div>
             <BaseBadge variant={badgeVariant} className={'px-2 py-1 font-normal'}>
               {remainTime}

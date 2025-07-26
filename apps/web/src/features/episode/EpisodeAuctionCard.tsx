@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import AuctionTimerStatic from 'src/features/auction/AuctionTimerStatic';
+import PageDescription from 'src/shared/ui/PageDescription';
+import PageTitle from 'src/shared/ui/PageTitle';
 import BaseCard from 'src/widgets/BaseCard';
 import type { AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
 
@@ -9,6 +11,7 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummary
   const auctionTitle = auctionInfo.title;
   const endDate = auctionInfo.end_date;
   const auctionUser = auctionInfo;
+
   const auctionImage = imageUrls && imageUrls.length > 0 ? imageUrls[0] : NotAuctionImage;
 
   return (
@@ -18,8 +21,8 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummary
           <Image
             src={auctionImage!}
             alt="테스트 이미지입니다."
-            width={80}
-            height={80}
+            width={110}
+            height={110}
             className="object-cover"
             priority
           />
@@ -27,9 +30,13 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummary
 
         <div className="flex w-full flex-col justify-between">
           <div>
-            <p className="font-medium">{auctionTitle}</p>
-            <div className="flex items-center">
-              <p className="text-(--color-warm-gray) max-w-[45%] truncate text-sm">{auctionUser.address_id}</p>
+            <PageTitle order="left" size="md">
+              {auctionTitle}
+            </PageTitle>
+            <PageDescription variant="ghost">{auctionUser.business_name}</PageDescription>
+            <div className="mb-4 flex gap-2">
+              <PageDescription variant="ghost">{auctionUser.road_address}</PageDescription>
+              <PageDescription variant="ghost">{auctionUser.detail_address} </PageDescription>
             </div>
           </div>
           <AuctionTimerStatic endDate={endDate} />

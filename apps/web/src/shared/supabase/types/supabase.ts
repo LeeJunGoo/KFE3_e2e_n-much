@@ -137,6 +137,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "auctions_address_id_fkey"
+            columns: ["address_id"]
+            isOneToOne: false
+            referencedRelation: "addresses"
+            referencedColumns: ["address_id"]
+          },
+          {
             foreignKeyName: "auctions_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
@@ -195,6 +202,51 @@ export type Database = {
           },
           {
             foreignKeyName: "episodes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      inquiries: {
+        Row: {
+          auction_id: string
+          created_at: string
+          description: string
+          inquiry_id: string
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          auction_id: string
+          created_at?: string
+          description: string
+          inquiry_id?: string
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          auction_id?: string
+          created_at?: string
+          description?: string
+          inquiry_id?: string
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "inquiry_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["auction_id"]
+          },
+          {
+            foreignKeyName: "inquiry_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -316,6 +368,7 @@ export type Database = {
           email: string
           id: string
           nick_name: string
+          point: number
           role: string
           user_avatar: string | null
         }
@@ -325,6 +378,7 @@ export type Database = {
           email: string
           id?: string
           nick_name: string
+          point?: number
           role: string
           user_avatar?: string | null
         }
@@ -334,6 +388,7 @@ export type Database = {
           email?: string
           id?: string
           nick_name?: string
+          point?: number
           role?: string
           user_avatar?: string | null
         }
@@ -366,6 +421,29 @@ export type Database = {
           },
           {
             foreignKeyName: "points_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      valid_user_bid_totals: {
+        Row: {
+          auction_id: string | null
+          total_bid_points: number | null
+          user_id: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "episodes_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["auction_id"]
+          },
+          {
+            foreignKeyName: "episodes_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"

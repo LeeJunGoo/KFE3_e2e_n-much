@@ -1,18 +1,10 @@
-// import type { EpisodeRow } from 'src/shared/supabase/types';
+import { type UserSummaryInfoType } from 'src/entities/auth/types';
 import type { EpisodeInsert, EpisodeRow, EpisodeUpdate } from 'src/shared/supabase/types/index';
 
 //NOTE - 경매 사연, 등록, 수정 타입 지정
-export type EpisodeItemProps = EpisodeRow & {
-  users: {
-    nickname: string;
-    user_avatar: string | null;
-    email: string;
-  };
-};
-export type EpisodesListType = {
-  episodeList: EpisodeItemProps[];
-  episodeCount: number;
-};
+export type EpisodeItemProps = EpisodeRow & { users: UserSummaryInfoType };
+export type EpisodeListType = EpisodeItemProps[];
+export type EpisodesCountType = { episodeCount: number };
 
 export type EpisodeInfo = { status: string; data: EpisodeRow };
 

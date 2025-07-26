@@ -1,9 +1,17 @@
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
+import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import type { EpisodesContainerProps } from 'src/entities/user/mypage/episodes/types';
 
-const OngoingEpisodesContainer = () => {
+const OngoingEpisodesContainer = ({ episodes }: EpisodesContainerProps) => {
+  if (!episodes || episodes.length === 0) {
+    return <EmptyState title="진행중인 에피소드가 없습니다" description="새로운 경매에 참여해보세요" />;
+  }
+
   return (
     <ul>
-      <MyEpisodeListItem />
+      {episodes.map((episode) => (
+        <MyEpisodeListItem key={episode.episode_id} episode={episode} />
+      ))}
     </ul>
   );
 };

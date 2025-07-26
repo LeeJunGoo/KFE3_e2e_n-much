@@ -21,7 +21,13 @@ const badgeVariants = cva(
         green: 'bg-(--color-green) text-white font-semibold border border-transparent',
         lightGray: 'bg-(--color-light-gray) text-white font-semibold border border-transparent',
         primary: 'bg-(--color-primary) text-white font-semibold border border-transparent',
-        secondary: 'bg-(--color-secondary) text-white font-semibold border border-transparent'
+        secondary: 'bg-(--color-secondary) text-white font-semibold border border-transparent',
+
+        // ✅ 의미 기반 alias 추가
+        success: 'bg-(--color-green) text-white font-semibold border border-transparent', // = green
+        error: 'bg-(--color-red) text-white font-semibold border border-transparent', // = red
+        info: 'bg-(--color-primary) text-white font-semibold border border-transparent', // = primary
+        muted: 'bg-(--color-light-gray) text-white font-semibold border border-transparent' // = lightGray
       }
     },
     defaultVariants: {

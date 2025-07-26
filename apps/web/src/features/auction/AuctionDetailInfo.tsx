@@ -1,40 +1,46 @@
 import { Card } from '@repo/ui/components/ui/card';
-import Link from 'next/link';
+import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
+import { getServerUser } from 'src/entities/auth/serverAction';
+import { selectUser } from 'src/entities/auth/supabase';
+import { getHasUserWrittenEpisode } from 'src/entities/episode/api';
 import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
+import EpisodeWriteButton from 'src/features/episode/EpisodeWriteButton';
+import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseBadge from 'src/shared/ui/BaseBadge';
-import type { AuctionInfoWithAddressType } from 'src/entities/auction/types';
+import PageDescription from 'src/shared/ui/PageDescription';
+import PageTitle from 'src/shared/ui/PageTitle';
+import { formatNumber } from 'src/shared/utils/formatNumber';
 
-const AuctionDetailInfo = ({ auctionInfo }: { auctionInfo: AuctionInfoWithAddressType }) => {
+const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
+  const auctionInfo = await getAuctionInfoWithAddress(auctionId); //ANCHOR - 경매 상품 및 경매 업체 정보
+
   const badgeVariant = auctionInfo.status === 'OPEN' ? 'accent' : 'red';
   const auctionStatus = auctionInfo.status === 'OPEN' ? '진행중' : '종료됨';
 
+  const userInfo = await getServerUser();
+  const profile = await selectUser(userInfo!.id);
+  const isWritten = await getHasUserWrittenEpisode(auctionInfo.auction_id, userInfo!.id);
+
+  const isBuyer = profile.role === 'buyer';
+
   return (
-    //  경매 정보
     <Card className="mb-4 rounded-t-2xl p-5 shadow-md">
       <div className="mb-2">
         <div className="mb-2 flex items-start justify-between">
-          <h1 className="text-(--color-text-base) text-xl font-bold leading-tight">{auctionInfo.title}</h1>
+          <PageTitle size="lg">{auctionInfo.title}</PageTitle>
           <BaseBadge variant={badgeVariant} className="ml-2">
             {auctionStatus}
           </BaseBadge>
         </div>
         <div className="space-y-2">
-          <p className="text-(--color-warm-gray) text-sm">{auctionInfo.description}</p>
+          <PageDescription variant="ghost">{auctionInfo.description}</PageDescription>
           <AuctionTimerDynamic endDate={auctionInfo.end_date} />
-          <div className="mb-4">
-            <p className="text-(--color-warm-gray) text-sm">현재 최고 입찰가</p>
-            <p className="text-(--color-text-base) text-xl font-bold">{auctionInfo.current_point.toLocaleString()} P</p>
+          <div className="mt-10">
+            <PageDescription variant="ghost">현재 최고 입찰가</PageDescription>
+            <p className="text-(--color-text-base) text-xl font-bold">{formatNumber(auctionInfo.current_point)} P</p>
           </div>
         </div>
-        {/* //FIXME - Seller일 경우만 */}
-        <div className="flex space-x-3">
-          <Link
-            href={`/episode/${auctionInfo.auction_id}`}
-            className="bg-(--color-accent) text-(--color-secondary) hover:bg-(--color-primary) flex-1 rounded-md p-2 text-center transition-colors"
-          >
-            사연 작성하기
-          </Link>
-        </div>
+        {isBuyer && <EpisodeWriteButton auctionId={auctionInfo.auction_id} isWritten={isWritten} className="mt-3" />}
       </div>
     </Card>
   );
