@@ -14,13 +14,11 @@ const AuthProvider = ({ user: initialUser, children }: { user: User | null; chil
     if (initialUser && (!currentUser || currentUser.id !== initialUser.id)) {
       setUser(initialUser);
       setLoading(false);
-    } else if (!initialUser && !currentUser) {
-      setLoading(false);
     }
 
     const {
       data: { subscription }
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((event: any, session: any) => {
       const sessionUser = session?.user ?? null;
 
       if (event === 'SIGNED_IN' && sessionUser) {
@@ -37,6 +35,7 @@ const AuthProvider = ({ user: initialUser, children }: { user: User | null; chil
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialUser?.id, setUser, setLoading, supabase]);
+
   return <>{children}</>;
 };
 
