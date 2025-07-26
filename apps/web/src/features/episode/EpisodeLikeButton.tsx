@@ -5,11 +5,14 @@ import { FaHeart } from 'react-icons/fa';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
+// 사연 좋아요 시
+//TODO - updateEpisodeBid() 요청해서 포인트 올리기
+//TODO - 포인트 회수하는 함수 생성하기
 const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
   // 유저 정보
   const user = useUserState();
   // 좋아요 likes['userid', 'userId']
-  const likes = episode.likes;
+  const { likes } = episode;
   // 좋아요 클릭 여부
   const isLiked = episode.likes[0];
   const [liked, setLiked] = useState(isLiked ?? false);
