@@ -7,6 +7,7 @@ import OngoingEpisodesContainer from 'src/features/user/mypage/components/episod
 import MyEpisodesTabSkeleton from 'src/features/user/mypage/components/episodes/skeleton/MyEpisodesTabSkeleton';
 import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import BaseTabs from 'src/features/user/mypage/components/shared/tabs/BaseTabs';
+import { AUCTION_STATUS } from 'src/shared/utils/getAuctionStatusText';
 import type { EpisodeWithAuction } from 'src/entities/user/mypage/episodes/types';
 
 const TAB_LABELS = {
@@ -18,12 +19,16 @@ const MyEpisodesTabContainer = () => {
   const user = useUserState();
   const { data, isPending, isError, refetch } = useGetUserEpisodes(user?.id);
 
-  if (!user) return null;
+  if (!user) return <MyEpisodesTabSkeleton />;
   if (isPending) return <MyEpisodesTabSkeleton />;
   if (isError) return <ErrorState onRetry={() => refetch()} />;
 
-  const ongoingEpisodes = data?.filter((episode: EpisodeWithAuction) => episode.auctions?.status === 'OPEN');
-  const completedEpisodes = data?.filter((episode: EpisodeWithAuction) => episode.auctions?.status === 'CLOSED');
+  const ongoingEpisodes = data?.filter(
+    (episode: EpisodeWithAuction) => episode.auctions?.status === AUCTION_STATUS.OPEN
+  );
+  const completedEpisodes = data?.filter(
+    (episode: EpisodeWithAuction) => episode.auctions?.status === AUCTION_STATUS.CLOSED
+  );
 
   const TAB_CONTENTS = [
     { value: 'ongoing', content: <OngoingEpisodesContainer episodes={ongoingEpisodes} /> },

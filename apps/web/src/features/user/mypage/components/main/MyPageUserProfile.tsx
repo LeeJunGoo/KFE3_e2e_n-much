@@ -34,7 +34,6 @@ const MyPageUserProfile = () => {
 
   return (
     <BaseCard as="section" variant="primary">
-      <div>현재 role: {user?.role}</div>
       <div className="flex items-start justify-between pb-1">
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
