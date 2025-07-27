@@ -30,13 +30,15 @@ export const middleware = async (request: NextRequest) => {
       const user = await getServerUserWithProfile();
       const userAddressId = user.address_id;
       const userRole = user.role;
-      console.log('userRole', userRole);
+
       if (!userAddressId) {
-        return NextResponse.redirect(new URL('/main', request.url)); //TODO - 마이 페이지 주소 등록으로 이동시키도록 수정하기 (KMH)
+        return NextResponse.redirect(new URL('/main', request.url));
+        //TODO - 마이 페이지 주소 등록으로 이동시키도록 수정하기 (KMH)
       }
 
       if (userRole === 'buyer') {
         return NextResponse.redirect(new URL('/main', request.url));
+        //TODO - 마이 페이지로 가는 것이 어떤지 물어보기, 그리고 아무 말없이 리다이렉트 시키는게 UX상 문제있는 것 같음 (KMH)
       }
     } catch {
       return NextResponse.redirect(new URL('/main', request.url));
