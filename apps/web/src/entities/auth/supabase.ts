@@ -48,23 +48,26 @@ export const upsertUser = async (authUser: User) => {
   if (!authUser.email) {
     throw new Error('사용자 이메일이 없습니다.');
   }
-  let { data: userData } = await supabase.from('users').select('*').eq('id', authUser.id).maybeSingle();
 
-  if (!userData) {
-    const newUserData = {
-      id: authUser.id,
-      nick_name: authUser.user_metadata?.name || authUser.email.split('@')[0],
-      email: authUser.email, 
-      role: 'buyer' as const,
-      user_avatar: authUser.user_metadata?.avatar_url || ''
-    };
+  const userData = {
+    id: authUser.id,
+    nick_name: authUser.user_metadata?.name || authUser.email.split('@')[0],
+    email: authUser.email,
+    role: 'buyer' as const,
+    user_avatar: authUser.user_metadata?.avatar_url || ''
+  };
 
-    const { data: insertedData } = await supabase.from('users').insert(newUserData).select().single();
-    userData = insertedData;
-  }
+  const { data } = await supabase
+    .from('users')
+    .upsert(userData, {
+      onConflict: 'id',
+      ignoreDuplicates: false
+    })
+    .select()
+    .single();
 
   return {
     ...authUser,
-    ...userData
+    ...data
   };
 };
