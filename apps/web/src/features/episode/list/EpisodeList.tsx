@@ -15,7 +15,7 @@ import { getEpisodesWithPagination } from 'src/entities/episode/api';
 import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
 import { usePageActions } from 'src/entities/episode/stores/usePaginationStore';
-import EpisodeItem from 'src/features/episode/EpisodeItem';
+import EpisodeItem from 'src/features/episode/card/EpisodeCard';
 import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 

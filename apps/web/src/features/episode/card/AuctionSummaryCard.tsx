@@ -1,12 +1,12 @@
 import Image from 'next/image';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
-import AuctionTimerStatic from 'src/features/auction/AuctionTimerStatic';
+import AuctionTimerStatic from 'src/features/auction/timer/AuctionTimerStatic';
 import PageDescription from 'src/shared/ui/PageDescription';
 import PageTitle from 'src/shared/ui/PageTitle';
 import BaseCard from 'src/widgets/BaseCard';
 import type { AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
 
-const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummaryInfoWithAddressType }) => {
+const AuctionSummaryCard = async ({ auctionInfo }: { auctionInfo: AuctionSummaryInfoWithAddressType }) => {
   const imageUrls = auctionInfo.image_urls;
   const auctionTitle = auctionInfo.title;
   const endDate = auctionInfo.end_date;
@@ -46,4 +46,4 @@ const EpisodeAuctionCard = async ({ auctionInfo }: { auctionInfo: AuctionSummary
   );
 };
 
-export default EpisodeAuctionCard;
+export default AuctionSummaryCard;

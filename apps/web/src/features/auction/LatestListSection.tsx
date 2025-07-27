@@ -1,7 +1,7 @@
 import { LATEST_AUCTIONS_COUNT } from 'src/entities/auction/constants';
 import { getAuctionsCategory } from 'src/entities/auction/serverActions';
 import { type SortedAuctionItemType } from 'src/entities/auction/types';
-import LatestAuctionCard from 'src/features/auction/LatestAuctionCard';
+import LatestAuctionCard from 'src/features/auction/card/LatestAuctionCard';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 

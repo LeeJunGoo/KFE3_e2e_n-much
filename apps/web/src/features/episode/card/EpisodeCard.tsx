@@ -1,8 +1,8 @@
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
-import EpisodeActionButtons from 'src/features/episode/EpisodeActionButtons';
-import EpisodeBidModal from 'src/features/episode/EpisodeBidModal';
-import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
-import EpisodeLikeToggle from 'src/features/episode/EpisodeLikeButton';
+import EpisodeActionButtons from 'src/features/episode/button/EpisodeActionButtons';
+import EpisodeLikeToggle from 'src/features/episode/button/EpisodeLikeButton';
+import EpisodeBidModal from 'src/features/episode/modal/EpisodeBidModal';
+import EpisodeInfoModal from 'src/features/episode/modal/EpisodeInfoModal';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import PageDescription from 'src/shared/ui/PageDescription';

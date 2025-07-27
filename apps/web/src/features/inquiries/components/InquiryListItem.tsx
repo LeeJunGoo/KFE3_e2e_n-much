@@ -1,6 +1,6 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { IoIosArrowDown } from 'react-icons/io';
-import EpisodeAuctionCard from 'src/features/episode/EpisodeAuctionCard';
+import AuctionSummaryCard from 'src/features/episode/card/AuctionSummaryCard';
 import BaseCard from 'src/widgets/BaseCard';
 
 const InquiryListItem = () => {
@@ -32,7 +32,7 @@ const InquiryListItem = () => {
           </div>
           <div className="bg-(--color-secondary) mt-2 rounded-lg p-3">
             {/** 업체 정보 클릭 시 auction-detail 페이지로 이동 */}
-            {/* <EpisodeAuctionCard auctionInfo={auctionInfo} /> */}
+            {/* <AuctionSummaryCard auctionInfo={auctionInfo} /> */}
           </div>
         </div>
       </BaseCard>

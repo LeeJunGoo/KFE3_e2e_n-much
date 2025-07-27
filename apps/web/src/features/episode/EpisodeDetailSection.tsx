@@ -3,7 +3,7 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getEpisodesCount, getEpisodesWithPagination } from 'src/entities/episode/api';
 import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
-import EpisodeList from 'src/features/episode/EpisodeList';
+import EpisodeList from 'src/features/episode/list/EpisodeList';
 import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
 import { type AuctionRow } from 'src/shared/supabase/types';
 

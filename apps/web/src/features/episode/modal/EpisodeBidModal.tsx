@@ -15,8 +15,8 @@ import { useAuctionBidPointQuery } from 'src/entities/auction/queries/auction';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useEpisodeTotalBidPointByUserQuery, useUserPointQuery } from 'src/entities/episode/queries/episode';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
-import EpisodeBidButton from 'src/features/episode/EpisodeBidButton';
-import EpisodeBidModalForm from 'src/features/episode/EpisodeBidModalForm';
+import EpisodeBidButton from 'src/features/episode/button/EpisodeBidButton';
+import EpisodeBidModalForm from 'src/features/episode/form/EpisodeBidModalForm';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 

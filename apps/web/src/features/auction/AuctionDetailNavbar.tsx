@@ -1,8 +1,8 @@
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
 import { selectUser } from 'src/entities/auth/supabase';
-import AuctionActionButtons from 'src/features/auction/AuctionActionButtons';
-import AuctionBookmarkToggle from 'src/features/auction/AuctionBookmarkToggle';
+import AuctionActionButtons from 'src/features/auction/button/AuctionActionButtons';
+import AuctionBookmarkToggle from 'src/features/auction/button/AuctionBookmarkToggle';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import GoBackButton from 'src/shared/ui/GoBackButton';
 
