@@ -43,19 +43,19 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
   });
 
   const handleLikeMarkClick = async () => {
-    // 버튼 클릭 시점에 최신 값 가져오기
-    const episodeInfo = await getEpisodeInfo(episodeId);
-    // console.log('episodeInfo: ', episodeInfo);
-    const currentLikes = episodeInfo.likes;
-    const currentBidPoint = episodeInfo.bid_point;
-
-    const updatedLikes = isIncluded ? currentLikes.filter((item) => item !== userId) : [...currentLikes, userId];
-
-    const updatedBidPoint = isIncluded
-      ? currentBidPoint! - LIKE_EPISODE_BID_POINT
-      : currentBidPoint! + LIKE_EPISODE_BID_POINT;
-
     try {
+      // 버튼 클릭 시점에 최신 값 가져오기
+      const episodeInfo = await getEpisodeInfo(episodeId);
+      // console.log('episodeInfo: ', episodeInfo);
+      const currentLikes = episodeInfo.likes;
+      const currentBidPoint = episodeInfo.bid_point;
+
+      const updatedLikes = isIncluded ? currentLikes.filter((item) => item !== userId) : [...currentLikes, userId];
+
+      const updatedBidPoint = isIncluded
+        ? currentBidPoint! - LIKE_EPISODE_BID_POINT
+        : currentBidPoint! + LIKE_EPISODE_BID_POINT;
+
       const result = await mutate.mutateAsync({ episodeId, updatedLikes, updatedBidPoint });
       // console.log('result: ', result);
     } catch (error) {
