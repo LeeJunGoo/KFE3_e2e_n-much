@@ -36,9 +36,6 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
     onError: (error) => {
       console.error(error.message);
       setLikeMark((state) => !state);
-    },
-    onSuccess: () => {
-      // queryClient.invalidateQueries({ queryKey: ['???', userId] });
     }
   });
 
