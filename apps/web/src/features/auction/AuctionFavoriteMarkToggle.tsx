@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { type User } from '@supabase/supabase-js';
@@ -20,13 +20,9 @@ const AuctionFavoriteMarkToggle = ({
 }) => {
   const userId = userInfo!.id;
   const currentfavorites = auctionInfo.favorites;
-  const isIncluedes = currentfavorites.includes(userId);
+  const isIncluded = currentfavorites.includes(userId);
 
-  const [favoriteMark, setFavoriteMark] = useState(isIncluedes);
-
-  const updatedFavorites = favoriteMark
-    ? currentfavorites.filter((item) => item !== userId)
-    : [...currentfavorites, userId];
+  const [favoriteMark, setFavoriteMark] = useState(isIncluded);
 
   const queryClient = useQueryClient();
 
@@ -48,6 +44,10 @@ const AuctionFavoriteMarkToggle = ({
   });
 
   const handleFavoriteMarkClick = async () => {
+    const updatedFavorites = isIncluded
+      ? currentfavorites.filter((item) => item !== userId)
+      : [...currentfavorites, userId];
+
     try {
       const result = await mutate.mutateAsync({ auctionId, updatedFavorites });
       // console.log('result: ', result);
@@ -58,6 +58,10 @@ const AuctionFavoriteMarkToggle = ({
       }
     }
   };
+
+  useEffect(() => {
+    setFavoriteMark(isIncluded);
+  }, [userId, isIncluded]);
 
   return (
     <Button variant="text" onClick={handleFavoriteMarkClick}>
