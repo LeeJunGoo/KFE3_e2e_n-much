@@ -1,7 +1,7 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { selectUser } from 'src/entities/auth/supabase';
+import { selectUser } from 'src/entities/auth/supabase/client';
 import { getHasUserWrittenEpisode } from 'src/entities/episode/api';
 import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
 import EpisodeWriteButton from 'src/features/episode/EpisodeWriteButton';
@@ -21,7 +21,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
   const profile = await selectUser(userInfo!.id);
   const isWritten = await getHasUserWrittenEpisode(auctionInfo.auction_id, userInfo!.id);
 
-  const isBuyer = profile.role === 'buyer';
+  const isBuyer = profile!.role === 'buyer';
 
   return (
     <Card className="mb-4 rounded-t-2xl p-5 shadow-md">

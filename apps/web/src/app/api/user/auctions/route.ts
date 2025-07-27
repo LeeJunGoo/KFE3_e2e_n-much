@@ -13,6 +13,6 @@ export async function GET(request: NextRequest) {
     const res = await selectAuctionsByUserId(userId);
     return NextResponse.json(res, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ status: 'error', error: `Server Error${error}` }, { status: 500 });
+    return NextResponse.json({ status: 'error', error: `Server Error ${error}` }, { status: 500 });
   }
 }
