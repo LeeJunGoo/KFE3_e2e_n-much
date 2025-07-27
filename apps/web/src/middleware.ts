@@ -14,8 +14,15 @@ export const middleware = async (request: NextRequest) => {
     }
   }
 
-  //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
+  if (pathName === '/auth/signup') {
+    const userInfo = await getServerUser();
+    if (userInfo) {
+      return NextResponse.redirect(new URL('/main', request.url));
+    }
+  }
+
   if (pathName === '/auctions/write') {
+    //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
     const auctionId = searchParams.get('auction_id')?.trim();
     const userInfo = await getServerUser();
 
@@ -37,7 +44,7 @@ export const middleware = async (request: NextRequest) => {
       if (authorId !== userId) {
         return NextResponse.redirect(new URL('/main', request.url));
       }
-    } catch (error) {
+    } catch {
       return NextResponse.redirect(new URL('/main', request.url));
     }
   }
@@ -67,4 +74,8 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.redirect(request.nextUrl);
   }
   return NextResponse.next();
+};
+
+export const config = {
+  matcher: ['/', '/auth/signup', '/auctions/write', '/auctions']
 };
