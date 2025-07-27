@@ -1,5 +1,5 @@
 'use server';
-
+import { getUserById } from 'src/entities/auth/supabase/server';
 import { createServer } from 'src/shared/supabase/client/server';
 
 //ANCHOR - user 정보가 필요할 경우 사용
@@ -8,21 +8,19 @@ export const getServerUser = async () => {
   const {
     data: { user }
   } = await supabase.auth.getUser();
-
   return user;
 };
 
-export const selectUserIdByAuctionId = async (auctionId: string | null): Promise<string> => {
-  if (!auctionId) {
-    throw new Error('DB: 유저 아이디 불러오기 에러(auctionId가 없습니다.)');
-  }
-
+//ANCHOR - user 정보 + DB 프로필 정보 함께 가져오기
+export const getServerUserWithProfile = async () => {
   const supabase = await createServer();
-  const { data, error } = await supabase.from('auctions').select('user_id').eq('auction_id', auctionId).single();
-  if (error) {
-    console.error('selectUserIdByAuctionId', error, data);
-    throw new Error('DB: 유저 아이디 불러오기 에러');
-  }
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
 
-  return data.user_id;
+  if (!user) return null;
+
+  const userData = await getUserById(user.id);
+
+  return userData ? { ...user, ...userData } : user;
 };

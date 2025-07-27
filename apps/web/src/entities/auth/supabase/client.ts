@@ -1,5 +1,5 @@
 import { createClient } from 'src/shared/supabase/client/client';
-import type { Provider } from '@supabase/supabase-js';
+import type { Provider, User } from '@supabase/supabase-js';
 import type { RoleType } from 'src/entities/user/mypage/main/types';
 
 const supabase = createClient();
@@ -23,12 +23,13 @@ export const selectSignUp = async (provider: Provider) => {
 };
 
 export const selectUser = async (userId: string) => {
-  const { data, error } = await supabase.from('users').select('*').eq('id', userId).single();
+  const { data, error } = await supabase.from('users').select('*').eq('id', userId).maybeSingle();
 
   if (error) {
     console.error('🚀 ~ selectUsers ~ error:', error);
     throw new Error('DB: 사용자 프로필 조회 에러');
   }
+
   return data;
 };
 
@@ -41,4 +42,32 @@ export const updateUserRole = async (userId: string, newRole: RoleType) => {
   }
 
   return data;
+};
+
+export const upsertUser = async (authUser: User) => {
+  if (!authUser.email) {
+    throw new Error('사용자 이메일이 없습니다.');
+  }
+
+  const userData = {
+    id: authUser.id,
+    nick_name: authUser.user_metadata?.name || authUser.email.split('@')[0],
+    email: authUser.email,
+    role: 'buyer' as const,
+    user_avatar: authUser.user_metadata?.avatar_url || ''
+  };
+
+  const { data } = await supabase
+    .from('users')
+    .upsert(userData, {
+      onConflict: 'id',
+      ignoreDuplicates: false
+    })
+    .select()
+    .single();
+
+  return {
+    ...authUser,
+    ...data
+  };
 };

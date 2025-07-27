@@ -25,10 +25,6 @@ const MyPageNavigationList = ({ el }: MyPageNavigationListProps) => {
         <BaseCard
           as={isExternalLink ? 'a' : Link}
           href={href}
-          {...(isExternalLink && {
-            target: '_blank',
-            rel: 'noopener noreferrer'
-          })}
           className="hover:bg-(--color-secondary) flex w-full items-center justify-between gap-3 transition-all duration-200"
         >
           <div className="flex items-center gap-2">

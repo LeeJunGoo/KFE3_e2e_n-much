@@ -7,6 +7,7 @@ import OpenAuctionsContainer from 'src/features/user/mypage/components/auctions/
 import MyAuctionsTabSkeleton from 'src/features/user/mypage/components/auctions/skeleton/MyAuctionsTabSkeleton';
 import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import BaseTabs from 'src/features/user/mypage/components/shared/tabs/BaseTabs';
+import { AUCTION_STATUS } from 'src/shared/utils/getAuctionStatusText';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
 const TAB_LABELS = {
@@ -18,12 +19,12 @@ const MyAuctionsTabContainer = () => {
   const user = useUserState();
   const { data, isPending, isError, refetch } = useGetUserAuctions(user?.id);
 
-  if (!user) return null;
+  if (!user) return <MyAuctionsTabSkeleton />;
   if (isPending) return <MyAuctionsTabSkeleton />;
   if (isError) return <ErrorState onRetry={() => refetch()} />;
 
-  const openAuctions = data?.filter((auction: AuctionRow) => auction.status === 'OPEN');
-  const closedAuctions = data?.filter((auction: AuctionRow) => auction.status === 'CLOSED');
+  const openAuctions = data?.filter((auction: AuctionRow) => auction.status === AUCTION_STATUS.OPEN);
+  const closedAuctions = data?.filter((auction: AuctionRow) => auction.status === AUCTION_STATUS.CLOSED);
 
   const TAB_CONTENTS = [
     { value: 'open', content: <OpenAuctionsContainer auctions={openAuctions} /> },

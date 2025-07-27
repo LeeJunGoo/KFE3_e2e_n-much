@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { selectEpisodesByUserId } from 'src/entities/user/mypage/episodes/supabase';
+import { selectPointsByUserId } from 'src/entities/user/mypage/points/supabase';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const res = await selectEpisodesByUserId(userId);
+    const res = await selectPointsByUserId(userId);
     return NextResponse.json(res, { status: 200 });
   } catch (error) {
     return NextResponse.json({ status: 'error', error: `Server Error ${error}` }, { status: 500 });
