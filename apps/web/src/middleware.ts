@@ -32,7 +32,7 @@ export const middleware = async (request: NextRequest) => {
         if (authorId !== userInfo.id) {
           return NextResponse.redirect(new URL('/main', request.url));
         }
-      } catch (error) {
+      } catch {
         return NextResponse.redirect(new URL('/main', request.url));
       }
     }
