@@ -1,6 +1,6 @@
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { selectUser } from 'src/entities/auth/supabase';
+import { selectUser } from 'src/entities/auth/supabase/client';
 import AuctionActionButtons from 'src/features/auction/AuctionActionButtons';
 import AuctionBookmarkToggle from 'src/features/auction/AuctionBookmarkToggle';
 import { type AuctionRow } from 'src/shared/supabase/types';

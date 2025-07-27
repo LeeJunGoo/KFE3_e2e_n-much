@@ -1,7 +1,7 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { selectUser } from 'src/entities/auth/supabase';
+import { selectUser } from 'src/entities/auth/supabase/client';
 import { getHasUserWrittenEpisode } from 'src/entities/episode/api';
 import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
 import EpisodeWriteButton from 'src/features/episode/EpisodeWriteButton';

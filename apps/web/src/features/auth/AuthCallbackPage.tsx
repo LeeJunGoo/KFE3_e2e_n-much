@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { useAuthActions } from 'src/entities/auth/stores/useAuthStore';
-import { upsertUser } from 'src/entities/auth/supabase';
+import { upsertUser } from 'src/entities/auth/supabase/client';
 import { createClient } from 'src/shared/supabase/client/client';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 
@@ -17,7 +17,6 @@ const AuthCallbackPage = () => {
   useEffect(() => {
     const handleCallback = async () => {
       if (hasProcessed.current) return;
-      hasProcessed.current = true;
 
       try {
         const supabase = createClient();

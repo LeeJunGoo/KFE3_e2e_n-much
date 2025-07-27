@@ -1,4 +1,4 @@
-import { updateUserRole as changeUserRole } from 'src/entities/auth/supabase';
+import { updateUserRole as changeUserRole } from 'src/entities/auth/supabase/client';
 import { create } from 'zustand';
 import type { User } from '@supabase/supabase-js';
 import type { ExtendedUser } from 'src/entities/auth/types';
