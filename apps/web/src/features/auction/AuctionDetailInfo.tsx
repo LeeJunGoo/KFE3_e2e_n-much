@@ -1,7 +1,7 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { selectUser } from 'src/entities/auth/supabase';
+import { selectUser } from 'src/entities/auth/supabase/client';
 import { getHasUserWrittenEpisode } from 'src/entities/episode/api';
 import AuctionTimerDynamic from 'src/features/auction/timer/AuctionTimerDynamic';
 import EpisodeWriteButton from 'src/features/episode/button/EpisodeWriteButton';
@@ -24,7 +24,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
   // 현재 유저가 경매 물품의 판매자인지의 여부
   const isUser = auctionInfo.user_id === userInfo?.id;
   // 현재 유저가 입찰 참여자(buyer)인지의 여부
-  const isBuyer = profile.role === 'buyer';
+  const isBuyer = profile!.role === 'buyer';
 
   return (
     <Card className="mb-4 rounded-t-2xl p-5 shadow-md">

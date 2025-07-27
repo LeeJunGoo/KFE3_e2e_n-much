@@ -1,6 +1,6 @@
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { selectUser } from 'src/entities/auth/supabase';
+import { selectUser } from 'src/entities/auth/supabase/client';
 import AuctionActionButtons from 'src/features/auction/button/AuctionActionButtons';
 import AuctionBookmarkToggle from 'src/features/auction/button/AuctionBookmarkToggle';
 import { type AuctionRow } from 'src/shared/supabase/types';
@@ -14,7 +14,7 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
   // 현재 유저가 경매 물품의 판매자인지의 여부
   const isUser = auctionInfo.user_id === userInfo?.id;
   // 현재 유저가 입찰 참여자(buyer)인지의 여부
-  const isBuyer = profile.role === 'buyer';
+  const isBuyer = profile!.role === 'buyer';
 
   return (
     <>
