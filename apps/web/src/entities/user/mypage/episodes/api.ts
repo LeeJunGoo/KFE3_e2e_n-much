@@ -31,11 +31,11 @@ export const getUserLikesEpisodes = async (userId: string) => {
 export const postUserLikesEpisode = async ({
   episodeId,
   updatedLikes,
-  bidPoint
+  updatedBidPoint
 }: {
   episodeId: string;
   updatedLikes: string[];
-  bidPoint: number;
+  updatedBidPoint: number;
 }) => {
   if (!episodeId) {
     throw new Error('postUserLikesEpisode: episodeId가 없습니다.');
@@ -45,14 +45,14 @@ export const postUserLikesEpisode = async ({
     throw new Error('postUserLikesEpisode: updatedLikes가 없습니다.');
   }
 
-  if (!bidPoint) {
-    throw new Error('postUserLikesEpisode: bidPoint가 없습니다.');
+  if (!updatedBidPoint) {
+    throw new Error('postUserLikesEpisode: updatedBidPoint가 없습니다.');
   }
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/episodes/likes`, {
     headers: { 'Content-Type': 'application/json' },
     method: 'POST',
-    body: JSON.stringify({ episodeId, updatedLikes })
+    body: JSON.stringify({ episodeId, updatedLikes, updatedBidPoint })
   });
 
   if (!res.ok) {

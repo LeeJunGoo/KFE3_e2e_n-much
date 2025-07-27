@@ -39,23 +39,23 @@ export const selectLikeEpisodesByUserId = async (user_id: UserRow['id']) => {
   return data ?? [];
 };
 
-// 좋아요 한 에피소드 갱신(추가/삭제) - KSH
+// 좋아요 한 에피소드 갱신(추가/삭제) 및 입찰가 갱신 - KSH
 export const updateLikeEpisode = async ({
   episodeId,
   updatedLikes,
-  bidPoint
+  updatedBidPoint
 }: {
   episodeId: string;
   updatedLikes: string[];
-  bidPoint: number;
+  updatedBidPoint: number;
 }) => {
-  if (!episodeId && !updatedLikes && !bidPoint) {
+  if (!episodeId && !updatedLikes && !updatedBidPoint) {
     throw new Error('DB: 사용자가 좋아요 한 에피소드 갱신 에러(episodeId와 updatedLikes와 bidPoint가 없습니다.)');
   }
 
   const { data, error } = await supabase
     .from('episodes')
-    .update({ likes: updatedLikes, bid_point: bidPoint })
+    .update({ likes: updatedLikes, bid_point: updatedBidPoint })
     .eq('episode_id', episodeId)
     .select('episode_id, likes, bid_point')
     .single();
