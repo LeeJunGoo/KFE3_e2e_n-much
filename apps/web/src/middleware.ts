@@ -10,16 +10,6 @@ export const middleware = async (request: NextRequest) => {
   // 로그인 없이 접근 가능한 페이지들
   const publicPaths = ['/', '/onboarding', '/auth/signup', '/auth/callback'];
 
-  // 정적 파일들 제외
-  if (
-    pathName.startsWith('/_next') ||
-    pathName.startsWith('/api') ||
-    pathName.includes('.') ||
-    pathName.startsWith('/favicon')
-  ) {
-    return NextResponse.next();
-  }
-
   // 공개 페이지는 통과
   if (publicPaths.includes(pathName)) {
     return NextResponse.next();
@@ -27,18 +17,15 @@ export const middleware = async (request: NextRequest) => {
 
   // 한 번만 로그인 체크
   const userInfo = await getServerUser();
-
   if (!userInfo) {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
   // 로그인 후 추가 비즈니스 로직
-
   // 경매 수정 권한 체크
   if (pathName === '/auctions/write') {
     //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
     const auctionId = searchParams.get('auction_id')?.trim();
-
     if (auctionId) {
       try {
         const authorId: string = await selectUserIdByAuctionId(auctionId);
@@ -76,5 +63,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ['/', '/auctions/write', '/auctions']
+  matcher: ['/', '/onboarding', '/auth/signup', '/auth/callback', '/auctions/write', '/auctions']
 };
