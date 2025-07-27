@@ -3,24 +3,24 @@
 import { useEffect, useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
-import { type User } from '@supabase/supabase-js';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaBookmark } from 'react-icons/fa6';
+import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
+import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { postUserFavoriteAuction } from 'src/entities/user/mypage/auctions/api';
 
 const AuctionFavoriteMarkToggle = ({
   auctionInfo,
-  auctionId,
-  userInfo
+  auctionId
 }: {
   auctionInfo: AuctionInfoWithAddressType;
   auctionId: string;
-  userInfo: User | null;
 }) => {
-  const userId = userInfo!.id;
-  const currentfavorites = auctionInfo.favorites;
-  const isIncluded = currentfavorites.includes(userId);
+  const user = useUserState();
+  const userId = user!.id;
+  const prevfavorites = auctionInfo.favorites;
+  const isIncluded = prevfavorites.includes(userId);
 
   const [favoriteMark, setFavoriteMark] = useState(isIncluded);
 
@@ -44,11 +44,16 @@ const AuctionFavoriteMarkToggle = ({
   });
 
   const handleFavoriteMarkClick = async () => {
-    const updatedFavorites = isIncluded
-      ? currentfavorites.filter((item) => item !== userId)
-      : [...currentfavorites, userId];
-
     try {
+      // 버튼 클릭 시점에 최신 값 가져오기
+      const auctionInfo = await getAuctionInfoWithAddress(auctionId);
+      // console.log('auctionInfo: ', auctionInfo);
+      const currentfavorites = auctionInfo.favorites;
+
+      const updatedFavorites = isIncluded
+        ? currentfavorites.filter((item) => item !== userId)
+        : [...currentfavorites, userId];
+
       const result = await mutate.mutateAsync({ auctionId, updatedFavorites });
       // console.log('result: ', result);
     } catch (error) {
@@ -61,7 +66,7 @@ const AuctionFavoriteMarkToggle = ({
 
   useEffect(() => {
     setFavoriteMark(isIncluded);
-  }, [userId, isIncluded]);
+  }, [isIncluded]);
 
   return (
     <Button variant="text" onClick={handleFavoriteMarkClick}>
