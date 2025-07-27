@@ -3,7 +3,7 @@ export const auctionQueryKeys = {
   user: (userId: string) => [...auctionQueryKeys.all, 'user', userId] as const
 };
 
-export const likedAuctionQueryKeys = {
-  all: ['likedAuction'] as const,
-  user: (userId: string) => [...likedAuctionQueryKeys.all, 'user', userId] as const
+export const favoriteAuctionQueryKeys = {
+  all: ['favoriteAuction'] as const,
+  user: (userId: string) => [...favoriteAuctionQueryKeys.all, 'user', userId] as const
 };
