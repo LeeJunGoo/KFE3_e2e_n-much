@@ -164,3 +164,11 @@ export interface FormStartingPointProps<T extends FieldValues> {
   startingPointLabel: string;
   placeholder: string;
 }
+
+//NOTE - 각 폼의 항목을 서로 트리가 하는 기능의 매개 변수
+export interface UseTriggerCrossFieldsParams<T extends FieldValues> {
+  control: Control<T>;
+  fieldA: FieldPath<T>;
+  fieldB: FieldPath<T>;
+  trigger: (name?: FieldPath<T> | FieldPath<T>[]) => Promise<boolean>;
+}
