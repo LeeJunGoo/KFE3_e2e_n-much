@@ -3,7 +3,6 @@ import EndingSoonListSection from 'src/features/auction/EndingSoonListSection';
 import LatestListSection from 'src/features/auction/LatestListSection';
 import PopularListSection from 'src/features/auction/PopularListSection';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
-import WriteAuctionButton from 'src/features/auction/WriteAuctionButton';
 import MainBanner from 'src/features/layout/main/components/MainBanner';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -75,7 +74,6 @@ const MainPage = async () => {
             <LatestListSection />
           </Suspense>
         </AuctionErrorBoundary>
-        <WriteAuctionButton />
         <GoTopButton />
       </PageContainer>
     </>
