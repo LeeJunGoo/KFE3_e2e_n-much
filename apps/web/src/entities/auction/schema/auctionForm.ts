@@ -42,6 +42,14 @@ export const auctionFormSchema = z
   .refine((data) => validateDate(data.endDay, data.endTime, false), {
     message: '경매 종료 일/시각은 현재 이후여야 합니다.',
     path: ['endTime']
+  })
+  .refine((data) => Number(data.maxPoint) > Number(data.startingPoint), {
+    message: '최대 포인트는 최소 포인트보다 커야 합니다.',
+    path: ['maxPoint']
+  })
+  .refine((data) => Number(data.maxPoint) > Number(data.startingPoint), {
+    message: '최소 포인트는 최대 포인트보다 작아야 합니다.',
+    path: ['startingPoint']
   });
 
 export const postAuctionSchema = z.object({

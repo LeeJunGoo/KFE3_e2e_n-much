@@ -36,6 +36,7 @@ export const middleware = async (request: NextRequest) => {
 
   // 경매 수정 권한 체크
   if (pathName === '/auctions/write') {
+    //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
     const auctionId = searchParams.get('auction_id')?.trim();
 
     if (auctionId) {
@@ -72,4 +73,8 @@ export const middleware = async (request: NextRequest) => {
   }
 
   return NextResponse.next();
+};
+
+export const config = {
+  matcher: ['/', '/auctions/write', '/auctions']
 };

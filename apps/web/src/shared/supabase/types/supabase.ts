@@ -152,6 +152,55 @@ export type Database = {
           },
         ]
       }
+      chat_rooms: {
+        Row: {
+          auction_id: string | null
+          buyer_id: string | null
+          created_at: string | null
+          id: string
+          seller_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          auction_id?: string | null
+          buyer_id?: string | null
+          created_at?: string | null
+          id?: string
+          seller_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          auction_id?: string | null
+          buyer_id?: string | null
+          created_at?: string | null
+          id?: string
+          seller_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_rooms_auction_id_fkey"
+            columns: ["auction_id"]
+            isOneToOne: false
+            referencedRelation: "auctions"
+            referencedColumns: ["auction_id"]
+          },
+          {
+            foreignKeyName: "chat_rooms_buyer_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "chat_rooms_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       episodes: {
         Row: {
           auction_id: string | null
@@ -274,6 +323,51 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      messages: {
+        Row: {
+          chat_room_id: string | null
+          content: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          read_at: string | null
+          sender_id: string | null
+        }
+        Insert: {
+          chat_room_id?: string | null
+          content: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          read_at?: string | null
+          sender_id?: string | null
+        }
+        Update: {
+          chat_room_id?: string | null
+          content?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          read_at?: string | null
+          sender_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_chat_room_id_fkey"
+            columns: ["chat_room_id"]
+            isOneToOne: false
+            referencedRelation: "chat_rooms"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "messages_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       points: {
         Row: {
