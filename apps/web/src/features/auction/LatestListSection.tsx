@@ -1,7 +1,6 @@
 import { LATEST_AUCTIONS_COUNT } from 'src/entities/auction/constants';
 import { getAuctionsCategory } from 'src/entities/auction/serverActions';
-import { type SortedAuctionItemType } from 'src/entities/auction/types';
-import LatestAuctionCard from 'src/features/auction/card/LatestAuctionCard';
+import LatestAuctionList from 'src/features/auction/list/components/LatestAuctionList';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 
@@ -21,11 +20,7 @@ const LatestListSection = async () => {
   return (
     <div className="mt-8">
       <AuctionSectionHeader title="최신 경매" href={'/auctions?order=created_at'} />
-      <ul className="overflow-hidden rounded-lg bg-white shadow-sm">
-        {latestAuctions.map((auction: SortedAuctionItemType) => (
-          <LatestAuctionCard key={auction.auction_id} auction={auction} />
-        ))}
-      </ul>
+      <LatestAuctionList latestAuctions={latestAuctions} />
     </div>
   );
 };

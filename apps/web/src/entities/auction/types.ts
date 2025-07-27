@@ -30,10 +30,7 @@ export type SortedAuctionItemType = AuctionRow & {
   }[];
 };
 
-export type SortedAuctionsType = {
-  data: SortedAuctionItemType[];
-  status: string;
-};
+export type SortedAuctionsListProps = SortedAuctionItemType[];
 
 export type AddressType = {
   business_name: AddressRow['business_name'];
