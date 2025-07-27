@@ -15,7 +15,7 @@ import { getEpisodesWithPagination } from 'src/entities/episode/api';
 import { EPISODES_PER_PAGE } from 'src/entities/episode/constants';
 import { episodesListKeys } from 'src/entities/episode/queries/keys/queryKeyFactory';
 import { usePageActions } from 'src/entities/episode/stores/usePaginationStore';
-import EpisodeItem from 'src/features/episode/card/EpisodeCard';
+import EpisodeCard from 'src/features/episode/card/EpisodeCard';
 import EpisodeEmpty from 'src/features/episode/shared/EpisodeEmpty';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
@@ -72,7 +72,7 @@ const EpisodeList = ({
       {/* 사연 목록 */}
       <ul className="space-y-5 divide-y">
         {episodesList!.map((episode: EpisodeItemProps, index) => (
-          <EpisodeItem key={`${episode.episode_id}${index}`} episode={episode} sellerId={auctionInfo.user_id} />
+          <EpisodeCard key={`${episode.episode_id}${index}`} episode={episode} sellerId={auctionInfo.user_id} />
         ))}
       </ul>
       {/* 페이지 네이션 */}

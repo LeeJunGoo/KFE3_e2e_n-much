@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { CarouselItem } from '@repo/ui/components/ui/carousel';
 import Image from 'next/image';
