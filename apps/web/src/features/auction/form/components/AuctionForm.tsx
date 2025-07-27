@@ -6,8 +6,9 @@ import { Button } from '@repo/ui/components/ui/button';
 import { Form, FormLabel } from '@repo/ui/components/ui/form';
 import { useRouter } from 'next/navigation';
 import { TZDate } from 'react-day-picker';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { MAX_DESCRIPTION_LETTERS, MAX_TITLE_LETTERS, UTC_TIME_ZONE } from 'src/entities/auction/constants';
+import { useTriggerCrossFields } from 'src/entities/auction/hooks/useTriggerCrossFields';
 import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
@@ -16,27 +17,26 @@ import { getExtension } from 'src/entities/auction/utils/extension';
 import { getFormDefaultValues } from 'src/entities/auction/utils/formDefaultValues';
 import { uploadImagesToDB } from 'src/entities/auction/utils/uploadImages';
 import { validateDate } from 'src/entities/auction/utils/validateDate';
-import FormEndDay from 'src/features/auction/FormEndDay';
-import FormEndTime from 'src/features/auction/FormEndTime';
-import FormMaxPoint from 'src/features/auction/FormMaxPoint';
-import FormStartingPoint from 'src/features/auction/FormStartingPoint';
-import ImageUploader from 'src/features/auction/ImageUploader';
+import FormEndDay from 'src/features/auction/form/components/fields/FormEndDay';
+import FormEndTime from 'src/features/auction/form/components/fields/FormEndTime';
+import FormMaxPoint from 'src/features/auction/form/components/fields/FormMaxPoint';
+import FormStartingPoint from 'src/features/auction/form/components/fields/FormStartingPoint';
+import ImageUploader from 'src/features/auction/form/components/ImageUploader';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
 import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDate } from 'src/shared/utils/dateFns';
-import { popToast } from 'src/shared/utils/toast';
+import { popToast } from 'src/shared/utils/popToast';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
-import type { z } from 'zod';
 
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
-  const isEditing: boolean = Boolean(auctionIdParam);
+  const isEditing: boolean = !!auctionIdParam;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
 
   const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
   const [imageUrlsToDelete, setImageUrlsToDelete] = useState<string[]>([]);
-  const router = useRouter();
+  const router = useRouter(); //TODO - push로 구조 분해 할당하기
 
   console.log('로그인한 유저 id', loggedInUserId);
   console.log('auctionIdParam', auctionIdParam);
@@ -58,15 +58,19 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     mode: 'onChange'
   });
 
-  const endTimeValue = useWatch({
+  useTriggerCrossFields({
     control: form.control,
-    name: 'endTime'
+    fieldA: 'endDay',
+    fieldB: 'endTime',
+    trigger: form.trigger
   });
 
-  useEffect(() => {
-    form.trigger('endDay');
-    form.trigger('endTime');
-  }, [form, endTimeValue]);
+  useTriggerCrossFields({
+    control: form.control,
+    fieldA: 'startingPoint',
+    fieldB: 'maxPoint',
+    trigger: form.trigger
+  });
 
   useEffect(() => {
     if (isEditing && fetchedAuction) {
@@ -106,7 +110,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
-  const onSubmit = async (values: z.infer<typeof auctionFormSchema>) => {
+  const onSubmit = async (values: AuctionFormType) => {
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
     const korEndDate = setTimeToDate(endDay, endTime);
@@ -230,7 +234,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
                 name="endDay"
                 endDayLabel="경매 종료일"
                 placeholder="경매 종료일을 선택하세요."
-                endTime={form.getValues('endTime')}
+                endTime={form.getValues('endTime') as string}
                 validateDisableDate={validateDate}
               />
               <FormEndTime control={form.control} name="endTime" endTimeLabel="경매 종료 시간" />
@@ -253,7 +257,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               setPreviewImages={setPreviewImages}
               setImageUrlsToDelete={setImageUrlsToDelete}
             />
-            <Button type="submit" className="h-12 w-full" variant="base">
+            <Button
+              type="submit"
+              className="h-12 w-full"
+              variant="base"
+              disabled={isPostAuctionPending || isPatchAuctionPending}
+            >
               {(isEditing && !isPatchAuctionPending && '수정하기') ||
                 (isEditing && isPatchAuctionPending && '수정중...') ||
                 (!isEditing && !isPostAuctionPending && '등록하기') ||

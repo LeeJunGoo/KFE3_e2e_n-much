@@ -40,7 +40,7 @@ const AuctionList = ({ order, keyword }: AuctionListProps) => {
       <ul className="grid grid-cols-2 gap-2">
         {isPending &&
           Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
-            <Skeleton key={uuidv4()} className="h-40 w-full" />
+            <Skeleton key={uuidv4()} className="h-56 w-full" />
           ))}
         {fetchedAuctions &&
           !isPending &&
