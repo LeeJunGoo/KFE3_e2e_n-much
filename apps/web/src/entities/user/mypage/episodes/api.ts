@@ -45,7 +45,7 @@ export const postUserLikesEpisode = async ({
     throw new Error('postUserLikesEpisode: updatedLikes가 없습니다.');
   }
 
-  if (!updatedBidPoint) {
+  if (!updatedBidPoint && updatedBidPoint !== 0) {
     throw new Error('postUserLikesEpisode: updatedBidPoint가 없습니다.');
   }
 
