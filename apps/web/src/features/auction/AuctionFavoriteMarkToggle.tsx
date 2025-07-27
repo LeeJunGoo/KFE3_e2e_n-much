@@ -35,8 +35,7 @@ const AuctionFavoriteMarkToggle = ({
     onMutate: () => {
       setIsFavorite((state) => !state);
     },
-    onError: (error) => {
-      console.error(error.message);
+    onError: () => {
       setIsFavorite((state) => !state);
     },
     onSuccess: () => {
@@ -48,7 +47,7 @@ const AuctionFavoriteMarkToggle = ({
     try {
       // 버튼 클릭 시점에 최신 값 가져오기
       const auctionInfo = await getAuctionInfoWithAddress(auctionId);
-      // console.log('auctionInfo: ', auctionInfo);
+
       const currentfavorites = auctionInfo.favorites;
 
       const updatedFavorites = isFavorite

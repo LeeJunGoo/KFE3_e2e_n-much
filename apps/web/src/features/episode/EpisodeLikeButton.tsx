@@ -33,8 +33,7 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
     onMutate: () => {
       setIsLiked((state) => !state);
     },
-    onError: (error) => {
-      console.error(error.message);
+    onError: () => {
       setIsLiked((state) => !state);
     }
   });
@@ -43,7 +42,7 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
     try {
       // 버튼 클릭 시점에 최신 값 가져오기
       const episodeInfo = await getEpisodeInfo(episodeId);
-      // console.log('episodeInfo: ', episodeInfo);
+
       const currentLikes = episodeInfo.likes;
       const currentBidPoint = episodeInfo.bid_point;
 
