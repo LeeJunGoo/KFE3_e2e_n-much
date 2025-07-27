@@ -20,6 +20,8 @@ const AuctionListClone = ({ order }: AuctionListProps) => {
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
     useGetUserFavoriteAuctions(order, userId);
 
+  // console.log('fetchedAuctions', fetchedAuctions);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();

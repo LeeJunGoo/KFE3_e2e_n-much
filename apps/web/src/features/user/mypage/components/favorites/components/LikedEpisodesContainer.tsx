@@ -1,14 +1,15 @@
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { getLikeEpisode } from 'src/entities/episode/supabase';
+import { getUserLikesEpisodes } from 'src/entities/user/mypage/episodes/api';
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
 import type { EpisodeWithAuction } from 'src/entities/user/mypage/episodes/types';
 
 const LikedEpisodesContainer = async () => {
   const user = await getServerUser();
-  const userId: string = user?.id as string;
+  console.log('user:', user);
+  const userId: string = user!.id;
+  console.log('userId:', userId);
 
-  //TODO - supabase 쿼리 함수를 직접 호출, api 요청으로 변경 예정
-  const episodes: EpisodeWithAuction[] = await getLikeEpisode(userId);
+  const episodes: EpisodeWithAuction[] = await getUserLikesEpisodes(userId);
 
   return (
     <>

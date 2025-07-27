@@ -10,8 +10,8 @@ export const getUserAuctions = async (userId: string) => {
   return data;
 };
 
-// 관심 경매와 해당 경매의 사연 갯수 가져오기 (getAuctionCardList 참고) - KSH
-export const getFavoriteAuctionCardList = async ({
+// 사용자의 관심 경매 목록과 해당 경매의 사연 갯수 조회 (getAuctionCardList 참고) - KSH
+export const getUserFavoriteAuctions = async ({
   order,
   pageParam,
   userId
@@ -21,19 +21,19 @@ export const getFavoriteAuctionCardList = async ({
   userId: string | undefined;
 }) => {
   if (!order && pageParam === undefined && !userId) {
-    throw new Error('getFaboriteAuctionCardList: order와 pageParamr과 userId가 없습니다.');
+    throw new Error('getUserFavoriteAuctions: order와 pageParamr과 userId가 없습니다.');
   }
 
   if (!order) {
-    throw new Error('getFaboriteAuctionCardList: order가 없습니다.');
+    throw new Error('getUserFavoriteAuctions: order가 없습니다.');
   }
 
   if (pageParam === undefined) {
-    throw new Error('getFaboriteAuctionCardList: pageParam이 없습니다.');
+    throw new Error('getUserFavoriteAuctions: pageParam이 없습니다.');
   }
 
   if (!userId) {
-    throw new Error('getFaboriteAuctionCardList: userId가 없습니다.');
+    throw new Error('getUserFavoriteAuctions: userId가 없습니다.');
   }
 
   const res = await fetch(
@@ -41,15 +41,15 @@ export const getFavoriteAuctionCardList = async ({
   );
 
   if (!res.ok) {
-    throw new Error('관심 경매와 해당 경매의 사연 갯수 fetch 실패');
+    throw new Error('관심 경매 목록과 해당 경매의 사연 갯수 조회 실패');
   }
 
   const data = await res.json();
   return data;
 };
 
-// 관심 경매 추가 - KSH
-export const postFavorite = async ({
+// 사용자의 관심 경매 갱신(추가/삭제) - KSH
+export const postUserFavoriteAuction = async ({
   auctionId,
   updatedFavorites
 }: {

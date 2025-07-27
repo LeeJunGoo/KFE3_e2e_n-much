@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { selectFavoriteAuctionCardList } from 'src/entities/user/mypage/auctions/supabase';
 import type { NextRequest } from 'next/server';
 
-//NOTE - 관심 경매의 경매 리스트 가져오기
+// 관심 경매의 경매 리스트 가져오기 - KSH
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const order = searchParams.get('order');

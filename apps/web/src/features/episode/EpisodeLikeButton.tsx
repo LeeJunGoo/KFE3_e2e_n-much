@@ -4,6 +4,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { FaHeart } from 'react-icons/fa';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
+const LIKE_EPISODE_BID = 1000;
 
 // 사연 좋아요 시
 //TODO - updateEpisodeBid() 요청해서 포인트 올리기

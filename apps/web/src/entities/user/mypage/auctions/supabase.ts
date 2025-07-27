@@ -29,7 +29,7 @@ export const selectAuctionsByUserId = async (userId: string) => {
   return auctions ?? [];
 };
 
-// 관심 경매와 경매의 사연 갯수를 불러오기 (selectAuctionCardList 참고) - KSH
+// 관심 경매 목록과 해당 경매의 사연 갯수 조회 (selectAuctionCardList 참고) - KSH
 export const selectFavoriteAuctionCardList = async (
   order: string | undefined,
   page: number | undefined,
@@ -38,15 +38,15 @@ export const selectFavoriteAuctionCardList = async (
   const auctionsCount = await selectAuctionsCount('');
 
   if (!order) {
-    throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(order가 없습니다.)');
+    throw new Error('DB: 관심 경매 목록과 해당 경매의 사연 갯수 조회 에러(order가 없습니다.)');
   }
 
   if (!page && page !== 0) {
-    throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(page가 없습니다.)');
+    throw new Error('DB: 관심 경매 목록과 해당 경매의 사연 갯수 조회 에러(page가 없습니다.)');
   }
 
   if (!userId) {
-    throw new Error('DB: 관심 경매와 사연 갯수 불러오기 에러(userId가 없습니다.)');
+    throw new Error('DB: 관심 경매 목록과 해당 경매의 사연 갯수 조회 에러(userId가 없습니다.)');
   }
 
   const ascending = order === 'favorites' ? false : true;
@@ -65,7 +65,7 @@ export const selectFavoriteAuctionCardList = async (
 
   if (error) {
     console.error(error);
-    throw new Error('DB: 경매와 사연 갯수 불러오기 에러');
+    throw new Error('DB: 관심 경매 목록과 해당 경매의 사연 갯수 조회 에러');
   }
 
   const nextId = page < auctionsCount - ITEM_PER_PAGE ? page + ITEM_PER_PAGE + 1 : null;
@@ -73,7 +73,7 @@ export const selectFavoriteAuctionCardList = async (
   return { data, nextId };
 };
 
-// 관심 경매 추가 - KSH
+// 관심 경매 갱신(추가/제거) - KSH
 export const updateFavoriteAuction = async ({
   auctionId,
   updatedFavorites
@@ -82,7 +82,7 @@ export const updateFavoriteAuction = async ({
   updatedFavorites: string[];
 }) => {
   if (!auctionId && !updatedFavorites) {
-    throw new Error('DB: 관심 경매 추가 에러(auctionId와 updatedFavorites가 없습니다.)');
+    throw new Error('DB: 관심 경매 갱신 에러(auctionId와 updatedFavorites가 없습니다.)');
   }
 
   const { data, error } = await supabase
@@ -94,7 +94,7 @@ export const updateFavoriteAuction = async ({
 
   if (error) {
     console.error('updateAuction', error);
-    throw new Error('DB: 관심 경매 추가 에러');
+    throw new Error('DB: 관심 경매 갱신 에러');
   }
   return data;
 };
