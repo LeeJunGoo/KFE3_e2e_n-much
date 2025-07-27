@@ -29,8 +29,14 @@ export const middleware = async (request: NextRequest) => {
     try {
       const user = await getServerUserWithProfile();
       const userAddressId = user.address_id;
+      const userRole = user.role;
+      console.log('userRole', userRole);
       if (!userAddressId) {
         return NextResponse.redirect(new URL('/main', request.url)); //TODO - 마이 페이지 주소 등록으로 이동시키도록 수정하기 (KMH)
+      }
+
+      if (userRole === 'buyer') {
+        return NextResponse.redirect(new URL('/main', request.url));
       }
     } catch {
       return NextResponse.redirect(new URL('/main', request.url));
