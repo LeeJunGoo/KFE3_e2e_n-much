@@ -9,6 +9,7 @@ import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { postUserFavoriteAuction } from 'src/entities/user/mypage/auctions/api';
+import { favoriteAuctionQueryKeys } from 'src/entities/user/mypage/auctions/queries/keys';
 
 const AuctionFavoriteMarkToggle = ({
   auctionInfo,
@@ -39,7 +40,7 @@ const AuctionFavoriteMarkToggle = ({
       setFavoriteMark((state) => !state);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['favoriteAuctions', userId] });
+      queryClient.invalidateQueries({ queryKey: favoriteAuctionQueryKeys.user(userId) });
     }
   });
 
