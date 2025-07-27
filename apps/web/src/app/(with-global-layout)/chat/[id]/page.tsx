@@ -1,9 +1,9 @@
 import ChatRoomPage from 'src/features/chat/ChatRoomPage';
 
-const ChatRoom = () => {
+const ChatRoom = async ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <>
-      <ChatRoomPage />
+      <ChatRoomPage params={params} />
     </>
   );
 };

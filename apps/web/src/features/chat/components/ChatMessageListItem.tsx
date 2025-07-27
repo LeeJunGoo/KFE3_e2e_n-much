@@ -1,56 +1,61 @@
+import Image from 'next/image';
 import { formatShortDateTime } from 'src/shared/utils/formatKoreanDate';
+import type { Message } from 'src/entities/chat/types';
 
-const ChatMessageListItem = () => {
+interface ChatMessageListItemProps {
+  message: Message;
+  currentUserId: string;
+}
+
+const ChatMessageListItem = ({ message, currentUserId }: ChatMessageListItemProps) => {
+  const { sender, sender_id: senderId, content, created_at: createdAt, is_read: isRead } = message;
+  const isMyMessage = senderId === currentUserId;
+
   return (
-    <>
-      <li>
-        <div className="flex gap-4">
+    <li>
+      <div className={`flex gap-4 ${isMyMessage ? 'flex-row-reverse' : ''}`}>
+        {!isMyMessage && (
           <div className="rounded-full">
-            {/* <Image src="/" alt="/" width={30} height={30} className="object-cover" /> */}
-            <div className="bg-(--color-warm-gray) flex size-12 items-center justify-center rounded-full">아바타</div>
+            <div className="bg-(--color-warm-gray) relative flex size-12 items-center justify-center overflow-hidden rounded-full">
+              {sender?.user_avatar ? (
+                <Image src={sender.user_avatar} alt={sender.nick_name} fill className="object-cover" sizes="48px" />
+              ) : (
+                <span>{sender?.nick_name?.[0] || '?'}</span>
+              )}
+            </div>
           </div>
-          <div className="relative">
-            <p className="bg-(--color-primary) flex rounded-md p-4 text-sm text-white">
-              내용이 왔어요. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet eos inventore voluptatem
-              cumque sed quos fugit. Facilis nesciunt quae ea laboriosam ut, eligendi aut, adipisci quia sit eos
-              explicabo iusto.
-            </p>
-            <div className="border-r-(--color-primary) absolute -left-2 top-3 h-0 w-0 border-b-[15px] border-r-[15px] border-t-[15px] border-b-transparent border-t-transparent"></div>
-          </div>
+        )}
+        <div className="relative">
+          <p
+            className={`flex rounded-md p-4 text-sm text-white ${
+              isMyMessage ? 'bg-(--color-accent)' : 'bg-(--color-primary)'
+            }`}
+          >
+            {content}
+          </p>
+          {/* 말풍선 꼬리 */}
+          <div
+            className={`absolute top-3 h-0 w-0 border-b-[15px] border-t-[15px] border-b-transparent border-t-transparent ${
+              isMyMessage
+                ? 'border-l-(--color-accent) -right-2 border-l-[15px]'
+                : 'border-r-(--color-primary) -left-2 border-r-[15px]'
+            }`}
+          ></div>
         </div>
-        <time className="text-(--color-text-base)/60 inline-block w-full pr-1 text-right text-xs">
-          {formatShortDateTime('2025-05-05T14:30:00.000Z')}
+      </div>
+      {/* 시간과 읽음 상태 */}
+      <div className={`flex items-center gap-1 ${isMyMessage ? 'flex-row-reverse' : ''}`}>
+        <time className={`text-(--color-text-base)/60 text-xs ${isMyMessage ? 'text-right' : 'text-left'}`}>
+          {formatShortDateTime(createdAt)}
         </time>
-      </li>
-      <li>
-        <div className="flex gap-4">
-          <div className="relative">
-            <p className="bg-(--color-accent) flex rounded-md p-4 text-sm text-white">
-              내용을 보내요. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet eos inventore voluptatem
-              cumque sed quos fugit. Facilis nesciunt quae ea laboriosam ut, eligendi aut, adipisci quia sit eos
-              explicabo iusto.
-            </p>
-            <div className="border-l-(--color-accent) absolute -right-2 top-3 h-0 w-0 border-b-[15px] border-l-[15px] border-t-[15px] border-b-transparent border-t-transparent"></div>
-          </div>
-        </div>
-        <time className="text-(--color-text-base)/60 inline-block w-full pl-1 text-left text-xs">
-          {formatShortDateTime('2025-05-05T14:30:00.000Z')}
-        </time>
-      </li>
-      <li>
-        <div className="flex gap-4">
-          <div className="relative">
-            <p className="bg-(--color-accent) flex rounded-md p-4 text-sm text-white">
-              내용을 보내요. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Amet eos inventore voluptatem
-            </p>
-            <div className="border-l-(--color-accent) absolute -right-2 top-3 h-0 w-0 border-b-[15px] border-l-[15px] border-t-[15px] border-b-transparent border-t-transparent"></div>
-          </div>
-        </div>
-        <time className="text-(--color-text-base)/60 inline-block w-full pl-1 text-left text-xs">
-          {formatShortDateTime('2025-05-05T14:30:00.000Z')}
-        </time>
-      </li>
-    </>
+        {/* 내가 보낸 메시지에만 읽음 상태 표시 */}
+        {isMyMessage && (
+          <span className={`text-xs ${isRead ? 'text-(--color-accent)' : 'text-gray-400'}`}>
+            {isRead ? '읽음' : '안읽음'}
+          </span>
+        )}
+      </div>
+    </li>
   );
 };
 
