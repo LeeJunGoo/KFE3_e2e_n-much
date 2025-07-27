@@ -23,7 +23,7 @@ const AuctionFavoriteMarkToggle = ({
   const prevfavorites = auctionInfo.favorites;
   const isIncluded = prevfavorites.includes(userId);
 
-  const [favoriteMark, setFavoriteMark] = useState(isIncluded);
+  const [isFavorite, setIsFavorite] = useState(isIncluded);
 
   const queryClient = useQueryClient();
 
@@ -33,11 +33,11 @@ const AuctionFavoriteMarkToggle = ({
       return result;
     },
     onMutate: () => {
-      setFavoriteMark((state) => !state);
+      setIsFavorite((state) => !state);
     },
     onError: (error) => {
       console.error(error.message);
-      setFavoriteMark((state) => !state);
+      setIsFavorite((state) => !state);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: favoriteAuctionQueryKeys.user(userId) });
@@ -51,7 +51,7 @@ const AuctionFavoriteMarkToggle = ({
       // console.log('auctionInfo: ', auctionInfo);
       const currentfavorites = auctionInfo.favorites;
 
-      const updatedFavorites = isIncluded
+      const updatedFavorites = isFavorite
         ? currentfavorites.filter((item) => item !== userId)
         : [...currentfavorites, userId];
 
@@ -65,15 +65,11 @@ const AuctionFavoriteMarkToggle = ({
     }
   };
 
-  useEffect(() => {
-    setFavoriteMark(isIncluded);
-  }, [isIncluded]);
-
   return (
     <Button variant="text" onClick={handleFavoriteMarkClick}>
       <FaBookmark
         size={100}
-        className={`${favoriteMark ? 'fill-text-(--color-accent)' : 'text-(--color-warm-gray)'} size-7 transition`}
+        className={`${isFavorite ? 'fill-text-(--color-accent)' : 'text-(--color-warm-gray)'} size-7 transition`}
       />
     </Button>
   );

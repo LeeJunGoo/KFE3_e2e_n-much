@@ -18,7 +18,7 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
   const prevLikes = episode.likes;
   const isIncluded = prevLikes.includes(userId);
 
-  const [likeMark, setLikeMark] = useState(isIncluded);
+  const [isLiked, setIsLiked] = useState(isIncluded);
 
   const mutate = useMutation<
     string,
@@ -31,11 +31,11 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
       return result;
     },
     onMutate: () => {
-      setLikeMark((state) => !state);
+      setIsLiked((state) => !state);
     },
     onError: (error) => {
       console.error(error.message);
-      setLikeMark((state) => !state);
+      setIsLiked((state) => !state);
     }
   });
 
@@ -47,9 +47,9 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
       const currentLikes = episodeInfo.likes;
       const currentBidPoint = episodeInfo.bid_point;
 
-      const updatedLikes = isIncluded ? currentLikes.filter((item) => item !== userId) : [...currentLikes, userId];
+      const updatedLikes = isLiked ? currentLikes.filter((item) => item !== userId) : [...currentLikes, userId];
 
-      const updatedBidPoint = isIncluded
+      const updatedBidPoint = isLiked
         ? currentBidPoint! - LIKE_EPISODE_BID_POINT
         : currentBidPoint! + LIKE_EPISODE_BID_POINT;
 
@@ -64,12 +64,12 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
   };
 
   useEffect(() => {
-    setLikeMark(isIncluded);
+    setIsLiked(isIncluded);
   }, [isIncluded]);
 
   return (
     <Button variant="text" className="opacity-70" disabled={false} onClick={handleLikeMarkClick}>
-      <FaHeart className={`${likeMark ? 'text-(--color-red)' : 'text-(--color-warm-gray)'} transition`} />
+      <FaHeart className={`${isLiked ? 'text-(--color-red)' : 'text-(--color-warm-gray)'} transition`} />
     </Button>
   );
 };
