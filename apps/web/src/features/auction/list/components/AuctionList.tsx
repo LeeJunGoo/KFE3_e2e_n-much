@@ -4,9 +4,7 @@ import { useEffect } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
 import { useGetAuctionListQuery } from 'src/entities/auction/queries/auction';
-import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
-import WriteAuctionButton from 'src/features/auction/WriteAuctionButton';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
@@ -14,9 +12,6 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 
 const AuctionList = ({ order, keyword }: AuctionListProps) => {
   console.log('list', order, keyword);
-
-  const user = useUserState();
-  const userAddressId = user?.address_id;
 
   //TODO - nextjs 캐시로 관리하기 (KMH)
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
@@ -75,7 +70,6 @@ const AuctionList = ({ order, keyword }: AuctionListProps) => {
       <div className="flex w-full justify-center" ref={ref}>
         {isFetchingNextPage && <LoadingSpinner />}
       </div>
-      {userAddressId && <WriteAuctionButton />}
     </>
   );
 };
