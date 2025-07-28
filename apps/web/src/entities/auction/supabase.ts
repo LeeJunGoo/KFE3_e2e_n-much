@@ -180,6 +180,7 @@ export const selectAuctionCardList = async (order: string | null, keyword: strin
   `
     )
     .order(order, { ascending })
+    .order('auction_id', { ascending: true })
     .eq('status', 'OPEN')
     .ilike('title', `%${keyword}%`)
     .range(page, page + ITEM_PER_PAGE - 1);
