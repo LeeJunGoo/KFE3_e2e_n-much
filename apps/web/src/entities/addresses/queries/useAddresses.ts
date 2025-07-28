@@ -4,10 +4,10 @@ import { addressQueryKeys } from 'src/entities/addresses/queries/keys';
 import type { AddressInsert } from 'src/shared/supabase/types';
 
 // 기본 주소 정보 조회 훅
-export const useGetDefaultAddressInfo = (userId: string) => {
+export const useGetDefaultAddressInfo = (userId?: string) => {
   return useQuery({
-    queryKey: addressQueryKeys.default(userId),
-    queryFn: () => getDefaultAddressInfo(userId),
+    queryKey: addressQueryKeys.default(userId ?? ''),
+    queryFn: () => getDefaultAddressInfo(userId ?? ''),
     enabled: !!userId
   });
 };

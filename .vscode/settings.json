@@ -6,5 +6,18 @@
       "mode": "auto"
     }
   ],
-  "cSpell.words": ["autodocs", "Chatbubble", "kakao", "MMDD", "pretendard", "sonner", "supabase", "uuidv", "Vidding"]
+  "cSpell.words": [
+    "autodocs",
+    "bname",
+    "Chatbubble",
+    "daum",
+    "kakao",
+    "MMDD",
+    "pretendard",
+    "sonner",
+    "supabase",
+    "uuidv",
+    "Vidding",
+    "Zonecode"
+  ]
 }
