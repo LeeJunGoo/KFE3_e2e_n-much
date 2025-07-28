@@ -12,6 +12,7 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 
 const AuctionList = ({ order, keyword }: AuctionListProps) => {
   console.log('list', order, keyword);
+
   //TODO - nextjs 캐시로 관리하기 (KMH)
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
     useGetAuctionListQuery(order, keyword);
@@ -27,7 +28,7 @@ const AuctionList = ({ order, keyword }: AuctionListProps) => {
     console.error(error);
     return <p>에러 발생</p>;
   }
-
+  //TODO - 총 경매 갯수도 총 경매의 갯수로 수정하기 (KMH)
   return (
     <>
       <h3 className="pb-2 pt-1 text-sm">
