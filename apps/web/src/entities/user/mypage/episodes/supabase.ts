@@ -27,11 +27,11 @@ export const selectEpisodesByUserId = async (userId: UserRow['id']) => {
 };
 
 // 사용자가 좋아요 한 에피소드 목록 조회 - KSH
-export const selectLikeEpisodesByUserId = async (user_id: UserRow['id']) => {
+export const selectLikeEpisodesByUserId = async (userId: UserRow['id']) => {
   const { data, error } = await supabase
     .from('episodes')
     .select('*, auctions(title,status)')
-    .contains('likes', [user_id]);
+    .contains('likes', [userId]);
 
   if (error) {
     throw new Error('DB: 사용자가 좋아요 한 에피소드 목록 조회 에러');

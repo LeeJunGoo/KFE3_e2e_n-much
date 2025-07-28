@@ -1,7 +1,7 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { getUserFavoriteAuctions, getUserAuctions } from 'src/entities/user/mypage/auctions/api';
-import { auctionQueryKeys, favoriteAuctionQueryKeys } from 'src/entities/user/mypage/auctions/queries/keys';
+import { auctionQueryKeys } from 'src/entities/user/mypage/auctions/queries/keys';
 import type { EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow, UserRow } from 'src/shared/supabase/types';
 
@@ -24,13 +24,13 @@ export const useGetUserFavoriteAuctions = (order: string, userId: string) => {
     isFetchingNextPage,
     fetchNextPage
   } = useInfiniteQuery({
-    queryKey: favoriteAuctionQueryKeys.user(userId || ''),
+    queryKey: auctionQueryKeys.favorite(userId || ''),
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
       getUserFavoriteAuctions({ order, pageParam, userId }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
     staleTime: 0,
-    enabled: Boolean(order) === true && Boolean(userId) === true
+    enabled: !!order
   });
 
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };

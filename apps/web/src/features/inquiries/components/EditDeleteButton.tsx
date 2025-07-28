@@ -5,6 +5,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { deleteInquiryInfo } from 'src/entities/inquiry/api';
+import { popToast } from 'src/shared/utils/popToast';
 import ConfirmDialog from 'src/widgets/ConfirmDialog';
 import type { AuctionRow, InquiryRow } from 'src/shared/supabase/types';
 
