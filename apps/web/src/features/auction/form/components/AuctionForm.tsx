@@ -33,10 +33,11 @@ import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entiti
 const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   const isEditing: boolean = !!auctionIdParam;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [previewImages, setPreviewImages] = useState<PreviewImage[]>([]);
   const [imageUrlsToDelete, setImageUrlsToDelete] = useState<string[]>([]);
-  const router = useRouter(); //TODO - push로 구조 분해 할당하기
+  const { push } = useRouter();
 
   console.log('로그인한 유저 id', loggedInUserId);
   console.log('auctionIdParam', auctionIdParam);
@@ -111,6 +112,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
   const onSubmit = async (values: AuctionFormType) => {
+    setIsSubmitting(true);
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
 
     const korEndDate = setTimeToDate(endDay, endTime);
@@ -157,8 +159,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         console.log('결과', data);
         console.log('옥션아이디', data.auction_id);
 
-        //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
-        // router.push(`/auctions/${data.auction_id}`);
+        push(`/auctions/${data.auction_id}`);
         return;
       } catch (error) {
         popToast('error', '경매 등록 에러', '경매 등록에 실패했습니다.', 'long');
@@ -192,8 +193,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     console.log('결과', data);
     console.log('옥션아이디', data.auction_id);
 
-    //FIXME - 테스트 끝나면 주석 제거하기 (KMH)
-    // router.push(`/auctions/${data.auction_id}`);
+    push(`/auctions/${data.auction_id}`);
+    setIsSubmitting(false);
   };
 
   //TODO - error가 발생하면 대처가 불가능, 화면을 어떡해 보여줄지 의논하기 (KMH)
@@ -257,12 +258,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
               setPreviewImages={setPreviewImages}
               setImageUrlsToDelete={setImageUrlsToDelete}
             />
-            <Button
-              type="submit"
-              className="h-12 w-full"
-              variant="base"
-              disabled={isPostAuctionPending || isPatchAuctionPending}
-            >
+            <Button type="submit" className="h-12 w-full" variant="base" disabled={isSubmitting}>
               {(isEditing && !isPatchAuctionPending && '수정하기') ||
                 (isEditing && isPatchAuctionPending && '수정중...') ||
                 (!isEditing && !isPostAuctionPending && '등록하기') ||

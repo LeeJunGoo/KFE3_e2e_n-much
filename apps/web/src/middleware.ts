@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { selectUserIdByAuctionId } from 'src/entities/auction/serverActions';
-import { getServerUser } from 'src/entities/auth/serverAction';
+import { getServerUser, getServerUserWithProfile } from 'src/entities/auth/serverAction';
 import type { NextRequest } from 'next/server';
 
 export const middleware = async (request: NextRequest) => {
@@ -25,14 +25,35 @@ export const middleware = async (request: NextRequest) => {
   // 경매 수정 권한 체크
   if (pathName === '/auctions/write') {
     //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
+
+    try {
+      const user = await getServerUserWithProfile(); //TODO - getServerUser와 비교해서 위를 WithProfile로 바꾸기 (KMH)
+      const userAddressId = user.address_id;
+      const userRole = user.role;
+
+      console.log('userAddress', userAddressId);
+
+      if (!userAddressId) {
+        return NextResponse.redirect(new URL('/mypage/addresses/write', request.url));
+      }
+
+      if (userRole === 'buyer') {
+        return NextResponse.redirect(new URL('/main', request.url));
+        //TODO - 마이 페이지로 가는 것이 어떤지 물어보기, 그리고 아무 말없이 리다이렉트 시키는게 UX상 문제있는 것 같음 (KMH)
+      }
+    } catch {
+      return NextResponse.redirect(new URL('/main', request.url));
+    }
+
     const auctionId = searchParams.get('auction_id')?.trim();
+
     if (auctionId) {
       try {
         const authorId: string = await selectUserIdByAuctionId(auctionId);
         if (authorId !== userInfo.id) {
           return NextResponse.redirect(new URL('/main', request.url));
         }
-      } catch (error) {
+      } catch {
         return NextResponse.redirect(new URL('/main', request.url));
       }
     }
