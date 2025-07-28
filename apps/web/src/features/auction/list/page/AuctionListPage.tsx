@@ -1,8 +1,8 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { prefetchedAuctionList } from 'src/entities/auction/queries/auction';
+import WriteAuctionButton from 'src/features/auction/button/WriteAuctionButton';
 import AuctionList from 'src/features/auction/list/components/AuctionList';
 import SelectOrder from 'src/features/auction/list/components/SelectOrder';
-import WriteAuctionButton from 'src/features/auction/WriteAuctionButton';
 import PageContainer from 'src/shared/ui/PageContainer';
 import PageTitle from 'src/shared/ui/PageTitle';
 import GoTopButton from 'src/shared/utils/goTopButton';

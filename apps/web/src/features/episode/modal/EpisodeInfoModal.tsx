@@ -37,7 +37,7 @@ const EpisodeInfoModal = ({ episode }: { episode: EpisodeItemProps }) => {
             </div>
           </div>
           <PageTitle className="mb-1 font-medium" order="left" size="lg">
-            episode.title
+            {episode.title}
           </PageTitle>
           <PageDescription variant="ghost" className="mb-6">
             {episode.description}

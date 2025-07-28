@@ -1,6 +1,6 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { getBidderRanking } from 'src/entities/auction/api';
-import BidderRankingList from 'src/features/auction/BidderRankingList';
+import BidderRankingList from 'src/features/auction/list/components/BidderRankingList';
 import BidEmpty from 'src/features/auction/shared/BidEmpty';
 import PageTitle from 'src/shared/ui/PageTitle';
 import type { AuctionRow } from 'src/shared/supabase/types';
