@@ -1,9 +1,9 @@
 import InquiryWritePage from 'src/features/inquiries/InquiryWritePage';
 
-const InquiryWrite = () => {
+const InquiryWrite = async ({ params }: { params: Promise<{ id: string[] }> }) => {
   return (
     <>
-      <InquiryWritePage />
+      <InquiryWritePage params={params} />
     </>
   );
 };

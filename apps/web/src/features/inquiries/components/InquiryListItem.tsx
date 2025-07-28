@@ -1,38 +1,39 @@
-import { Button } from '@repo/ui/components/ui/button';
-import { IoIosArrowDown } from 'react-icons/io';
+import Link from 'next/link';
 import EpisodeAuctionCard from 'src/features/episode/EpisodeAuctionCard';
+import DescriptionWithMoreButton from 'src/features/inquiries/components/DescriptionWithMoreButton';
+import EditDeleteButton from 'src/features/inquiries/components/EditDeleteButton';
 import BaseCard from 'src/widgets/BaseCard';
+import type { AuctionSummaryInfoWithAddressType } from 'src/entities/auction/types';
+import type { InquiryInfo } from 'src/entities/inquiry/types';
 
-const InquiryListItem = () => {
+interface InquiryListItemProps {
+  inquiryInfo: InquiryInfo;
+  auctionInfo: AuctionSummaryInfoWithAddressType;
+}
+
+const InquiryListItem = ({ inquiryInfo, auctionInfo }: InquiryListItemProps) => {
+  const { inquiryId, title, description } = inquiryInfo;
+  const { auction_id: auctionId } = auctionInfo;
+
   return (
     <li>
       <BaseCard variant="default" className="flex w-full items-center gap-4 sm:!items-start">
         <div className="w-full">
           <div className="flex flex-col-reverse justify-between sm:flex-row">
             <div className="flex items-center gap-2">
-              <h3 className="text-(--color-text-base)">문의드립니다...</h3>
+              <h3 className="text-(--color-text-base)">{title}</h3>
             </div>
             <div className="mb-2 ml-auto flex items-center gap-2">
-              <Button variant="text" className="text-(--color-text-base) hover:text-(--color-accent) p-0">
-                수정
-              </Button>
-              <Button variant="text" className="text-(--color-text-base) hover:text-(--color-accent) p-0">
-                삭제
-              </Button>
+              <EditDeleteButton auctionId={auctionId} inquiryId={inquiryId} />
             </div>
           </div>
           <div className="text-sm">
-            <p className="text-(--color-warm-gray)">
-              안녕하세요 안녕하세요 내용입니다 내용이예요! 안녕하세요 안녕하세요 내용입니다 내용이....
-            </p>
-            <Button variant="text" className="inline-flex items-center justify-start !px-0 !py-0">
-              <span>더보기</span>
-              <IoIosArrowDown />
-            </Button>
+            <DescriptionWithMoreButton description={description} />
           </div>
           <div className="bg-(--color-secondary) mt-2 rounded-lg p-3">
-            {/** 업체 정보 클릭 시 auction-detail 페이지로 이동 */}
-            {/* <EpisodeAuctionCard auctionInfo={auctionInfo} /> */}
+            <Link href={`/auctions/${auctionId}`}>
+              <EpisodeAuctionCard auctionInfo={auctionInfo} />
+            </Link>
           </div>
         </div>
       </BaseCard>
