@@ -1,7 +1,8 @@
-import { getServerUser, selectUserIdByAuctionId } from 'src/entities/auth/serverAction';
+import { getServerUser } from 'src/entities/auth/serverAction';
 import { selectMessagesByChatRoomId, upsertChatRoom } from 'src/entities/chat/supabase';
 import { createServer } from 'src/shared/supabase/client/server';
 import ChatMessageListClient from './ChatMessageListClient';
+import { selectUserIdByAuctionId } from 'src/entities/auction/serverActions';
 
 const ChatMessageList = async ({ auctionId }: { auctionId: string }) => {
   let messages = [];
