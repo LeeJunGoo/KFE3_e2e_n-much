@@ -63,7 +63,7 @@ export const middleware = async (request: NextRequest) => {
   if (pathName === '/auctions') {
     const order = searchParams.get('order')?.trim();
     const keyword = searchParams.get('keyword')?.trim();
-    const orderList = ['end_date', 'favorites', 'created_at'];
+    const orderList = ['end_date', 'favorite_count', 'created_at'];
     let isUrlChanged = false;
 
     if (!order || !orderList.includes(order)) {
