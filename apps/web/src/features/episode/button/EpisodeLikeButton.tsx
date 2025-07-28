@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
-import { toast } from '@repo/ui/components/ui/sonner';
 import { useMutation } from '@tanstack/react-query';
 import { FaHeart } from 'react-icons/fa';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
@@ -14,7 +13,10 @@ import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
   const user = useUserState();
-  const userId = user!.id;
+  let userId = '';
+  if (user) {
+    userId = user.id;
+  }
   const episodeId = episode.episode_id;
   const prevLikes = episode.likes;
   const isIncluded = prevLikes.includes(userId);
@@ -40,6 +42,11 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
   });
 
   const handleLikeMarkClick = async () => {
+    if (userId === '') {
+      popToast('warning', '사용자 조회 실패', '로그인이 필요합니다.', 'medium');
+      return;
+    }
+
     try {
       // 버튼 클릭 시점에 최신 값 가져오기
       const episodeInfo = await getEpisodeInfo(episodeId);
@@ -54,18 +61,21 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
         : currentBidPoint! + LIKE_EPISODE_BID_POINT;
 
       const result = await mutate.mutateAsync({ episodeId, updatedLikes, updatedBidPoint });
-      // console.log('result: ', result);
+      if (result) {
+        const alertTitle = isLiked ? '좋아요 해제 성공' : '좋아요 등록 성공';
+        const alertMessage = isLiked ? '좋아요를 해제했습니다.' : '좋아요를 등록했습니다.';
+        popToast('info', alertTitle, alertMessage, 'medium');
+      }
     } catch (error) {
       if (error instanceof Error) {
-        popToast('error', '좋아요 설정 실패', '좋아요를 설정하지 못했습니다.', 'medium');
+        const alertTitle = isLiked ? '좋아요 해제 실패' : '좋아요 등록 실패';
+        const alertMessage = isLiked ? '좋아요를 해제하지 못했습니다.' : '좋아요를 등록하지 못했습니다.';
+        popToast('error', alertTitle, alertMessage, 'medium');
+
         console.error(error.message);
       }
     }
   };
-
-  useEffect(() => {
-    setIsLiked(isIncluded);
-  }, [isIncluded]);
 
   return (
     <Button variant="text" className="opacity-70" disabled={false} onClick={handleLikeMarkClick}>

@@ -19,7 +19,10 @@ const AuctionFavoriteMarkToggle = ({
   auctionId: string;
 }) => {
   const user = useUserState();
-  const userId = user!.id;
+  let userId = '';
+  if (user) {
+    userId = user.id;
+  }
   const prevfavorites = auctionInfo.favorites;
   const isIncluded = prevfavorites.includes(userId);
 
@@ -44,6 +47,11 @@ const AuctionFavoriteMarkToggle = ({
   });
 
   const handleFavoriteMarkClick = async () => {
+    if (userId === '') {
+      popToast('warning', '사용자 조회 실패', '로그인이 필요합니다.', 'medium');
+      return;
+    }
+
     try {
       // 버튼 클릭 시점에 최신 값 가져오기
       const auctionInfo = await getAuctionInfoWithAddress(auctionId);
@@ -55,10 +63,16 @@ const AuctionFavoriteMarkToggle = ({
         : [...currentfavorites, userId];
 
       const result = await mutate.mutateAsync({ auctionId, updatedFavorites });
-      // console.log('result: ', result);
+      if (result) {
+        const alertTitle = isFavorite ? '관심 경매 해제 성공' : '관심 경매 등록 성공';
+        const alertMessage = isFavorite ? '관심 경매를 해제했습니다.' : '관심 경매를 등록했습니다.';
+        popToast('info', alertTitle, alertMessage, 'medium');
+      }
     } catch (error) {
       if (error instanceof Error) {
-        popToast('error', '관심 경매 설정 실패', '관심 경매를 설정하지 못했습니다.', 'medium');
+        const alertTitle = isFavorite ? '관심 경매 해제 실패' : '관심 경매 등록 실패';
+        const alertMessage = isFavorite ? '관심 경매를 해제하지 못했습니다.' : '관심 경매를 등록하지 못했습니다.';
+        popToast('error', alertTitle, alertMessage, 'medium');
 
         console.error(error.message);
       }
