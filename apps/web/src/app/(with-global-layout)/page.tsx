@@ -1,11 +1,14 @@
-import OnboardingPage from 'src/features/layout/onboarding/OnboardingPage';
+import { redirect } from 'next/navigation';
+import { getServerUserWithProfile } from 'src/entities/auth/serverAction';
 
-const Onboarding = () => {
-  return (
-    <>
-      <OnboardingPage />
-    </>
-  );
+const HomePage = async () => {
+  const user = await getServerUserWithProfile();
+
+  if (user) {
+    redirect('/main');
+  } else {
+    redirect('/onboarding');
+  }
 };
 
-export default Onboarding;
+export default HomePage;

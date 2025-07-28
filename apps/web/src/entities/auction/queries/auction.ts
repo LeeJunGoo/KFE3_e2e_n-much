@@ -4,20 +4,28 @@ import { getAddressId, getAuction, getAuctionCardList, patchAuction, postAuction
 import { AUCTION_BID_POINT_AMOUNT } from 'src/entities/auction/constants';
 import { addressIdKeys, auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import { getAuctionBidPointAmount } from 'src/entities/episode/api';
-import { popToast } from 'src/shared/utils/toast';
+import { popToast } from 'src/shared/utils/popToast';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
+
+export const prefetchAuctionFormData = async (auctionId: string, queryClient: QueryClient) => {
+  await queryClient.prefetchQuery({
+    queryKey: auctionFormKeys.item(auctionId),
+    queryFn: () => getAuction(auctionId),
+    staleTime: Infinity
+  });
+};
 
 export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
   const {
     data: fetchedAuction,
-    isPending: isAuctionFetching,
+    isLoading: isAuctionFetching,
     isError: isAuctionFetchingError,
     error: fetchingAuctionError
   } = useQuery({
-    queryKey: auctionFormKeys.item(auctionIdParam),
-    queryFn: (): Promise<FetchedAuction> => getAuction(auctionIdParam),
-    enabled: Boolean(auctionIdParam) === true,
+    queryKey: auctionFormKeys.item(auctionIdParam as string),
+    queryFn: (): Promise<FetchedAuction> => getAuction(auctionIdParam as string),
+    enabled: !!auctionIdParam,
     staleTime: Infinity
   });
 
@@ -30,7 +38,10 @@ export const usePostAuctionQuery = (auctionId: string | undefined) => {
   const { mutateAsync: mutatePostAuction, isPending: isPostAuctionPending } = useMutation({
     mutationFn: (formData: AuctionInsert): Promise<AuctionRow> => postAuction(formData),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: auctionFormKeys.item(auctionId) });
+      if (auctionId) {
+        queryClient.invalidateQueries({ queryKey: auctionFormKeys.item(auctionId) });
+      }
+
       popToast('info', '경매 등록 성공', '경매 등록에 성공했습니다.', 'medium');
     }
   });
@@ -46,7 +57,10 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
       patchAuctionParam: AuctionUpdate;
     }): Promise<AuctionRow> => patchAuction(patchMutationParam.auctionIdParam, patchMutationParam.patchAuctionParam),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: auctionFormKeys.item(auctionId) });
+      if (auctionId) {
+        queryClient.invalidateQueries({ queryKey: auctionFormKeys.item(auctionId) });
+      }
+
       popToast('info', '경매 수정 성공', '경매 수정에 성공했습니다.', 'medium');
     }
   });
@@ -85,7 +99,7 @@ export const useGetAuctionListQuery = (order: string, keyword: string | undefine
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
     staleTime: 0,
-    enabled: Boolean(order) === true
+    enabled: !!order
   });
 
   return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
@@ -103,12 +117,5 @@ export const prefetchAddressId = async (loggedInUserId: string, queryClient: Que
   await queryClient.prefetchQuery({
     queryKey: addressIdKeys.item(loggedInUserId),
     queryFn: () => getAddressId(loggedInUserId)
-  });
-};
-
-export const prefetchAuctionFormData = async (auctionId: string | undefined, queryClient: QueryClient) => {
-  await queryClient.prefetchQuery({
-    queryKey: auctionFormKeys.item(auctionId),
-    queryFn: () => getAuction(auctionId)
   });
 };

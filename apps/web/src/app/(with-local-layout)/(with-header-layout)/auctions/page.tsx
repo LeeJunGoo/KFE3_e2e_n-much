@@ -1,4 +1,4 @@
-import AuctionListPage from 'src/features/auction/AuctionListPage';
+import AuctionListPage from 'src/features/auction/list/page/AuctionListPage';
 import type { CurrentAuctionsPageProps } from 'src/entities/auction/types';
 
 const CurrentAuctionsPage = async ({ searchParams }: CurrentAuctionsPageProps) => {

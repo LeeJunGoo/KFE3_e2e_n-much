@@ -2,7 +2,7 @@
 import { Button } from '@repo/ui/components/ui/button';
 import { toast } from '@repo/ui/components/ui/sonner';
 import { FiRepeat } from 'react-icons/fi';
-import { useUpdateUserRole, useUserState } from 'src/entities/auth/stores/useAuthStore';
+import { useAuthActions, useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { ROLE_CONFIG } from 'src/entities/user/mypage/main/constants';
 import AddressStatus from 'src/features/user/mypage/components/main/AddressStatus';
 import MyPageUserProfileSkeleton from 'src/features/user/mypage/components/main/skeleton/MyPageUserProfileSkeleton';
@@ -13,7 +13,7 @@ import BaseCard from 'src/widgets/BaseCard';
 
 const MyPageUserProfile = () => {
   const user = useUserState();
-  const updateUserRole = useUpdateUserRole();
+  const { updateUserRole } = useAuthActions();
 
   if (!user) return <MyPageUserProfileSkeleton />;
 
@@ -34,7 +34,6 @@ const MyPageUserProfile = () => {
 
   return (
     <BaseCard as="section" variant="primary">
-      <div>현재 role: {user?.role}</div>
       <div className="flex items-start justify-between pb-1">
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">

@@ -1,4 +1,4 @@
 export const pointQueryKeys = {
   all: ['point'] as const,
-  transactions: () => [...pointQueryKeys.all, 'transactions'] as const
+  user: (userId: string) => [...pointQueryKeys.all, userId] as const
 };

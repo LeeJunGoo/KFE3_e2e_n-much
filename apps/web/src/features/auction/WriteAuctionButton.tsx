@@ -4,11 +4,13 @@ import { useRouter } from 'next/navigation';
 import { FiPlus } from 'react-icons/fi';
 
 const SCROLL_THRESHOLD = 200;
+const TOOLTIP_DELAY_TIME = 5000;
 
 const WriteAuctionButton = () => {
   const { push } = useRouter();
   const [isGoTopVisible, setIsGoTopVisible] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [isTooltipVisible, setIsTooltipVisible] = useState(true);
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -29,6 +31,12 @@ const WriteAuctionButton = () => {
     };
   }, [lastScrollY]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      setIsTooltipVisible(false);
+    }, TOOLTIP_DELAY_TIME);
+  }, []);
+
   const handleNavigateToWrite = () => {
     push('/auctions/write');
   };
@@ -43,12 +51,20 @@ const WriteAuctionButton = () => {
               : 'bottom-[18px] translate-x-0 rotate-0 scale-100 opacity-100'
           }`}
         >
-          <div className="flex items-center gap-0">
+          {isTooltipVisible ? (
+            <div className="flex items-center gap-0">
+              <div className="bg-(--color-text-base) whitespace-nowrap rounded-md px-3 py-2 text-sm text-white">
+                경매를 등록해보세요!
+              </div>
+              <div className="border-l-(--color-text-base) -ml-1 h-0 w-0 border-b-[8px] border-l-[8px] border-t-[8px] border-b-transparent border-t-transparent"></div>
+            </div>
+          ) : null}
+          {/* <div className="flex items-center gap-0">
             <div className="bg-(--color-text-base) whitespace-nowrap rounded-md px-3 py-2 text-sm text-white">
               경매를 등록해보세요!
             </div>
             <div className="border-l-(--color-text-base) -ml-1 h-0 w-0 border-b-[8px] border-l-[8px] border-t-[8px] border-b-transparent border-t-transparent"></div>
-          </div>
+          </div> */}
         </div>
         <button
           onClick={handleNavigateToWrite}
