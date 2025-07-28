@@ -11,7 +11,7 @@ import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
+const EpisodeCard = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
   const user = useUserState();
 
   const isUser = episode.user_id === user?.id;
@@ -57,4 +57,4 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
   );
 };
 
-export default EpisodeItem;
+export default EpisodeCard;
