@@ -1,7 +1,7 @@
-import AuctionListClone from './AuctionListClone';
+import FavoriteAuctionList from './FavoriteAuctionList';
 
 const FavoriteAuctionsContainer = () => {
-  return <AuctionListClone order="favorites" keyword={undefined} />;
+  return <FavoriteAuctionList order="favorites" keyword={undefined} />;
 };
 
 export default FavoriteAuctionsContainer;

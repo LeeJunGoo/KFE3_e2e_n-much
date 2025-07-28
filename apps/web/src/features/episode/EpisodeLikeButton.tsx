@@ -9,6 +9,7 @@ import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { getEpisodeInfo } from 'src/entities/episode/api';
 import { postUserLikesEpisode } from 'src/entities/user/mypage/episodes/api';
 import { LIKE_EPISODE_BID_POINT } from 'src/entities/user/mypage/episodes/constants';
+import { popToast } from 'src/shared/utils/popToast';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
 const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
@@ -56,7 +57,7 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
       // console.log('result: ', result);
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('좋아요를 설정하지 못했습니다.');
+        popToast('error', '좋아요 설정 실패', '좋아요를 설정하지 못했습니다.', 'medium');
         console.error(error.message);
       }
     }

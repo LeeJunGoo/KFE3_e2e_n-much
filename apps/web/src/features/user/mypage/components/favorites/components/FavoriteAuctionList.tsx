@@ -7,11 +7,11 @@ import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useGetUserFavoriteAuctions } from 'src/entities/user/mypage/auctions/queries/useAuctions';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
-import AuctionCardClone from './AuctionCardClone';
+import AuctionCardClone from './FavoriteAuctionCard';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const AuctionListClone = ({ order }: AuctionListProps) => {
+const FavoriteAuctionList = ({ order }: AuctionListProps) => {
   //TODO - nextjs 캐시로 관리하기 (KMH)
 
   const userData = useUserState();
@@ -85,4 +85,4 @@ const AuctionListClone = ({ order }: AuctionListProps) => {
     </>
   );
 };
-export default AuctionListClone;
+export default FavoriteAuctionList;
