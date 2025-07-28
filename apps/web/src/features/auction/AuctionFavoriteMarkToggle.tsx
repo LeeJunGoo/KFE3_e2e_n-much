@@ -6,23 +6,19 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaBookmark } from 'react-icons/fa6';
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
-import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { postUserFavoriteAuction } from 'src/entities/user/mypage/auctions/api';
 import { auctionQueryKeys } from 'src/entities/user/mypage/auctions/queries/keys';
 import { popToast } from 'src/shared/utils/popToast';
 
 const AuctionFavoriteMarkToggle = ({
   auctionInfo,
-  auctionId
+  auctionId,
+  userId
 }: {
   auctionInfo: AuctionInfoWithAddressType;
   auctionId: string;
+  userId: string;
 }) => {
-  const user = useUserState();
-  let userId = '';
-  if (user) {
-    userId = user.id;
-  }
   const prevfavorites = auctionInfo.favorites;
   const isIncluded = prevfavorites.includes(userId);
 
@@ -47,11 +43,6 @@ const AuctionFavoriteMarkToggle = ({
   });
 
   const handleFavoriteMarkClick = async () => {
-    if (userId === '') {
-      popToast('warning', '사용자 조회 실패', '로그인이 필요합니다.', 'medium');
-      return;
-    }
-
     try {
       // 버튼 클릭 시점에 최신 값 가져오기
       const auctionInfo = await getAuctionInfoWithAddress(auctionId);

@@ -1,22 +1,16 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { useMutation } from '@tanstack/react-query';
 import { FaHeart } from 'react-icons/fa';
-import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { getEpisodeInfo } from 'src/entities/episode/api';
 import { postUserLikesEpisode } from 'src/entities/user/mypage/episodes/api';
 import { LIKE_EPISODE_BID_POINT } from 'src/entities/user/mypage/episodes/constants';
 import { popToast } from 'src/shared/utils/popToast';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
-  const user = useUserState();
-  let userId = '';
-  if (user) {
-    userId = user.id;
-  }
+const EpisodeLikeToggle = ({ episode, userId }: { episode: EpisodeItemProps; userId: string }) => {
   const episodeId = episode.episode_id;
   const prevLikes = episode.likes;
   const isIncluded = prevLikes.includes(userId);
@@ -42,11 +36,6 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
   });
 
   const handleLikeMarkClick = async () => {
-    if (userId === '') {
-      popToast('warning', '사용자 조회 실패', '로그인이 필요합니다.', 'medium');
-      return;
-    }
-
     try {
       // 버튼 클릭 시점에 최신 값 가져오기
       const episodeInfo = await getEpisodeInfo(episodeId);
