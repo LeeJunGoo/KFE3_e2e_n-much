@@ -1,7 +1,7 @@
 import { POPULAR_AUCTIONS_COUNT } from 'src/entities/auction/constants';
 import { getAuctionsCategory } from 'src/entities/auction/serverActions';
 import { type SortedAuctionItemType } from 'src/entities/auction/types';
-import PopularAuctionCard from 'src/features/auction/PopularAuctionCard';
+import PopularAuctionCard from 'src/features/auction/card/PopularAuctionCard';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import EpisodeAuctionCard from 'src/features/episode/EpisodeAuctionCard';
+import AuctionSummaryCard from 'src/features/episode/card/AuctionSummaryCard';
 import DescriptionWithMoreButton from 'src/features/inquiries/components/DescriptionWithMoreButton';
 import EditDeleteButton from 'src/features/inquiries/components/EditDeleteButton';
 import BaseCard from 'src/widgets/BaseCard';
@@ -31,8 +31,10 @@ const InquiryListItem = ({ inquiryInfo, auctionInfo }: InquiryListItemProps) => 
             <DescriptionWithMoreButton description={description} />
           </div>
           <div className="bg-(--color-secondary) mt-2 rounded-lg p-3">
+            {/** 업체 정보 클릭 시 auction-detail 페이지로 이동 */}
+            {/* <AuctionSummaryCard auctionInfo={auctionInfo} /> */}
             <Link href={`/auctions/${auctionId}`}>
-              <EpisodeAuctionCard auctionInfo={auctionInfo} />
+              <AuctionSummaryCard auctionInfo={auctionInfo} />
             </Link>
           </div>
         </div>

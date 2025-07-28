@@ -4,6 +4,7 @@ import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/
 import { Autoplay } from '@repo/ui/lib/utils';
 import Image from 'next/image';
 import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import AuctionDetailCarouselItem from 'src/features/auction/card/AuctionDetailCarouselCard';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
 type ImageArrayProps = AuctionRow['image_urls'];
@@ -23,20 +24,7 @@ const AuctionDetailCarousel = ({ imageUrls }: { imageUrls: ImageArrayProps }) =>
     >
       <CarouselContent>
         {isImage ? (
-          imageUrls.map((url, index) => (
-            <CarouselItem key={`${url}-${index}`} className="h-64 w-full">
-              <div className="relative h-full w-full">
-                <Image
-                  src={url}
-                  alt={`경매 이미지 ${index + 1}`}
-                  fill
-                  className="object-cover"
-                  sizes="(min-width: 768px) 700px, 50vw"
-                  priority
-                />
-              </div>
-            </CarouselItem>
-          ))
+          imageUrls.map((url, index) => <AuctionDetailCarouselItem key={`${url}-${index}`} url={url} index={index} />)
         ) : (
           <CarouselItem className="h-64 w-full">
             <div className="relative h-full w-full">

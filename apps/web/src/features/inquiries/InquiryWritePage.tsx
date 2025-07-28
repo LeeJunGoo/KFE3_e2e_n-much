@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { getAuctionSummaryInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
 import { getInquiryInfo } from 'src/entities/inquiry/api';
-import EpisodeAuctionCard from 'src/features/episode/EpisodeAuctionCard';
+import AuctionSummaryCard from 'src/features/episode/card/AuctionSummaryCard';
 import InquiryForm from 'src/features/inquiries/components/InquiryForm';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
@@ -27,7 +27,7 @@ const InquiryWritePage = async ({ params }: { params: Promise<{ id: string[] }> 
     <>
       <DetailPageHeader>{initialInquiryInfo ? '문의 수정하기' : '문의 등록하기'}</DetailPageHeader>
       <PageContainer>
-        <EpisodeAuctionCard auctionInfo={auctionInfo} />
+        <AuctionSummaryCard auctionInfo={auctionInfo} />
         <InquiryForm auctionId={auctionId!} initialInquiryInfo={initialInquiryInfo} userId={user.id} />
       </PageContainer>
     </>
