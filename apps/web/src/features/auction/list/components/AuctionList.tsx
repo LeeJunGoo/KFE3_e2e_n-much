@@ -11,24 +11,26 @@ import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types'
 import type { AuctionRow } from 'src/shared/supabase/types';
 
 const AuctionList = ({ order, keyword }: AuctionListProps) => {
-  console.log('list', order, keyword);
-
   //TODO - nextjs 캐시로 관리하기 (KMH)
-  const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView } =
+  const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, ref, inView } =
     useGetAuctionListQuery(order, keyword);
+
+  console.log('list', order, keyword, fetchedAuctions);
 
   useEffect(() => {
     if (inView) {
       fetchNextPage();
     }
-  }, [fetchNextPage, inView]);
+  }, [fetchNextPage, inView, hasNextPage]);
 
   //TODO - 에러 발생을 이미지로 표시하기 (KMH)
   if (isError) {
     console.error(error);
     return <p>에러 발생</p>;
   }
+
   //TODO - 총 경매 갯수도 총 경매의 갯수로 수정하기 (KMH)
+  //TODO - 검색 결과가 없습니다. 이미지나 다른 컴포넌트로 수정하기 (KMH)
   return (
     <>
       <h3 className="pb-2 pt-1 text-sm">
@@ -43,6 +45,7 @@ const AuctionList = ({ order, keyword }: AuctionListProps) => {
           Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
             <Skeleton key={uuidv4()} className="h-56 w-full" />
           ))}
+        {fetchedAuctions?.pages[0]?.data.length === 0 && <li>검색 결과가 없습니다.</li>}
         {fetchedAuctions &&
           !isPending &&
           fetchedAuctions.pages.map((page) =>
