@@ -1,30 +1,89 @@
-import { Button } from '@repo/ui/components/ui/button';
-import { Input } from '@repo/ui/components/ui/input';
-import { Textarea } from '@repo/ui/components/ui/textarea';
+'use client';
 
-const InquiryForm = () => {
+import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form } from '@repo/ui/components/ui/form';
+import { toast } from '@repo/ui/components/ui/sonner';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { patchInquiryInfo, postInquiryInfo } from 'src/entities/inquiry/api';
+import { MAX_DESC_LENGTH, MAX_TITLE_LENGTH } from 'src/entities/inquiry/constants';
+import { inquiryFormSchema } from 'src/entities/inquiry/schemas';
+import FormActionButton from 'src/shared/ui/FormActionButton';
+import FormDescription from 'src/shared/ui/FormDescription';
+import FormTitle from 'src/shared/ui/FormTitle';
+import type { DetailFormType } from 'src/entities/inquiry/schemas';
+import type { AuctionRow, InquiryRow, UserRow } from 'src/shared/supabase/types';
+
+const InquiryForm = ({
+  initialInquiryInfo,
+  auctionId,
+  userId
+}: {
+  initialInquiryInfo: InquiryRow | null;
+  auctionId: AuctionRow['auction_id'];
+  userId: UserRow['id'];
+}) => {
+  const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const isEditMode = !!initialInquiryInfo?.inquiry_id;
+  const inquiryId = initialInquiryInfo?.inquiry_id;
+
+  const form = useForm<DetailFormType>({
+    resolver: zodResolver(inquiryFormSchema),
+    mode: 'onChange',
+    defaultValues: {
+      title: initialInquiryInfo?.title || '',
+      description: initialInquiryInfo?.description || ''
+    }
+  });
+  const handleInquiryUpsert = async (values: DetailFormType) => {
+    const { title, description } = values;
+
+    try {
+      const status = isEditMode
+        ? await patchInquiryInfo({ inquiryId, title, description }) // 수정
+        : await postInquiryInfo({ auctionId, userId, title, description }); // 등록
+
+      if (status === 'success') {
+        setIsRedirecting(true);
+        const message = isEditMode ? '문의를 수정했습니다.' : '문의를 등록했습니다.';
+        toast.success(message);
+        router.push(`/mypage/inquiries`);
+      }
+    } catch (error) {
+      const message = isEditMode ? '문의를 수정하지 못했습니다.' : '문의를 등록하지 못했습니다.';
+      toast.error(message);
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  };
+
   return (
-    <form>
-      <div className="flex flex-col">
-        <label className="mb-2 flex items-center gap-0.5 text-sm">
-          문의 제목
-          <span className="text-(--color-red) translate-y-0.5">*</span>
-        </label>
-        <Input type="text" placeholder="제목을 입력해 주세요." maxLength={10} />
-      </div>
-      <div className="mt-8 flex flex-col">
-        <label className="mb-2 flex items-center gap-0.5 text-sm">
-          문의 내용
-          <span className="text-(--color-red) translate-y-0.5">*</span>
-        </label>
-        <Textarea placeholder="내용을 입력해 주세요." className="h-50" />
-      </div>
-      <div className="w-ful absolute bottom-0 left-0 right-0 bg-white p-4">
-        <Button variant="base" className="w-full">
-          문의등록
-        </Button>
-      </div>
-    </form>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleInquiryUpsert)} className="mt-6">
+        <FormTitle
+          control={form.control}
+          name={'title'}
+          titleLabel="문의 제목"
+          placeholder="문의 제목을 입력하세요."
+          maxTitleLength={MAX_TITLE_LENGTH}
+        />
+        <FormDescription
+          control={form.control}
+          name={'description'}
+          descriptionLabel="문의 내용"
+          placeholder="문의하고 싶은 내용을 적어주세요."
+          maxDescLength={MAX_DESC_LENGTH}
+        />
+        <FormActionButton
+          buttonLabel={isEditMode ? '수정 완료' : '문의 등록'}
+          isSubmitting={form.formState.isSubmitting}
+          isRedirecting={isRedirecting}
+        />
+      </form>
+    </Form>
   );
 };
 
