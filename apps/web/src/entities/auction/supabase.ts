@@ -115,7 +115,7 @@ export const selectSellerAuctionCount = async (sellerId: AuctionRow['user_id']) 
   };
 };
 
-export const selectAuctionsCount = async (keyword: string | null) => {
+export const selectAuctionsCount = async (keyword: string | null | undefined) => {
   if (!keyword) {
     keyword = '';
   }
