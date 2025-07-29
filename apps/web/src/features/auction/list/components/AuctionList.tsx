@@ -9,6 +9,7 @@ import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
+import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 
 const AuctionList = ({ order, keyword }: AuctionListProps) => {
   //TODO - nextjs 캐시로 관리하기 (KMH)
@@ -24,9 +25,9 @@ const AuctionList = ({ order, keyword }: AuctionListProps) => {
   }, [fetchNextPage, inView, hasNextPage]);
 
   //TODO - 에러 발생을 이미지로 표시하기 (KMH)
-  if (isError) {
+  if (!isError) {
     console.error(error);
-    return <p>에러 발생</p>;
+    return <ErrorState />;
   }
 
   //TODO - 총 경매 갯수도 총 경매의 갯수로 수정하기 (KMH)
