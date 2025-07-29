@@ -69,7 +69,7 @@ const EpisodeCard = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
           {/* 입찰하기 버튼  */}
           {isUser && isSeller && <EpisodeBidModal episode={episode} />}
           {/* 좋아요 버튼 */}
-          {isEpisodeActions ? null : <EpisodeLikeBUtton episode={episode} userId={user.id} />}
+          {isEpisodeActions ? null : <EpisodeLikeBUtton episode={episode} userId={user.id} isSeller={isSeller} />}
         </div>
       </div>
       <div>

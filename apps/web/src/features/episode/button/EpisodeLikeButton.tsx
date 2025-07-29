@@ -6,11 +6,22 @@ import { useMutation } from '@tanstack/react-query';
 import { FaHeart } from 'react-icons/fa';
 import { getEpisodeInfo } from 'src/entities/episode/api';
 import { postUserLikesEpisode } from 'src/entities/user/mypage/episodes/api';
-import { LIKE_EPISODE_BID_POINT } from 'src/entities/user/mypage/episodes/constants';
+import {
+  LIKE_EPISODE_BID_POINT_BUYER,
+  LIKE_EPISODE_BID_POINT_SELLER
+} from 'src/entities/user/mypage/episodes/constants';
 import { popToast } from 'src/shared/utils/popToast';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-const EpisodeLikeToggle = ({ episode, userId }: { episode: EpisodeItemProps; userId: string }) => {
+const EpisodeLikeToggle = ({
+  episode,
+  userId,
+  isSeller
+}: {
+  episode: EpisodeItemProps;
+  userId: string;
+  isSeller: string;
+}) => {
   const episodeId = episode.episode_id;
   const prevLikes = episode.likes;
   const isIncluded = prevLikes.includes(userId);
@@ -46,8 +57,8 @@ const EpisodeLikeToggle = ({ episode, userId }: { episode: EpisodeItemProps; use
       const updatedLikes = isLiked ? currentLikes.filter((item) => item !== userId) : [...currentLikes, userId];
 
       const updatedBidPoint = isLiked
-        ? currentBidPoint! - LIKE_EPISODE_BID_POINT
-        : currentBidPoint! + LIKE_EPISODE_BID_POINT;
+        ? currentBidPoint! - (isSeller ? LIKE_EPISODE_BID_POINT_SELLER : LIKE_EPISODE_BID_POINT_BUYER)
+        : currentBidPoint! + (isSeller ? LIKE_EPISODE_BID_POINT_SELLER : LIKE_EPISODE_BID_POINT_BUYER);
 
       const result = await mutate.mutateAsync({ episodeId, updatedLikes, updatedBidPoint });
       if (result) {
