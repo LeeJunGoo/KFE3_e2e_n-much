@@ -1,5 +1,5 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { prefetchedAuctionList } from 'src/entities/auction/queries/auction';
+import { prefetchAuctionList } from 'src/entities/auction/queries/auction';
 import WriteAuctionButton from 'src/features/auction/button/WriteAuctionButton';
 import AuctionList from 'src/features/auction/list/components/AuctionList';
 import SelectOrder from 'src/features/auction/list/components/SelectOrder';
@@ -11,7 +11,7 @@ import type { AuctionListPageProps } from 'src/entities/auction/types';
 const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
   const queryClient = new QueryClient();
 
-  await prefetchedAuctionList(order, keyword, queryClient);
+  await prefetchAuctionList(order, keyword, queryClient);
 
   return (
     <PageContainer>

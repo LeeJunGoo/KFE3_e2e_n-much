@@ -1,7 +1,7 @@
 //TODO - memo 훅으로 최적화 시도 해보기
 
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { prefetchAuctionFormData } from 'src/entities/auction/queries/auction';
+import { prefetchAuction } from 'src/entities/auction/queries/auction';
 import { getServerUserWithProfile } from 'src/entities/auth/serverAction';
 import AuctionForm from 'src/features/auction/form/components/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
@@ -16,7 +16,7 @@ const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   const queryClient = new QueryClient();
   //TODO - 주소를 가져오는 tanstack query 삭제하기 (KMH)
   if (isEditing) {
-    await prefetchAuctionFormData(auctionId, queryClient);
+    await prefetchAuction(auctionId, queryClient);
   }
 
   return (

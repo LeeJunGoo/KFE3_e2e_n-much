@@ -8,7 +8,7 @@ import { popToast } from 'src/shared/utils/popToast';
 import type { EpisodeCount, FetchedAuction } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
-export const prefetchAuctionFormData = async (auctionId: string, queryClient: QueryClient) => {
+export const prefetchAuction = async (auctionId: string, queryClient: QueryClient) => {
   await queryClient.prefetchQuery({
     queryKey: auctionFormKeys.item(auctionId),
     queryFn: () => getAuction(auctionId),
@@ -16,7 +16,7 @@ export const prefetchAuctionFormData = async (auctionId: string, queryClient: Qu
   });
 };
 
-export const useGetAuctionQuery = (auctionIdParam: string | undefined) => {
+export const useAuctionQuery = (auctionIdParam: string | undefined) => {
   const {
     data: fetchedAuction,
     isLoading: isAuctionFetching,
@@ -67,7 +67,7 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
   return { mutatePatchAuction, isPatchAuctionPending };
 };
 
-export const prefetchedAuctionList = async (order: string, keyword: string | undefined, queryClient: QueryClient) => {
+export const prefetchAuctionList = async (order: string, keyword: string | undefined, queryClient: QueryClient) => {
   await queryClient.prefetchInfiniteQuery({
     queryKey: auctionListKeys.order(order),
     queryFn: ({
@@ -83,7 +83,7 @@ export const prefetchedAuctionList = async (order: string, keyword: string | und
   });
 };
 
-export const useGetAuctionListQuery = (order: string, keyword: string | undefined) => {
+export const useAuctionListQuery = (order: string, keyword: string | undefined) => {
   const { ref, inView } = useInView();
   const {
     data: fetchedAuctions,

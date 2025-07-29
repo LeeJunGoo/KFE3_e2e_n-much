@@ -9,7 +9,7 @@ import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { MAX_DESCRIPTION_LETTERS, MAX_TITLE_LETTERS, UTC_TIME_ZONE } from 'src/entities/auction/constants';
 import { useTriggerCrossFields } from 'src/entities/auction/hooks/useTriggerCrossFields';
-import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
+import { useAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages } from 'src/entities/auction/supabase';
 import { getExtension } from 'src/entities/auction/utils/extension';
@@ -43,7 +43,7 @@ const AuctionForm = ({ auctionIdParam, userId, addressId }: AuctionFormProps) =>
   console.log('auctionIdParam', auctionIdParam);
 
   const { fetchedAuction, isAuctionFetching, isAuctionFetchingError, fetchingAuctionError } =
-    useGetAuctionQuery(auctionIdParam);
+    useAuctionQuery(auctionIdParam);
 
   console.log('addressId', addressId);
   console.log('fetchedAuction', fetchedAuction);
@@ -195,7 +195,7 @@ const AuctionForm = ({ auctionIdParam, userId, addressId }: AuctionFormProps) =>
     setIsSubmitting(false);
   };
 
-  if (!isAuctionFetchingError) {
+  if (isAuctionFetchingError) {
     console.error('fetchingAuctionError', fetchingAuctionError);
     return (
       <PageContainer>

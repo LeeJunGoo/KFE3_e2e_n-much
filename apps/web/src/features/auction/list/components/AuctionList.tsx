@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
-import { useGetAuctionListQuery } from 'src/entities/auction/queries/auction';
+import { useAuctionListQuery } from 'src/entities/auction/queries/auction';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,7 +13,7 @@ import type { AuctionRow } from 'src/shared/supabase/types';
 const AuctionList = ({ order, keyword }: AuctionListProps) => {
   //TODO - nextjs 캐시로 관리하기 (KMH)
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, ref, inView } =
-    useGetAuctionListQuery(order, keyword);
+    useAuctionListQuery(order, keyword);
 
   console.log('list', order, keyword, fetchedAuctions);
 
