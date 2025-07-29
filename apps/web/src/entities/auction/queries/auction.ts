@@ -91,7 +91,8 @@ export const useGetAuctionListQuery = (order: string, keyword: string | undefine
     error,
     isPending,
     isFetchingNextPage,
-    fetchNextPage
+    fetchNextPage,
+    hasNextPage
   } = useInfiniteQuery({
     queryKey: auctionListKeys.order(order),
     queryFn: ({ pageParam }: { pageParam: number }): Promise<{ data: (AuctionRow & EpisodeCount)[]; nextId: number }> =>
@@ -102,7 +103,7 @@ export const useGetAuctionListQuery = (order: string, keyword: string | undefine
     enabled: !!order
   });
 
-  return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, ref, inView };
+  return { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, ref, inView };
 };
 
 export const useAuctionBidPointQuery = (auctionId: AuctionRow['auction_id'], options?: { enabled?: boolean }) => {
