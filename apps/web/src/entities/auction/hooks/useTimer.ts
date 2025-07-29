@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { differenceInSeconds, type Duration, intervalToDuration } from 'date-fns';
 import { TZDate } from 'react-day-picker';
-import { DEFAULT_TIMER_DELAY, MILLISECONDS, TIME_UNIT_PADDING } from '../constants';
+import { DEFAULT_TIMER_DELAY, MILLISECONDS, TIME_UNIT_PADDING } from 'src/entities/auction/constants';
 
 type TimerReturnType = {
   days: string;

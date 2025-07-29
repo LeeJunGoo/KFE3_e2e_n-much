@@ -1,5 +1,5 @@
 import { selectUserChatRooms } from 'src/entities/chat/supabase';
-import ChatListWrapper from './ChatListWrapper';
+import ChatListWrapper from 'src/features/chat/components/ChatListWrapper';
 
 const ChatList = async () => {
   let chatRooms = [];
