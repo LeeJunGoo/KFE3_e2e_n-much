@@ -21,6 +21,7 @@ import FormEndTime from 'src/features/auction/form/components/fields/FormEndTime
 import FormMaxPoint from 'src/features/auction/form/components/fields/FormMaxPoint';
 import FormStartingPoint from 'src/features/auction/form/components/fields/FormStartingPoint';
 import ImageUploader from 'src/features/auction/form/components/ImageUploader';
+import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -194,10 +195,13 @@ const AuctionForm = ({ auctionIdParam, userId, addressId }: AuctionFormProps) =>
     setIsSubmitting(false);
   };
 
-  //TODO - error가 발생하면 대처가 불가능, 화면을 어떡해 보여줄지 의논하기 (KMH)
-  if (isAuctionFetchingError) {
+  if (!isAuctionFetchingError) {
     console.error('fetchingAuctionError', fetchingAuctionError);
-    return <p>에러 발생</p>;
+    return (
+      <PageContainer>
+        <ErrorState />
+      </PageContainer>
+    );
   }
 
   //FIXME - 스켈레톤 UI 사용 (KMH)
