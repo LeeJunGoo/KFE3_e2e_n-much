@@ -203,7 +203,6 @@ const AuctionForm = ({ auctionIdParam, userId, addressId }: AuctionFormProps) =>
       </PageContainer>
     );
   }
-
   //FIXME - 스켈레톤 UI 사용 (KMH)
   //TODO - 서영님한테 물어보기 (KMH)
   if (isFormLoading || isAuctionFetching) {

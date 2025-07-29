@@ -42,7 +42,7 @@ export const usePostAuctionQuery = (auctionId: string | undefined) => {
         queryClient.invalidateQueries({ queryKey: auctionFormKeys.item(auctionId) });
       }
 
-      popToast('info', '경매 등록 성공', '경매 등록에 성공했습니다.', 'medium');
+      popToast('success', '경매 등록 성공', '경매 등록에 성공했습니다.', 'medium');
     }
   });
   return { mutatePostAuction, isPostAuctionPending };
@@ -61,7 +61,7 @@ export const usePatchAuctionQuery = (auctionId: string | undefined) => {
         queryClient.invalidateQueries({ queryKey: auctionFormKeys.item(auctionId) });
       }
 
-      popToast('info', '경매 수정 성공', '경매 수정에 성공했습니다.', 'medium');
+      popToast('success', '경매 수정 성공', '경매 수정에 성공했습니다.', 'medium');
     }
   });
   return { mutatePatchAuction, isPatchAuctionPending };

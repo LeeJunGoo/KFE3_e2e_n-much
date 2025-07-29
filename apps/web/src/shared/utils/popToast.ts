@@ -2,7 +2,7 @@ import { toast } from '@repo/ui/components/ui/sonner';
 import { LONG_TOAST_DURATION, MEDIUM_TOAST_DURATION, SHORT_TOAST_DURATION } from 'src/entities/auction/constants';
 
 export const popToast = (
-  type: 'info' | 'error' | 'warning',
+  type: 'info' | 'error' | 'warning' | 'success',
   title: string,
   description: string,
   durationTime: 'short' | 'medium' | 'long'
@@ -21,6 +21,8 @@ export const popToast = (
     toast.info(title, { description, duration });
   } else if (type === 'error') {
     toast.error(title, { description, duration });
+  } else if (type === 'success') {
+    toast.success(title, { description, duration });
   } else {
     toast.warning(title, { description, duration });
   }
