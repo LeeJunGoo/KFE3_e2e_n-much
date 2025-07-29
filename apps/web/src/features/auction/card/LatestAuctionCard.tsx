@@ -30,7 +30,7 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
             alt={auction.title}
             fill
             sizes="80px"
-            className="rounded-lg object-contain"
+            className="rounded-lg object-cover"
             priority
           />
         </div>
