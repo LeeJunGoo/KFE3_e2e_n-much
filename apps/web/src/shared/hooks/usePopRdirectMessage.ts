@@ -7,7 +7,7 @@ export const usePopMessage = (redirectMessage: string | undefined) => {
   useEffect(() => {
     setMounted(true);
     if (redirectMessage && mounted) {
-      popToast('error', '에러', redirectMessage ?? '', 'medium');
+      popToast('error', '리다이렉트 이유', redirectMessage, 'long');
     }
   }, [redirectMessage, mounted]);
 };
