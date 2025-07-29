@@ -3,6 +3,7 @@ import { getAuctionInfoWithAddress, getSellerAuctionCount } from 'src/entities/a
 import InquiryDrawerTrigger from 'src/features/auction/InquiryDrawerTrigger';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
+import ClientContainer from 'src/shared/ui/ClientContainer';
 
 const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const auctionInfo = await getAuctionInfoWithAddress(auctionId);
@@ -10,13 +11,17 @@ const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction
 
   return (
     <Card className="mb-4 p-5 shadow-sm">
-      <div className="flex justify-between">
-        <h3 className="text-(--color-text-base) font-medium">판매자 정보</h3>
-        {/* //NOTE - ... 버튼 > InquryDrawer 오픈 */}
-        <InquiryDrawerTrigger actionId={auctionInfo.auction_id} />
-      </div>
+      <ClientContainer>
+        <div className="flex justify-between">
+          <h3 className="text-(--color-text-base) font-medium">판매자 정보</h3>
+          <InquiryDrawerTrigger auctionId={auctionId} />
+        </div>
+      </ClientContainer>
+
       <div className="mb-4 flex items-center gap-2">
-        <BaseAvatar src={auctionInfo.company_image!} alt={auctionInfo.business_name!} size="sm" />
+        <ClientContainer>
+          <BaseAvatar src={auctionInfo.company_image!} alt={auctionInfo.business_name!} size="sm" />
+        </ClientContainer>
         <div>
           <h3 className="text-(--color-text-base)">{auctionInfo.business_name}</h3>
           <div className="text-(--color-warm-gray) text-sm">
