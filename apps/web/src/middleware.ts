@@ -27,9 +27,9 @@ export const middleware = async (request: NextRequest) => {
     //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
 
     try {
-      const user = await getServerUserWithProfile(); //TODO - getServerUser와 비교해서 위를 WithProfile로 바꾸기 (KMH)
-      const userAddressId = user.address_id;
-      const userRole = user.role;
+      const userWithProfile = await getServerUserWithProfile();
+      const userAddressId = userWithProfile.address_id;
+      const userRole = userWithProfile.role;
 
       console.log('userAddress', userAddressId);
 
