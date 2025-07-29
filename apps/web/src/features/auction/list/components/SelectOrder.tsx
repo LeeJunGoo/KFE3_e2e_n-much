@@ -14,7 +14,7 @@ import type { SelectOrderProps } from 'src/entities/auction/types';
 
 const selectItemList = [
   { id: 0, label: '곧 종료되는 경매', value: 'end_date' },
-  { id: 1, label: '인기 경매', value: 'favorites' },
+  { id: 1, label: '인기 경매', value: 'favorite_count' },
   { id: 2, label: '최신 경매', value: 'created_at' }
 ];
 

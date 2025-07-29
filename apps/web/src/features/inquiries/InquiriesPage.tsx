@@ -1,8 +1,8 @@
+import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import InquiryList from 'src/features/inquiries/components/InquiryList';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
-import ContentEmpty from '../auction/shared/ContentEmpty';
 
 const InquiriesPage = () => {
   return (

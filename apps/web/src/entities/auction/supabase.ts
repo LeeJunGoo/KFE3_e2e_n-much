@@ -171,7 +171,7 @@ export const selectAuctionCardList = async (order: string | null, keyword: strin
     keyword = '';
   }
 
-  const ascending = order === 'favorites' ? false : true;
+  const ascending = order === 'end_date' ? true : false;
 
   const { data, error } = await supabase
     .from('auctions')

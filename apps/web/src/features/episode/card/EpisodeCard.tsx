@@ -3,7 +3,7 @@
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { useUserLoadingState, useUserState } from 'src/entities/auth/stores/useAuthStore';
 import EpisodeActionButtons from 'src/features/episode/button/EpisodeActionButtons';
-import EpisodeLikeBUtton from 'src/features/episode/button/EpisodeLikeButton';
+import EpisodeLikeButton from 'src/features/episode/button/EpisodeLikeButton';
 import EpisodeBidModal from 'src/features/episode/modal/EpisodeBidModal';
 import EpisodeInfoModal from 'src/features/episode/modal/EpisodeInfoModal';
 import { type AuctionRow } from 'src/shared/supabase/types';
@@ -69,7 +69,7 @@ const EpisodeCard = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
           {/* 입찰하기 버튼  */}
           {isUser && isSeller && <EpisodeBidModal episode={episode} />}
           {/* 좋아요 버튼 */}
-          {isEpisodeActions ? null : <EpisodeLikeBUtton episode={episode} userId={user.id} />}
+          {isEpisodeActions ? null : <EpisodeLikeButton episode={episode} userId={user.id} isSeller={isSeller} />}
         </div>
       </div>
       <div>

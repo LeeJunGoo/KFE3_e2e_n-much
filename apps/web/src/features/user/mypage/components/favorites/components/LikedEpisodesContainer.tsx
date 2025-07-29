@@ -5,10 +5,10 @@ import type { EpisodeWithAuction } from 'src/entities/user/mypage/episodes/types
 
 const LikedEpisodesContainer = async () => {
   const user = await getServerUser();
-  // console.log('user:', user);
+  if (!user) {
+    return <>로그인이 필요합니다.</>;
+  }
   const userId: string = user!.id;
-  // console.log('userId:', userId);
-
   const episodes: EpisodeWithAuction[] = await getUserLikesEpisodes(userId);
 
   return (
