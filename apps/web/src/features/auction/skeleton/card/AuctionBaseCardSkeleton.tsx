@@ -1,5 +1,3 @@
-'use client';
-
 import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { twMerge } from 'tailwind-merge';
 
