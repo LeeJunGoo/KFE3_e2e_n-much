@@ -3,6 +3,7 @@ import EndingSoonListSection from 'src/features/auction/EndingSoonListSection';
 import LatestListSection from 'src/features/auction/LatestListSection';
 import PopularListSection from 'src/features/auction/PopularListSection';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
+import EndingSoonListSectionSkeleton from 'src/features/auction/skeleton/EndingSoonListSectionSkeleton';
 import MainBanner from 'src/features/layout/main/components/MainBanner';
 import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
@@ -14,7 +15,6 @@ const MainPage = async () => {
     <>
       <MainBanner />
       <PageContainer>
-        {/* Ending Soon Auctions */}
         <AuctionErrorBoundary
           fallback={
             <EmptyState
@@ -24,19 +24,11 @@ const MainPage = async () => {
             />
           }
         >
-          <Suspense
-            fallback={
-              <div className="flex h-[200px] items-center justify-center">
-                <span className="text-(--color-text-base) animate-pulse text-lg">
-                  {'🚚 경매 데이터를 불러오는 중입니다...'}
-                </span>
-              </div>
-            }
-          >
+          <Suspense fallback={<EndingSoonListSectionSkeleton />}>
             <EndingSoonListSection />
           </Suspense>
         </AuctionErrorBoundary>
-        {/* Popular Auctions */}
+
         <AuctionErrorBoundary
           fallback={
             <ContentEmpty
