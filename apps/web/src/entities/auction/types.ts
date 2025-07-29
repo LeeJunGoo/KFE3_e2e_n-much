@@ -108,7 +108,7 @@ export interface EpisodeCount {
 export interface AuctionListProps {
   order: string;
   keyword: string | undefined;
-  auctionCount: number;
+  auctionCount?: number;
 }
 
 //NOTE - auctionCard의 props
