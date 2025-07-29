@@ -6,7 +6,7 @@ import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHead
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 
 const PopularListSection = async () => {
-  const popularAuctions = await getAuctionsCategory('favorites', false, POPULAR_AUCTIONS_COUNT);
+  const popularAuctions = await getAuctionsCategory('favorite_count', false, POPULAR_AUCTIONS_COUNT);
 
   if (!popularAuctions || popularAuctions.length === 0) {
     return (
