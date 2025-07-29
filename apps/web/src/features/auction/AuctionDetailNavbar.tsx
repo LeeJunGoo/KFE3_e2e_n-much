@@ -24,7 +24,9 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
         </div>
 
         {isUser && <AuctionActionButtons auctionId={auctionInfo.auction_id} />}
-        {!isUser && isBuyer && <AuctionFavoriteMarkToggle auctionInfo={auctionInfo} auctionId={auctionId} />}
+        {!isUser && isBuyer && (
+          <AuctionFavoriteMarkToggle auctionInfo={auctionInfo} auctionId={auctionId} userId={userInfo!.id} />
+        )}
       </nav>
     </>
   );

@@ -12,6 +12,7 @@ import PopularKeywords from 'src/features/search/components/PopularKeywords';
 import RecentKeywords from 'src/features/search/components/RecentKeywords';
 import SearchInput from 'src/features/search/components/SearchInput';
 import { getList, pushItem, removeItem, removeList } from 'src/shared/utils/LocalStorageListUtil';
+import { popToast } from 'src/shared/utils/popToast';
 
 interface SearchViewProps {
   open: boolean;
@@ -47,7 +48,7 @@ const SearchView = ({ open, setOpen }: SearchViewProps) => {
   const handleSearchClick = (searchKeyword: string) => {
     const trimmedKeyword = searchKeyword.trim();
     if (!trimmedKeyword) {
-      toast.warning('검색어를 입력해주세요.');
+      popToast('warning', '검색 실패', '검색어를 입력해주세요.', 'medium');
       return;
     }
 

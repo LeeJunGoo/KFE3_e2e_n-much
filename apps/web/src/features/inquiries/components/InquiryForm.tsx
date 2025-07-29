@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form } from '@repo/ui/components/ui/form';
-import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { patchInquiryInfo, postInquiryInfo } from 'src/entities/inquiry/api';
@@ -12,6 +11,7 @@ import { inquiryFormSchema } from 'src/entities/inquiry/schemas';
 import FormActionButton from 'src/shared/ui/FormActionButton';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
+import { popToast } from 'src/shared/utils/popToast';
 import type { DetailFormType } from 'src/entities/inquiry/schemas';
 import type { AuctionRow, InquiryRow, UserRow } from 'src/shared/supabase/types';
 
@@ -48,12 +48,12 @@ const InquiryForm = ({
       if (status === 'success') {
         setIsRedirecting(true);
         const message = isEditMode ? '문의를 수정했습니다.' : '문의를 등록했습니다.';
-        toast.success(message);
+        popToast('info', '문의 설정 성공', message, 'medium');
         router.push(`/mypage/inquiries`);
       }
     } catch (error) {
       const message = isEditMode ? '문의를 수정하지 못했습니다.' : '문의를 등록하지 못했습니다.';
-      toast.error(message);
+      popToast('error', '문의 설정 실패', message, 'medium');
       if (error instanceof Error) {
         console.error(error.message);
       }
