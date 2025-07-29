@@ -26,7 +26,12 @@ import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
-import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDate } from 'src/shared/utils/dateFns';
+import {
+  convertFromKorToUtcDate,
+  convertFromUtcToKorDate,
+  getTime,
+  setTimeToDate
+} from 'src/shared/utils/formatWithTimeZone';
 import { popToast } from 'src/shared/utils/popToast';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';

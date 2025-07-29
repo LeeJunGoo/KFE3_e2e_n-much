@@ -1,4 +1,4 @@
-import { getNowKorDate, setTimeToDate } from 'src/shared/utils/dateFns';
+import { getNowKorDate, setTimeToDate } from 'src/shared/utils/formatWithTimeZone';
 
 export const validateDate = (day: Date, time: string, isDisableCondition: boolean) => {
   const formEndDay = day;

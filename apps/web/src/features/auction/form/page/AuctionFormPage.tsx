@@ -1,12 +1,11 @@
 //TODO - memo 훅으로 최적화 시도 해보기
-import { prefetchAddressId } from 'src/entities/auction/queries/address';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { prefetchAddressId } from 'src/entities/auction/queries/address';
 import { prefetchAuction } from 'src/entities/auction/queries/auction';
-import { getServerUserWithProfile } from 'src/entities/auth/serverAction';
+import { getServerUser } from 'src/entities/auth/serverAction';
 import AuctionForm from 'src/features/auction/form/components/AuctionForm';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 import type { AuctionFormPageProps } from 'src/entities/auction/types';
-import { getServerUser } from 'src/entities/auth/serverAction';
 
 const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   const isEditing = !!auctionId;
