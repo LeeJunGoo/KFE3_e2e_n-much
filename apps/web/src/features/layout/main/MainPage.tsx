@@ -4,6 +4,8 @@ import LatestListSection from 'src/features/auction/LatestListSection';
 import PopularListSection from 'src/features/auction/PopularListSection';
 import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import EndingSoonListSectionSkeleton from 'src/features/auction/skeleton/EndingSoonListSectionSkeleton';
+import LatestListSectionSkeleton from 'src/features/auction/skeleton/LatestListSectionSkeleton';
+import PopularListSectionSkeleton from 'src/features/auction/skeleton/PopularListSectionSkeleton';
 import MainBanner from 'src/features/layout/main/components/MainBanner';
 import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
@@ -38,17 +40,10 @@ const MainPage = async () => {
             />
           }
         >
-          <Suspense
-            fallback={
-              <div className="flex h-[200px] items-center justify-center">
-                <span className="animate-pulse text-lg text-gray-500">{'🚚 경매 데이터를 불러오는 중입니다...'}</span>
-              </div>
-            }
-          >
+          <Suspense fallback={<PopularListSectionSkeleton />}>
             <PopularListSection />
           </Suspense>
         </AuctionErrorBoundary>
-        {/* Latest Auctions */}
         <AuctionErrorBoundary
           fallback={
             <ContentEmpty
@@ -58,13 +53,7 @@ const MainPage = async () => {
             />
           }
         >
-          <Suspense
-            fallback={
-              <div className="flex h-[200px] items-center justify-center">
-                <span className="animate-pulse text-lg text-gray-500">{'🚚 경매 데이터를 불러오는 중입니다...'}</span>
-              </div>
-            }
-          >
+          <Suspense fallback={<LatestListSectionSkeleton />}>
             <LatestListSection />
           </Suspense>
         </AuctionErrorBoundary>
