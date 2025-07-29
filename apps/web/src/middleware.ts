@@ -10,6 +10,8 @@ export const middleware = async (request: NextRequest) => {
   // 로그인 없이 접근 가능한 페이지들
   const publicPaths = ['/', '/onboarding', '/auth/signup', '/auth/callback'];
 
+  request.cookies.delete('redirectMessage');
+
   // 공개 페이지는 통과
   if (publicPaths.includes(pathName)) {
     return NextResponse.next();

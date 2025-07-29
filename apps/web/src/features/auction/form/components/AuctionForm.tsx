@@ -204,8 +204,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   };
 
   if (isAuctionFetchingError || isAddressIdFetchingError) {
-    console.error('isAuctionFetchingError', isAuctionFetchingError);
-    console.log('isAddressIdFetchingError', isAddressIdFetchingError);
+    console.error('fetchingAuctionError', fetchingAuctionError);
+    console.error('fetchingAddressIdError', fetchingAddressIdError);
     return (
       <PageContainer>
         <ErrorState />
