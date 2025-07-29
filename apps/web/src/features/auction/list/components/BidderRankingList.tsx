@@ -6,16 +6,15 @@ import { formatNumber } from 'src/shared/utils/formatNumber';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 
 const BidderRankingList = ({ bidderRankingList }: { bidderRankingList: BidderRankingInfoType[] }) => {
-  const userNickname = '닉네임';
   return (
     <ul>
       {bidderRankingList.map((bidder, index) => (
         <li key={`${bidder.users.id}${index}`} className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <BaseAvatar src={bidder.users.user_avatar!} alt={userNickname!} size="sm" />
+            <BaseAvatar src={bidder.users.user_avatar!} alt={bidder.users.nick_name!} size="sm" />
             <div>
               <div className="flex items-center gap-1">
-                <p className="text-(--color-text-base) text-sm font-medium">{userNickname}</p>
+                <p className="text-(--color-text-base) text-sm font-medium">{bidder.users.nick_name}</p>
                 <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(bidder.users.email)}&#41;</p>
               </div>
               <p className="text-(--color-warm-gray) text-xs">{formatFullDateTime(bidder.created_at)}</p>

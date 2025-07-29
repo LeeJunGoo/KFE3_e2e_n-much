@@ -1,8 +1,8 @@
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
-import EpisodeActionButtons from 'src/features/episode/EpisodeActionButtons';
-import EpisodeBidModal from 'src/features/episode/EpisodeBidModal';
-import EpisodeInfoModal from 'src/features/episode/EpisodeInfoModal';
-import EpisodeLikeToggle from 'src/features/episode/EpisodeLikeButton';
+import EpisodeActionButtons from 'src/features/episode/button/EpisodeActionButtons';
+import EpisodeLikeToggle from 'src/features/episode/button/EpisodeLikeButton';
+import EpisodeBidModal from 'src/features/episode/modal/EpisodeBidModal';
+import EpisodeInfoModal from 'src/features/episode/modal/EpisodeInfoModal';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import PageDescription from 'src/shared/ui/PageDescription';
@@ -11,7 +11,7 @@ import { formatYYYYMMDD } from 'src/shared/utils/formatKoreanDate';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
+const EpisodeCard = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerId: AuctionRow['user_id'] }) => {
   const user = useUserState();
 
   const isUser = episode.user_id === user?.id;
@@ -37,7 +37,7 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
           {/* 입찰하기 버튼  */}
           {isUser && isSeller && <EpisodeBidModal episode={episode} />}
           {/* 좋아요 버튼 */}
-          <EpisodeLikeToggle episode={episode} />
+          {isEpisodeActions ? null : <EpisodeLikeToggle episode={episode} />}
         </div>
       </div>
       <div>
@@ -57,4 +57,4 @@ const EpisodeItem = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
   );
 };
 
-export default EpisodeItem;
+export default EpisodeCard;

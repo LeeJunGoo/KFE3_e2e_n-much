@@ -20,7 +20,7 @@ const AuthProvider = ({ user: initialUser, children }: { user: User | null; chil
 
     const {
       data: { subscription }
-    } = supabase.auth.onAuthStateChange((event, session) => {
+    } = supabase.auth.onAuthStateChange((event: any, session: any) => {
       const sessionUser = session?.user ?? null;
 
       if (event === 'SIGNED_IN' && sessionUser) {

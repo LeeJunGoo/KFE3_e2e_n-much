@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation';
 import { getAuctionSummaryInfoWithAddress } from 'src/entities/auction/api';
 import { getEpisodeInfo } from 'src/entities/episode/api';
 import { EPISODE_TIP } from 'src/entities/episode/constants';
-import EpisodeAuctionCard from 'src/features/episode/EpisodeAuctionCard';
-import EpisodesForm from 'src/features/episode/EpisodeForm';
+import AuctionSummaryCard from 'src/features/episode/card/AuctionSummaryCard';
+import EpisodesForm from 'src/features/episode/form/EpisodeForm';
 import { createServer } from 'src/shared/supabase/client/server';
 import { type EpisodeRow } from 'src/shared/supabase/types';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -35,7 +35,7 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
     <>
       <DetailPageHeader>{initialEpisodeInfo ? '사연 수정하기' : '사연 등록하기'}</DetailPageHeader>
       <PageContainer>
-        <EpisodeAuctionCard auctionInfo={auctionInfo} />
+        <AuctionSummaryCard auctionInfo={auctionInfo} />
         <EpisodesForm auctionId={auctionId!} initialEpisodeInfo={initialEpisodeInfo} userId={user.id}>
           <div className="bg-(--color-secondary) my-10 rounded-lg p-4">
             <h3 className="text-(--color-accent) mb-4 text-sm font-medium">

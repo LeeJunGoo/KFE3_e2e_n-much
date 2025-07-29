@@ -5,8 +5,11 @@ import type { Control, FieldPath, FieldValues } from 'react-hook-form';
 import type { AddressRow, AuctionRow, RankingRow } from 'src/shared/supabase/types';
 import type { z } from 'zod';
 
-type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
-type AddressSummaryInfoType = Pick<AddressRow, 'address_id' | 'business_name' | 'road_address' | 'detail_address'>;
+export type AuctionSummaryInfoType = Pick<AuctionRow, 'auction_id' | 'title' | 'end_date' | 'image_urls'>;
+export type AddressSummaryInfoType = Pick<
+  AddressRow,
+  'address_id' | 'business_name' | 'road_address' | 'detail_address'
+>;
 
 export type AuctionSummaryInfoWithAddressType = AuctionSummaryInfoType & AddressSummaryInfoType;
 
@@ -30,10 +33,7 @@ export type SortedAuctionItemType = AuctionRow & {
   }[];
 };
 
-export type SortedAuctionsType = {
-  data: SortedAuctionItemType[];
-  status: string;
-};
+export type SortedAuctionsListProps = SortedAuctionItemType[];
 
 export type AddressType = {
   business_name: AddressRow['business_name'];

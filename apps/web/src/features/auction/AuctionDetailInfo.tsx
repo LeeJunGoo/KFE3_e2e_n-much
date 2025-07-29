@@ -3,8 +3,8 @@ import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
 import { selectUser } from 'src/entities/auth/supabase/client';
 import { getHasUserWrittenEpisode } from 'src/entities/episode/api';
-import AuctionTimerDynamic from 'src/features/auction/AuctionTimerDynamic';
-import EpisodeWriteButton from 'src/features/episode/EpisodeWriteButton';
+import AuctionTimerDynamic from 'src/features/auction/timer/AuctionTimerDynamic';
+import EpisodeWriteButton from 'src/features/episode/button/EpisodeWriteButton';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import PageDescription from 'src/shared/ui/PageDescription';
@@ -21,6 +21,9 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
   const profile = await selectUser(userInfo!.id);
   const isWritten = await getHasUserWrittenEpisode(auctionInfo.auction_id, userInfo!.id);
 
+  // 현재 유저가 경매 물품의 판매자인지의 여부
+  const isUser = auctionInfo.user_id === userInfo?.id;
+  // 현재 유저가 입찰 참여자(buyer)인지의 여부
   const isBuyer = profile!.role === 'buyer';
 
   return (
@@ -40,7 +43,9 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
             <p className="text-(--color-text-base) text-xl font-bold">{formatNumber(auctionInfo.current_point)} P</p>
           </div>
         </div>
-        {isBuyer && <EpisodeWriteButton auctionId={auctionInfo.auction_id} isWritten={isWritten} className="mt-3" />}
+        {!isUser && isBuyer && (
+          <EpisodeWriteButton auctionId={auctionInfo.auction_id} isWritten={isWritten} className="mt-3" />
+        )}
       </div>
     </Card>
   );

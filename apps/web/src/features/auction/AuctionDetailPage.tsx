@@ -1,8 +1,8 @@
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
-import AuctionDetailCarousel from 'src/features/auction/AuctionDetailCarousel';
 import AuctionDetailInfo from 'src/features/auction/AuctionDetailInfo';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import BidderRankingInfoSection from 'src/features/auction/BidderRankingInfoSection';
+import AuctionDetailCarousel from 'src/features/auction/carousel/AuctionDetailCarousel';
 import SellerInfoSection from 'src/features/auction/SellerInfoSection';
 import EpisodeDetailSection from 'src/features/episode/EpisodeDetailSection';
 import PageContainer from 'src/shared/ui/PageContainer';
