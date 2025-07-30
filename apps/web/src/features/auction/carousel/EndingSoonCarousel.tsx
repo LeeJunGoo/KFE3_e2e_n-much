@@ -15,8 +15,7 @@ const EndingSoonCarousel = ({ endingSoonAuctions }: { endingSoonAuctions: Sorted
       >
         <CarouselContent className="-ml-4">
           {endingSoonAuctions!.map((auction) => (
-            <CarouselItem key={auction.auction_id} className="basis-3/5 pl-4">
-              {/* //FIXME - 전체적인 UI 수정 */}
+            <CarouselItem key={auction.auction_id} className="basis-4/5 pl-4 sm:basis-3/5">
               <AuctionCard
                 auctionId={auction.auction_id}
                 // status={auction.status}

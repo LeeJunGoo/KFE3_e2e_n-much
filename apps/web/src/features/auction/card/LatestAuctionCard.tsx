@@ -30,7 +30,7 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
             alt={auction.title}
             fill
             sizes="80px"
-            className="rounded-lg object-contain"
+            className="rounded-lg object-cover"
             priority
           />
         </div>
@@ -38,7 +38,7 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
         <div className="ml-2 flex-1">
           <div className="flex items-center justify-between">
             <div>
-              <PageDescription>{auction.title}</PageDescription>
+              <PageDescription clamp={1}>{auction.title}</PageDescription>
             </div>
             <BaseBadge variant={badgeVariant} className={'px-2 py-1 font-normal'}>
               {remainTime}

@@ -59,7 +59,7 @@ const EpisodeCard = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
           <BaseAvatar src={episode.users.user_avatar!} alt={userNickname} size="sm" />
           <div>
             <div className="flex items-center gap-1">
-              <p className="text-(--color-text-base) text-sm font-medium">{userNickname}</p>
+              <p className="text-sm font-medium">{userNickname}</p>
               <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(episode.users.email)}&#41;</p>
             </div>
             <p className="text-(--color-warm-gray) text-xs">{formatYYYYMMDD(episode.created_at)}</p>

@@ -30,7 +30,7 @@ const EpisodeInfoModal = ({ episode }: { episode: EpisodeItemProps }) => {
             <BaseAvatar src={episode.users.user_avatar!} alt="아바타 이미지입니다." size="sm" />
             <div>
               <div className="flex items-center gap-1">
-                <p className="text-(--color-text-base) text-sm">{episode.users.nick_name}</p>
+                <p className="text-sm">{episode.users.nick_name}</p>
                 <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(episode.users.email)}&#41;</p>
               </div>
               <p className="text-(--color-warm-gray) text-xs">{episodeTime}</p>
