@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import { DaumPostcodeEmbed } from 'react-daum-postcode';
 import { usePostAddressInfo } from 'src/entities/addresses/queries/useAddresses';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
+import { getImageURLFromDB } from 'src/entities/user/mypage/utils/getImage';
 
 type PostcodeData = {
   address: string;
@@ -49,7 +50,7 @@ const AddressForm = () => {
   };
 
   // 등록 버튼 클릭시
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) {
       alert('로그인 후 이용해 주세요.');
@@ -59,6 +60,14 @@ const AddressForm = () => {
       alert('필수 입력값을 모두 입력해 주세요.');
       return;
     }
+    if (!imageFile) {
+      alert('이미지를 등록해 주세요.');
+      return;
+    }
+
+    // DB에 이미지 저장 후 URL 가져오기 - KSH
+    const imageUrl: string | null = await getImageURLFromDB(imageFile);
+
     mutate(
       {
         user_id: userId,
@@ -67,7 +76,7 @@ const AddressForm = () => {
         road_address: address,
         detail_address: detailAddress,
         is_default: true, // 첫 주소라 기본주소
-        company_image: null // 이미지 추가 예정
+        company_image: imageUrl
       },
       {
         onSuccess: () => {
