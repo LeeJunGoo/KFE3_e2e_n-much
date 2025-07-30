@@ -1,6 +1,5 @@
 'use client';
 import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/carousel';
-import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
@@ -18,14 +17,11 @@ const EndingSoonCarousel = ({ endingSoonAuctions }: { endingSoonAuctions: Sorted
             <CarouselItem key={auction.auction_id} className="basis-4/5 pl-4 sm:basis-3/5">
               <AuctionCard
                 auctionId={auction.auction_id}
-                // status={auction.status}
-                imageSrc={auction.image_urls?.[0] ?? NotAuctionImage.src}
+                imageSrc={auction.image_urls[0]}
                 title={auction.title}
-                // currentPoint={auction.current_point}
                 endDate={auction.end_date}
                 episodeCount={auction.episodes?.length ?? 0}
                 favoriteCount={auction.favorites?.length ?? 0}
-                // address={auction.address_id!}
               />
             </CarouselItem>
           ))}

@@ -20,7 +20,7 @@ const PopularListSection = async () => {
 
   return (
     <div className="mt-8">
-      <AuctionSectionHeader title="인기 경매" href={'/auctions?order=favorites'} />
+      <AuctionSectionHeader title="인기 경매" href={'/auctions?order=favorite_count'} />
       <div className="mb-4 flex items-center justify-between"></div>
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {popularAuctions.map((auction: SortedAuctionItemType) => (
