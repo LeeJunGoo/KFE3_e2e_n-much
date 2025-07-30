@@ -1,6 +1,5 @@
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { selectUser } from 'src/entities/auth/supabase/client';
 import AuctionFavoriteMarkToggle from 'src/features/auction/AuctionFavoriteMarkToggle';
 import AuctionActionButtons from 'src/features/auction/button/AuctionActionButtons';
 import { type AuctionRow } from 'src/shared/supabase/types';
@@ -18,9 +17,11 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
     <>
       <ClientContainer>
         <nav className="absolute left-0 right-0 top-5 z-10 flex items-center justify-between">
-          <div className="bg-gray bg-(--color-background)/70 flex size-10 justify-center rounded-sm shadow-sm">
-            <GoBackButton className="-translate-x-2" />
-          </div>
+          <nav>
+            <div className="bg-gray bg-(--color-background)/70 size-10 rounded-sm shadow-sm">
+              <GoBackButton className="-translate-x-2 -translate-y-2/4" mode="push" url="/main" />
+            </div>
+          </nav>
 
           {isUser && <AuctionActionButtons auctionId={auctionInfo.auction_id} />}
           {!isUser && (
