@@ -49,11 +49,13 @@ export const upsertUser = async (authUser: User) => {
     throw new Error('사용자 이메일이 없습니다.');
   }
 
+  const existingUser = await selectUser(authUser.id);
+
   const userData = {
     id: authUser.id,
     nick_name: authUser.user_metadata?.name || authUser.email.split('@')[0],
     email: authUser.email,
-    role: 'buyer' as const,
+    role: existingUser?.role || ('buyer' as const),
     user_avatar: authUser.user_metadata?.avatar_url || ''
   };
 
