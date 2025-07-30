@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { FaRegLightbulb } from 'react-icons/fa';
 import { getAuctionSummaryInfoWithAddress } from 'src/entities/auction/api';
 import { getEpisodeInfo } from 'src/entities/episode/api';
 import { EPISODE_TIP } from 'src/entities/episode/constants';
@@ -38,8 +39,9 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
         <AuctionSummaryCard auctionInfo={auctionInfo} />
         <EpisodesForm auctionId={auctionId!} initialEpisodeInfo={initialEpisodeInfo} userId={user.id}>
           <div className="bg-(--color-secondary) my-10 rounded-lg p-4">
-            <h3 className="text-(--color-accent) mb-4 text-sm font-medium">
-              <i className="fas fa-lightbulb mr-2"></i>좋은 사연을 위한 팁
+            <h3 className="text-(--color-accent) mb-4 flex items-center gap-1 text-sm font-medium">
+              <FaRegLightbulb />
+              좋은 사연을 위한 팁
             </h3>
             <ul className="text-(--color-warm-gray) space-y-2 text-sm">
               {EPISODE_TIP.map((text, index) => (

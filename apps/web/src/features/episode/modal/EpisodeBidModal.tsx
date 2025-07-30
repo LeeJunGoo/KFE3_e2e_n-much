@@ -89,7 +89,8 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
             onClick={() => {
               setOpen(true);
             }}
-            variant="inActive"
+            variant="active"
+            className="hover:bg-(--color-primary)"
           />
         </DialogTrigger>
 
