@@ -4,6 +4,7 @@ import { selectUser } from 'src/entities/auth/supabase/client';
 import AuctionFavoriteMarkToggle from 'src/features/auction/AuctionFavoriteMarkToggle';
 import AuctionActionButtons from 'src/features/auction/button/AuctionActionButtons';
 import { type AuctionRow } from 'src/shared/supabase/types';
+import ClientContainer from 'src/shared/ui/ClientContainer';
 import GoBackButton from 'src/shared/ui/GoBackButton';
 
 const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
@@ -18,14 +19,18 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
 
   return (
     <>
-      <nav className="absolute left-0 right-0 top-5 z-10 flex items-center justify-between">
-        <div className="bg-gray bg-(--color-background)/70 flex h-10 w-10 justify-center rounded-sm shadow-sm">
-          <GoBackButton className="-translate-x-2" />
-        </div>
+      <ClientContainer>
+        <nav className="absolute left-0 right-0 top-5 z-10 flex items-center justify-between">
+          <div className="bg-gray bg-(--color-background)/70 flex size-10 justify-center rounded-sm shadow-sm">
+            <GoBackButton className="-translate-x-2" />
+          </div>
 
-        {isUser && <AuctionActionButtons auctionId={auctionInfo.auction_id} />}
-        {!isUser && isBuyer && <AuctionFavoriteMarkToggle auctionInfo={auctionInfo} auctionId={auctionId} />}
-      </nav>
+          {isUser && <AuctionActionButtons auctionId={auctionInfo.auction_id} />}
+          {!isUser && isBuyer && (
+            <AuctionFavoriteMarkToggle auctionInfo={auctionInfo} auctionId={auctionId} userId={userInfo!.id} />
+          )}
+        </nav>
+      </ClientContainer>
     </>
   );
 };

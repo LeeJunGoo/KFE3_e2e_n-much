@@ -23,7 +23,7 @@ const EpisodeDetailSection = async ({ auctionId }: { auctionId: AuctionRow['auct
   return (
     <Card id="episode-section-header" className="p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-(--color-text-base) font-medium">사연 모음</h3>
+        <h3 className="font-medium">사연 모음</h3>
         <p className="text-(--color-accent) flex gap-1 text-sm font-semibold">
           <span>사연</span>
           <span>{episodeCount}</span>

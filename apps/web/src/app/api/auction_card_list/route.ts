@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    if (order === 'favorites') {
+    if (order === 'favorite_count') {
       res = await selectAuctionCardList(order, keyword, Number(page));
     } else if (order === 'end_date') {
       res = await selectAuctionCardList(order, keyword, Number(page));
