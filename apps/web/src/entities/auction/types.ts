@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import { type UserSummaryInfoType } from 'src/entities/auth/types';
-import type { auctionFormSchema } from './schema/auctionForm';
 import type { Control, FieldPath, FieldValues } from 'react-hook-form';
+import type { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import type { AddressRow, AuctionRow, RankingRow } from 'src/shared/supabase/types';
 import type { z } from 'zod';
 
@@ -107,6 +107,7 @@ export interface EpisodeCount {
 export interface AuctionListProps {
   order: string;
   keyword: string | undefined;
+  auctionCount?: number;
 }
 
 //NOTE - auctionCard의 props

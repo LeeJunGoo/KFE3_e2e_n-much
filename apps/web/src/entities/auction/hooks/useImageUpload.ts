@@ -35,7 +35,11 @@ export const useImageUpload = (
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: {
-      'image/*': ['.jpeg', '.jpg', 'gif', '.png', '.webp']
+      'image/jpeg': ['.jpeg'],
+      'image/jpg': ['.jpg'],
+      'image/gif': ['.gif'],
+      'image/png': ['.png'],
+      'image/webp': ['.webp']
     }
   });
 

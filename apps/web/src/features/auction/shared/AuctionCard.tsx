@@ -40,7 +40,9 @@ const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episo
           </Badge>
         </div>
         <div className="p-2">
-          <h3 className="text-(--color-text-base) mb-1.5 overflow-hidden text-ellipsis text-sm font-medium">{title}</h3>
+          <h3 className="text-(--color-text-base) mb-1.5 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium">
+            {title}
+          </h3>
           <AuctionMetaInfo
             favoritesCount={favoriteCount}
             episodesCount={`${episodeCount}개의 스토리`}

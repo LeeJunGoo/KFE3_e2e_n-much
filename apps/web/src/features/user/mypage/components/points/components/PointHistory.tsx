@@ -1,5 +1,5 @@
+import PointHistoryList from 'src/features/user/mypage/components/points/components/PointHistoryList';
 import PageTitle from 'src/shared/ui/PageTitle';
-import PointHistoryList from './PointHistoryList';
 
 const PointHistory = () => {
   return (

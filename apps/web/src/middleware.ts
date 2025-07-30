@@ -10,6 +10,8 @@ export const middleware = async (request: NextRequest) => {
   // 로그인 없이 접근 가능한 페이지들
   const publicPaths = ['/', '/onboarding', '/auth/signup', '/auth/callback'];
 
+  request.cookies.delete('redirectMessage');
+
   // 공개 페이지는 통과
   if (publicPaths.includes(pathName)) {
     return NextResponse.next();
@@ -27,9 +29,9 @@ export const middleware = async (request: NextRequest) => {
     //NOTE - 경매 등록/수정 페이지에서 로그인되어 있지 않으면 로그인 페이지로 이동
 
     try {
-      const user = await getServerUserWithProfile(); //TODO - getServerUser와 비교해서 위를 WithProfile로 바꾸기 (KMH)
-      const userAddressId = user.address_id;
-      const userRole = user.role;
+      const userWithProfile = await getServerUserWithProfile();
+      const userAddressId = userWithProfile.address_id;
+      const userRole = userWithProfile.role;
 
       console.log('userAddress', userAddressId);
 
@@ -39,7 +41,6 @@ export const middleware = async (request: NextRequest) => {
 
       if (userRole === 'buyer') {
         return NextResponse.redirect(new URL('/main', request.url));
-        //TODO - 마이 페이지로 가는 것이 어떤지 물어보기, 그리고 아무 말없이 리다이렉트 시키는게 UX상 문제있는 것 같음 (KMH)
       }
     } catch {
       return NextResponse.redirect(new URL('/main', request.url));
