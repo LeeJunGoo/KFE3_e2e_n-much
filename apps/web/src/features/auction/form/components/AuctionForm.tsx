@@ -117,6 +117,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
+  //TODO - 등록하기와 수정하기가 완료되어서 디테일 페이지로 넘어갈 때, 버튼 텍스트를 등록/수정 완료라고 표시하기 (KMH)
   const onSubmit = async (values: AuctionFormType) => {
     setIsSubmitting(true);
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
