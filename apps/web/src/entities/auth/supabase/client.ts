@@ -22,6 +22,7 @@ export const selectSignUp = async (provider: Provider) => {
   }
 };
 
+//ANCHOR - 유저 역할
 export const selectUser = async (userId: string) => {
   const { data, error } = await supabase.from('users').select('*').eq('id', userId).maybeSingle();
 
