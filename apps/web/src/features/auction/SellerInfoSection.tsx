@@ -10,11 +10,11 @@ const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction
 
   return (
     <Card className="mb-4 p-5 shadow-sm">
-      <div className="flex justify-between">
+      <div className="mb-4 flex justify-between">
         <h3 className="font-medium">판매자 정보</h3>
       </div>
 
-      <div className="mb-4 flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <ClientContainer>
           <BaseAvatar src={auctionInfo.company_image!} alt={auctionInfo.business_name!} size="sm" />
         </ClientContainer>
