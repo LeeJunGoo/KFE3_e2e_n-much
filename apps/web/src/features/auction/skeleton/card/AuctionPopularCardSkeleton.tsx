@@ -11,7 +11,7 @@ const AuctionPopularCardSkeleton = () => {
       {/* 텍스트 영역 */}
       <div className="absolute bottom-0 left-0 w-full space-y-2 p-3">
         {/* 제목 */}
-        <Skeleton className="h-4 w-3/4 rounded bg-black/10" />
+        <Skeleton className="h-4 w-3/4 rounded" />
         {/* 메타 정보 */}
         <div className="flex gap-3">
           <Skeleton className="h-4 w-8 rounded bg-black/10" />

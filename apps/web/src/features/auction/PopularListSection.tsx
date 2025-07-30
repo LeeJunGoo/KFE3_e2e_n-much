@@ -3,16 +3,16 @@ import { getAuctionsCategory } from 'src/entities/auction/serverActions';
 import { type SortedAuctionItemType } from 'src/entities/auction/types';
 import PopularAuctionCard from 'src/features/auction/card/PopularAuctionCard';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
-import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
+import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
 
 const PopularListSection = async () => {
   const popularAuctions = await getAuctionsCategory('favorite_count', false, POPULAR_AUCTIONS_COUNT);
 
   if (!popularAuctions || popularAuctions.length === 0) {
     return (
-      <ContentEmpty
-        titleLabel="아직 등록된 상품 정보가 없어요."
-        contentLabel="새로운 정보가 등록되면 알려드릴게요.!"
+      <EmptyState
+        title="아직 등록된 상품 정보가 없어요."
+        description="새로운 정보가 등록되면 알려드릴게요.!"
         className="mt-8"
       />
     );

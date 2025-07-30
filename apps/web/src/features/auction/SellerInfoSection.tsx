@@ -13,7 +13,7 @@ const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction
     <Card className="mb-4 p-5 shadow-sm">
       <ClientContainer>
         <div className="flex justify-between">
-          <h3 className="text-(--color-text-base) font-medium">판매자 정보</h3>
+          <h3 className="font-medium">판매자 정보</h3>
           <InquiryDrawerTrigger auctionId={auctionId} />
         </div>
       </ClientContainer>
@@ -23,7 +23,7 @@ const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction
           <BaseAvatar src={auctionInfo.company_image!} alt={auctionInfo.business_name!} size="sm" />
         </ClientContainer>
         <div>
-          <h3 className="text-(--color-text-base)">{auctionInfo.business_name}</h3>
+          <h3>{auctionInfo.business_name}</h3>
           <div className="text-(--color-warm-gray) text-sm">
             <span>{auctionInfo.road_address}</span>&nbsp;
             <span>{auctionInfo.detail_address}</span>

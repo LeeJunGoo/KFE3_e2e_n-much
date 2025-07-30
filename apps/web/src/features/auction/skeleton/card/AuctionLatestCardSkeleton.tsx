@@ -5,7 +5,7 @@ const AuctionLatestCardSkeleton = () => {
     <li className="py-3 last:py-0">
       <div className="flex items-center">
         {/* 이미지 썸네일 */}
-        <div className="relative mr-3 h-20 w-20 flex-shrink-0">
+        <div className="relative mr-3 size-20 flex-shrink-0">
           <Skeleton className="h-full w-full rounded-lg" />
         </div>
 

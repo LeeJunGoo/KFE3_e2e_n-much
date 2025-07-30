@@ -15,11 +15,11 @@ const AuctionBaseCardSkeleton = ({ className = '' }: AuctionBaseCardSkeletonProp
         <Skeleton className="h-4 w-4/5 rounded" />
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
-            <Skeleton className="h-4 w-4 rounded-full" />
+            <Skeleton className="size-4 rounded-full" />
             <Skeleton className="h-4 w-6" />
           </div>
           <div className="flex items-center gap-1">
-            <Skeleton className="h-4 w-4 rounded-full" />
+            <Skeleton className="size-4 rounded-full" />
             <Skeleton className="h-4 w-14" />
           </div>
         </div>

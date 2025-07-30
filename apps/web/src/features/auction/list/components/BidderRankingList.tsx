@@ -17,7 +17,7 @@ const BidderRankingList = ({ bidderRankingList }: { bidderRankingList: BidderRan
             </ClientComponent>
             <div>
               <div className="flex items-center gap-1">
-                <p className="text-(--color-text-base) text-sm font-medium">{bidder.users.nick_name}</p>
+                <p className="text-sm font-medium">{bidder.users.nick_name}</p>
                 <p className="text-(--color-warm-gray) text-xs">&#40;{maskEmail(bidder.users.email)}&#41;</p>
               </div>
               <p className="text-(--color-warm-gray) text-xs">{formatFullDateTime(bidder.created_at)}</p>

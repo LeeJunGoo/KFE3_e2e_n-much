@@ -2,7 +2,6 @@ import { Suspense } from 'react';
 import EndingSoonListSection from 'src/features/auction/EndingSoonListSection';
 import LatestListSection from 'src/features/auction/LatestListSection';
 import PopularListSection from 'src/features/auction/PopularListSection';
-import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import EndingSoonListSectionSkeleton from 'src/features/auction/skeleton/EndingSoonListSectionSkeleton';
 import LatestListSectionSkeleton from 'src/features/auction/skeleton/LatestListSectionSkeleton';
 import PopularListSectionSkeleton from 'src/features/auction/skeleton/PopularListSectionSkeleton';
@@ -33,9 +32,9 @@ const MainPage = async () => {
 
         <AuctionErrorBoundary
           fallback={
-            <ContentEmpty
-              titleLabel="인기 경매 물품을 불러오는 중 문제가 발생했어요."
-              contentLabel="잠시 후 다시 시도해주세요!"
+            <EmptyState
+              title="인기 경매 물품을 불러오는 중 문제가 발생했어요."
+              description="잠시 후 다시 시도해주세요!"
               className="mt-8"
             />
           }
@@ -46,9 +45,9 @@ const MainPage = async () => {
         </AuctionErrorBoundary>
         <AuctionErrorBoundary
           fallback={
-            <ContentEmpty
-              titleLabel="최신 경매 물품을 불러오는 중 문제가 발생했어요."
-              contentLabel="잠시 후 다시 시도해주세요!"
+            <EmptyState
+              title="최신 경매 물품을 불러오는 중 문제가 발생했어요."
+              description="잠시 후 다시 시도해주세요!"
               className="mt-8"
             />
           }
