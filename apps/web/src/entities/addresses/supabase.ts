@@ -1,4 +1,3 @@
-import { decode } from 'base64-arraybuffer';
 import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
 import type { AddressInsert } from 'src/shared/supabase/types';
