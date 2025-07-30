@@ -1,4 +1,6 @@
+import { decode } from 'base64-arraybuffer';
 import { createClient } from 'src/shared/supabase/client/client';
+import { v4 as uuidv4 } from 'uuid';
 import type { AddressInsert } from 'src/shared/supabase/types';
 
 const supabase = createClient();
@@ -30,4 +32,23 @@ export const insertAddressInfo = async (address: AddressInsert) => {
   }
 
   return data?.[0];
+};
+
+//TODO - webp로 최적화하기- KSH
+// Storage Bucket(company-image)에 이미지 업로드  - KSH
+export const uploadImageToBucket = async (imageFile: File, ext: string) => {
+  if (!imageFile) {
+    throw new Error('BUCKET(company-image): 이미지 업로드 에러(imageFile이 없습니다.)');
+  }
+
+  const { data, error } = await supabase.storage.from('company-image').upload(`images/${uuidv4()}.${ext}`, imageFile, {
+    contentType: imageFile.type
+  });
+
+  if (error) {
+    console.error('uploadImage', error);
+    throw new Error('BUCKET(company-image): 이미지 업로드 에러');
+  }
+
+  return data;
 };
