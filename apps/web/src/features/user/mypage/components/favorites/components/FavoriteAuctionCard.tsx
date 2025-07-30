@@ -10,7 +10,7 @@ import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 import type { AuctionCardProp } from 'src/entities/auction/types';
 
-const AuctionCardClone = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount }: AuctionCardProp) => {
+const FavoriteAuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount }: AuctionCardProp) => {
   setDefaultOptions({ locale: ko });
   const { status, remainTime } = formatRemainingTime(endDate);
 
@@ -51,4 +51,4 @@ const AuctionCardClone = ({ auctionId, imageSrc, title, endDate, favoriteCount, 
     </li>
   );
 };
-export default AuctionCardClone;
+export default FavoriteAuctionCard;

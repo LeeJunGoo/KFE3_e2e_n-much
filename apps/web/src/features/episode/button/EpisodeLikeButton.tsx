@@ -1,19 +1,26 @@
 'use client';
-
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
-import { toast } from '@repo/ui/components/ui/sonner';
 import { useMutation } from '@tanstack/react-query';
 import { FaHeart } from 'react-icons/fa';
-import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { getEpisodeInfo } from 'src/entities/episode/api';
 import { postUserLikesEpisode } from 'src/entities/user/mypage/episodes/api';
-import { LIKE_EPISODE_BID_POINT } from 'src/entities/user/mypage/episodes/constants';
+import {
+  LIKE_EPISODE_BID_POINT_BUYER,
+  LIKE_EPISODE_BID_POINT_SELLER
+} from 'src/entities/user/mypage/episodes/constants';
+import { popToast } from 'src/shared/utils/popToast';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
-  const user = useUserState();
-  const userId = user!.id;
+const EpisodeLikeToggle = ({
+  episode,
+  userId,
+  isSeller
+}: {
+  episode: EpisodeItemProps;
+  userId: string;
+  isSeller: string;
+}) => {
   const episodeId = episode.episode_id;
   const prevLikes = episode.likes;
   const isIncluded = prevLikes.includes(userId);
@@ -49,22 +56,25 @@ const EpisodeLikeToggle = ({ episode }: { episode: EpisodeItemProps }) => {
       const updatedLikes = isLiked ? currentLikes.filter((item) => item !== userId) : [...currentLikes, userId];
 
       const updatedBidPoint = isLiked
-        ? currentBidPoint! - LIKE_EPISODE_BID_POINT
-        : currentBidPoint! + LIKE_EPISODE_BID_POINT;
+        ? currentBidPoint! - (isSeller ? LIKE_EPISODE_BID_POINT_SELLER : LIKE_EPISODE_BID_POINT_BUYER)
+        : currentBidPoint! + (isSeller ? LIKE_EPISODE_BID_POINT_SELLER : LIKE_EPISODE_BID_POINT_BUYER);
 
       const result = await mutate.mutateAsync({ episodeId, updatedLikes, updatedBidPoint });
-      // console.log('result: ', result);
+      if (result) {
+        const alertTitle = isLiked ? '좋아요 해제 성공' : '좋아요 등록 성공';
+        const alertMessage = isLiked ? '좋아요를 해제했습니다.' : '좋아요를 등록했습니다.';
+        popToast('info', alertTitle, alertMessage, 'medium');
+      }
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('좋아요를 설정하지 못했습니다.');
+        const alertTitle = isLiked ? '좋아요 해제 실패' : '좋아요 등록 실패';
+        const alertMessage = isLiked ? '좋아요를 해제하지 못했습니다.' : '좋아요를 등록하지 못했습니다.';
+        popToast('error', alertTitle, alertMessage, 'medium');
+
         console.error(error.message);
       }
     }
   };
-
-  useEffect(() => {
-    setIsLiked(isIncluded);
-  }, [isIncluded]);
 
   return (
     <Button variant="text" className="opacity-70" disabled={false} onClick={handleLikeMarkClick}>

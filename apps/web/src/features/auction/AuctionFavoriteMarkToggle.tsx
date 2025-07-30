@@ -1,25 +1,24 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
-import { toast } from '@repo/ui/components/ui/sonner';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FaBookmark } from 'react-icons/fa6';
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { type AuctionInfoWithAddressType } from 'src/entities/auction/types';
-import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { postUserFavoriteAuction } from 'src/entities/user/mypage/auctions/api';
 import { auctionQueryKeys } from 'src/entities/user/mypage/auctions/queries/keys';
+import { popToast } from 'src/shared/utils/popToast';
 
 const AuctionFavoriteMarkToggle = ({
   auctionInfo,
-  auctionId
+  auctionId,
+  userId
 }: {
   auctionInfo: AuctionInfoWithAddressType;
   auctionId: string;
+  userId: string;
 }) => {
-  const user = useUserState();
-  const userId = user!.id;
   const prevfavorites = auctionInfo.favorites;
   const isIncluded = prevfavorites.includes(userId);
 
@@ -55,10 +54,17 @@ const AuctionFavoriteMarkToggle = ({
         : [...currentfavorites, userId];
 
       const result = await mutate.mutateAsync({ auctionId, updatedFavorites });
-      // console.log('result: ', result);
+      if (result) {
+        const alertTitle = isFavorite ? '관심 경매 해제 성공' : '관심 경매 등록 성공';
+        const alertMessage = isFavorite ? '관심 경매를 해제했습니다.' : '관심 경매를 등록했습니다.';
+        popToast('info', alertTitle, alertMessage, 'medium');
+      }
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('관심 경매를 설정하지 못했습니다.');
+        const alertTitle = isFavorite ? '관심 경매 해제 실패' : '관심 경매 등록 실패';
+        const alertMessage = isFavorite ? '관심 경매를 해제하지 못했습니다.' : '관심 경매를 등록하지 못했습니다.';
+        popToast('error', alertTitle, alertMessage, 'medium');
+
         console.error(error.message);
       }
     }

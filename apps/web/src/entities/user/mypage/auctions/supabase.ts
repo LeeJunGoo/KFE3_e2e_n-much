@@ -87,7 +87,7 @@ export const updateFavoriteAuction = async ({
 
   const { data, error } = await supabase
     .from('auctions')
-    .update({ favorites: updatedFavorites })
+    .update({ favorites: updatedFavorites, favorite_count: updatedFavorites.length })
     .eq('auction_id', auctionId)
     .select('favorites')
     .single();

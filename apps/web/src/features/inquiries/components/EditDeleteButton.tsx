@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Button } from '@repo/ui/components/ui/button';
-import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { deleteInquiryInfo } from 'src/entities/inquiry/api';
 import { popToast } from 'src/shared/utils/popToast';
@@ -23,10 +22,10 @@ const EditDeleteButton = ({ auctionId, inquiryId }: EditDeleteButtonProps) => {
   const handleDeleteClick = async () => {
     try {
       await deleteInquiryInfo(inquiryId);
-      toast.success('문의를 삭제했습니다.');
+      popToast('error', '문의 삭제 성공', '문의를 삭제했습니다.', 'medium');
       router.refresh();
     } catch (error) {
-      toast.error('문의를 삭제하지 못했습니다.');
+      popToast('error', '문의 삭제 실패', '문의를 삭제하지 못했습니다.', 'medium');
       if (error instanceof Error) {
         console.error(error.message);
       }
