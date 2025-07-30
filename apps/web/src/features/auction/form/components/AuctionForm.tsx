@@ -192,15 +192,18 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       address_id: fetchedAddressId,
       updated_at: new TZDate(new Date(), UTC_TIME_ZONE).toISOString()
     };
+    try {
+      const data = await mutatePatchAuction({ auctionIdParam, patchAuctionParam });
+      console.log(values);
+      console.log('결과', data);
+      console.log('옥션아이디', data.auction_id);
 
-    const data = await mutatePatchAuction({ auctionIdParam, patchAuctionParam });
-
-    console.log(values);
-    console.log('결과', data);
-    console.log('옥션아이디', data.auction_id);
-
-    push(`/auctions/${data.auction_id}`);
-    setIsSubmitting(false);
+      push(`/auctions/${data.auction_id}`);
+    } catch (error) {
+      popToast('error', '경매 수정 에러', '경매 수정에 실패했습니다.', 'long');
+      setIsSubmitting(false);
+      console.error(error);
+    }
   };
 
   if (isAuctionFetchingError || isAddressIdFetchingError) {
