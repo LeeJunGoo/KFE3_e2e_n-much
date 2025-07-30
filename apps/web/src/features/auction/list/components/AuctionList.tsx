@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
 import { useAuctionListQuery } from 'src/entities/auction/queries/auction';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
+import AuctionBaseCardSkeleton from '../../skeleton/card/AuctionBaseCardSkeleton';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
@@ -43,9 +43,7 @@ const AuctionList = ({ order, keyword, auctionCount }: AuctionListProps) => {
       </h3>
       <ul className="grid grid-cols-2 gap-2">
         {isPending &&
-          Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
-            <Skeleton key={uuidv4()} className="h-56 w-full" />
-          ))}
+          Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => <AuctionBaseCardSkeleton key={uuidv4()} />)}
         {fetchedAuctions?.pages[0]?.data.length === 0 && <li>검색 결과가 없습니다.</li>}
         {fetchedAuctions &&
           !isPending &&
