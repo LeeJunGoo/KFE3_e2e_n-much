@@ -14,9 +14,9 @@ import { useRouter } from 'next/navigation';
 import { useAuctionBidPointQuery } from 'src/entities/auction/queries/auction';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useEpisodeTotalBidPointByUserQuery, useUserPointQuery } from 'src/entities/episode/queries/episode';
-import ContentEmpty from 'src/features/auction/shared/ContentEmpty';
 import EpisodeBidButton from 'src/features/episode/button/EpisodeBidButton';
 import EpisodeBidModalForm from 'src/features/episode/form/EpisodeBidModalForm';
+import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
@@ -50,10 +50,10 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTitle hidden />
         <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
-          <ContentEmpty
-            titleLabel="현재 입찰 정보를 불러오는 중입니다..."
-            contentLabel="잠시만 기다려주세요"
-            className="border-0 bg-white shadow-none"
+          <EmptyState
+            title="현재 입찰 정보를 불러오는 중입니다..."
+            description="잠시만 기다려주세요"
+            className="py-10"
           />
         </DialogContent>
       </Dialog>
@@ -68,12 +68,12 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
         </DialogTrigger>
         <DialogTitle hidden />
         <DialogContent className="sm:max-w-[425px]" aria-describedby={undefined}>
-          <ContentEmpty
-            titleLabel="현재 입찰 정보를 불러오지 못했습니다."
-            contentLabel="잠시 후 다시 시도해주세요."
-            className="border-0 bg-white shadow-none"
+          <EmptyState
+            title="현재 입찰 정보를 불러오지 못했습니다."
+            description="잠시 후 다시 시도해주세요."
+            className="py-10"
           />
-          <Button variant="inActive" onClick={() => router.refresh()}>
+          <Button variant="inActive" className="mb-4" onClick={() => router.refresh()}>
             다시 시도
           </Button>
         </DialogContent>

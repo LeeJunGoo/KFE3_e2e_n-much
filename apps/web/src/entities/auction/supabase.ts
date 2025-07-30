@@ -143,6 +143,7 @@ export const selectAuctionsByMainPageCategory = async (orderParam: string, isAsc
     .from('auctions')
     .select(`* ,episodes(count)`)
     .order(orderParam, { ascending: isAscending })
+    .order('created_at', { ascending: isAscending })
     .eq('status', 'OPEN')
     .limit(count);
 
