@@ -1,23 +1,48 @@
 'use client';
 
-import { useGetDefaultAddressInfo } from 'src/entities/addresses/queries/useAddresses';
+import { useGetAddressList } from 'src/entities/addresses/queries/useAddresses'; // 여러개라면
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
-import AddressListItem from 'src/features/addresses/components/AddressListItem';
+import AddressListItem from './AddressListItem';
+import { useRouter } from 'next/navigation';
+import { Button } from '@repo/ui/components/ui/button';
+import { AddressRow } from 'src/shared/supabase/types';
 
 const AddressList = () => {
   const user = useUserState();
   const userId = user?.id;
-  const { data, isPending, isError } = useGetDefaultAddressInfo(userId);
+  console.log('as', userId);
+  const { data: addressList, isPending, isError, error } = useGetAddressList(userId as string);
+  const { push } = useRouter();
 
+  console.log('abcd', addressList, isPending, isError, error);
   if (!userId) return <div>로그인 해주세요</div>;
   if (isPending) return <div>로딩중...</div>;
   if (isError) return <div>에러!</div>;
-  if (!data) return <div>주소 없음</div>;
+  if (!addressList || addressList.length === 0) return <div>주소 없음</div>;
 
   return (
-    <ul className="space-y-3">
-      <AddressListItem address={data} />
-    </ul>
+    <div>
+      <ul className="space-y-3">
+        {addressList.map((address: AddressRow) => (
+          <AddressListItem
+            key={address.address_id}
+            address={address}
+            addressCount={addressList.length}
+            onEdit={() => {
+              /* 수정 로직, 예: 페이지 이동 */
+            }}
+            onDelete={() => {
+              /* 삭제 로직, 예: mutation */
+            }}
+          />
+        ))}
+      </ul>
+      <div className="mt-8 flex justify-end">
+        <Button variant="active" onClick={() => push('/mypage/addresses/write')}>
+          주소 추가
+        </Button>
+      </div>
+    </div>
   );
 };
 

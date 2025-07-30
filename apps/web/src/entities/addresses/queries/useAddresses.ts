@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getDefaultAddressInfo, postAddressInfo } from 'src/entities/addresses/api';
+import { getDefaultAddressInfo, postAddressInfo, getAddressList } from 'src/entities/addresses/api';
 import { addressQueryKeys } from 'src/entities/addresses/queries/keys';
 import type { AddressInsert } from 'src/shared/supabase/types';
 
@@ -23,5 +23,13 @@ export const usePostAddressInfo = () => {
         queryClient.invalidateQueries({ queryKey: addressQueryKeys.default(variables.user_id) });
       }
     }
+  });
+};
+
+export const useGetAddressList = (userId: string) => {
+  return useQuery({
+    queryKey: addressQueryKeys.list(userId),
+    queryFn: () => getAddressList(userId),
+    enabled: !!userId
   });
 };

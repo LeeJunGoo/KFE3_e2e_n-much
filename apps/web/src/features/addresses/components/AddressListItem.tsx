@@ -6,9 +6,12 @@ import type { AddressRow } from 'src/shared/supabase/types';
 
 interface AddressListItemProps {
   address: AddressRow;
+  addressCount: number;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
-const AddressListItem = ({ address }: AddressListItemProps) => {
+const AddressListItem = ({ address, addressCount, onEdit, onDelete }: AddressListItemProps) => {
   return (
     <li>
       <BaseCard variant="custom" className="flex w-full items-center gap-4 px-4 pb-6 pt-4 sm:!items-start">
@@ -28,14 +31,23 @@ const AddressListItem = ({ address }: AddressListItemProps) => {
                 </Button>
               )}
             </div>
-            {/* <div className="mb-2 ml-auto flex items-center gap-2">
-              <Button variant="text" className="text-(--color-text-base) hover:text-(--color-accent) p-0">
+            <div className="mb-2 ml-auto flex items-center gap-2">
+              <Button
+                variant="text"
+                className="text-(--color-text-base) hover:text-(--color-accent) p-0"
+                onClick={onEdit}
+              >
                 수정
               </Button>
-              <Button variant="text" className="text-(--color-text-base) hover:text-(--color-accent) p-0">
+              <Button
+                variant="text"
+                className="text-(--color-text-base) hover:text-(--color-accent) p-0"
+                onClick={onDelete}
+                disabled={addressCount <= 1}
+              >
                 삭제
               </Button>
-            </div> */}
+            </div>
           </div>
           <p className="text-(--color-warm-gray) flex flex-col gap-1 text-sm sm:flex-row">
             <span className="mt-1 flex items-center gap-0.5 sm:mt-0">
