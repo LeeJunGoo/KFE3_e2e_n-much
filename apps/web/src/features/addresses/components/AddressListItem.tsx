@@ -25,11 +25,7 @@ const AddressListItem = ({ address, addressCount, onEdit, onDelete }: AddressLis
           <div className="flex flex-col-reverse justify-between sm:flex-row">
             <div className="flex items-center gap-2">
               <h3 className="text-(--color-text-base)">{address.business_name || '이름 없음'}</h3>
-              {address.is_default && (
-                <Button variant="active" className="pointer-events-none h-auto rounded-sm px-2 py-1 text-xs">
-                  기본주소
-                </Button>
-              )}
+              {address.is_default && <Button variant="active">기본주소</Button>}
             </div>
             <div className="mb-2 ml-auto flex items-center gap-2">
               <Button
