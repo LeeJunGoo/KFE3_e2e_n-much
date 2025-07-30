@@ -40,7 +40,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
           <AuctionTimerDynamic endDate={auctionInfo.end_date} />
           <div className="mt-10">
             <PageDescription variant="ghost">현재 최고 입찰가</PageDescription>
-            <p className="text-(--color-text-base) text-xl font-bold">{formatNumber(auctionInfo.current_point)} P</p>
+            <p className="text-xl font-bold">{formatNumber(auctionInfo.current_point)} P</p>
           </div>
         </div>
         {!isUser && isBuyer && (
