@@ -7,9 +7,10 @@ import { Input } from '@repo/ui/components/ui/input';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { DaumPostcodeEmbed } from 'react-daum-postcode';
-import { usePostAddressInfo } from 'src/entities/addresses/queries/useAddresses';
-import { useUserState } from 'src/entities/auth/stores/useAuthStore';
+import { usePatchAddressInfo, usePostAddressInfo } from 'src/entities/addresses/queries/useAddresses';
 import { getImageURLFromDB } from 'src/entities/user/mypage/utils/getImage';
+import { popToast } from 'src/shared/utils/popToast';
+import type { AddressRow } from 'src/shared/supabase/types';
 
 type PostcodeData = {
   address: string;
@@ -19,18 +20,30 @@ type PostcodeData = {
   zonecode: string;
 };
 
-const AddressForm = () => {
-  const [businessName, setBusinessName] = useState('');
-  const [zonecode, setZonecode] = useState('');
-  const [address, setAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const { push } = useRouter();
-  const user = useUserState();
-  const userId = user?.id;
+const AddressForm = ({
+  initialAddressInfo,
+  userId
+}: {
+  initialAddressInfo: AddressRow | null | undefined;
+  userId: AddressRow['user_id'];
+}) => {
+  const [businessName, setBusinessName] = useState(initialAddressInfo?.business_name || '');
+  const [zonecode, setZonecode] = useState(initialAddressInfo?.postal_code || '');
+  const [address, setAddress] = useState(initialAddressInfo?.road_address || '');
+  const [detailAddress, setDetailAddress] = useState(initialAddressInfo?.detail_address || '');
+  // const [imageFile, setImageFile] = useState<File | null>(null);
+  const [previewImage, setPreviewImage] = useState<{ url: string; file: File | null } | null>(
+    initialAddressInfo?.company_image ? { url: initialAddressInfo.company_image, file: null } : null
+  );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const { mutate, isPending } = usePostAddressInfo();
+  const postMutate = usePostAddressInfo();
+  const patchMutate = usePatchAddressInfo();
+
+  const router = useRouter();
+
+  const isEditMode = !!initialAddressInfo?.address_id;
+  // console.log('isEditMode:', isEditMode);
 
   const handleComplete = (data: PostcodeData) => {
     let fullAddress = data.address;
@@ -51,7 +64,7 @@ const AddressForm = () => {
   };
 
   // 등록 버튼 클릭시
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleAddressUpsert = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) {
       alert('로그인 후 이용해 주세요.');
@@ -61,43 +74,59 @@ const AddressForm = () => {
       alert('필수 입력값을 모두 입력해 주세요.');
       return;
     }
-    if (!imageFile) {
+    if (!previewImage) {
       alert('이미지를 등록해 주세요.');
       return;
     }
 
-    // DB에 이미지 저장 후 URL 가져오기 - KSH
-    const imageUrl: string | null = await getImageURLFromDB(imageFile);
+    let imageUrl: string | null = null;
+    if (previewImage.file) {
+      // 첨부한 이미지가 있으면 DB에 이미지 저장 후 URL 가져오기 - KSH
+      imageUrl = await getImageURLFromDB(previewImage.file);
+    } else {
+      // 첨부한 이미지가 없으면 기존 이미지 적용(기존 이미지 없으면 null)
+      imageUrl = previewImage.url;
+    }
 
-    mutate(
-      {
-        user_id: userId,
-        business_name: businessName,
-        postal_code: zonecode,
-        road_address: address,
-        detail_address: detailAddress,
-        is_default: true, // 첫 주소라 기본주소
-        company_image: imageUrl
-      },
-      {
-        onSuccess: () => {
-          push('/mypage');
-        },
-        onError: (error) => {
-          alert(error instanceof Error ? error.message : '주소 등록 실패');
-        }
+    const addressFormData = {
+      user_id: userId,
+      business_name: businessName,
+      postal_code: zonecode,
+      road_address: address,
+      detail_address: detailAddress,
+      company_image: imageUrl,
+      is_default: true
+    };
+
+    try {
+      if (isEditMode) {
+        const status = await patchMutate.mutateAsync({
+          addressId: initialAddressInfo.address_id,
+          address: addressFormData
+        });
+        if (status === 'success') router.push('/mypage');
+      } else {
+        const status = await postMutate.mutateAsync({ address: addressFormData });
+        if (status === 'success') router.push('/mypage');
       }
-    );
+    } catch (error) {
+      const message = isEditMode ? '주소를 수정하지 못했습니다.' : '주소를 등록하지 못했습니다.';
+      popToast('error', '주소 설정 실패', message, 'medium');
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
   };
 
   // 파일 변경 핸들러
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setImageFile(file || null);
+    if (!file) return;
+    setPreviewImage({ url: URL.createObjectURL(file), file });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleAddressUpsert}>
       <div className="mb-8 flex flex-col">
         <label className="mb-2 flex items-center gap-0.5 text-sm">
           업체명
@@ -118,8 +147,14 @@ const AddressForm = () => {
         </label>
         <Input type="file" accept="image/*" onChange={handleImageChange} />
         {/* 미리보기 */}
-        {imageFile && (
-          <Image src={URL.createObjectURL(imageFile)} alt="미리보기" width={50} height={50} className="mt-2 h-20" />
+        {previewImage && (
+          <Image
+            src={previewImage.url}
+            alt="첨부한 이미지 미리보기"
+            width={50}
+            height={50}
+            className="mt-2 h-20 w-20 object-cover"
+          />
         )}
       </div>
       <div className="mt-8 flex flex-col">
@@ -158,11 +193,11 @@ const AddressForm = () => {
         />
       </div>
       <div className="absolute bottom-0 left-0 right-0 w-full bg-white p-4">
-        <Button type="submit" variant="base" className="w-full" disabled={isPending}>
-          {isPending ? '등록 중...' : '등록하기'}
+        <Button type="submit" variant="base" className="w-full" disabled={postMutate.isPending}>
+          {postMutate.isPending ? '등록 중...' : '등록하기'}
         </Button>
       </div>
-      <div className="mt-8">
+      {/* <div className="mt-8">
         <label className="flex w-full items-start justify-center gap-2">
           <input type="checkbox" className="accent-(--color-accent) size-4 translate-y-0.5" checked readOnly />
           <p className="text-sm">
@@ -170,7 +205,7 @@ const AddressForm = () => {
             <span className="text-(--color-text-base)/70">&#40;첫 주소는 자동으로 기본 주소로 저장됩니다&#41;</span>
           </p>
         </label>
-      </div>
+      </div> */}
     </form>
   );
 };

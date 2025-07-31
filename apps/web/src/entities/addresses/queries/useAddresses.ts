@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getDefaultAddressInfo, postAddressInfo, getAddressList } from 'src/entities/addresses/api';
+import { getDefaultAddressInfo, postAddressInfo, getAddressList, patchAddressInfo } from 'src/entities/addresses/api';
 import { addressQueryKeys } from 'src/entities/addresses/queries/keys';
 import type { AddressInsert } from 'src/shared/supabase/types';
 
@@ -16,11 +16,28 @@ export const useGetDefaultAddressInfo = (userId?: string) => {
 export const usePostAddressInfo = () => {
   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (payload: AddressInsert) => postAddressInfo(payload),
-    onSuccess: (_data, variables) => {
-      if (variables.is_default && variables.user_id) {
-        queryClient.invalidateQueries({ queryKey: addressQueryKeys.default(variables.user_id) });
+  return useMutation<string, Error, { address: AddressInsert }, void>({
+    mutationFn: ({ address }) => postAddressInfo(address),
+    onSuccess: (_data, { address }) => {
+      if (address.is_default && address.user_id) {
+        queryClient.invalidateQueries({ queryKey: addressQueryKeys.default(address.user_id) });
+      }
+    }
+  });
+};
+
+// 주소 수정 훅
+export const usePatchAddressInfo = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation<string, Error, { addressId: string; address: AddressInsert }, void>({
+    mutationFn: async ({ addressId, address }) => {
+      const status = await patchAddressInfo(addressId, address);
+      return status.message;
+    },
+    onSuccess: (_data, { address }) => {
+      if (address.user_id) {
+        queryClient.invalidateQueries({ queryKey: addressQueryKeys.default(address.user_id) });
       }
     }
   });

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { insertAddressInfo, selectDefaultAddress } from 'src/entities/addresses/supabase';
+import { insertAddressInfo, selectDefaultAddress, updateAddressInfo } from 'src/entities/addresses/supabase';
+import type { AddressRow } from 'src/shared/supabase/types';
 
 // 기본주소 조회
 export async function GET(request: NextRequest) {
@@ -42,5 +43,21 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: 'success', data: newAddress }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ status: 'error', error: `Server Error ${error}` }, { status: 500 });
+  }
+}
+
+// 주소 수정
+export async function PATCH(request: NextRequest) {
+  const { adrressId, address } = await request.json();
+
+  if (!adrressId && !address) {
+    return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
+  }
+
+  try {
+    await updateAddressInfo(adrressId, address);
+    return NextResponse.json({ message: 'success' }, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: '500: 서버 처리 중 오류가 발생했습니다.' }, { status: 500 });
   }
 }

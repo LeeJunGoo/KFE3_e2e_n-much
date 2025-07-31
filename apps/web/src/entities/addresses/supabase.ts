@@ -1,6 +1,6 @@
 import { createClient } from 'src/shared/supabase/client/client';
 import { v4 as uuidv4 } from 'uuid';
-import type { AddressInsert } from 'src/shared/supabase/types';
+import type { AddressInsert, AddressRow } from 'src/shared/supabase/types';
 
 const supabase = createClient();
 
@@ -25,6 +25,18 @@ export const insertAddressInfo = async (address: AddressInsert) => {
   }
 
   return data?.[0];
+};
+
+// 주소 수정
+export const updateAddressInfo = async (addressId: string, addressFormData: AddressRow) => {
+  const { data, error } = await supabase.from('addresses').update(addressFormData).eq('address_id', addressId).select();
+
+  if (error) {
+    console.error('🚀 ~ updateAddressInfo ~ error:', error);
+    throw new Error('주소 수정 중 오류 발생');
+  }
+
+  return data;
 };
 
 //TODO - webp로 최적화하기- KSH

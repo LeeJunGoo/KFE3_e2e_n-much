@@ -1,4 +1,4 @@
-import type { AddressRow, AddressInsert } from 'src/shared/supabase/types';
+import type { AddressRow, AddressInsert, AddressUpdate } from 'src/shared/supabase/types';
 
 // 기본 주소 정보 조회
 export const getDefaultAddressInfo = async (userId: string) => {
@@ -28,6 +28,27 @@ export const postAddressInfo = async (payload: AddressInsert) => {
 
   const result = await res.json();
   return result.data;
+};
+
+// 주소 수정
+export const patchAddressInfo = async (adrressId: string, address: AddressUpdate) => {
+  if (!address) {
+    throw new Error('patchAddressInfo: address가 없습니다.');
+  }
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses`, {
+    headers: { 'Content-Type': 'application/json' },
+    method: 'PATCH',
+    body: JSON.stringify({ adrressId, address })
+  });
+
+  if (!res.ok) {
+    const errorResponse = await res.json();
+    throw new Error(errorResponse.error);
+  }
+
+  const result = await res.json();
+  return result;
 };
 
 // userId로 해당 유저의 주소 목록을 가져오는 함수 (fetch 방식)
