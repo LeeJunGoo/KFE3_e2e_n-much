@@ -27,7 +27,7 @@ export const MYPAGE_MENU_LIST = [
   }
 ];
 
-// MyPageUserProfile.tsx
+// header.tsx
 export const ROLE_CONFIG = {
   buyer: {
     roleNext: 'seller' as const,
