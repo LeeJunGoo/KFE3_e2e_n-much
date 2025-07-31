@@ -40,7 +40,7 @@ export const middleware = async (request: NextRequest) => {
       }
 
       if (userRole === 'buyer') {
-        return NextResponse.redirect(new URL('/main', request.url));
+        return NextResponse.redirect(new URL('/mypage', request.url));
       }
     } catch {
       return NextResponse.redirect(new URL('/main', request.url));

@@ -17,7 +17,9 @@ const AuctionFormPage = async ({ auctionId }: AuctionFormPageProps) => {
   const queryClient = new QueryClient();
 
   //TODO - 마이 페이지에서 주소를 변경할 때, 아래 쿼리 키의 캐시를 지워야 함 (KMH)
-  await prefetchAddressId(loggedInUserId, queryClient);
+  //TODO - 시간나면 tanstack query로 가져오는 기능으로 수정하기 (KMH)
+  //TODO - 주원님의 주소 가져오는 라우트 핸들러와 겹침 논의하기 (kmh)
+  // await prefetchAddressId(loggedInUserId, queryClient);
   if (isEditing) {
     await prefetchAuction(auctionId, queryClient);
   }
