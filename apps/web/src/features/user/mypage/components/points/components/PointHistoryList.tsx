@@ -21,6 +21,7 @@ const PointHistoryList = () => {
       <EmptyState
         title="포인트 사용 내역이 없어요"
         description="포인트를 적립하거나 사용하면 여기서 확인할 수 있어요"
+        className="mt-24"
       />
     );
   }
