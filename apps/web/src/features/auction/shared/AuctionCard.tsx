@@ -32,7 +32,7 @@ const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episo
                 src={noAuctionImage}
                 fill
                 alt={`${title} 이미지`}
-                className="object-contain"
+                className="translate-y-4 object-contain"
                 sizes="(min-width: 768px) 400px, 80vw"
               />
             )}
