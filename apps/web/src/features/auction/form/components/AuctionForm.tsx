@@ -9,7 +9,6 @@ import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { MAX_DESCRIPTION_LETTERS, MAX_TITLE_LETTERS, UTC_TIME_ZONE } from 'src/entities/auction/constants';
 import { useTriggerCrossFields } from 'src/entities/auction/hooks/useTriggerCrossFields';
-import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages } from 'src/entities/auction/supabase';
@@ -36,7 +35,7 @@ import { popToast } from 'src/shared/utils/popToast';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 
-const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
+const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: AuctionFormProps) => {
   const isEditing: boolean = !!auctionIdParam;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,10 +49,11 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   const { fetchedAuction, isAuctionFetching, isAuctionFetchingError, fetchingAuctionError } =
     useAuctionQuery(auctionIdParam);
-  const { fetchedAddressId, isAddressIdFetching, isAddressIdFetchingError, fetchingAddressIdError } =
-    useGetAddressIdQuery(loggedInUserId);
+  // const { fetchedAddressId, isAddressIdFetching, isAddressIdFetchingError, fetchingAddressIdError } =
+  // useGetAddressIdQuery(loggedInUserId);
 
-  console.log('fetchedAddressID', fetchedAddressId);
+  // console.log('fetchedAddressID', fetchedAddressId);
+  console.log('로그인한 주소 id', loggedInAddressId);
   console.log('fetchedAuction', fetchedAuction);
 
   const { mutatePostAuction, isPostAuctionPending } = usePostAuctionQuery(auctionIdParam);
@@ -144,7 +144,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       console.error(error);
     }
 
-    if (!fetchedAddressId) {
+    // if (!fetchedAddressId) {
+    if (!loggedInAddressId) {
       popToast('error', '경매 등록/수정 에러', '주소를 불러오는데 실패했습니다.', 'long');
       throw new Error('주소를 불러오는데 실패했습니다.');
     }
@@ -158,7 +159,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         starting_point: Number(startingPoint),
         max_point: Number(maxPoint),
         image_urls: imageUrls,
-        address_id: fetchedAddressId
+        // address_id: fetchedAddressId
+        address_id: loggedInAddressId
       };
       try {
         const data = await mutatePostAuction(postAuctionParam);
@@ -190,7 +192,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       max_point: Number(maxPoint),
       image_urls: imageUrls,
       status: fetchedAuction.status,
-      address_id: fetchedAddressId,
+      // address_id: fetchedAddressId,
+      address_id: loggedInAddressId,
       updated_at: new TZDate(new Date(), UTC_TIME_ZONE).toISOString()
     };
     try {
@@ -207,9 +210,10 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   };
 
-  if (isAuctionFetchingError || isAddressIdFetchingError) {
+  // if (isAuctionFetchingError || isAddressIdFetchingError) {
+  if (isAuctionFetchingError) {
     console.error('fetchingAuctionError', fetchingAuctionError);
-    console.error('fetchingAddressIdError', fetchingAddressIdError);
+    // console.error('fetchingAddressIdError', fetchingAddressIdError);
     return (
       <PageContainer>
         <ErrorState />
@@ -218,7 +222,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   }
   //FIXME - 스켈레톤 UI 사용 (KMH)
   //TODO - 서영님한테 물어보기 (KMH)
-  if (isFormLoading || isAuctionFetching || isAddressIdFetching) {
+  // if (isFormLoading || isAuctionFetching || isAddressIdFetching) {
+  if (isFormLoading || isAuctionFetching) {
     return <p>Loading...</p>;
   }
 
