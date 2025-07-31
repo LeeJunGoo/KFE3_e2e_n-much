@@ -1,6 +1,8 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useAuthActions, useUserState } from 'src/entities/auth/stores/useAuthStore';
+import RoleSwitchSkeleton from 'src/features/layout/header/skeleton/RoleSwitchSkeleton';
 import type { ROLE_CONFIG } from 'src/entities/user/mypage/main/constants';
 
 interface RoleSwitchProps {
@@ -19,11 +21,13 @@ const RoleSwitch = ({ leftText = '입찰참여자', rightText = '경매진행자
   const user = useUserState();
   const { updateUserRole } = useAuthActions();
 
-  const currentRole = (user?.role || 'buyer') as keyof typeof ROLE_CONFIG;
-  const [value, setValue] = useState(currentRole === 'seller');
+  const currentRole = user ? ((user.role || 'buyer') as keyof typeof ROLE_CONFIG) : 'buyer';
+  const [value, setValue] = useState(false);
 
   // 사용자 역할에 따른 토글 상태 동기화
   useEffect(() => {
+    if (!user) return;
+
     const isAuctioneer = currentRole === 'seller';
     setValue(isAuctioneer);
 
@@ -32,7 +36,9 @@ const RoleSwitch = ({ leftText = '입찰참여자', rightText = '경매진행자
     } else {
       document.documentElement.classList.remove('dark');
     }
-  }, [currentRole]);
+  }, [currentRole, user]);
+
+  if (user) return <RoleSwitchSkeleton className={className} />;
 
   const handleRoleChange = (isAuctioneer: boolean) => {
     const newRole = isAuctioneer ? 'seller' : 'buyer';
@@ -42,7 +48,7 @@ const RoleSwitch = ({ leftText = '입찰참여자', rightText = '경매진행자
   const Button = ({ text, isSelected, onClick }: ButtonProps) => (
     <button
       type="button"
-      className={`relative z-10 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ${
+      className={`relative z-10 rounded-full px-4 py-2 text-xs font-medium transition-all duration-200 md:text-sm ${
         isSelected ? 'text-white' : 'text-(--color-warm-gray)'
       }`}
       onClick={onClick}
