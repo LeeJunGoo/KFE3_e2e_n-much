@@ -1,6 +1,5 @@
 //TODO - memo 훅으로 최적화 시도 해보기
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import { prefetchAddressId } from 'src/entities/auction/queries/address';
 import { prefetchAuction } from 'src/entities/auction/queries/auction';
 import { getServerUserWithProfile } from 'src/entities/auth/serverAction';
 import AuctionForm from 'src/features/auction/form/components/AuctionForm';

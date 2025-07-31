@@ -117,6 +117,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: Auct
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
+  //TODO - toast 안내문 등록과 수정일 때 분리해서 알리기 (KMH)
   //TODO - 등록하기와 수정하기가 완료되어서 디테일 페이지로 넘어갈 때, 버튼 텍스트를 등록/수정 완료라고 표시하기 (KMH)
   const onSubmit = async (values: AuctionFormType) => {
     setIsSubmitting(true);
@@ -133,6 +134,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: Auct
     } catch (error) {
       popToast('error', '경매 등록/수정 에러', '이미지를 업로드하는데 실패했습니다.', 'long');
       console.error(error);
+      setIsSubmitting(false);
+      return;
     }
 
     console.log('imageUrlsToDelete', imageUrlsToDelete);
@@ -142,6 +145,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: Auct
     } catch (error) {
       popToast('error', '경매 등록/수정 에러', '이미지를 삭제하는데 실패했습니다.', 'long');
       console.error(error);
+      setIsSubmitting(false);
+      return;
     }
 
     // if (!fetchedAddressId) {
@@ -167,12 +172,15 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: Auct
         console.log(values);
         console.log('결과', data);
         console.log('옥션아이디', data.auction_id);
-
+        //TODO - data가 있을 경우(등록이 성공한 경우)만 push하도록 수정하기 (KMH)
         push(`/auctions/${data.auction_id}`);
+
         return;
       } catch (error) {
         popToast('error', '경매 등록 에러', '경매 등록에 실패했습니다.', 'long');
         console.error(error);
+        setIsSubmitting(false);
+        return;
       }
     }
 
@@ -207,6 +215,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: Auct
       popToast('error', '경매 수정 에러', '경매 수정에 실패했습니다.', 'long');
       setIsSubmitting(false);
       console.error(error);
+      setIsSubmitting(false);
+      return;
     }
   };
 
@@ -220,8 +230,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: Auct
       </PageContainer>
     );
   }
-  //FIXME - 스켈레톤 UI 사용 (KMH)
-  //TODO - 서영님한테 물어보기 (KMH)
+  //TODO - 로딩 스패너 넣기 (KMH)
+  //TODO - 나중에 시간되면 스켈레톤 넣기 (KMH)
   // if (isFormLoading || isAuctionFetching || isAddressIdFetching) {
   if (isFormLoading || isAuctionFetching) {
     return <p>Loading...</p>;
