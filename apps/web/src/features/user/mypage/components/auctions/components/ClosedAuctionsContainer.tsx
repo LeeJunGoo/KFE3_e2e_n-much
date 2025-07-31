@@ -4,7 +4,9 @@ import type { AuctionsContainerProps } from 'src/entities/user/mypage/auctions/t
 
 const ClosedAuctionsContainer = ({ auctions }: AuctionsContainerProps) => {
   if (!auctions || auctions.length === 0) {
-    return <EmptyState title="종료된 경매가 없어요" description="경매가 끝나면 여기서 확인할 수 있어요" />;
+    return (
+      <EmptyState title="종료된 경매가 없어요" description="경매가 끝나면 여기서 확인할 수 있어요" className="mt-24" />
+    );
   }
 
   return (

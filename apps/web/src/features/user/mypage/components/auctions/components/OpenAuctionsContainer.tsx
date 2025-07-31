@@ -4,7 +4,7 @@ import type { AuctionsContainerProps } from 'src/entities/user/mypage/auctions/t
 
 const OpenAuctionsContainer = ({ auctions }: AuctionsContainerProps) => {
   if (!auctions || auctions.length === 0) {
-    return <EmptyState title="진행 중인 경매가 없어요" description="새로운 경매를 시작해보세요" />;
+    return <EmptyState title="진행 중인 경매가 없어요" description="새로운 경매를 시작해보세요" className="mt-24" />;
   }
 
   return (

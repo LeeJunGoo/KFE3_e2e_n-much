@@ -4,7 +4,13 @@ import type { EpisodesContainerProps } from 'src/entities/user/mypage/episodes/t
 
 const CompletedEpisodesContainer = ({ episodes }: EpisodesContainerProps) => {
   if (!episodes || episodes.length === 0) {
-    return <EmptyState title="종료된 에피소드가 없습니다" description="경매가 종료되면 여기에 표시됩니다" />;
+    return (
+      <EmptyState
+        title="종료된 에피소드가 없습니다"
+        description="경매가 종료되면 여기에 표시됩니다"
+        className="mt-24"
+      />
+    );
   }
   return (
     <ul>

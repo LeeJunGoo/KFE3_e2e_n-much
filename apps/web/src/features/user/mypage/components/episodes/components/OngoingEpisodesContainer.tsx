@@ -4,7 +4,9 @@ import type { EpisodesContainerProps } from 'src/entities/user/mypage/episodes/t
 
 const OngoingEpisodesContainer = ({ episodes }: EpisodesContainerProps) => {
   if (!episodes || episodes.length === 0) {
-    return <EmptyState title="진행중인 에피소드가 없습니다" description="새로운 경매에 참여해보세요" />;
+    return (
+      <EmptyState title="진행중인 에피소드가 없습니다" description="새로운 경매에 참여해보세요" className="mt-24" />
+    );
   }
 
   return (
