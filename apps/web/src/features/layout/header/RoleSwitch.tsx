@@ -38,7 +38,7 @@ const RoleSwitch = ({ leftText = '입찰참여자', rightText = '경매진행자
     }
   }, [currentRole, user]);
 
-  if (user) return <RoleSwitchSkeleton className={className} />;
+  if (!user) return <RoleSwitchSkeleton className={className} />;
 
   const handleRoleChange = (isAuctioneer: boolean) => {
     const newRole = isAuctioneer ? 'seller' : 'buyer';
