@@ -1,5 +1,5 @@
 import { INIT_MAX_POINT_NUM, INIT_STARTING_POINT_NUM } from 'src/entities/auction/constants';
-import { getNowKorDate, getTime, getTomorrowDate } from 'src/shared/utils/dateFns';
+import { getNowKorDate, getTime, getTomorrowDate } from 'src/shared/utils/formatWithTimeZone';
 
 export const getFormDefaultValues = () => {
   const korToday = getNowKorDate();

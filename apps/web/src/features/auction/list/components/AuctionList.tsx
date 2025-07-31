@@ -1,19 +1,20 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Skeleton } from '@repo/ui/components/ui/skeleton';
 import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
-import { useGetAuctionListQuery } from 'src/entities/auction/queries/auction';
+import { useAuctionListQuery } from 'src/entities/auction/queries/auction';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
+import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
+import AuctionBaseCardSkeleton from '../../skeleton/card/AuctionBaseCardSkeleton';
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const AuctionList = ({ order, keyword }: AuctionListProps) => {
+const AuctionList = ({ order, keyword, auctionCount }: AuctionListProps) => {
   //TODO - nextjs 캐시로 관리하기 (KMH)
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, ref, inView } =
-    useGetAuctionListQuery(order, keyword);
+    useAuctionListQuery(order, keyword);
 
   console.log('list', order, keyword, fetchedAuctions);
 
@@ -26,7 +27,7 @@ const AuctionList = ({ order, keyword }: AuctionListProps) => {
   //TODO - 에러 발생을 이미지로 표시하기 (KMH)
   if (isError) {
     console.error(error);
-    return <p>에러 발생</p>;
+    return <ErrorState />;
   }
 
   //TODO - 총 경매 갯수도 총 경매의 갯수로 수정하기 (KMH)
@@ -37,14 +38,12 @@ const AuctionList = ({ order, keyword }: AuctionListProps) => {
         {fetchedAuctions
           ? keyword
             ? `${keyword}에 대한 검색 결과입니다.`
-            : `총 ${fetchedAuctions.pages.reduce((total, page) => total + page.data.length, 0)}개의 경매가 있습니다.`
+            : `총 ${auctionCount}개의 경매가 있습니다.`
           : '총 0개의 경매가 있습니다'}
       </h3>
       <ul className="grid grid-cols-2 gap-2">
         {isPending &&
-          Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => (
-            <Skeleton key={uuidv4()} className="h-56 w-full" />
-          ))}
+          Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => <AuctionBaseCardSkeleton key={uuidv4()} />)}
         {fetchedAuctions?.pages[0]?.data.length === 0 && <li>검색 결과가 없습니다.</li>}
         {fetchedAuctions &&
           !isPending &&

@@ -1,6 +1,6 @@
+import ContactForm from 'src/features/user/mypage/components/contact/components/ContactForm';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
-import ContactForm from './components/ContactForm';
 
 const ContactPage = () => {
   return (

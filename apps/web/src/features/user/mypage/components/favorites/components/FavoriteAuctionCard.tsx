@@ -25,7 +25,7 @@ const FavoriteAuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCoun
                 fill
                 alt={`${title} 이미지`}
                 className="object-cover"
-                sizes="(min-width: 768px) 400px, 100vw" //TODO - 이것도 고쳐야하는지 물어보기 (KMH)
+                sizes="(min-width: 768px) 400px, 100vw"
               />
             ) : (
               <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />

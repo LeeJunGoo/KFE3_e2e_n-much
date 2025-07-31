@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form';
 import { MAX_DESCRIPTION_LETTERS, MAX_TITLE_LETTERS, UTC_TIME_ZONE } from 'src/entities/auction/constants';
 import { useTriggerCrossFields } from 'src/entities/auction/hooks/useTriggerCrossFields';
 import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
-import { useGetAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
+import { useAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages } from 'src/entities/auction/supabase';
 import { getExtension } from 'src/entities/auction/utils/extension';
@@ -22,10 +22,16 @@ import FormEndTime from 'src/features/auction/form/components/fields/FormEndTime
 import FormMaxPoint from 'src/features/auction/form/components/fields/FormMaxPoint';
 import FormStartingPoint from 'src/features/auction/form/components/fields/FormStartingPoint';
 import ImageUploader from 'src/features/auction/form/components/ImageUploader';
+import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import PageContainer from 'src/shared/ui/PageContainer';
-import { convertFromKorToUtcDate, convertFromUtcToKorDate, getTime, setTimeToDate } from 'src/shared/utils/dateFns';
+import {
+  convertFromKorToUtcDate,
+  convertFromUtcToKorDate,
+  getTime,
+  setTimeToDate
+} from 'src/shared/utils/formatWithTimeZone';
 import { popToast } from 'src/shared/utils/popToast';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
@@ -43,7 +49,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
   console.log('auctionIdParam', auctionIdParam);
 
   const { fetchedAuction, isAuctionFetching, isAuctionFetchingError, fetchingAuctionError } =
-    useGetAuctionQuery(auctionIdParam);
+    useAuctionQuery(auctionIdParam);
   const { fetchedAddressId, isAddressIdFetching, isAddressIdFetchingError, fetchingAddressIdError } =
     useGetAddressIdQuery(loggedInUserId);
 
@@ -111,6 +117,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
+  //TODO - 등록하기와 수정하기가 완료되어서 디테일 페이지로 넘어갈 때, 버튼 텍스트를 등록/수정 완료라고 표시하기 (KMH)
   const onSubmit = async (values: AuctionFormType) => {
     setIsSubmitting(true);
     const { title, description, endDay, endTime, startingPoint, maxPoint } = values;
@@ -186,24 +193,29 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       address_id: fetchedAddressId,
       updated_at: new TZDate(new Date(), UTC_TIME_ZONE).toISOString()
     };
+    try {
+      const data = await mutatePatchAuction({ auctionIdParam, patchAuctionParam });
+      console.log(values);
+      console.log('결과', data);
+      console.log('옥션아이디', data.auction_id);
 
-    const data = await mutatePatchAuction({ auctionIdParam, patchAuctionParam });
-
-    console.log(values);
-    console.log('결과', data);
-    console.log('옥션아이디', data.auction_id);
-
-    push(`/auctions/${data.auction_id}`);
-    setIsSubmitting(false);
+      push(`/auctions/${data.auction_id}`);
+    } catch (error) {
+      popToast('error', '경매 수정 에러', '경매 수정에 실패했습니다.', 'long');
+      setIsSubmitting(false);
+      console.error(error);
+    }
   };
 
-  //TODO - error가 발생하면 대처가 불가능, 화면을 어떡해 보여줄지 의논하기 (KMH)
   if (isAuctionFetchingError || isAddressIdFetchingError) {
     console.error('fetchingAuctionError', fetchingAuctionError);
     console.error('fetchingAddressIdError', fetchingAddressIdError);
-    return <p>에러 발생</p>;
+    return (
+      <PageContainer>
+        <ErrorState />
+      </PageContainer>
+    );
   }
-
   //FIXME - 스켈레톤 UI 사용 (KMH)
   //TODO - 서영님한테 물어보기 (KMH)
   if (isFormLoading || isAuctionFetching || isAddressIdFetching) {

@@ -1,5 +1,5 @@
 //TODO - DB 테이블 생성 후 작업 예정
-import type { AddressSummaryInfoType, AuctionSummaryInfoType } from '../auction/types';
+import type { AddressSummaryInfoType, AuctionSummaryInfoType } from 'src/entities/auction/types';
 import type { InquiryInsert, InquiryRow, InquiryUpdate } from 'src/shared/supabase/types/index';
 
 // 문의 등록
