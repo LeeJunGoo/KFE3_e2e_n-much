@@ -17,11 +17,9 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
     <>
       <ClientContainer>
         <nav className="absolute left-0 right-0 top-5 z-10 flex items-center justify-between">
-          <nav>
-            <div className="bg-gray bg-(--color-background)/70 size-10 rounded-sm shadow-sm">
-              <GoBackButton className="-translate-x-2 -translate-y-2/4" mode="push" url="/main" />
-            </div>
-          </nav>
+          <div className="bg-gray bg-(--color-background)/70 size-10 rounded-sm shadow-sm">
+            <GoBackButton className="-translate-x-2 -translate-y-2/4" mode="push" url="/main" />
+          </div>
 
           {isUser && <AuctionActionButtons auctionId={auctionInfo.auction_id} />}
           {!isUser && (
