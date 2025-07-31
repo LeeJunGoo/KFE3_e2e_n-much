@@ -1,6 +1,5 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { getAuctionInfoWithAddress, getSellerAuctionCount } from 'src/entities/auction/api';
-import InquiryDrawerTrigger from 'src/features/auction/InquiryDrawerTrigger';
 import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import ClientContainer from 'src/shared/ui/ClientContainer';
@@ -11,14 +10,11 @@ const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction
 
   return (
     <Card className="mb-4 p-5 shadow-sm">
-      <ClientContainer>
-        <div className="flex justify-between">
-          <h3 className="font-medium">판매자 정보</h3>
-          <InquiryDrawerTrigger auctionId={auctionId} />
-        </div>
-      </ClientContainer>
+      <div className="mb-4 flex justify-between">
+        <h3 className="font-medium">판매자 정보</h3>
+      </div>
 
-      <div className="mb-4 flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <ClientContainer>
           <BaseAvatar src={auctionInfo.company_image!} alt={auctionInfo.business_name!} size="sm" />
         </ClientContainer>
