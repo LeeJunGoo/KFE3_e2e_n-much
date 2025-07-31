@@ -6,18 +6,12 @@ const supabase = createClient();
 
 // 기본 주소 가져오기 1건
 export const selectDefaultAddress = async (userId: string) => {
-  const { data, error } = await supabase
-    .from('addresses')
-    .select('*')
-    .eq('user_id', userId)
-    .eq('is_default', true)
-    .maybeSingle();
+  const { data, error } = await supabase.from('addresses').select('*').eq('user_id', userId);
 
   if (error) {
     console.error('🚀 ~ selectDefaultAddress ~ error:', error);
     throw new Error('기본 주소를 불러오는 데 실패했습니다.');
   }
-
   return data;
 };
 

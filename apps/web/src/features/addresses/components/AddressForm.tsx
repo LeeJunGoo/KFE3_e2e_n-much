@@ -28,6 +28,7 @@ const AddressForm = () => {
   const { push } = useRouter();
   const user = useUserState();
   const userId = user?.id;
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const { mutate, isPending } = usePostAddressInfo();
 
@@ -128,9 +129,9 @@ const AddressForm = () => {
         </label>
         <div className="mb-2 flex items-stretch gap-2">
           <Input type="text" placeholder="우편번호" maxLength={10} readOnly value={zonecode} />
-          <Dialog>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button variant="active" className="h-auto px-10">
+              <Button variant="active" className="h-auto px-10" onClick={() => setIsDialogOpen(true)}>
                 주소 검색
               </Button>
             </DialogTrigger>
@@ -138,7 +139,12 @@ const AddressForm = () => {
               <DialogHeader>
                 <DialogTitle className="mb-4 text-center text-lg font-bold">{'주소검색'}</DialogTitle>
               </DialogHeader>
-              <DaumPostcodeEmbed onComplete={handleComplete} />
+              <DaumPostcodeEmbed
+                onComplete={(data) => {
+                  handleComplete(data);
+                  setIsDialogOpen(false);
+                }}
+              />
             </DialogContent>
           </Dialog>
         </div>
