@@ -6,7 +6,7 @@ const supabase = createClient();
 
 // 기본 주소 가져오기 1건
 export const selectDefaultAddress = async (userId: string) => {
-  const { data, error } = await supabase.from('addresses').select('*').eq('user_id', userId);
+  const { data, error } = await supabase.from('addresses').select('*').eq('user_id', userId).eq('is_default', true);
 
   if (error) {
     console.error('🚀 ~ selectDefaultAddress ~ error:', error);

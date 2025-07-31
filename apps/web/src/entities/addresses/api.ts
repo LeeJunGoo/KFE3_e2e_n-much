@@ -9,8 +9,8 @@ export const getDefaultAddressInfo = async (userId: string) => {
     throw new Error(errorResponse.error);
   }
 
-  const data: AddressRow = await res.json();
-  return data;
+  const data: AddressRow[] = await res.json();
+  return data[0];
 };
 
 // 주소 등록
