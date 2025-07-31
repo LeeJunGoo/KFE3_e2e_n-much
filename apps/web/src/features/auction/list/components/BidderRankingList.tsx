@@ -1,9 +1,8 @@
-import React from 'react';
 import { type BidderRankingInfoType } from 'src/entities/auction/types';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import ClientComponent from 'src/shared/ui/ClientContainer';
+import PointDisplay from 'src/shared/ui/PointDisplay';
 import { formatFullDateTime } from 'src/shared/utils/formatKoreanDate';
-import { formatNumber } from 'src/shared/utils/formatNumber';
 import { maskEmail } from 'src/shared/utils/maskEmail';
 
 const BidderRankingList = ({ bidderRankingList }: { bidderRankingList: BidderRankingInfoType[] }) => {
@@ -23,7 +22,7 @@ const BidderRankingList = ({ bidderRankingList }: { bidderRankingList: BidderRan
               <p className="text-(--color-warm-gray) text-xs">{formatFullDateTime(bidder.created_at)}</p>
             </div>
           </div>
-          <p className="text-(--color-accent) font-bold">{formatNumber(bidder.bid_amount)} P</p>
+          <p className="text-(--color-accent) font-bold">{<PointDisplay amount={bidder.bid_amount} />}</p>
         </li>
       ))}
     </ul>

@@ -9,7 +9,7 @@ import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import PageDescription from 'src/shared/ui/PageDescription';
 import PageTitle from 'src/shared/ui/PageTitle';
-import { formatNumber } from 'src/shared/utils/formatNumber';
+import PointDisplay from 'src/shared/ui/PointDisplay';
 
 const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const auctionInfo = await getAuctionInfoWithAddress(auctionId); //ANCHOR - 경매 상품 및 경매 업체 정보
@@ -40,7 +40,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
           <AuctionTimerDynamic endDate={auctionInfo.end_date} />
           <div className="mt-10">
             <PageDescription variant="ghost">현재 최고 입찰가</PageDescription>
-            <p className="text-xl font-bold">{formatNumber(auctionInfo.current_point)} P</p>
+            <p className="text-xl font-bold">{<PointDisplay amount={auctionInfo.current_point} />}</p>
           </div>
         </div>
         {!isUser && isBuyer && (
