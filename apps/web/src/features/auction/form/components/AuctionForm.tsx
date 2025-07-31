@@ -24,6 +24,7 @@ import ImageUploader from 'src/features/auction/form/components/ImageUploader';
 import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
+import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import PageContainer from 'src/shared/ui/PageContainer';
 import {
   convertFromKorToUtcDate,
@@ -234,7 +235,11 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: Auct
   //TODO - 나중에 시간되면 스켈레톤 넣기 (KMH)
   // if (isFormLoading || isAuctionFetching || isAddressIdFetching) {
   if (isFormLoading || isAuctionFetching) {
-    return <p>Loading...</p>;
+    return (
+      <PageContainer>
+        <LoadingSpinner />
+      </PageContainer>
+    );
   }
 
   return (
