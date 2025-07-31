@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       postal_code,
       road_address,
       detail_address,
-      is_default: true,
+      is_default: false,
       company_image
     });
 

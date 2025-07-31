@@ -12,14 +12,18 @@ const EpisodeWriteButton = ({
   isWritten: boolean;
   className?: string;
 }) => {
+  const buttonProps = {
+    variant: 'active' as const,
+    size: 'lg' as const,
+    className: twMerge('w-full hover:bg-(--color-primary)', className)
+  };
+
   return isWritten ? (
-    // 사연이 이미 작성된 경우: '사연 작성 완료' 비활성 버튼 표시
-    <Button variant="inActive" size="lg" disabled className={twMerge('w-full', className)}>
+    <Button {...buttonProps} disabled>
       사연 작성 완료
     </Button>
   ) : (
-    // 사연을 아직 작성하지 않은 경우: '사연 작성하기' 링크 버튼 표시
-    <Button asChild variant="inActive" size="lg" className={twMerge('w-full', className)}>
+    <Button {...buttonProps} asChild>
       <Link href={`/episode/${auctionId}`}>사연 작성하기</Link>
     </Button>
   );

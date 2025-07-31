@@ -18,7 +18,7 @@ const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episo
     <li className="rounded-button hover:scale-98 active:scale-96 overflow-hidden rounded-xl bg-white shadow-sm transition-transform">
       <Link href={`/auctions/${auctionId}`} prefetch={true}>
         <div className="relative">
-          <div className="relative h-40 w-full">
+          <div className="relative h-44 w-full">
             {imageSrc ? (
               <Image
                 src={imageSrc}
@@ -28,7 +28,13 @@ const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episo
                 sizes="(min-width: 768px) 400px, 100vw"
               />
             ) : (
-              <Image src={noAuctionImage} fill={true} alt={`${title} 이미지`} className="object-fill object-top" />
+              <Image
+                src={noAuctionImage}
+                fill
+                alt={`${title} 이미지`}
+                className="translate-y-4 object-contain"
+                sizes="(min-width: 768px) 400px, 80vw"
+              />
             )}
           </div>
           <Badge

@@ -109,7 +109,7 @@ const EpisodeBidModalForm = ({
 
         <div className="flex space-x-3">
           <Button
-            className="!rounded-button bg-(--color-secondary) text-(--color-text-base) hover:bg-(--color-warm-gray) flex-1"
+            className="!rounded-button bg-(--color-secondary) text-(--color-text-base) hover:bg-(--color-secondary)/60 flex-1"
             onClick={onClose}
             type="button"
           >

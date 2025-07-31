@@ -36,7 +36,7 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
         </div>
 
         <div className="ml-2 flex-1">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between gap-3">
             <div>
               <PageDescription clamp={1}>{auction.title}</PageDescription>
             </div>

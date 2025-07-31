@@ -67,7 +67,7 @@ const EpisodeForm = ({
         queryClient.invalidateQueries({
           queryKey: [AUCTION_BID_POINT_AMOUNT, auctionId]
         });
-        router.push(`/auctions/${auctionId}`);
+        router.replace(`/auctions/${auctionId}`);
         toast.success(message);
       }
     } catch (error) {

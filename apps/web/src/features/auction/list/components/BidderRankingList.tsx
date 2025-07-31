@@ -7,7 +7,7 @@ import { maskEmail } from 'src/shared/utils/maskEmail';
 
 const BidderRankingList = ({ bidderRankingList }: { bidderRankingList: BidderRankingInfoType[] }) => {
   return (
-    <ul>
+    <ul className="space-y-4">
       {bidderRankingList.map((bidder, index) => (
         <li key={`${bidder.users.id}${index}`} className="flex items-center justify-between">
           <div className="flex items-center gap-2">

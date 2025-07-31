@@ -13,7 +13,7 @@ type RemainingTimeType = {
 export const formatRemainingTime = (endDate: string): RemainingTimeType => {
   const now = new TZDate(new Date(), 'Asia/Seoul');
   const end = new TZDate(endDate, 'Asia/Seoul');
-  let status: AuctionTimerStatus;
+  let status: AuctionTimerStatus = 'ongoing';
   let remainTime = '';
 
   const duration = intervalToDuration({ start: now, end });
@@ -23,13 +23,6 @@ export const formatRemainingTime = (endDate: string): RemainingTimeType => {
     format: ['days', 'hours', 'minutes'],
     locale: ko
   });
-
-  //ANCHOR - status: 상태에 따라 시간 color 변경
-  if (duration.days! <= 0 && duration.hours! <= 0) {
-    status = 'urgent';
-  } else {
-    status = 'ongoing';
-  }
 
   //ANCHOR - 일부 남은 시간을 표시(메인 페이지의 뱃지)
   switch (true) {
@@ -45,11 +38,16 @@ export const formatRemainingTime = (endDate: string): RemainingTimeType => {
       remainTime = `${duration.days}일 남음`;
       break;
 
-    case (duration.hours ?? 0) > 0:
+    case (duration.hours ?? 0) > 1:
       remainTime = `${duration.hours}시간 남음`;
       break;
 
+    case (duration.hours ?? 0) === 1:
+      status = 'urgent';
+      remainTime = `${duration.hours}시간 남음`;
+      break;
     case (duration.minutes ?? 0) > 0:
+      status = 'urgent';
       remainTime = `${duration.minutes}분 남음`;
       break;
 

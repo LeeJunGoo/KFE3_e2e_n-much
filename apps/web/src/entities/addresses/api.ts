@@ -29,3 +29,17 @@ export const postAddressInfo = async (payload: AddressInsert) => {
   const result = await res.json();
   return result.data;
 };
+
+// userId로 해당 유저의 주소 목록을 가져오는 함수 (fetch 방식)
+export const getAddressList = async (userId: string): Promise<AddressRow[]> => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses?user_id=${userId}`);
+
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || '주소 목록을 불러오는 데 실패했습니다.');
+  }
+
+  // 주소 배열이 온다고 가정!
+  const result = await res.json();
+  return result;
+};
