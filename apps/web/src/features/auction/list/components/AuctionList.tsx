@@ -44,7 +44,6 @@ const AuctionList = ({ order, keyword, auctionCount }: AuctionListProps) => {
       <ul className="grid grid-cols-2 gap-2">
         {isPending &&
           Array.from({ length: AUCTION_LIST_SKELETON_LENGTH }).map(() => <AuctionBaseCardSkeleton key={uuidv4()} />)}
-        {fetchedAuctions?.pages[0]?.data.length === 0 && <li>검색 결과가 없습니다.</li>}
         {fetchedAuctions &&
           !isPending &&
           fetchedAuctions.pages.map((page) =>

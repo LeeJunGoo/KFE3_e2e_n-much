@@ -9,7 +9,6 @@ import { TZDate } from 'react-day-picker';
 import { useForm } from 'react-hook-form';
 import { MAX_DESCRIPTION_LETTERS, MAX_TITLE_LETTERS, UTC_TIME_ZONE } from 'src/entities/auction/constants';
 import { useTriggerCrossFields } from 'src/entities/auction/hooks/useTriggerCrossFields';
-import { useGetAddressIdQuery } from 'src/entities/auction/queries/address';
 import { useAuctionQuery, usePatchAuctionQuery, usePostAuctionQuery } from 'src/entities/auction/queries/auction';
 import { auctionFormSchema } from 'src/entities/auction/schema/auctionForm';
 import { deleteImages } from 'src/entities/auction/supabase';
@@ -25,6 +24,7 @@ import ImageUploader from 'src/features/auction/form/components/ImageUploader';
 import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
+import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import PageContainer from 'src/shared/ui/PageContainer';
 import {
   convertFromKorToUtcDate,
@@ -36,7 +36,7 @@ import { popToast } from 'src/shared/utils/popToast';
 import { v4 as uuidv4 } from 'uuid';
 import type { AuctionFormProps, AuctionFormType, PreviewImage } from 'src/entities/auction/types';
 
-const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
+const AuctionForm = ({ auctionIdParam, loggedInUserId, loggedInAddressId }: AuctionFormProps) => {
   const isEditing: boolean = !!auctionIdParam;
   const [isFormLoading, setIsFormLoading] = useState<boolean>(isEditing);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -50,10 +50,11 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
 
   const { fetchedAuction, isAuctionFetching, isAuctionFetchingError, fetchingAuctionError } =
     useAuctionQuery(auctionIdParam);
-  const { fetchedAddressId, isAddressIdFetching, isAddressIdFetchingError, fetchingAddressIdError } =
-    useGetAddressIdQuery(loggedInUserId);
+  // const { fetchedAddressId, isAddressIdFetching, isAddressIdFetchingError, fetchingAddressIdError } =
+  // useGetAddressIdQuery(loggedInUserId);
 
-  console.log('fetchedAddressID', fetchedAddressId);
+  // console.log('fetchedAddressID', fetchedAddressId);
+  console.log('로그인한 주소 id', loggedInAddressId);
   console.log('fetchedAuction', fetchedAuction);
 
   const { mutatePostAuction, isPostAuctionPending } = usePostAuctionQuery(auctionIdParam);
@@ -117,6 +118,7 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     }
   }, [fetchedAuction, isEditing, form, isFormLoading]);
 
+  //TODO - toast 안내문 등록과 수정일 때 분리해서 알리기 (KMH)
   //TODO - 등록하기와 수정하기가 완료되어서 디테일 페이지로 넘어갈 때, 버튼 텍스트를 등록/수정 완료라고 표시하기 (KMH)
   const onSubmit = async (values: AuctionFormType) => {
     setIsSubmitting(true);
@@ -133,6 +135,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     } catch (error) {
       popToast('error', '경매 등록/수정 에러', '이미지를 업로드하는데 실패했습니다.', 'long');
       console.error(error);
+      setIsSubmitting(false);
+      return;
     }
 
     console.log('imageUrlsToDelete', imageUrlsToDelete);
@@ -142,9 +146,12 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
     } catch (error) {
       popToast('error', '경매 등록/수정 에러', '이미지를 삭제하는데 실패했습니다.', 'long');
       console.error(error);
+      setIsSubmitting(false);
+      return;
     }
 
-    if (!fetchedAddressId) {
+    // if (!fetchedAddressId) {
+    if (!loggedInAddressId) {
       popToast('error', '경매 등록/수정 에러', '주소를 불러오는데 실패했습니다.', 'long');
       throw new Error('주소를 불러오는데 실패했습니다.');
     }
@@ -158,19 +165,23 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
         starting_point: Number(startingPoint),
         max_point: Number(maxPoint),
         image_urls: imageUrls,
-        address_id: fetchedAddressId
+        // address_id: fetchedAddressId
+        address_id: loggedInAddressId
       };
       try {
         const data = await mutatePostAuction(postAuctionParam);
         console.log(values);
         console.log('결과', data);
         console.log('옥션아이디', data.auction_id);
-
+        //TODO - data가 있을 경우(등록이 성공한 경우)만 push하도록 수정하기 (KMH)
         push(`/auctions/${data.auction_id}`);
+
         return;
       } catch (error) {
         popToast('error', '경매 등록 에러', '경매 등록에 실패했습니다.', 'long');
         console.error(error);
+        setIsSubmitting(false);
+        return;
       }
     }
 
@@ -190,7 +201,8 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       max_point: Number(maxPoint),
       image_urls: imageUrls,
       status: fetchedAuction.status,
-      address_id: fetchedAddressId,
+      // address_id: fetchedAddressId,
+      address_id: loggedInAddressId,
       updated_at: new TZDate(new Date(), UTC_TIME_ZONE).toISOString()
     };
     try {
@@ -204,22 +216,30 @@ const AuctionForm = ({ auctionIdParam, loggedInUserId }: AuctionFormProps) => {
       popToast('error', '경매 수정 에러', '경매 수정에 실패했습니다.', 'long');
       setIsSubmitting(false);
       console.error(error);
+      setIsSubmitting(false);
+      return;
     }
   };
 
-  if (isAuctionFetchingError || isAddressIdFetchingError) {
+  // if (isAuctionFetchingError || isAddressIdFetchingError) {
+  if (isAuctionFetchingError) {
     console.error('fetchingAuctionError', fetchingAuctionError);
-    console.error('fetchingAddressIdError', fetchingAddressIdError);
+    // console.error('fetchingAddressIdError', fetchingAddressIdError);
     return (
       <PageContainer>
         <ErrorState />
       </PageContainer>
     );
   }
-  //FIXME - 스켈레톤 UI 사용 (KMH)
-  //TODO - 서영님한테 물어보기 (KMH)
-  if (isFormLoading || isAuctionFetching || isAddressIdFetching) {
-    return <p>Loading...</p>;
+  //TODO - 로딩 스패너 넣기 (KMH)
+  //TODO - 나중에 시간되면 스켈레톤 넣기 (KMH)
+  // if (isFormLoading || isAuctionFetching || isAddressIdFetching) {
+  if (isFormLoading || isAuctionFetching) {
+    return (
+      <PageContainer>
+        <LoadingSpinner />
+      </PageContainer>
+    );
   }
 
   return (
