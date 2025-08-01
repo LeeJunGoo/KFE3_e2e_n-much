@@ -52,6 +52,24 @@ export const deleteAddressInfo = async (addressId: string) => {
   return data;
 };
 
+// Storage Bucket(company-image)의 이미지 삭제 - KSH
+export const deleteImageToBucket = async (ImagePath: string | null): Promise<string | null> => {
+  if (!ImagePath) {
+    throw new Error('BUCKET(company-image): 이미지 삭제 에러(ImagePath가 없습니다.)');
+  }
+
+  const { data, error } = await supabase.storage.from('company-image').remove([ImagePath]);
+
+  if (error) {
+    console.error('🚀 ~ deleteImageToBucket ~ error:', error);
+    throw new Error('BUCKET(company-image): 이미지 삭제 에러');
+  }
+
+  const fileObject = data?.[0];
+  const imageName = fileObject?.name;
+  return imageName ?? null;
+};
+
 //TODO - webp로 최적화하기- KSH
 // Storage Bucket(company-image)에 이미지 업로드  - KSH
 export const uploadImageToBucket = async (imageFile: File, ext: string) => {
@@ -64,7 +82,7 @@ export const uploadImageToBucket = async (imageFile: File, ext: string) => {
   });
 
   if (error) {
-    console.error('uploadImage', error);
+    console.error('🚀 ~ uploadImageToBucket ~ error:', error);
     throw new Error('BUCKET(company-image): 이미지 업로드 에러');
   }
 

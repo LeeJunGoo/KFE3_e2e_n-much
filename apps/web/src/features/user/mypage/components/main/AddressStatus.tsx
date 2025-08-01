@@ -39,7 +39,7 @@ const AddressStatus = () => {
       <div className="flex items-start justify-between">
         <h3 className="text-(--color-text-base) mb-3 text-base font-semibold">주소</h3>
         {/* 수정/삭제 */}
-        <AddressEditDeleteBtn userId={userId} addressId={data.address_id} />
+        <AddressEditDeleteBtn userId={userId} addressId={data.address_id} imageUrl={data.company_image} />
       </div>
       <div className="flex items-start gap-2">
         <BaseAvatar src={data.company_image ?? '/'} alt={data.business_name ?? '매장'} size="md" className="shrink-0" />

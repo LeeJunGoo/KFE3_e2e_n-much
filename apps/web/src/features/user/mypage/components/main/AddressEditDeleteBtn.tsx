@@ -4,9 +4,18 @@ import React from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useDeleteAddressInfo } from 'src/entities/addresses/queries/useAddresses';
+import { deleteImageToBucket } from 'src/entities/addresses/supabase';
 import ConfirmDialog from 'src/widgets/ConfirmDialog';
 
-const AddressEditDeleteBtn = ({ userId, addressId }: { userId: string | undefined; addressId: string }) => {
+const AddressEditDeleteBtn = ({
+  userId,
+  addressId,
+  imageUrl
+}: {
+  userId: string | undefined;
+  addressId: string;
+  imageUrl: string | null;
+}) => {
   const router = useRouter();
 
   const deleteAddressMutation = useDeleteAddressInfo();
@@ -18,7 +27,12 @@ const AddressEditDeleteBtn = ({ userId, addressId }: { userId: string | undefine
   const handleDeleteAddress = async () => {
     try {
       const status = await deleteAddressMutation.mutateAsync({ addressId, userId });
-      if (status === 'success') router.push('/mypage');
+      if (status === 'success') {
+        const ImagePath = imageUrl?.split('company-image/')[1] ?? null;
+        router.push('/mypage');
+        // 주소 삭제 후 스토리지 이미지 삭제
+        await deleteImageToBucket(ImagePath);
+      }
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);

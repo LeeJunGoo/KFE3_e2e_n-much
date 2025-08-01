@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { DaumPostcodeEmbed } from 'react-daum-postcode';
 import { usePatchAddressInfo, usePostAddressInfo } from 'src/entities/addresses/queries/useAddresses';
+import { deleteImageToBucket } from 'src/entities/addresses/supabase';
 import { getImageURLFromDB } from 'src/entities/user/mypage/utils/getImage';
 import { popToast } from 'src/shared/utils/popToast';
 import type { AddressInsert, AddressRow } from 'src/shared/supabase/types';
@@ -20,6 +21,11 @@ type PostcodeData = {
   zonecode: string;
 };
 
+type PreviewImage = {
+  url: string | null;
+  file: File | null;
+};
+
 const AddressForm = ({
   initialAddressInfo,
   userId
@@ -27,22 +33,20 @@ const AddressForm = ({
   initialAddressInfo: AddressRow | null;
   userId: AddressRow['user_id'];
 }) => {
+  const isEditMode = !!initialAddressInfo?.address_id;
+  const initialPreviewImage = { url: isEditMode ? initialAddressInfo.company_image : null, file: null };
+
   const [businessName, setBusinessName] = useState(initialAddressInfo?.business_name || '');
   const [zonecode, setZonecode] = useState(initialAddressInfo?.postal_code || '');
   const [address, setAddress] = useState(initialAddressInfo?.road_address || '');
   const [detailAddress, setDetailAddress] = useState(initialAddressInfo?.detail_address || '');
-  const [previewImage, setPreviewImage] = useState<{ url: string; file: File | null } | null>(
-    initialAddressInfo?.company_image ? { url: initialAddressInfo.company_image, file: null } : null
-  );
+  const [previewImage, setPreviewImage] = useState<PreviewImage>(initialPreviewImage);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const postAddressMutation = usePostAddressInfo();
   const patchAddressMutation = usePatchAddressInfo();
 
   const router = useRouter();
-
-  const isEditMode = !!initialAddressInfo?.address_id;
-  // console.log('isEditMode:', isEditMode);
 
   const handleComplete = (data: PostcodeData) => {
     let fullAddress = data.address;
@@ -80,10 +84,15 @@ const AddressForm = ({
 
     let imageUrl: string | null = null;
     if (previewImage.file) {
-      // 첨부한 이미지가 있으면 DB에 이미지 저장 후 URL 가져오기 - KSH
+      // 첨부한 이미지가 있으면 스토리지 버킷에 이미지 저장 후 URL 가져오기 - KSH
       imageUrl = await getImageURLFromDB(previewImage.file);
+      if (isEditMode && initialAddressInfo.company_image) {
+        // 기존 이미지(스토리지) 삭제
+        const ImagePath = initialAddressInfo.company_image.split('company-image/')[1] ?? null;
+        await deleteImageToBucket(ImagePath);
+      }
     } else {
-      // 첨부한 이미지가 없으면 기존 이미지 적용(기존 이미지 없으면 null)
+      // 첨부한 이미지가 없으면 기존 이미지 적용(기존 이미지 없으면 null) - KSH
       imageUrl = previewImage.url;
     }
 
@@ -152,7 +161,7 @@ const AddressForm = ({
         </label>
         <Input type="file" accept="image/*" onChange={handleImageChange} />
         {/* 미리보기 */}
-        {previewImage && (
+        {previewImage.url && (
           <Image
             src={previewImage.url}
             alt="첨부한 이미지 미리보기"
