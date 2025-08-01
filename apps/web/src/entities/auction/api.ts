@@ -4,7 +4,7 @@ import type {
   BidderRankingInfoType,
   SellerAuctionCountType
 } from 'src/entities/auction/types';
-import type { AuctionInsert, AuctionRow, AuctionUpdate, UserRow } from 'src/shared/supabase/types';
+import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
 //ANCHOR - 경매 상세 페이지: 경매 상풍 및 업체 정보
 export const getAuctionInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
