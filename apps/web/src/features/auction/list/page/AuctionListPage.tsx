@@ -1,10 +1,12 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { prefetchAuctionList } from 'src/entities/auction/queries/auction';
 import { getAuctionCount } from 'src/entities/auction/serverActions';
+import { getServerUser } from 'src/entities/auth/serverAction';
+import { selectUser } from 'src/entities/auth/supabase/client';
 import WriteAuctionButton from 'src/features/auction/button/WriteAuctionButton';
 import AuctionList from 'src/features/auction/list/components/AuctionList';
 import SelectOrder from 'src/features/auction/list/components/SelectOrder';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 import PageContainer from 'src/shared/ui/PageContainer';
 import PageTitle from 'src/shared/ui/PageTitle';
 import GoTopButton from 'src/shared/utils/goTopButton';
@@ -13,6 +15,9 @@ import type { AuctionListPageProps } from 'src/entities/auction/types';
 const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
   const queryClient = new QueryClient();
   const auctionCount = await getAuctionCount(keyword);
+  const userInfo = await getServerUser();
+  const profile = await selectUser(userInfo!.id);
+  const isSeller = profile?.role === 'seller' ? true : false;
 
   await prefetchAuctionList(order, keyword, queryClient);
 
@@ -31,7 +36,7 @@ const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
       ) : (
         <EmptyState title={'검색 결과가 없습니다.'} className="min-h-[calc(100vh-4rem)] justify-center pb-16" />
       )}
-      <WriteAuctionButton />
+      {isSeller && <WriteAuctionButton />}
       <GoTopButton />
     </PageContainer>
   );

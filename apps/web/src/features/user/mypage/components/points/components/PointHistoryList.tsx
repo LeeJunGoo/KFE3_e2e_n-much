@@ -4,8 +4,8 @@ import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useGetUserPoints } from 'src/entities/user/mypage/points/queries/usePoints';
 import PointHistoryListItem from 'src/features/user/mypage/components/points/components/PointHistoryListItem';
 import PointHistoryListSkeleton from 'src/features/user/mypage/components/points/skeleton/PointHistoryListSkeleton';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
-import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
+import EmptyState from 'src/shared/ui/EmptyState';
+import ErrorState from 'src/shared/ui/ErrorState';
 import type { PointRow } from 'src/shared/supabase/types';
 
 const PointHistoryList = () => {
@@ -21,6 +21,7 @@ const PointHistoryList = () => {
       <EmptyState
         title="포인트 사용 내역이 없어요"
         description="포인트를 적립하거나 사용하면 여기서 확인할 수 있어요"
+        className="mt-24"
       />
     );
   }

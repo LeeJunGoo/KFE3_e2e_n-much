@@ -5,8 +5,8 @@ import { useGetUserEpisodes } from 'src/entities/user/mypage/episodes/queries/us
 import CompletedEpisodesContainer from 'src/features/user/mypage/components/episodes/components/CompletedEpisodesContainer';
 import OngoingEpisodesContainer from 'src/features/user/mypage/components/episodes/components/OngoingEpisodesContainer';
 import MyEpisodesTabSkeleton from 'src/features/user/mypage/components/episodes/skeleton/MyEpisodesTabSkeleton';
-import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import BaseTabs from 'src/features/user/mypage/components/shared/tabs/BaseTabs';
+import ErrorState from 'src/shared/ui/ErrorState';
 import { AUCTION_STATUS } from 'src/shared/utils/getAuctionStatusText';
 import type { EpisodeWithAuction } from 'src/entities/user/mypage/episodes/types';
 

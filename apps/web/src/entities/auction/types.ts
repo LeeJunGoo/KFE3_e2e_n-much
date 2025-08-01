@@ -72,6 +72,7 @@ export interface AuctionFormPageProps {
 export interface AuctionFormProps {
   auctionIdParam: string | undefined;
   loggedInUserId: string;
+  loggedInAddressId: string;
 }
 
 //NOTE - auctionForm의 form 타입

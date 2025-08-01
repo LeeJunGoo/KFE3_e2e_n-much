@@ -220,7 +220,7 @@ export const uploadImageToBucket = async (imageData: string | undefined, ext: st
   const { data, error } = await supabase.storage
     .from('auction-images')
     .upload(`images/${uuidv4()}.${ext}`, decode(base64), {
-      contentType: 'image'
+      contentType: `image/${ext}`
     });
 
   if (error) {
