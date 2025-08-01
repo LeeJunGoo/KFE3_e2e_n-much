@@ -1,7 +1,6 @@
-import { Button } from '@repo/ui/components/ui/button';
 import Image from 'next/image';
-import Link from 'next/link';
 import ClosedImage from 'src/assets/images/mascot_closed.webp';
+import BackButton from 'src/features/auction/detail/components/BackButton';
 import PageTitle from 'src/shared/ui/PageTitle';
 
 const ClosedAuctionOverlay = () => {
@@ -14,9 +13,7 @@ const ClosedAuctionOverlay = () => {
           <br />
           종료되었습니다.
         </PageTitle>
-        <Link href="/main">
-          <Button variant="active">메인으로 이동</Button>
-        </Link>
+        <BackButton>뒤로가기</BackButton>
       </div>
     </div>
   );
