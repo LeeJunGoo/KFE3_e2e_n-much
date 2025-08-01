@@ -44,7 +44,7 @@ export const sendNotification = async (message: string) => {
       JSON.stringify({
         title: 'Test Notification',
         body: message,
-        icon: '/icon.png'
+        icon: '/web_app_manifest_192.png'
       })
     );
     return { success: true };

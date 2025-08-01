@@ -10,8 +10,8 @@
     "lint": "next lint --max-warnings 0",
     "check-types": "tsc --noEmit",
     "clean": "rm -rf .next",
-    "dev-https": "next dev --experimental-https --experimental-https-key $KEY --experimental-https-cert $CERT -p 3002",
-    "https-dev": "KEY=./localhost-key.pem CERT=./localhost.pem && pnpm dev-https"
+    "dev-https": "next dev --experimental-https --experimental-https-key $KEY --experimental-https-cert $CERT -p 3001",
+    "https-dev": "cross-env KEY=./certificates/localhost-key.pem CERT=./certificates/localhost.pem pnpm dev-https"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
