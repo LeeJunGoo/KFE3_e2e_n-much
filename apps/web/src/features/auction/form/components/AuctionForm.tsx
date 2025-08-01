@@ -21,7 +21,7 @@ import FormEndTime from 'src/features/auction/form/components/fields/FormEndTime
 import FormMaxPoint from 'src/features/auction/form/components/fields/FormMaxPoint';
 import FormStartingPoint from 'src/features/auction/form/components/fields/FormStartingPoint';
 import ImageUploader from 'src/features/auction/form/components/ImageUploader';
-import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
+import ErrorState from 'src/shared/ui/ErrorState';
 import FormDescription from 'src/shared/ui/FormDescription';
 import FormTitle from 'src/shared/ui/FormTitle';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';

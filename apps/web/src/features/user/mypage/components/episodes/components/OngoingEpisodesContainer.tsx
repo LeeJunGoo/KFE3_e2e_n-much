@@ -1,5 +1,5 @@
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 import type { EpisodesContainerProps } from 'src/entities/user/mypage/episodes/types';
 
 const OngoingEpisodesContainer = ({ episodes }: EpisodesContainerProps) => {

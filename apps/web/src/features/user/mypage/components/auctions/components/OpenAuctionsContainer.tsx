@@ -1,5 +1,5 @@
 import MyAuctionListItem from 'src/features/user/mypage/components/auctions/components/MyAuctionListItem';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 import type { AuctionsContainerProps } from 'src/entities/user/mypage/auctions/types';
 
 const OpenAuctionsContainer = ({ auctions }: AuctionsContainerProps) => {

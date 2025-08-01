@@ -16,7 +16,7 @@ import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useEpisodeTotalBidPointByUserQuery, useUserPointQuery } from 'src/entities/episode/queries/episode';
 import EpisodeBidButton from 'src/features/episode/button/EpisodeBidButton';
 import EpisodeBidModalForm from 'src/features/episode/form/EpisodeBidModalForm';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 

@@ -1,7 +1,7 @@
 import { getServerUser } from 'src/entities/auth/serverAction';
 import { getUserLikesEpisodes } from 'src/entities/user/mypage/episodes/api';
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 import type { EpisodeWithAuction } from 'src/entities/user/mypage/episodes/types';
 
 const LikedEpisodesContainer = async () => {
