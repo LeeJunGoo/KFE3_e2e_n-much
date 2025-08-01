@@ -15,7 +15,7 @@ const AddressFormPage = async ({ params }: { params: Promise<{ id: string }> }) 
   }
 
   // true: 수정, false: 등록
-  let initialAddressInfo: AddressRow | null | undefined = null;
+  let initialAddressInfo: AddressRow | null = null;
   if (addressId) {
     initialAddressInfo = await getDefaultAddressInfo(user.id);
   }

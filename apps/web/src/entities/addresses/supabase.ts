@@ -12,6 +12,7 @@ export const selectDefaultAddress = async (userId: string) => {
     console.error('🚀 ~ selectDefaultAddress ~ error:', error);
     throw new Error('기본 주소를 불러오는 데 실패했습니다.');
   }
+
   return data;
 };
 
@@ -34,6 +35,18 @@ export const updateAddressInfo = async (addressId: string, addressFormData: Addr
   if (error) {
     console.error('🚀 ~ updateAddressInfo ~ error:', error);
     throw new Error('주소 수정 중 오류 발생');
+  }
+
+  return data;
+};
+
+// 주소 삭제
+export const deleteAddressInfo = async (addressId: string) => {
+  const { data, error } = await supabase.from('addresses').delete().eq('address_id', addressId).select();
+
+  if (error) {
+    console.error('🚀 ~ deleteAddressInfo ~ error:', error);
+    throw new Error('주소 삭제 중 오류 발생');
   }
 
   return data;

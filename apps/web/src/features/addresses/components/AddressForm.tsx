@@ -10,7 +10,7 @@ import { DaumPostcodeEmbed } from 'react-daum-postcode';
 import { usePatchAddressInfo, usePostAddressInfo } from 'src/entities/addresses/queries/useAddresses';
 import { getImageURLFromDB } from 'src/entities/user/mypage/utils/getImage';
 import { popToast } from 'src/shared/utils/popToast';
-import type { AddressRow } from 'src/shared/supabase/types';
+import type { AddressInsert, AddressRow } from 'src/shared/supabase/types';
 
 type PostcodeData = {
   address: string;
@@ -24,21 +24,20 @@ const AddressForm = ({
   initialAddressInfo,
   userId
 }: {
-  initialAddressInfo: AddressRow | null | undefined;
+  initialAddressInfo: AddressRow | null;
   userId: AddressRow['user_id'];
 }) => {
   const [businessName, setBusinessName] = useState(initialAddressInfo?.business_name || '');
   const [zonecode, setZonecode] = useState(initialAddressInfo?.postal_code || '');
   const [address, setAddress] = useState(initialAddressInfo?.road_address || '');
   const [detailAddress, setDetailAddress] = useState(initialAddressInfo?.detail_address || '');
-  // const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<{ url: string; file: File | null } | null>(
     initialAddressInfo?.company_image ? { url: initialAddressInfo.company_image, file: null } : null
   );
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const postMutate = usePostAddressInfo();
-  const patchMutate = usePatchAddressInfo();
+  const postAddressMutation = usePostAddressInfo();
+  const patchAddressMutation = usePatchAddressInfo();
 
   const router = useRouter();
 
@@ -88,7 +87,7 @@ const AddressForm = ({
       imageUrl = previewImage.url;
     }
 
-    const addressFormData = {
+    const addressFormData: AddressInsert = {
       user_id: userId,
       business_name: businessName,
       postal_code: zonecode,
@@ -99,15 +98,21 @@ const AddressForm = ({
     };
 
     try {
+      let status = null;
+
       if (isEditMode) {
-        const status = await patchMutate.mutateAsync({
+        status = await patchAddressMutation.mutateAsync({
           addressId: initialAddressInfo.address_id,
           address: addressFormData
         });
-        if (status === 'success') router.push('/mypage');
       } else {
-        const status = await postMutate.mutateAsync({ address: addressFormData });
-        if (status === 'success') router.push('/mypage');
+        status = await postAddressMutation.mutateAsync({ address: addressFormData });
+      }
+
+      if (status === 'success') {
+        const message = isEditMode ? '주소를 수정했습니다.' : '주소를 등록했습니다.';
+        popToast('info', '주소 설정 성공', message, 'medium');
+        router.push('/mypage');
       }
     } catch (error) {
       const message = isEditMode ? '주소를 수정하지 못했습니다.' : '주소를 등록하지 못했습니다.';
@@ -193,8 +198,8 @@ const AddressForm = ({
         />
       </div>
       <div className="absolute bottom-0 left-0 right-0 w-full bg-white p-4">
-        <Button type="submit" variant="base" className="w-full" disabled={postMutate.isPending}>
-          {postMutate.isPending ? '등록 중...' : '등록하기'}
+        <Button type="submit" variant="base" className="w-full" disabled={postAddressMutation.isPending}>
+          {postAddressMutation.isPending ? '등록 중...' : '등록하기'}
         </Button>
       </div>
       {/* <div className="mt-8">

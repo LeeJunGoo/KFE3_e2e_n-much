@@ -2,24 +2,18 @@
 
 import { Button } from '@repo/ui/components/ui/button';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { FaAngleRight, FaLocationDot } from 'react-icons/fa6';
 import { useGetDefaultAddressInfo } from 'src/entities/addresses/queries/useAddresses';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
-import ConfirmDialog from 'src/widgets/ConfirmDialog';
+import AddressEditDeleteBtn from './AddressEditDeleteBtn';
 
 const AddressStatus = () => {
   const user = useUserState();
   const userId = user?.id;
 
-  const router = useRouter();
-
   const { data, isPending, isError } = useGetDefaultAddressInfo(userId);
-  const addressId = data?.address_id;
-
-  if (!userId) return null;
 
   if (isPending) return <div>로딩중...</div>;
   if (isError) return <div>에러!</div>;
@@ -44,37 +38,8 @@ const AddressStatus = () => {
     <div className="text-(--color-warm-gray) border-(--color-warm-gray)/30 mt-3 border-t py-4 text-sm">
       <div className="flex items-start justify-between">
         <h3 className="text-(--color-text-base) mb-3 text-base font-semibold">주소</h3>
-        {/* 
-        <Link href="/mypage/addresses" className="text-(--color-accent) flex items-center gap-1">
-          <span>주소록 관리</span>
-          <FaAngleRight />
-        </Link> 
-        */}
-        <div className="mb-2 ml-auto flex items-center gap-2">
-          {/* <Link href="/mypage/addresses/write"" className="text-(--color-text-base) hover:text-(--color-accent)">
-            <span>수정</span>
-          </Link> */}
-          <Button
-            onClick={() => {
-              router.push(`/mypage/addresses/${addressId}`);
-            }}
-            variant="text"
-            className="text-(--color-text-base) hover:text-(--color-accent) p-0"
-          >
-            수정
-          </Button>
-          <ConfirmDialog
-            title="주소 삭제 확인"
-            description="정말로 삭제하시겠습니까?"
-            onConfirm={() => {
-              // console.log('삭제');
-            }}
-          >
-            <Button variant="text" className="text-(--color-text-base) hover:text-(--color-accent) p-0">
-              삭제
-            </Button>
-          </ConfirmDialog>
-        </div>
+        {/* 수정/삭제 */}
+        <AddressEditDeleteBtn userId={userId} addressId={data.address_id} />
       </div>
       <div className="flex items-start gap-2">
         <BaseAvatar src={data.company_image ?? '/'} alt={data.business_name ?? '매장'} size="md" className="shrink-0" />
