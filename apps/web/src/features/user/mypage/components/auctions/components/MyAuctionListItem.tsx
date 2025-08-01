@@ -10,7 +10,7 @@ import { getAuctionStatusText, getAuctionStatusVariant } from 'src/shared/utils/
 import BaseCard from 'src/widgets/BaseCard';
 import type { MyAuctionListItemProps } from 'src/entities/user/mypage/auctions/types';
 
-const MyAuctionListItem = ({ auction }: MyAuctionListItemProps) => {
+const MyAuctionListItem = ({ auction, currentTab }: MyAuctionListItemProps) => {
   const { push } = useRouter();
   const {
     auction_id: auctionId,
@@ -24,8 +24,12 @@ const MyAuctionListItem = ({ auction }: MyAuctionListItemProps) => {
 
   const firstImageUrl = imageUrls?.[0];
 
-  const handleDetailClick = () => {
-    push(`/auctions/${auctionId}`);
+  const handleDetailClick = (auctionId: string) => {
+    if (currentTab) {
+      push(`/auctions/${auctionId}?from=mypage/auctions&tab=${currentTab}`);
+    } else {
+      push(`/auctions/${auctionId}`);
+    }
   };
 
   return (
@@ -61,7 +65,7 @@ const MyAuctionListItem = ({ auction }: MyAuctionListItemProps) => {
           </div>
         </div>
       </div>
-      <Button variant="base" className="mt-3 w-full" onClick={handleDetailClick}>
+      <Button variant="base" className="mt-3 w-full" onClick={() => handleDetailClick(auctionId)}>
         상세보기
       </Button>
     </BaseCard>

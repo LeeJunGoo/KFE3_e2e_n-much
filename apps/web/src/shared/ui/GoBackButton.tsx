@@ -7,20 +7,28 @@ interface GoBackButtonProps {
   className?: string;
   mode?: 'push' | 'back';
   url?: string;
+  fallbackUrl?: string;
 }
 
-const GoBackButton = ({ className, mode = 'back', url = '' }: GoBackButtonProps) => {
+const GoBackButton = ({ className, mode = 'back', url = '', fallbackUrl }: GoBackButtonProps) => {
   const router = useRouter();
 
   const handleGoBack = () => {
-    if (mode === 'back') {
-      router.back();
+    if (mode === 'push' && url) {
+      router.push(url);
+      return;
     }
-    router.push(url);
+
+    if (fallbackUrl) {
+      router.push(fallbackUrl);
+      return;
+    }
+
+    router.back();
   };
 
   return (
-    <button onClick={handleGoBack} className={`absolute left-5 top-2/4 ${className}`}>
+    <button onClick={handleGoBack} className={`absolute left-5 top-2/4 -translate-y-2/4 ${className}`}>
       <FaArrowLeft className="hover:text-(--color-accent) size-4" />
     </button>
   );
