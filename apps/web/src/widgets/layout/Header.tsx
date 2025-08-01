@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from 'src/assets/images/logo.svg';
+import LogoDark from 'src/assets/images/logo_dark.svg';
+import RoleSwitch from 'src/features/layout/header/RoleSwitch';
 import NotificationButton from 'src/features/notification/components/NotificationButton';
 
 const Header = () => {
@@ -9,10 +11,14 @@ const Header = () => {
       <div className="flex h-full items-center justify-between">
         <Link href="/main">
           <h1 className="text-lg font-bold">
-            <Image src={Logo} alt="logo" className="size-12" />
+            <Image src={Logo} alt="logo" className="block size-12 dark:hidden" />
+            <Image src={LogoDark} alt="logo" className="hidden size-12 dark:block" />
           </h1>
         </Link>
-        <NotificationButton />
+        <div className="flex items-center">
+          <RoleSwitch className="mr-5" />
+          <NotificationButton />
+        </div>
       </div>
     </header>
   );

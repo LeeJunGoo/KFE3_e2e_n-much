@@ -3,6 +3,7 @@ import AuctionDetailInfo from 'src/features/auction/AuctionDetailInfo';
 import AuctionDetailNavbar from 'src/features/auction/AuctionDetailNavbar';
 import BidderRankingInfoSection from 'src/features/auction/BidderRankingInfoSection';
 import AuctionDetailCarousel from 'src/features/auction/carousel/AuctionDetailCarousel';
+import ClosedAuctionOverlay from 'src/features/auction/detail/components/ClosedAuctionOverlay';
 import SellerInfoSection from 'src/features/auction/SellerInfoSection';
 import EpisodeDetailSection from 'src/features/episode/EpisodeDetailSection';
 import PageContainer from 'src/shared/ui/PageContainer';
@@ -13,6 +14,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
   //경매 상품 및 경매 업체 정보
   const auctionInfo = await getAuctionInfoWithAddress(auctionId);
+  const isClosed = auctionInfo.status === 'CLOSED';
 
   return (
     <>
@@ -34,6 +36,7 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
           <EpisodeDetailSection auctionId={auctionId} />
         </div>
         <GoTopButton />
+        {isClosed && <ClosedAuctionOverlay />}
       </PageContainer>
     </>
   );

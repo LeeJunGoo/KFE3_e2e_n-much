@@ -106,7 +106,7 @@ const AddressForm = () => {
         <Input
           type="text"
           placeholder="예: OO 제과점"
-          maxLength={10}
+          maxLength={30}
           value={businessName}
           onChange={(e) => setBusinessName(e.target.value)}
         />

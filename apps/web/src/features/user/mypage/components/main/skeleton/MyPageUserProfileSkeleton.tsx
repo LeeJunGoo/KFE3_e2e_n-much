@@ -3,12 +3,11 @@ import BaseCard from 'src/widgets/BaseCard';
 
 const MyPageUserProfileSkeleton = () => {
   return (
-    <BaseCard as="section" variant="primary">
+    <BaseCard as="section" variant="default">
       <div className="flex items-start justify-between pb-1">
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
-            <Skeleton className="w-18 h-7" />
-            <Skeleton className="w-26 h-6 rounded-full" />
+            <Skeleton className="h-7 w-24" />
           </div>
           <Skeleton className="mt-2 h-4 w-40" />
         </div>

@@ -2,7 +2,7 @@ import { ENDING_SOON_AUCTIONS_COUNT } from 'src/entities/auction/constants';
 import { getAuctionsCategory } from 'src/entities/auction/serverActions';
 import EndingSoonCarousel from 'src/features/auction/carousel/EndingSoonCarousel';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 
 const EndingSoonListSection = async () => {
   const endingSoonAuctions = await getAuctionsCategory('end_date', true, ENDING_SOON_AUCTIONS_COUNT);

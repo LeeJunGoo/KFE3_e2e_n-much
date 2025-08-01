@@ -9,12 +9,12 @@ import { type AuctionRow } from 'src/shared/supabase/types';
 import BaseBadge from 'src/shared/ui/BaseBadge';
 import PageDescription from 'src/shared/ui/PageDescription';
 import PageTitle from 'src/shared/ui/PageTitle';
-import { formatNumber } from 'src/shared/utils/formatNumber';
+import PointDisplay from 'src/shared/ui/PointDisplay';
 
 const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
   const auctionInfo = await getAuctionInfoWithAddress(auctionId); //ANCHOR - 경매 상품 및 경매 업체 정보
 
-  const badgeVariant = auctionInfo.status === 'OPEN' ? 'accent' : 'red';
+  const badgeVariant = auctionInfo.status === 'OPEN' ? 'accent' : 'lightGray';
   const auctionStatus = auctionInfo.status === 'OPEN' ? '진행중' : '종료됨';
 
   const userInfo = await getServerUser();
@@ -23,11 +23,11 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
 
   // 현재 유저가 경매 물품의 판매자인지의 여부
   const isUser = auctionInfo.user_id === userInfo?.id;
-  // 현재 유저가 입찰 참여자(buyer)인지의 여부
+  // 현재 유저가 입찰 참  여자(buyer)인지의 여부
   const isBuyer = profile!.role === 'buyer';
 
   return (
-    <Card className="mb-4 rounded-t-2xl p-5 shadow-md">
+    <Card className="mb-4 rounded-t-2xl p-5">
       <div className="mb-2">
         <div className="mb-2 flex items-start justify-between">
           <PageTitle size="lg">{auctionInfo.title}</PageTitle>
@@ -40,7 +40,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
           <AuctionTimerDynamic endDate={auctionInfo.end_date} />
           <div className="mt-10">
             <PageDescription variant="ghost">현재 최고 입찰가</PageDescription>
-            <p className="text-xl font-bold">{formatNumber(auctionInfo.current_point)} P</p>
+            <p className="text-xl font-bold">{<PointDisplay amount={auctionInfo.current_point} />}</p>
           </div>
         </div>
         {!isUser && isBuyer && (

@@ -1,6 +1,6 @@
 import InquiryList from 'src/features/inquiries/components/InquiryList';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
+import EmptyState from 'src/shared/ui/EmptyState';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 

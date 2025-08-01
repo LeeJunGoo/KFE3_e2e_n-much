@@ -2,7 +2,7 @@ import { LATEST_AUCTIONS_COUNT } from 'src/entities/auction/constants';
 import { getAuctionsCategory } from 'src/entities/auction/serverActions';
 import LatestAuctionList from 'src/features/auction/list/components/LatestAuctionList';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 
 const LatestListSection = async () => {
   const latestAuctions = await getAuctionsCategory('created_at', true, LATEST_AUCTIONS_COUNT);

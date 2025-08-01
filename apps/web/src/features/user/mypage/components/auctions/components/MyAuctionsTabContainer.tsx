@@ -5,8 +5,8 @@ import { useGetUserAuctions } from 'src/entities/user/mypage/auctions/queries/us
 import ClosedAuctionsContainer from 'src/features/user/mypage/components/auctions/components/ClosedAuctionsContainer';
 import OpenAuctionsContainer from 'src/features/user/mypage/components/auctions/components/OpenAuctionsContainer';
 import MyAuctionsTabSkeleton from 'src/features/user/mypage/components/auctions/skeleton/MyAuctionsTabSkeleton';
-import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
 import BaseTabs from 'src/features/user/mypage/components/shared/tabs/BaseTabs';
+import ErrorState from 'src/shared/ui/ErrorState';
 import { AUCTION_STATUS } from 'src/shared/utils/getAuctionStatusText';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
