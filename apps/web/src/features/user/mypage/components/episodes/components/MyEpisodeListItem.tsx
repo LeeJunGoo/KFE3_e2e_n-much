@@ -13,10 +13,13 @@ const MyEpisodeListItem = ({ episode, currentTab }: MyEpisodeListItemProps) => {
 
   const getHref = () => {
     const baseUrl = `/auctions/${auctionId}`;
-    if (currentTab) {
-      return `${baseUrl}?from=mypage/episodes&tab=${currentTab}`;
+
+    if (!currentTab) return `${baseUrl}#episode-section-header`;
+
+    if (currentTab === 'favorite' || currentTab === 'like') {
+      return `${baseUrl}?from=mypage/favorites&tab=${currentTab}#episode-section-header`;
     }
-    return `${baseUrl}#episode-section-header`;
+    return `${baseUrl}?from=mypage/episodes&tab=${currentTab}`;
   };
 
   return (
