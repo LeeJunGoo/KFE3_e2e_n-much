@@ -11,7 +11,7 @@ const BidderRankingInfoSection = async ({ auctionId }: { auctionId: AuctionRow['
   const isBidder = bidderRankings && bidderRankings.length > 0;
 
   return (
-    <Card className="mb-4 p-5 shadow-sm">
+    <Card className="mb-4 p-5">
       <div className="mb-4 flex items-center gap-2">
         <FaRankingStar className="text-(--color-primary) size-8" />
         <PageTitle className="font-medium" size="md" order="left">

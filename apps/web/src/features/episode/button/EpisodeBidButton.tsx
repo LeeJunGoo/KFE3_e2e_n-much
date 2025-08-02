@@ -1,5 +1,5 @@
 import { Button } from '@repo/ui/components/ui/button';
-import { FiAward } from 'react-icons/fi';
+import { FaGavel } from 'react-icons/fa6';
 
 type Variant = 'ghost' | 'outline' | 'destructive' | 'base' | 'secondary' | 'active' | 'inActive' | 'text';
 
@@ -12,8 +12,8 @@ type EpisodeBidButtonProps = {
 const EpisodeBidButton = ({ onClick, variant, className }: EpisodeBidButtonProps) => {
   return (
     <Button size="sm" variant={variant} onClick={onClick} className={className}>
-      <FiAward />
-      <span>입찰하기</span>
+      <FaGavel />
+      <span>사연 입찰</span>
     </Button>
   );
 };

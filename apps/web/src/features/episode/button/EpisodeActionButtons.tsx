@@ -33,17 +33,11 @@ const EpisodeActionButtons = ({
     router.refresh();
   };
   return (
-    <div className="flex space-x-2">
-      <Button onClick={handleEdit} variant="text" size="sm" className="-px-3 text-xs">
+    <div className="flex">
+      <Button onClick={handleEdit} variant="text" size="sm" className="px-0">
         수정
       </Button>
-      <Button
-        onClick={handleDelete}
-        variant="text"
-        size="sm"
-        className="text-(--color-red) text-xs"
-        disabled={isPending}
-      >
+      <Button onClick={handleDelete} variant="text" size="sm" className="text-(--color-red)" disabled={isPending}>
         삭제
       </Button>
     </div>

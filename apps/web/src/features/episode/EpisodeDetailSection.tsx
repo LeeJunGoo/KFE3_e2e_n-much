@@ -21,15 +21,13 @@ const EpisodeDetailSection = async ({ auctionId }: { auctionId: AuctionRow['auct
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <Card id="episode-section-header" className="p-5 shadow-sm">
+    <Card id="episode-section-header" className="p-5">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="font-medium">사연 모음</h3>
-        <p className="text-(--color-accent) flex gap-1 text-sm font-semibold">
-          <span>사연</span>
-          <span>{episodeCount}</span>
-        </p>
+        <h3 className="font-medium">
+          <span>사연 모음</span>
+          <span className="text-(--color-accent) ml-1 inline-block font-semibold">&#40;{episodeCount}&#41;</span>
+        </h3>
       </div>
-
       {/* 사연 리스트 */}
       {episodeCount === 0 ? (
         <EpisodeEmpty />
