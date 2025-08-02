@@ -7,7 +7,7 @@ import DetailPageHeader from 'src/widgets/DetailPageHeader';
 import type { AddressRow } from 'src/shared/supabase/types';
 
 const AddressFormPage = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const addressId = (await params).id;
+  const paramId = (await params).id;
 
   const user = await getServerUser();
   if (!user) {
@@ -16,7 +16,7 @@ const AddressFormPage = async ({ params }: { params: Promise<{ id: string }> }) 
 
   // true: 수정, false: 등록
   let initialAddressInfo: AddressRow | null = null;
-  if (addressId) {
+  if (paramId !== 'write') {
     initialAddressInfo = await getDefaultAddressInfo(user.id);
   }
 
