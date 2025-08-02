@@ -18,12 +18,10 @@ webpush.setVapidDetails(
 );
 
 // 데이터베이스 대신 임시로 구독 정보를 저장할 변수
-// 실제 프로덕션에서는 이 부분을 DB 로직으로 대체해야 합니다.
 let subscription: SimplePushSubscription | null = null;
 
 export const subscribeUser = async (sub: SimplePushSubscription) => {
   subscription = sub;
-  console.log('🚀 ~ subscribeUser ~ subscription:', subscription);
 
   return { success: true };
 };

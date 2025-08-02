@@ -467,6 +467,7 @@ export type Database = {
           nick_name: string
           point: number
           role: string
+          subscription: Json | null
           user_avatar: string | null
         }
         Insert: {
@@ -477,6 +478,7 @@ export type Database = {
           nick_name: string
           point?: number
           role: string
+          subscription?: Json | null
           user_avatar?: string | null
         }
         Update: {
@@ -487,17 +489,10 @@ export type Database = {
           nick_name?: string
           point?: number
           role?: string
+          subscription?: Json | null
           user_avatar?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "users_address_id_fkey"
-            columns: ["address_id"]
-            isOneToOne: false
-            referencedRelation: "addresses"
-            referencedColumns: ["address_id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {

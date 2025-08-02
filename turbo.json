@@ -4,7 +4,7 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*", "env:VAPID_PRIVATE_KEY"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {
@@ -19,7 +19,8 @@
     },
     "https-dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "inputs": ["env:VAPID_PRIVATE_KEY"]
     },
     "clean": {
       "cache": false

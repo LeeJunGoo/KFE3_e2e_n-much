@@ -3,16 +3,16 @@
 self.addEventListener('push', function (event) {
   if (event.data) {
     const data = event.data.json();
-    console.log('🚀 ~ data:', data);
 
     const options = {
       body: data.body,
-      icon: data.icon || '/icon.png',
-      badge: '/badge.png',
+      icon: data.icon || '/web_app_manifest_192.png',
+      badge: '/web_app_manifest_192.png',
       vibrate: [100, 50, 100],
       data: {
-        dateOfArrival: Date.now(),
-        primaryKey: '2'
+        type: 'auction',
+        auctionId: 456,
+        userId: 'u123'
       }
     };
 
@@ -22,6 +22,8 @@ self.addEventListener('push', function (event) {
 
 //ANCHOR - 사용자가 푸시 알림을 클릭했을 때 앱을 열거나 특정 URL로 이동시키는 이벤트
 self.addEventListener('notificationclick', function (event) {
+  const data = event.notification.data;
+
   event.notification.close();
   event.waitUntil(clients.openWindow('https://localhost:3001'));
 });
