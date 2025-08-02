@@ -32,6 +32,9 @@ export const postAddressInfo = async (payload: AddressInsert) => {
 
 // 주소 수정
 export const patchAddressInfo = async (adrressId: string, address: AddressUpdate) => {
+  if (!adrressId) {
+    throw new Error('patchAddressInfo: adrressId가 없습니다.');
+  }
   if (!address) {
     throw new Error('patchAddressInfo: address가 없습니다.');
   }
@@ -54,7 +57,7 @@ export const patchAddressInfo = async (adrressId: string, address: AddressUpdate
 // 주소 삭제
 export const deleteAddressInfo = async (adrressId: string) => {
   if (!adrressId) {
-    throw new Error('patchAddressInfo: address가 없습니다.');
+    throw new Error('deleteAddressInfo: adrressId가 없습니다.');
   }
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/addresses`, {
