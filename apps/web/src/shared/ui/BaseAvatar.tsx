@@ -1,4 +1,3 @@
-import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@repo/ui/components/ui/avatar';
 import Image from 'next/image';
 import DefaultAvatar from 'src/assets/images/avatarDefault.svg';
@@ -11,14 +10,14 @@ type BaseAvatarProps = {
   className?: string;
 };
 
-const BaseAvatar = ({ src, alt, size, className }: BaseAvatarProps) => {
-  const sizes = {
-    sm: 'size-8',
-    md: 'size-10',
-    lg: 'size-12',
-    xl: 'size-14'
-  };
+const sizes = {
+  sm: 'size-8',
+  md: 'size-10',
+  lg: 'size-12',
+  xl: 'size-14'
+};
 
+const BaseAvatar = ({ src, alt, size, className }: BaseAvatarProps) => {
   return (
     <Avatar className={twMerge(sizes[size], className)}>
       <AvatarImage src={src} alt={alt} />
