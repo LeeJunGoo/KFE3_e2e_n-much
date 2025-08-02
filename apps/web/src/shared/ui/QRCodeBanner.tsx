@@ -9,8 +9,8 @@ const QRCodeBanner = () => {
         <Image src={QRImage} alt="QR image" className="size-25" />
         <div className="flex flex-col justify-between">
           <div className="text-[18px] font-semibold">
-            <p>설치 없이</p>
-            <p>알림으로 빠르게 받아보세요!</p>
+            <p>놓치지 마세요!</p>
+            <p>모바일도 구경오실래요?</p>
           </div>
           <p className="text-(--color-warm-gray) text-sm">QR코드를 스캔해보세요</p>
         </div>
