@@ -14,7 +14,7 @@ const MyPageUserProfile = () => {
 
   const { nick_name: name, email, user_avatar: avatarUrl, point } = user;
 
-  const currentRole = (user?.role || 'buyer') as keyof typeof ROLE_CONFIG;
+  const currentRole = (user.role || 'buyer') as keyof typeof ROLE_CONFIG;
   const currentConfig = ROLE_CONFIG[currentRole];
   if (!currentConfig) return null;
 
