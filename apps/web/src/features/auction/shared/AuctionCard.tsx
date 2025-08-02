@@ -8,9 +8,9 @@ import Link from 'next/link';
 import noAuctionImage from 'src/assets/images/noAuctionImage.png';
 import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
-import type { AuctionCardProp } from 'src/entities/auction/types';
+import type { AuctionCardProps } from 'src/entities/auction/types';
 
-const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount }: AuctionCardProp) => {
+const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount }: AuctionCardProps) => {
   setDefaultOptions({ locale: ko });
   const { status, remainTime } = formatRemainingTime(endDate);
 
