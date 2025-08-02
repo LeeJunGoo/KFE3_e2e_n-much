@@ -91,7 +91,7 @@ const AddressForm = ({
       road_address: address,
       detail_address: detailAddress,
       company_image: imageUrl,
-      is_default: true
+      is_default: true // 현재 주소 1개만 등록할 수 있음(is_default 무조건 true)
     };
 
     try {
