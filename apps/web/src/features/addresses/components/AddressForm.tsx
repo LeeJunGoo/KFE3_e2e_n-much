@@ -65,7 +65,7 @@ const AddressForm = ({
       alert('필수 입력값을 모두 입력해 주세요.');
       return;
     }
-    if (!previewImage) {
+    if (!previewImage.url) {
       alert('이미지를 등록해 주세요.');
       return;
     }
