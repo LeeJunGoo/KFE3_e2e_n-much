@@ -11,20 +11,8 @@ import { usePatchAddressInfo, usePostAddressInfo } from 'src/entities/addresses/
 import { deleteImageToBucket } from 'src/entities/addresses/supabase';
 import { getImageURLFromDB } from 'src/entities/user/mypage/utils/getImage';
 import { popToast } from 'src/shared/utils/popToast';
+import type { PostcodeData, PreviewImage } from 'src/entities/addresses/types';
 import type { AddressInsert, AddressRow } from 'src/shared/supabase/types';
-
-type PostcodeData = {
-  address: string;
-  addressType: string;
-  bname: string;
-  buildingName: string;
-  zonecode: string;
-};
-
-type PreviewImage = {
-  url: string | null;
-  file: File | null;
-};
 
 const AddressForm = ({
   initialAddressInfo,
@@ -120,12 +108,12 @@ const AddressForm = ({
 
       if (status === 'success') {
         const message = isEditMode ? '주소를 수정했습니다.' : '주소를 등록했습니다.';
-        popToast('info', '주소 설정 성공', message, 'medium');
+        popToast('info', '주소 설정', message, 'medium');
         router.push('/mypage');
       }
     } catch (error) {
       const message = isEditMode ? '주소를 수정하지 못했습니다.' : '주소를 등록하지 못했습니다.';
-      popToast('error', '주소 설정 실패', message, 'medium');
+      popToast('error', '주소 설정', message, 'medium');
       if (error instanceof Error) {
         console.error(error.message);
       }
@@ -135,7 +123,10 @@ const AddressForm = ({
   // 파일 변경 핸들러
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      popToast('warning', '이미지 첨부', '이미지 첨부에 실패했습니다.', 'medium');
+      return;
+    }
     setPreviewImage({ url: URL.createObjectURL(file), file });
   };
 
