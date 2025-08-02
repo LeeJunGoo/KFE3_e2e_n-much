@@ -8,10 +8,18 @@ interface GoBackButtonProps {
   mode?: 'push' | 'back';
   url?: string;
   fallbackUrl?: string;
+  useGroupHover?: boolean;
 }
 
-const GoBackButton = ({ className, mode = 'back', url = '', fallbackUrl }: GoBackButtonProps) => {
+const GoBackButton = ({
+  className,
+  mode = 'back',
+  url = '',
+  fallbackUrl,
+  useGroupHover = false
+}: GoBackButtonProps) => {
   const router = useRouter();
+  const iconHoverClass = useGroupHover ? 'group-hover:text-(--color-white)' : 'hover:text-(--color-accent)';
 
   const handleGoBack = () => {
     if (mode === 'push' && url) {
@@ -29,7 +37,7 @@ const GoBackButton = ({ className, mode = 'back', url = '', fallbackUrl }: GoBac
 
   return (
     <button onClick={handleGoBack} className={`absolute left-5 top-2/4 -translate-y-2/4 ${className}`}>
-      <FaArrowLeft className="hover:text-(--color-accent) size-4" />
+      <FaArrowLeft className={`size-4 ${iconHoverClass}`} />
     </button>
   );
 };
