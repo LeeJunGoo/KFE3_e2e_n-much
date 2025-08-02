@@ -109,6 +109,7 @@ export interface AuctionListProps {
   order: string;
   keyword: string | undefined;
   auctionCount?: number;
+  currentTab?: string;
 }
 
 //NOTE - auctionCard의 props
