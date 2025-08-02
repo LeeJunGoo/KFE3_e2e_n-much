@@ -1,4 +1,14 @@
-import { type Duration, formatDuration, intervalToDuration } from 'date-fns';
+import {
+  type Duration,
+  formatDuration,
+  intervalToDuration,
+  differenceInYears,
+  differenceInMonths,
+  differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
+  isBefore
+} from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { TZDate } from 'react-day-picker';
 import { type AuctionTimerStatus } from 'src/entities/auction/types';
@@ -16,50 +26,48 @@ export const formatRemainingTime = (endDate: string): RemainingTimeType => {
   let status: AuctionTimerStatus = 'ongoing';
   let remainTime = '';
 
+  // 전체 남은 시간 (UI에 표시)
   const duration = intervalToDuration({ start: now, end });
 
-  //ANCHOR - 전체 남은 시간을 표시(사연 등록 페이지)
   const formattedTime = formatDuration(duration, {
     format: ['days', 'hours', 'minutes'],
     locale: ko
   });
 
-  //ANCHOR - 일부 남은 시간을 표시(메인 페이지의 뱃지)
-  switch (true) {
-    case (duration.years ?? 0) > 0:
-      remainTime = `${duration.years}년 남음`;
-      break;
+  // 보다 정확한 단위 판단 (반올림 없이 계산)
+  const diffInMinutes = differenceInMinutes(end, now);
+  const diffInHours = differenceInHours(end, now);
+  const diffInDays = differenceInDays(end, now);
+  const diffInMonths = differenceInMonths(end, now);
+  const diffInYears = differenceInYears(end, now);
 
-    case (duration.months ?? 0) > 0:
-      remainTime = `${duration.months}개월 남음`;
-      break;
-
-    case (duration.days ?? 0) > 0:
-      remainTime = `${duration.days}일 남음`;
-      break;
-
-    case (duration.hours ?? 0) > 1:
-      remainTime = `${duration.hours}시간 남음`;
-      break;
-
-    case (duration.hours ?? 0) === 1:
-      status = 'urgent';
-      remainTime = `${duration.hours}시간 남음`;
-      break;
-    case (duration.minutes ?? 0) > 0:
-      status = 'urgent';
-      remainTime = `${duration.minutes}분 남음`;
-      break;
-
-    default:
-      remainTime = '종료';
-      break;
+  // 종료 여부 판단
+  if (isBefore(end, now)) {
+    remainTime = '종료';
+  } else if (diffInYears > 0) {
+    remainTime = `${diffInYears}년 남음`;
+  } else if (diffInMonths > 0) {
+    remainTime = `${diffInMonths}개월 남음`;
+  } else if (diffInDays > 0) {
+    remainTime = `${diffInDays}일 남음`;
+  } else if (diffInHours > 1) {
+    remainTime = `${diffInHours}시간 남음`;
+  } else if (diffInHours === 1) {
+    status = 'urgent';
+    remainTime = '1시간 남음';
+  } else if (diffInMinutes > 0) {
+    status = 'urgent';
+    remainTime = `${diffInMinutes}분 남음`;
+  } else {
+    // 초 단위라도 아직 끝나지 않았다면 1분 미만
+    status = 'urgent';
+    remainTime = '1분 미만';
   }
 
   return {
-    status, //ANCHOR - 뱃지 상태
-    duration, //ANCHOR - {years: 0, moths: 0, days: 0, hours: 0, minutes: 0, secondes: 0}
-    remainTime, //ANCHOR - "00 남음"
-    formattedTime //ANCHOR - "일 시간 분"
+    status,
+    duration,
+    remainTime,
+    formattedTime
   };
 };
