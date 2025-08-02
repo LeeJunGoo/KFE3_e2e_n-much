@@ -1,15 +1,8 @@
 'use server';
 
+import { UpdateUserSubscription } from 'src/entities/notification//supabase';
 import webpush from 'web-push';
-
-// 순수한 데이터 형태의 타입을 직접 정의
-export interface SimplePushSubscription {
-  endpoint: string;
-  keys: {
-    p256dh: string;
-    auth: string;
-  };
-}
+import type { PushSubscriptionProps } from './type';
 
 webpush.setVapidDetails(
   'mailto:jepjepghost@gmail.com',
@@ -18,14 +11,16 @@ webpush.setVapidDetails(
 );
 
 // 데이터베이스 대신 임시로 구독 정보를 저장할 변수
-let subscription: SimplePushSubscription | null = null;
+let subscription: PushSubscriptionProps | null = null;
 
-export const subscribeUser = async (sub: SimplePushSubscription) => {
-  subscription = sub;
+//ANCHOR - 사용자 구독 업데이트
+export const subscribeUser = async (userId: string, sub: PushSubscriptionProps) => {
+  await UpdateUserSubscription(userId, sub);
 
   return { success: true };
 };
 
+//FIXME - 사용자 구독 삭제
 export const unsubscribeUser = async () => {
   subscription = null;
 

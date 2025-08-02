@@ -1,135 +1,35 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import {
-  sendNotification,
-  type SimplePushSubscription,
-  subscribeUser,
-  unsubscribeUser
-} from 'src/entities/notification/serverActions';
+import { useState } from 'react';
+import { Skeleton } from '@repo/ui/components/ui/skeleton';
+import { toast } from '@repo/ui/components/ui/sonner';
+import { useUserState } from 'src/entities/auth/stores/useAuthStore';
+import { useNotificationSubscription } from 'src/entities/notification/hooks/useNotificationSubscription';
+import NotificationButton from 'src/features/notification/components/NotificationButton';
 
-const NotificationManger = () => {
-  const [isSupported, setIsSupported] = useState(false);
-  const [subscription, setSubscription] = useState<PushSubscription | null>(null);
-  const [message, setMessage] = useState('');
+const NotificationManager = () => {
+  const { isSupported, isDenied, isSubscribed, subscribe } = useNotificationSubscription();
+  const [isOpen, setIsOpen] = useState(false);
+  const user = useUserState();
 
-  // 컴포넌트 초기 로드 시점: 브라우저가 서비스 워커와 Push API를 지원하는지 확인
-  useEffect(() => {
-    const init = async () => {
-      if ('serviceWorker' in navigator && 'PushManager' in window) {
-        setIsSupported(true);
-        await registerServiceWorker();
-        await subscribeToPush();
-      }
-    };
+  if (!isSupported || !user) return <Skeleton className="size-8 rounded-full" />;
 
-    init();
-  }, []);
+  const handleClick = async () => {
+    if (isDenied) {
+      toast.warning('브라우저 알림 권한이 차단되어 있습니다. 설정에서 허용해주세요.');
+      return; // ⛔ 여기서 함수 종료: Popover 열림 방지
+    }
 
-  // sw.js 파일을 서비스 워커로 등록
-  const registerServiceWorker = async () => {
-    try {
-      await navigator.serviceWorker.register('/sw.js', {
-        scope: '/'
-      });
-      console.log('Service Worker registered successfully.');
-    } catch (error) {
-      console.error('Service Worker registration failed:', error);
+    if (!isSubscribed) {
+      const success = await subscribe(user.id); // ✅ 구독 성공 여부 확인
+      if (!success) return; // ⛔ 실패 시 Popover 열지 않음
+    }
+
+    if (isSubscribed) {
+      setIsOpen(true); // ✅ 차단이 아니고 구독에 성공한 경우에만 Popover 열기
     }
   };
-
-  // 알림 권한 요청
-  const subscribeToPush = async () => {
-    if (!process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY) {
-      console.error('VAPID public key is not defined.');
-      return;
-    }
-    try {
-      const registration = await navigator.serviceWorker.ready;
-
-      //  구독(Subscription) 객체를 생성
-      const sub = await registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY)
-      });
-
-      setSubscription(sub);
-
-      await subscribeUser(sub.toJSON() as SimplePushSubscription);
-      console.log('Subscribed to push notifications.');
-    } catch (error) {
-      // 알림 권한 차단 시 전달 되는 문구(추후 삭제 예정)
-      console.error('Failed to subscribe to push notifications:', error);
-    }
-  };
-
-  const urlBase64ToUint8Array = (base64String: string) => {
-    const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-    const rawData = window.atob(base64);
-    const outputArray = new Uint8Array(rawData.length);
-    for (let i = 0; i < rawData.length; ++i) {
-      outputArray[i] = rawData.charCodeAt(i);
-    }
-    return outputArray;
-  };
-
-  // 구독 취소
-  const unsubscribeFromPush = async () => {
-    if (!subscription) return;
-    try {
-      await subscription.unsubscribe();
-      setSubscription(null);
-      await unsubscribeUser();
-      console.log('Unsubscribed from push notifications.');
-    } catch (error) {
-      console.error('Failed to unsubscribe:', error);
-    }
-  };
-
-  // 알림 전송
-  const sendTestNotification = async () => {
-    if (!subscription) {
-      console.error('Not subscribed, cannot send notification.');
-      return;
-    }
-    try {
-      await sendNotification(message);
-      setMessage('');
-    } catch (error) {
-      console.error('Failed to send notification:', error);
-    }
-  };
-
-  if (!isSupported) {
-    return <p>Push notifications are not supported in this browser.</p>;
-  }
-
-  return (
-    <div>
-      <h3>Push Notifications</h3>
-      {subscription ? (
-        <>
-          <p>You are subscribed to push notifications.</p>
-          <button onClick={unsubscribeFromPush}>Unsubscribe</button>
-          <div>
-            <input
-              type="text"
-              placeholder="Enter notification message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-            <button onClick={sendTestNotification}>Send Test</button>
-          </div>
-        </>
-      ) : (
-        <>
-          <p>You are not subscribed to push notifications.</p>
-          <button onClick={subscribeToPush}>Subscribe</button>
-        </>
-      )}
-    </div>
-  );
+  return <NotificationButton isOpen={isOpen} onPopoverToggle={setIsOpen} onClick={handleClick} />;
 };
 
-export default NotificationManger;
+export default NotificationManager;

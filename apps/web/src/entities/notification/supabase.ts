@@ -1,5 +1,5 @@
 import { createClient } from 'src/shared/supabase/client/client';
-import type { SubscriptionProps } from 'src/entities/notification/type';
+import type { PushSubscriptionProps } from 'src/entities/notification/type';
 import type { Json } from 'src/shared/supabase/types/supabase';
 
 const supabase = createClient();
@@ -17,12 +17,24 @@ export const selectUserSubscription = async (userId: string) => {
 };
 
 //ANCHOR - 사용자 구독 업데이트
-export const UpdateUserSubscription = async (userId: string, subscription: SubscriptionProps) => {
+export const UpdateUserSubscription = async (userId: string, subscription: PushSubscriptionProps) => {
   const { data, error } = await supabase
     .from('users')
     .update({ subscription: subscription as unknown as Json })
-    .eq('user_id', userId)
+    .eq('id', userId)
     .single();
+
+  if (error) {
+    console.error('🚀 ~ selectUserSubscription ~ error:', error);
+    throw new Error();
+  }
+
+  return data;
+};
+
+//ANCHOR - 사용자 구독 삭제
+export const DeleteUserSubscription = async (userId: string) => {
+  const { data, error } = await supabase.from('users').delete().eq('id', userId).single();
 
   if (error) {
     console.error('🚀 ~ selectUserSubscription ~ error:', error);

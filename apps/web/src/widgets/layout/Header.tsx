@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Logo from 'src/assets/images/logo.svg';
-import NotificationButton from 'src/features/notification/components/NotificationButton';
+import NotificationManger from 'src/features/notification/components/NotificationManager';
 
 const Header = () => {
   return (
@@ -12,7 +12,7 @@ const Header = () => {
             <Image src={Logo} alt="logo" className="size-12" />
           </h1>
         </Link>
-        <NotificationButton />
+        <NotificationManger />
       </div>
     </header>
   );
