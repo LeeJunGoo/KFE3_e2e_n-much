@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   const { adrressId, address } = await request.json();
 
-  if (!adrressId && !address) {
+  if (!adrressId || !address) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }
 
