@@ -10,7 +10,7 @@ const AuctionActionButtons = ({ auctionId }: { auctionId: AuctionRow['auction_id
   const router = useRouter();
 
   const handleAuctionDelete = async () => {
-    const confirmed = window.confirm('정말 이 사연를 삭제하시겠습니까?');
+    const confirmed = window.confirm('정말 이 사연을 삭제하시겠습니까?');
 
     if (!confirmed) {
       return;
@@ -24,7 +24,7 @@ const AuctionActionButtons = ({ auctionId }: { auctionId: AuctionRow['auction_id
       }
     } catch (error) {
       if (error instanceof Error) {
-        toast.error('경매 물품을  삭제하지 못했습니다. 다시 시도해주세요.');
+        toast.error('경매 물품을 삭제하지 못했습니다. 다시 시도해주세요.');
         console.error(error.message);
         router.refresh();
       }

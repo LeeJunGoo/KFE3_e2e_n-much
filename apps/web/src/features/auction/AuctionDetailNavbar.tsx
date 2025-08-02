@@ -14,20 +14,26 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
   const isUser = auctionInfo.user_id === userInfo?.id;
 
   return (
-    <>
-      <ClientContainer>
-        <nav className="absolute left-0 right-0 top-5 z-10 flex items-center justify-between">
-          <div className="bg-gray bg-(--color-background)/70 size-10 rounded-sm shadow-sm">
-            <GoBackButton className="-translate-x-2 -translate-y-2/4" mode="push" url="/main" />
+    <ClientContainer>
+      <nav className="absolute left-0 top-5 z-10 w-full px-5">
+        <div className="flex items-center justify-between">
+          <div>
+            <GoBackButton
+              className="hover:bg-(--color-accent) group rounded-md border bg-white/70 p-3 transition"
+              mode="push"
+              url="/main"
+              useGroupHover={true}
+            />
           </div>
-
-          {isUser && <AuctionActionButtons auctionId={auctionInfo.auction_id} />}
-          {!isUser && (
-            <AuctionFavoriteMarkToggle auctionInfo={auctionInfo} auctionId={auctionId} userId={userInfo!.id} />
-          )}
-        </nav>
-      </ClientContainer>
-    </>
+          <div>
+            {isUser && <AuctionActionButtons auctionId={auctionInfo.auction_id} />}
+            {!isUser && (
+              <AuctionFavoriteMarkToggle auctionInfo={auctionInfo} auctionId={auctionId} userId={userInfo!.id} />
+            )}
+          </div>
+        </div>
+      </nav>
+    </ClientContainer>
   );
 };
 
