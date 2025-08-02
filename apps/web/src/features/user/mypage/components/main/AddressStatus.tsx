@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { FaAngleRight, FaLocationDot } from 'react-icons/fa6';
 import { useGetDefaultAddressInfo } from 'src/entities/addresses/queries/useAddresses';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
+import AddressEditDeleteBtn from 'src/features/user/mypage/components/main/AddressEditDeleteBtn';
+import AddressStatusSkeleton from 'src/features/user/mypage/components/main/skeleton/AddressStatusSkeleton';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
-import AddressEditDeleteBtn from './AddressEditDeleteBtn';
-import AddressStatusSkeleton from './skeleton/AddressStatusSkeleton';
 
 const AddressStatus = () => {
   const user = useUserState();
