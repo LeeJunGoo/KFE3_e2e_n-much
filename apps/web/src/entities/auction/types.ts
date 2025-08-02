@@ -112,7 +112,7 @@ export interface AuctionListProps {
 }
 
 //NOTE - auctionCard의 props
-export interface AuctionCardProp {
+export interface AuctionCardProps {
   auctionId: string;
   imageSrc: string | undefined;
   title: string;
