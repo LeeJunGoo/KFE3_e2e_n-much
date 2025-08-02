@@ -120,6 +120,7 @@ export interface AuctionCardProps {
   episodeCount: number;
   endDate: string;
   favoriteCount: number;
+  currentTab?: string;
 }
 
 //NOTE - 정렬 카테고리 선택

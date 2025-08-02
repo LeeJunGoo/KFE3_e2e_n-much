@@ -1,5 +1,5 @@
 'use client';
-
+import { useSearchParams } from 'next/navigation';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useGetUserAuctions } from 'src/entities/user/mypage/auctions/queries/useAuctions';
 import { useTabState } from 'src/entities/user/mypage/hooks/useTabState';
@@ -17,7 +17,10 @@ const TAB_LABELS = {
 };
 
 const MyAuctionsTabContainer = () => {
-  const { currentTab } = useTabState({ defaultTab: 'open' });
+  const searchParams = useSearchParams();
+  const tabFromQuery = searchParams.get('tab') || 'open';
+
+  const { currentTab } = useTabState({ defaultTab: tabFromQuery });
   const user = useUserState();
   const { data, isPending, isError, refetch } = useGetUserAuctions(user?.id);
 
