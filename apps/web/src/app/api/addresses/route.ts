@@ -55,7 +55,7 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
-// 주소 수정
+// 주소 삭제
 export async function DELETE(request: NextRequest) {
   const { adrressId } = await request.json();
 
