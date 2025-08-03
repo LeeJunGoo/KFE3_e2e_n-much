@@ -7,14 +7,13 @@ import { useGetDefaultAddressInfo } from 'src/entities/addresses/queries/useAddr
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
 import BaseBadge from 'src/shared/ui/BaseBadge';
+import AddressEditDeleteBtn from './AddressEditDeleteBtn';
 
 const AddressStatus = () => {
   const user = useUserState();
   const userId = user?.id;
 
   const { data, isPending, isError } = useGetDefaultAddressInfo(userId);
-
-  if (!userId) return null;
 
   if (isPending) return <div>로딩중...</div>;
   if (isError) return <div>에러!</div>;
@@ -39,10 +38,8 @@ const AddressStatus = () => {
     <div className="text-(--color-warm-gray) border-(--color-warm-gray)/30 mt-3 border-t py-4 text-sm">
       <div className="flex items-start justify-between">
         <h3 className="text-(--color-text-base) mb-3 text-base font-semibold">주소</h3>
-        <Link href="/mypage/addresses" className="text-(--color-accent) flex items-center gap-1">
-          <span>주소록 관리</span>
-          <FaAngleRight />
-        </Link>
+        {/* 수정/삭제 */}
+        <AddressEditDeleteBtn userId={userId} addressId={data.address_id} imageUrl={data.company_image} />
       </div>
       <div className="flex items-start gap-2">
         <BaseAvatar src={data.company_image ?? '/'} alt={data.business_name ?? '매장'} size="md" className="shrink-0" />
