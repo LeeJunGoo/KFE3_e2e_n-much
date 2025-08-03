@@ -42,8 +42,8 @@ const AuctionDetailNavbar = async ({ auctionId, searchParams }: AuctionDetailNav
       }
 
       // 경매 디테일 페이지
-      if (from === 'auctions/' && tab) {
-        const url = `auctions/auctions?tab=${tab}`;
+      if (from === 'auctions') {
+        const url = `/auctions`;
         return url;
       }
 

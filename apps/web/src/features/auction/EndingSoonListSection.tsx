@@ -4,7 +4,7 @@ import EndingSoonCarousel from 'src/features/auction/carousel/EndingSoonCarousel
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import EmptyState from 'src/shared/ui/EmptyState';
 
-const EndingSoonListSection = async () => {
+const EndingSoonListSection = async ({ from }: { from?: string }) => {
   const endingSoonAuctions = await getAuctionsCategory('end_date', true, ENDING_SOON_AUCTIONS_COUNT);
 
   if (!endingSoonAuctions || endingSoonAuctions.length === 0) {
@@ -20,7 +20,7 @@ const EndingSoonListSection = async () => {
   return (
     <div>
       <AuctionSectionHeader title="곧 종료되는 경매" href={'/auctions?order=end_time'} />
-      <EndingSoonCarousel endingSoonAuctions={endingSoonAuctions} />
+      <EndingSoonCarousel endingSoonAuctions={endingSoonAuctions} from={from} />
     </div>
   );
 };

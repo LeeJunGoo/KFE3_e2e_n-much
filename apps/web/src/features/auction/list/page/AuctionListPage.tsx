@@ -30,7 +30,7 @@ const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
             <SelectOrder order={order} keyword={keyword} />
           </div>
           <HydrationBoundary state={dehydrate(queryClient)}>
-            <AuctionList order={order} keyword={keyword} auctionCount={auctionCount} />
+            <AuctionList order={order} keyword={keyword} auctionCount={auctionCount} from="auctions" />
           </HydrationBoundary>
         </>
       ) : (

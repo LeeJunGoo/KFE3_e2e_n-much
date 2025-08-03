@@ -110,6 +110,7 @@ export interface AuctionListProps {
   keyword: string | undefined;
   auctionCount?: number;
   currentTab?: string;
+  from?: string;
 }
 
 //NOTE - auctionCard의 props
@@ -121,6 +122,7 @@ export interface AuctionCardProps {
   endDate: string;
   favoriteCount: number;
   currentTab?: string;
+  from?: string;
 }
 
 //NOTE - 정렬 카테고리 선택

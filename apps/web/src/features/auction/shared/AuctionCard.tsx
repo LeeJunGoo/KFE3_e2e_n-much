@@ -10,13 +10,19 @@ import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 import type { AuctionCardProps } from 'src/entities/auction/types';
 
-const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount }: AuctionCardProps) => {
+const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount, from }: AuctionCardProps) => {
   setDefaultOptions({ locale: ko });
   const { status, remainTime } = formatRemainingTime(endDate);
 
+  const getHref = () => {
+    const baseUrl = `/auctions/${auctionId}`;
+    if (!from) return baseUrl;
+    return `${baseUrl}?from=${from}`;
+  };
+
   return (
     <li className="rounded-button hover:scale-98 active:scale-96 overflow-hidden rounded-xl bg-white shadow-sm transition-transform">
-      <Link href={`/auctions/${auctionId}`} prefetch={true}>
+      <Link href={getHref()} prefetch={true}>
         <div className="relative">
           <div className="relative h-44 w-full">
             {imageSrc ? (
