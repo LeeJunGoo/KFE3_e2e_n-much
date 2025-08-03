@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Logo from 'src/assets/images/logo.svg';
 import LogoDark from 'src/assets/images/logo_dark.svg';
 import RoleSwitch from 'src/features/layout/header/RoleSwitch';
-// import NotificationButton from 'src/features/notification/components/NotificationButton';
+import NotificationManager from 'src/features/notification/components/NotificationManager';
 
 const Header = () => {
   return (
@@ -17,7 +17,7 @@ const Header = () => {
         </Link>
         <div className="flex items-center">
           <RoleSwitch className="mr-5" />
-          {/* <NotificationButton /> */}
+          <NotificationManager />
         </div>
       </div>
     </header>

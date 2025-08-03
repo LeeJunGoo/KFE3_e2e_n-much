@@ -43,6 +43,7 @@ export const formatRemainingTime = (endDate: string): RemainingTimeType => {
 
   // 종료 여부 판단
   if (isBefore(end, now)) {
+    status = 'urgent';
     remainTime = '종료';
   } else if (diffInYears > 0) {
     remainTime = `${diffInYears}년 남음`;
