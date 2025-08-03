@@ -36,7 +36,7 @@ const RoleSwitch = ({ leftText = '입찰참여자', rightText = '경매진행자
     setIsRoleLoaded(true);
   }, [currentRole, user]);
 
-  if (!user || user.role === 'authenticated' || (!user.role && !isRoleLoaded)) {
+  if (!user || !isRoleLoaded || !user.role || !['buyer', 'seller'].includes(user.role)) {
     return <RoleSwitchSkeleton className={className} />;
   }
 
