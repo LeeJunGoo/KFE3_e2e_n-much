@@ -1,36 +1,22 @@
 'use client';
-import { Button } from '@repo/ui/components/ui/button';
-import { toast } from '@repo/ui/components/ui/sonner';
-import { FiRepeat } from 'react-icons/fi';
-import { useAuthActions, useUserState } from 'src/entities/auth/stores/useAuthStore';
+
+import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { ROLE_CONFIG } from 'src/entities/user/mypage/main/constants';
 import AddressStatus from 'src/features/user/mypage/components/main/AddressStatus';
 import MyPageUserProfileSkeleton from 'src/features/user/mypage/components/main/skeleton/MyPageUserProfileSkeleton';
 import BaseAvatar from 'src/shared/ui/BaseAvatar';
-import BaseBadge from 'src/shared/ui/BaseBadge';
 import PointDisplay from 'src/shared/ui/PointDisplay';
 import BaseCard from 'src/widgets/BaseCard';
 
 const MyPageUserProfile = () => {
   const user = useUserState();
-  const { updateUserRole } = useAuthActions();
-
   if (!user) return <MyPageUserProfileSkeleton />;
 
   const { nick_name: name, email, user_avatar: avatarUrl, point } = user;
 
-  const currentRole = (user?.role || 'buyer') as keyof typeof ROLE_CONFIG;
+  const currentRole = (user.role || 'buyer') as keyof typeof ROLE_CONFIG;
   const currentConfig = ROLE_CONFIG[currentRole];
   if (!currentConfig) return null;
-
-  const roleType = currentConfig.display;
-  const badgeVariant = currentConfig.variant;
-
-  const handleRoleToggle = () => {
-    const newRole = ROLE_CONFIG[currentRole].roleNext;
-    updateUserRole(newRole);
-    toast.success(`${ROLE_CONFIG[currentRole].roleNextToast}로 변경되었습니다.`);
-  };
 
   return (
     <BaseCard as="section" variant="primary">
@@ -38,12 +24,6 @@ const MyPageUserProfile = () => {
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
             <h2 className="text-xl font-bold">{name}</h2>
-            <Button variant="ghost" className="p-0" onClick={handleRoleToggle}>
-              <BaseBadge className="rounded-full px-3 py-1" variant={badgeVariant}>
-                {roleType}
-                <FiRepeat className="ml-1" />
-              </BaseBadge>
-            </Button>
           </div>
           <p className="text-(--color-warm-gray) text-sm">{email}</p>
         </div>

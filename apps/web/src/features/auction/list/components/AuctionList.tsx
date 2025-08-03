@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { AUCTION_LIST_SKELETON_LENGTH } from 'src/entities/auction/constants';
 import { useAuctionListQuery } from 'src/entities/auction/queries/auction';
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
-import ErrorState from 'src/features/user/mypage/components/shared/ErrorState';
+import ErrorState from 'src/shared/ui/ErrorState';
 import { LoadingSpinner } from 'src/shared/ui/LoadingSpinner';
 import { v4 as uuidv4 } from 'uuid';
 import AuctionBaseCardSkeleton from '../../skeleton/card/AuctionBaseCardSkeleton';

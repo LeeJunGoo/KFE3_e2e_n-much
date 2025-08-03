@@ -6,8 +6,8 @@ import EndingSoonListSectionSkeleton from 'src/features/auction/skeleton/EndingS
 import LatestListSectionSkeleton from 'src/features/auction/skeleton/LatestListSectionSkeleton';
 import PopularListSectionSkeleton from 'src/features/auction/skeleton/PopularListSectionSkeleton';
 import MainBanner from 'src/features/layout/main/components/MainBanner';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
 import AuctionErrorBoundary from 'src/shared/ui/AuctionErrorBoundary';
+import EmptyState from 'src/shared/ui/EmptyState';
 import PageContainer from 'src/shared/ui/PageContainer';
 import GoTopButton from 'src/shared/utils/goTopButton';
 

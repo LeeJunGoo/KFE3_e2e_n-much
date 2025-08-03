@@ -19,10 +19,6 @@ body {
   color: var(--color-text-base);
 }
 
-input::selection {
-  @apply bg-(--color-primary) text-white;
-}
-
 .hide-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -30,4 +26,11 @@ input::selection {
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.dark {
+  --color-primary: #7fbf99;
+  --color-secondary: #f0f7f2;
+  --color-accent: #22b16d;
+  --color-text-base: #1f1f25;
 }

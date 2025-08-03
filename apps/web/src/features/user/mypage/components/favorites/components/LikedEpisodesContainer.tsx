@@ -1,6 +1,7 @@
 import { getServerUser } from 'src/entities/auth/serverAction';
 import { getUserLikesEpisodes } from 'src/entities/user/mypage/episodes/api';
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
+import EmptyState from 'src/shared/ui/EmptyState';
 import type { EpisodeWithAuction } from 'src/entities/user/mypage/episodes/types';
 
 const LikedEpisodesContainer = async () => {
@@ -11,9 +12,18 @@ const LikedEpisodesContainer = async () => {
   const userId: string = user!.id;
   const episodes: EpisodeWithAuction[] = await getUserLikesEpisodes(userId);
 
+  if (!episodes || episodes.length === 0) {
+    return (
+      <EmptyState
+        title="찜한 에피소드가 없어요"
+        description="관심 있는 에피소드를 저장하고 다시 만나보세요"
+        className="mt-24"
+      />
+    );
+  }
+
   return (
     <>
-      <h3 className="pb-2 pt-1 text-sm">{`총 ${episodes ? episodes.length : 0}개의 사연이 있습니다`}</h3>
       <ul>
         {episodes &&
           episodes.map((episode) => {

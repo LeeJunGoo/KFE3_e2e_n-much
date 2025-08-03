@@ -6,7 +6,7 @@ import { selectUser } from 'src/entities/auth/supabase/client';
 import WriteAuctionButton from 'src/features/auction/button/WriteAuctionButton';
 import AuctionList from 'src/features/auction/list/components/AuctionList';
 import SelectOrder from 'src/features/auction/list/components/SelectOrder';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 import PageContainer from 'src/shared/ui/PageContainer';
 import PageTitle from 'src/shared/ui/PageTitle';
 import GoTopButton from 'src/shared/utils/goTopButton';

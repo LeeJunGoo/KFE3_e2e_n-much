@@ -3,7 +3,7 @@ import { getAuctionsCategory } from 'src/entities/auction/serverActions';
 import { type SortedAuctionItemType } from 'src/entities/auction/types';
 import PopularAuctionCard from 'src/features/auction/card/PopularAuctionCard';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
-import EmptyState from 'src/features/user/mypage/components/shared/EmptyState';
+import EmptyState from 'src/shared/ui/EmptyState';
 
 const PopularListSection = async () => {
   const popularAuctions = await getAuctionsCategory('favorite_count', false, POPULAR_AUCTIONS_COUNT);
