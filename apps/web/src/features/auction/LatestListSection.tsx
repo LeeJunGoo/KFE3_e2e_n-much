@@ -12,7 +12,7 @@ const LatestListSection = async () => {
       <EmptyState
         title="아직 등록된 상품 정보가 없어요."
         description="새로운 정보가 등록되면 알려드릴게요.!"
-        className="mt-8"
+        className="bg-(--color-background) mt-8 rounded-lg border py-16 shadow-md"
       />
     );
   }
