@@ -12,8 +12,8 @@ type EpisodeBidButtonProps = {
 const EpisodeBidButton = ({ onClick, variant, className }: EpisodeBidButtonProps) => {
   return (
     <Button size="sm" variant={variant} onClick={onClick} className={className}>
-      <FaGavel />
-      <span>사연 입찰</span>
+      <FaGavel size={10} />
+      <span className="text-xs">사연 입찰</span>
     </Button>
   );
 };

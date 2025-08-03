@@ -6,12 +6,56 @@ import { type AuctionRow } from 'src/shared/supabase/types';
 import ClientContainer from 'src/shared/ui/ClientContainer';
 import GoBackButton from 'src/shared/ui/GoBackButton';
 
-const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['auction_id'] }) => {
-  const auctionInfo = await getAuctionInfoWithAddress(auctionId); //ANCHOR - 경매 상품 및 경매 업체 정보
+interface AuctionDetailNavbarProps {
+  auctionId: AuctionRow['auction_id'];
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
+
+const AuctionDetailNavbar = async ({ auctionId, searchParams }: AuctionDetailNavbarProps) => {
+  const auctionInfo = await getAuctionInfoWithAddress(auctionId);
   const userInfo = await getServerUser();
 
   // 현재 유저가 경매 물품의 판매자인지의 여부
   const isUser = auctionInfo.user_id === userInfo?.id;
+
+  // 쿼리스트링에서 from과 tab 정보 추출
+  const from = searchParams?.from as string;
+  const tab = searchParams?.tab as string;
+
+  // fallback URL 생성
+  const getFallbackUrl = () => {
+    if (from) {
+      // 마이페이지
+      if (from === 'mypage/favorites' && tab) {
+        const url = `/mypage/favorites?tab=${tab}`;
+        return url;
+      }
+
+      if (from === 'mypage/episodes' && tab) {
+        const url = `/mypage/episodes`;
+        return url;
+      }
+
+      if (from === 'mypage/auctions' && tab) {
+        const url = `/mypage/auctions?tab=${tab}`;
+        return url;
+      }
+
+      // 경매 디테일 페이지
+      if (from === 'auctions/' && tab) {
+        const url = `auctions/auctions?tab=${tab}`;
+        return url;
+      }
+
+      if (from === 'main') {
+        const url = '/main';
+        return url;
+      }
+    }
+    return '/main';
+  };
+
+  const fallbackUrl = getFallbackUrl();
 
   return (
     <ClientContainer>
@@ -20,8 +64,8 @@ const AuctionDetailNavbar = async ({ auctionId }: { auctionId: AuctionRow['aucti
           <div>
             <GoBackButton
               className="hover:bg-(--color-accent) group rounded-md border bg-white/70 p-3 transition"
-              mode="push"
-              url="/main"
+              mode="smart"
+              fallbackUrl={fallbackUrl}
               useGroupHover={true}
             />
           </div>
