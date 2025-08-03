@@ -21,22 +21,19 @@ const RoleSwitch = ({ leftText = '입찰참여자', rightText = '경매진행자
   const { updateUserRole } = useAuthActions();
   const currentRole = user ? ((user.role || 'buyer') as keyof typeof ROLE_CONFIG) : 'buyer';
   const [value, setValue] = useState(false);
-  const [isRoleLoaded, setIsRoleLoaded] = useState(false);
 
   // 사용자 역할에 따른 토글 상태 동기화
   useEffect(() => {
-    if (!user) {
-      setIsRoleLoaded(false);
+    if (!user || user.role === 'authenticated') {
       setValue(false);
       return;
     }
 
     const isAuctioneer = currentRole === 'seller';
     setValue(isAuctioneer);
-    setIsRoleLoaded(true);
   }, [currentRole, user]);
 
-  if (!user || !isRoleLoaded) {
+  if (!user || user.role === 'authenticated') {
     return <RoleSwitchSkeleton className={className} />;
   }
 
