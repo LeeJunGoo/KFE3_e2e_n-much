@@ -3,7 +3,7 @@ import BaseCard from 'src/widgets/BaseCard';
 
 const MyPageUserProfileSkeleton = () => {
   return (
-    <BaseCard as="section" variant="default">
+    <BaseCard as="section" variant="default" className="bg-(--color-warm-gray)/30">
       <div className="flex items-start justify-between pb-1">
         <div className="mb-4">
           <div className="mb-1 flex items-center gap-2">
