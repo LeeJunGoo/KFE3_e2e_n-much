@@ -16,8 +16,6 @@ const AuctionList = ({ order, keyword, auctionCount }: AuctionListProps) => {
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, ref, inView } =
     useAuctionListQuery(order, keyword);
 
-  console.log('list', order, keyword, fetchedAuctions);
-
   useEffect(() => {
     if (inView) {
       fetchNextPage();
