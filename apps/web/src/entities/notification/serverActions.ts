@@ -4,12 +4,6 @@ import { selectUserSubscription, UpdateUserSubscription } from 'src/entities/not
 import webpush from 'web-push';
 import type { PushSubscriptionProps } from './type';
 
-webpush.setVapidDetails(
-  'mailto:jepjepghost@gmail.com',
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!
-);
-
 //ANCHOR - 기존 구독 정보를 가져와 새 구독 정보를 추가
 export const postSubscribeUser = async (userId: string, newSub: PushSubscriptionProps) => {
   // 1. 현재 사용자의 기존 구독 정보를 가져옴
@@ -65,25 +59,30 @@ export const deleteUnsubscribeUser = async (userId: string, unSub: PushSubscript
   return { success: true };
 };
 
-//ANCHOR - cronJob 등의 기능 없이 버튼 클릭 등의 클라이언트 내에서 알림을 보내야할 경우 사용
+//ANCHOR - 추후, cronJob 등의 기능 없이 버튼 클릭 등의 클라이언트 내에서 알림을 보내야할 경우 사용
+export const sendNotification = async (message: string, subscription: PushSubscriptionProps) => {
+  webpush.setVapidDetails(
+    'mailto:jepjepghost@gmail.com',
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+    process.env.VAPID_PRIVATE_KEY!
+  );
 
-// export const sendNotification = async (message: string) => {
-//   if (!subscription) {
-//     throw new Error('No subscription available');
-//   }
+  if (!subscription) {
+    throw new Error('No subscription available');
+  }
 
-//   try {
-//     await webpush.sendNotification(
-//       subscription,
-//       JSON.stringify({
-//         title: 'Test Notification',
-//         body: message,
-//         icon: '/web_app_manifest_192.png'
-//       })
-//     );
-//     return { success: true };
-//   } catch (error) {
-//     console.error('Error sending push notification:', error);
-//     return { success: false, error: 'Failed to send notification' };
-//   }
-// };
+  try {
+    await webpush.sendNotification(
+      subscription,
+      JSON.stringify({
+        title: 'Test Notification',
+        body: message,
+        icon: '/web_app_manifest_192.png'
+      })
+    );
+    return { success: true };
+  } catch (error) {
+    console.error('Error sending push notification:', error);
+    return { success: false, error: 'Failed to send notification' };
+  }
+};

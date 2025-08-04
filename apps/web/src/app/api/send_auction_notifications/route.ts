@@ -22,6 +22,11 @@ export async function POST(req: NextRequest) {
     process.env.VAPID_PRIVATE_KEY!
   );
 
+  if (!process.env.VAPID_PRIVATE_KEY) {
+    console.error('❌ VAPID_PRIVATE_KEY is undefined at build time');
+    throw new Error('Missing VAPID_PRIVATE_KEY');
+  }
+
   try {
     const body: WebhookPayload = await req.json();
     console.log('🚀 ~ POST ~ body:', body);
