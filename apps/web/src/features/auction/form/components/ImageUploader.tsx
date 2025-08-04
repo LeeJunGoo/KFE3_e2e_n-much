@@ -29,6 +29,7 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
                 className="h-full w-full overflow-hidden object-cover"
                 priority
                 fill
+                sizes="(min-width: 768px) 115px, 216px"
               />
               <Button
                 type="button"
