@@ -5,7 +5,7 @@ import PopularAuctionCard from 'src/features/auction/card/PopularAuctionCard';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import EmptyState from 'src/shared/ui/EmptyState';
 
-const PopularListSection = async () => {
+const PopularListSection = async ({ from }: { from?: string }) => {
   const popularAuctions = await getAuctionsCategory('favorite_count', false, POPULAR_AUCTIONS_COUNT);
 
   if (!popularAuctions || popularAuctions.length === 0) {
@@ -24,7 +24,7 @@ const PopularListSection = async () => {
       <div className="mb-4 flex items-center justify-between"></div>
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {popularAuctions.map((auction: SortedAuctionItemType) => (
-          <PopularAuctionCard key={auction.auction_id} auction={auction} />
+          <PopularAuctionCard key={auction.auction_id} auction={auction} from={from} />
         ))}
       </ul>
     </div>

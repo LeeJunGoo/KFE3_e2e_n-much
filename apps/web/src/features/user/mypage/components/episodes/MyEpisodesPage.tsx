@@ -5,7 +5,7 @@ import DetailPageHeader from 'src/widgets/DetailPageHeader';
 const MyEpisodesPage = () => {
   return (
     <>
-      <DetailPageHeader>내가 쓴 스토리</DetailPageHeader>
+      <DetailPageHeader fallbackUrl="/mypage">내가 쓴 스토리</DetailPageHeader>
       <PageContainer>
         <MyEpisodesTabContainer />
       </PageContainer>

@@ -2,7 +2,7 @@ import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/comp
 import EmptyState from 'src/shared/ui/EmptyState';
 import type { EpisodesContainerProps } from 'src/entities/user/mypage/episodes/types';
 
-const CompletedEpisodesContainer = ({ episodes }: EpisodesContainerProps) => {
+const CompletedEpisodesContainer = ({ episodes, currentTab }: EpisodesContainerProps) => {
   if (!episodes || episodes.length === 0) {
     return (
       <EmptyState
@@ -15,7 +15,7 @@ const CompletedEpisodesContainer = ({ episodes }: EpisodesContainerProps) => {
   return (
     <ul>
       {episodes.map((episode) => (
-        <MyEpisodeListItem key={episode.episode_id} episode={episode} />
+        <MyEpisodeListItem key={episode.episode_id} episode={episode} currentTab={currentTab} />
       ))}
     </ul>
   );

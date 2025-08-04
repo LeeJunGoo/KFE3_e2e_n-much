@@ -1,7 +1,8 @@
 'use client';
-
+import { useSearchParams } from 'next/navigation';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useGetUserAuctions } from 'src/entities/user/mypage/auctions/queries/useAuctions';
+import { useTabState } from 'src/entities/user/mypage/hooks/useTabState';
 import ClosedAuctionsContainer from 'src/features/user/mypage/components/auctions/components/ClosedAuctionsContainer';
 import OpenAuctionsContainer from 'src/features/user/mypage/components/auctions/components/OpenAuctionsContainer';
 import MyAuctionsTabSkeleton from 'src/features/user/mypage/components/auctions/skeleton/MyAuctionsTabSkeleton';
@@ -16,6 +17,10 @@ const TAB_LABELS = {
 };
 
 const MyAuctionsTabContainer = () => {
+  const searchParams = useSearchParams();
+  const tabFromQuery = searchParams.get('tab') || 'open';
+
+  const { currentTab } = useTabState({ defaultTab: tabFromQuery });
   const user = useUserState();
   const { data, isPending, isError, refetch } = useGetUserAuctions(user?.id);
 
@@ -27,14 +32,14 @@ const MyAuctionsTabContainer = () => {
   const closedAuctions = data?.filter((auction: AuctionRow) => auction.status === AUCTION_STATUS.CLOSED);
 
   const TAB_CONTENTS = [
-    { value: 'open', content: <OpenAuctionsContainer auctions={openAuctions} /> },
+    { value: 'open', content: <OpenAuctionsContainer auctions={openAuctions} currentTab="open" /> },
     {
       value: 'closed',
-      content: <ClosedAuctionsContainer auctions={closedAuctions} />
+      content: <ClosedAuctionsContainer auctions={closedAuctions} currentTab="closed" />
     }
   ];
 
-  return <BaseTabs defaultValue="open" tabLabels={TAB_LABELS} tabContents={TAB_CONTENTS} />;
+  return <BaseTabs defaultValue={currentTab} tabLabels={TAB_LABELS} tabContents={TAB_CONTENTS} />;
 };
 
 export default MyAuctionsTabContainer;

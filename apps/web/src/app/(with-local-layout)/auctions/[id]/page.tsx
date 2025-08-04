@@ -1,9 +1,14 @@
 import AuctionDetailPage from 'src/features/auction/detail/AuctionDetailPage';
 
-const AuctionDetail = async ({ params }: { params: Promise<{ id: string }> }) => {
+interface AuctionDetailProps {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+const AuctionDetail = async ({ params, searchParams }: AuctionDetailProps) => {
   return (
     <>
-      <AuctionDetailPage params={params} />
+      <AuctionDetailPage params={params} searchParams={searchParams} />
     </>
   );
 };

@@ -9,7 +9,7 @@ const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction
   const { totalAuctions, activeAuctions } = await getSellerAuctionCount(auctionInfo.user_id);
 
   return (
-    <Card className="mb-4 p-5 shadow-sm">
+    <Card className="mb-4 p-5">
       <div className="mb-4 flex justify-between">
         <h3 className="font-medium">판매자 정보</h3>
       </div>

@@ -6,11 +6,9 @@ interface PageContainerProps {
 }
 
 const PageContainer = ({ children, className = '' }: PageContainerProps) => {
-  return (
-    <main className={twMerge('bg-(--color-background) min-h-[calc(100vh-4rem)] px-5 pb-20 pt-8', className)}>
-      {children}
-    </main>
-  );
+  const baseClasses = 'bg-[var(--color-background)] min-h-[calc(100vh-4rem)] min-h-[calc(100dvh-4rem)] px-5 pb-20 pt-8';
+
+  return <main className={twMerge(baseClasses, className)}>{children}</main>;
 };
 
 export default PageContainer;

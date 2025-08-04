@@ -8,15 +8,33 @@ import Link from 'next/link';
 import noAuctionImage from 'src/assets/images/noAuctionImage.png';
 import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
-import type { AuctionCardProp } from 'src/entities/auction/types';
+import type { AuctionCardProps } from 'src/entities/auction/types';
 
-const FavoriteAuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episodeCount }: AuctionCardProp) => {
+const FavoriteAuctionCard = ({
+  auctionId,
+  imageSrc,
+  title,
+  endDate,
+  favoriteCount,
+  episodeCount,
+  currentTab
+}: AuctionCardProps) => {
   setDefaultOptions({ locale: ko });
   const { status, remainTime } = formatRemainingTime(endDate);
 
+  const getHref = () => {
+    const baseUrl = `/auctions/${auctionId}`;
+    if (!currentTab) return baseUrl;
+
+    if (currentTab === 'favorite' || currentTab === 'like') {
+      return `${baseUrl}?from=mypage/favorites&tab=${currentTab}`;
+    }
+    return baseUrl;
+  };
+
   return (
     <li className="rounded-button hover:scale-98 active:scale-96 overflow-hidden rounded-xl bg-white shadow-sm transition-transform">
-      <Link href={`/auctions/${auctionId}`} prefetch={true}>
+      <Link href={getHref()} prefetch={true}>
         <div className="relative">
           <div className="relative h-40 w-full">
             {imageSrc ? (

@@ -5,7 +5,7 @@ import DetailPageHeader from 'src/widgets/DetailPageHeader';
 const MyAuctionsPage = () => {
   return (
     <>
-      <DetailPageHeader>내 경매 현황</DetailPageHeader>
+      <DetailPageHeader fallbackUrl="/mypage">내 경매 현황</DetailPageHeader>
       <PageContainer>
         <MyAuctionsTabContainer />
       </PageContainer>
