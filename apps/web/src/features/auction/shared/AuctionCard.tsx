@@ -22,7 +22,7 @@ const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episo
 
   return (
     <li className="rounded-button hover:scale-98 active:scale-96 overflow-hidden rounded-xl bg-white shadow-sm transition-transform">
-      <Link href={getHref()} prefetch={true}>
+      <Link href={getHref()}>
         <div className="relative">
           <div className="relative h-44 w-full">
             {imageSrc ? (

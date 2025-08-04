@@ -34,7 +34,7 @@ const FavoriteAuctionCard = ({
 
   return (
     <li className="rounded-button hover:scale-98 active:scale-96 overflow-hidden rounded-xl bg-white shadow-sm transition-transform">
-      <Link href={getHref()} prefetch={true}>
+      <Link href={getHref()}>
         <div className="relative">
           <div className="relative h-40 w-full">
             {imageSrc ? (
