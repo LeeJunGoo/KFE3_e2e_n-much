@@ -2,6 +2,7 @@
 
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
 import { useGetUserEpisodes } from 'src/entities/user/mypage/episodes/queries/useEpisodes';
+import { useTabState } from 'src/entities/user/mypage/hooks/useTabState';
 import CompletedEpisodesContainer from 'src/features/user/mypage/components/episodes/components/CompletedEpisodesContainer';
 import OngoingEpisodesContainer from 'src/features/user/mypage/components/episodes/components/OngoingEpisodesContainer';
 import MyEpisodesTabSkeleton from 'src/features/user/mypage/components/episodes/skeleton/MyEpisodesTabSkeleton';
@@ -16,6 +17,7 @@ const TAB_LABELS = {
 };
 
 const MyEpisodesTabContainer = () => {
+  const { currentTab } = useTabState({ defaultTab: 'ongoing' });
   const user = useUserState();
   const { data, isPending, isError, refetch } = useGetUserEpisodes(user?.id);
 
@@ -31,14 +33,14 @@ const MyEpisodesTabContainer = () => {
   );
 
   const TAB_CONTENTS = [
-    { value: 'ongoing', content: <OngoingEpisodesContainer episodes={ongoingEpisodes} /> },
+    { value: 'ongoing', content: <OngoingEpisodesContainer episodes={ongoingEpisodes} currentTab="ongoing" /> },
     {
       value: 'completed',
-      content: <CompletedEpisodesContainer episodes={completedEpisodes} />
+      content: <CompletedEpisodesContainer episodes={completedEpisodes} currentTab="completed" />
     }
   ];
 
-  return <BaseTabs defaultValue="ongoing" tabLabels={TAB_LABELS} tabContents={TAB_CONTENTS} />;
+  return <BaseTabs defaultValue={currentTab} tabLabels={TAB_LABELS} tabContents={TAB_CONTENTS} />;
 };
 
 export default MyEpisodesTabContainer;

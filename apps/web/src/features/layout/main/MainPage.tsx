@@ -26,7 +26,7 @@ const MainPage = async () => {
           }
         >
           <Suspense fallback={<EndingSoonListSectionSkeleton />}>
-            <EndingSoonListSection />
+            <EndingSoonListSection from="main" />
           </Suspense>
         </AuctionErrorBoundary>
 
@@ -40,7 +40,7 @@ const MainPage = async () => {
           }
         >
           <Suspense fallback={<PopularListSectionSkeleton />}>
-            <PopularListSection />
+            <PopularListSection from="main" />
           </Suspense>
         </AuctionErrorBoundary>
         <AuctionErrorBoundary
@@ -53,7 +53,7 @@ const MainPage = async () => {
           }
         >
           <Suspense fallback={<LatestListSectionSkeleton />}>
-            <LatestListSection />
+            <LatestListSection from="main" />
           </Suspense>
         </AuctionErrorBoundary>
         <GoTopButton />

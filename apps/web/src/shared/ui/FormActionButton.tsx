@@ -5,17 +5,10 @@ type FormActionsButtonType = {
   buttonLabel: string;
   isSubmitting: boolean;
   isRedirecting: boolean;
-
   className?: string;
 };
 
-const FormActionButton = ({
-  buttonLabel,
-  isRedirecting,
-  isSubmitting,
-
-  className
-}: FormActionsButtonType) => {
+const FormActionButton = ({ buttonLabel, isRedirecting, isSubmitting, className }: FormActionsButtonType) => {
   return (
     <>
       <div className={twMerge(`absolute bottom-2 left-0 right-0 flex justify-end space-x-2 px-5 ${className}`)}>

@@ -5,15 +5,15 @@ import PopularAuctionCard from 'src/features/auction/card/PopularAuctionCard';
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import EmptyState from 'src/shared/ui/EmptyState';
 
-const PopularListSection = async () => {
+const PopularListSection = async ({ from }: { from?: string }) => {
   const popularAuctions = await getAuctionsCategory('favorite_count', false, POPULAR_AUCTIONS_COUNT);
 
   if (!popularAuctions || popularAuctions.length === 0) {
     return (
       <EmptyState
         title="아직 등록된 상품 정보가 없어요."
-        description="새로운 정보가 등록되면 알려드릴게요.!"
-        className="bg-(--color-background) mt-8 rounded-lg border py-16 shadow-md"
+        description="새로운 정보가 등록되면 알려드릴게요!"
+        className="mt-8 rounded-lg border bg-white py-16 shadow-sm"
       />
     );
   }
@@ -24,7 +24,7 @@ const PopularListSection = async () => {
       <div className="mb-4 flex items-center justify-between"></div>
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {popularAuctions.map((auction: SortedAuctionItemType) => (
-          <PopularAuctionCard key={auction.auction_id} auction={auction} />
+          <PopularAuctionCard key={auction.auction_id} auction={auction} from={from} />
         ))}
       </ul>
     </div>

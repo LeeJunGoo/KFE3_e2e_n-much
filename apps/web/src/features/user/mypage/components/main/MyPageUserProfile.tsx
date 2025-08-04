@@ -10,7 +10,9 @@ import BaseCard from 'src/widgets/BaseCard';
 
 const MyPageUserProfile = () => {
   const user = useUserState();
-  if (!user) return <MyPageUserProfileSkeleton />;
+  if (!user || !user.role || !['buyer', 'seller'].includes(user.role)) {
+    return <MyPageUserProfileSkeleton />;
+  }
 
   const { nick_name: name, email, user_avatar: avatarUrl, point } = user;
 

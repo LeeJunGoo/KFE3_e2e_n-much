@@ -25,12 +25,14 @@ const EpisodeForm = ({
   initialEpisodeInfo,
   auctionId,
   userId,
+  searchParams,
   children
 }: {
   initialEpisodeInfo: EpisodeRow | null;
   auctionId: AuctionRow['auction_id'];
   userId: UserRow['id'];
   children: ReactNode;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) => {
   const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
@@ -56,6 +58,16 @@ const EpisodeForm = ({
 
       if (status === 'success') {
         setIsRedirecting(true);
+        const params = new URLSearchParams();
+        if (searchParams) {
+          Object.entries(searchParams).forEach(([key, value]) => {
+            if (typeof value === 'string') {
+              params.set(key, value);
+            }
+          });
+        }
+        const queryString = params.toString();
+
         const message = isEditMode ? '사연을 수정하였습니다.' : '사연을 등록하였습니다.';
         queryClient.invalidateQueries({
           queryKey: [USER_BID_POINT_AMOUNT_KEY, auctionId, userId]
@@ -67,7 +79,7 @@ const EpisodeForm = ({
         queryClient.invalidateQueries({
           queryKey: [AUCTION_BID_POINT_AMOUNT, auctionId]
         });
-        router.replace(`/auctions/${auctionId}`);
+        router.replace(`/auctions/${auctionId}${queryString ? `?${queryString}` : ''}`);
         toast.success(message);
       }
     } catch (error) {

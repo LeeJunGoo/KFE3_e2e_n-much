@@ -3,7 +3,13 @@ import { Carousel, CarouselContent, CarouselItem } from '@repo/ui/components/ui/
 import AuctionCard from 'src/features/auction/shared/AuctionCard';
 import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
-const EndingSoonCarousel = ({ endingSoonAuctions }: { endingSoonAuctions: SortedAuctionItemType[] }) => {
+const EndingSoonCarousel = ({
+  endingSoonAuctions,
+  from
+}: {
+  endingSoonAuctions: SortedAuctionItemType[];
+  from?: string;
+}) => {
   return (
     <ul>
       <Carousel
@@ -22,6 +28,7 @@ const EndingSoonCarousel = ({ endingSoonAuctions }: { endingSoonAuctions: Sorted
                 endDate={auction.end_date}
                 episodeCount={auction.episodes?.length ?? 0}
                 favoriteCount={auction.favorites?.length ?? 0}
+                from={from}
               />
             </CarouselItem>
           ))}

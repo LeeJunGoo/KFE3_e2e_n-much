@@ -29,7 +29,9 @@ const getIcon = (iconName: string) => {
 
 const MyPageNavigation = () => {
   const user = useUserState();
-  if (!user) return <MyPageNavigationSkeleton />;
+  if (!user || !user.role || !['buyer', 'seller'].includes(user.role)) {
+    return <MyPageNavigationSkeleton />;
+  }
 
   const role = user.role || 'buyer';
   const filteredMenus = MYPAGE_MENU_LIST.filter((menu) => menu.role === role || menu.role === 'common');
