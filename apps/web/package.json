@@ -11,7 +11,8 @@
     "check-types": "tsc --noEmit",
     "clean": "rm -rf .next",
     "dev-https": "next dev --experimental-https --experimental-https-key $KEY --experimental-https-cert $CERT -p 3001",
-    "https-dev": "cross-env KEY=./certificates/localhost-key.pem CERT=./certificates/localhost.pem pnpm dev-https"
+    "https-dev": "cross-env KEY=./certificates/localhost-key.pem CERT=./certificates/localhost.pem pnpm dev-https",
+    "local-server": "ngrok http https://localhost:3001"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
@@ -22,6 +23,7 @@
     "@tanstack/react-query-devtools": "^5.83.0",
     "base64-arraybuffer": "^1.0.2",
     "class-variance-authority": "^0.7.1",
+    "cross-env": "^10.0.0",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.514.0",
     "next": "^15.3.0",

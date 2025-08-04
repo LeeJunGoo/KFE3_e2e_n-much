@@ -5,12 +5,23 @@ import type { EpisodeRow, UserRow, AuctionRow } from 'src/shared/supabase/types'
 
 const supabase = createClient();
 
-//ANCHOR - 경매 상품에 대한 에피소드 정보
+//ANCHOR - 하나의 에피소드 정보
 export const selectEpisodeInfo = async (episode_id: string) => {
   const { data, error } = await supabase.from('episodes').select(`*`).eq('episode_id', episode_id).maybeSingle();
 
   if (error) {
     console.error('🚀 ~ selectEpisodeInfo ~ error:', error);
+    throw new Error();
+  }
+
+  return data;
+};
+//ANCHOR - 경매 상품에 대한 전체 에피소드의 유저 정보
+export const selectListEpisodeInfo = async (auctionId: string) => {
+  const { data, error } = await supabase.from('episodes').select(`user_id`).eq('auction_id', auctionId);
+
+  if (error) {
+    console.error('🚀 ~ selectListEpisodeInfo ~ error:', error);
     throw new Error();
   }
 
