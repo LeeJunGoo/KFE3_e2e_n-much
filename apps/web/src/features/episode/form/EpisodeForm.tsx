@@ -84,6 +84,7 @@ const EpisodeForm = ({
       }
     } catch (error) {
       const message = isEditMode ? '사연을 수정하지 못했습니다.' : '사연을 등록하지 못했습니다.';
+      setIsRedirecting(false);
       toast.error(message);
       if (error instanceof Error) {
         console.error(error.message);

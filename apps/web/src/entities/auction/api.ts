@@ -6,6 +6,11 @@ import type {
 } from 'src/entities/auction/types';
 import type { AuctionInsert, AuctionRow, AuctionUpdate } from 'src/shared/supabase/types';
 
+//FIXME - 개발 종료 후 삭제
+if (process.env.NODE_ENV === 'development') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
+
 //ANCHOR - 경매 상세 페이지: 경매 상풍 및 업체 정보
 export const getAuctionInfoWithAddress = async (auctionId: AuctionRow['auction_id']) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_SERVER_URL}/auctions/${auctionId}?type=auction`);
