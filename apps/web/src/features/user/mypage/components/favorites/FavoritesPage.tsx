@@ -5,7 +5,7 @@ import DetailPageHeader from 'src/widgets/DetailPageHeader';
 const FavoritesPage = () => {
   return (
     <>
-      <DetailPageHeader>찜 목록</DetailPageHeader>
+      <DetailPageHeader fallbackUrl="/mypage">찜 목록</DetailPageHeader>
       <PageContainer>
         <FavoritesTabContainer />
       </PageContainer>

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { useMutation } from '@tanstack/react-query';
-import { FaHeart } from 'react-icons/fa';
+import { FaThumbsUp } from 'react-icons/fa6';
 import { getEpisodeInfo } from 'src/entities/episode/api';
 import { postUserLikesEpisode } from 'src/entities/user/mypage/episodes/api';
 import {
@@ -78,7 +78,7 @@ const EpisodeLikeToggle = ({
 
   return (
     <Button variant="text" className="opacity-70" disabled={false} onClick={handleLikeMarkClick}>
-      <FaHeart className={`${isLiked ? 'text-(--color-red)' : 'text-(--color-warm-gray)'} transition`} />
+      <FaThumbsUp className={`${isLiked ? 'text-(--color-accent)' : 'text-(--color-warm-gray)'} transition`} />
     </Button>
   );
 };

@@ -4,7 +4,7 @@ import LatestAuctionList from 'src/features/auction/list/components/LatestAuctio
 import AuctionSectionHeader from 'src/features/auction/shared/AuctionSectionHeader';
 import EmptyState from 'src/shared/ui/EmptyState';
 
-const LatestListSection = async () => {
+const LatestListSection = async ({ from }: { from?: string }) => {
   const latestAuctions = await getAuctionsCategory('created_at', true, LATEST_AUCTIONS_COUNT);
 
   if (!latestAuctions || latestAuctions.length === 0) {
@@ -20,7 +20,7 @@ const LatestListSection = async () => {
   return (
     <div className="mt-8">
       <AuctionSectionHeader title="최신 경매" href={'/auctions?order=created_at'} />
-      <LatestAuctionList latestAuctions={latestAuctions} />
+      <LatestAuctionList latestAuctions={latestAuctions} from={from} />
     </div>
   );
 };

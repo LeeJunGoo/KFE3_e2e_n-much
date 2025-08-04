@@ -9,8 +9,14 @@ import EpisodeDetailSection from 'src/features/episode/EpisodeDetailSection';
 import PageContainer from 'src/shared/ui/PageContainer';
 import GoTopButton from 'src/shared/utils/goTopButton';
 
-const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }) => {
+interface AuctionDetailPageProps {
+  params: Promise<{ id: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+const AuctionDetailPage = async ({ params, searchParams }: AuctionDetailPageProps) => {
   const { id: auctionId } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
 
   //경매 상품 및 경매 업체 정보
   const auctionInfo = await getAuctionInfoWithAddress(auctionId);
@@ -18,14 +24,14 @@ const AuctionDetailPage = async ({ params }: { params: Promise<{ id: string }> }
 
   return (
     <>
-      <PageContainer className="-pt-8 -px-5 min-h-screen">
-        <div className="h-68 w-full">
-          {/* 이미지 슬라이더 */}
-          <AuctionDetailCarousel imageUrls={auctionInfo.image_urls} />
-          {/* 상단 네비게이션 */}
-          <AuctionDetailNavbar auctionId={auctionId} />
-        </div>
-        <div className="-translate-y-14 px-4">
+      <div className="relative">
+        {/* 상단 네비게이션 */}
+        <AuctionDetailNavbar auctionId={auctionId} searchParams={resolvedSearchParams} />
+        {/* 이미지 슬라이더 */}
+        <AuctionDetailCarousel imageUrls={auctionInfo.image_urls} />
+      </div>
+      <PageContainer>
+        <div className="-translate-y-3">
           {/* 경매 상품 정보 */}
           <AuctionDetailInfo auctionId={auctionId} />
           {/* 판매자 정보 */}

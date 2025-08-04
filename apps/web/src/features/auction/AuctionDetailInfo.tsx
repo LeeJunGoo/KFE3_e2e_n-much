@@ -27,7 +27,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
   const isBuyer = profile!.role === 'buyer';
 
   return (
-    <Card className="mb-4 rounded-t-2xl p-5">
+    <Card className="mb-4 p-5">
       <div className="mb-2">
         <div className="mb-2 flex items-start justify-between">
           <PageTitle size="lg">{auctionInfo.title}</PageTitle>

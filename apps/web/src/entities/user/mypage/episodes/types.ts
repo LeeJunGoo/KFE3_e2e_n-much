@@ -6,8 +6,10 @@ export type EpisodeWithAuction = EpisodeRow & {
 
 export type EpisodesContainerProps = {
   episodes?: EpisodeWithAuction[];
+  currentTab?: string;
 };
 
 export type MyEpisodeListItemProps = {
   episode: EpisodeWithAuction;
+  currentTab?: string;
 };

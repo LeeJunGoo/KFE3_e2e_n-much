@@ -4,16 +4,22 @@ import NotAuctionImage from 'src/assets/images/auctionDefault.png';
 import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
-const PopularAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
+const PopularAuctionCard = ({ auction, from }: { auction: SortedAuctionItemType; from?: string }) => {
   const isImage = auction.image_urls && auction.image_urls.length > 0;
 
   const auctionImage = isImage ? auction.image_urls![0] : NotAuctionImage;
   const favoritesCount = auction.favorites?.length || 0;
   const episodesCount = auction.episodes?.length || 0;
 
+  const getHref = () => {
+    const baseUrl = `/auctions/${auction.auction_id}`;
+    if (!from) return baseUrl;
+    return `${baseUrl}?from=${from}`;
+  };
+
   return (
     <li className="transition-transform hover:scale-[1.02]">
-      <Link href={`/auctions/${auction.auction_id}`}>
+      <Link href={getHref()}>
         <div className="relative h-[200px] w-full overflow-hidden rounded-lg">
           <Image
             src={auctionImage!}

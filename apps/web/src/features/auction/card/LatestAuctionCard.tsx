@@ -7,7 +7,7 @@ import BaseBadge from 'src/shared/ui/BaseBadge';
 import PageDescription from 'src/shared/ui/PageDescription';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 
-const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
+const LatestAuctionCard = ({ auction, from }: { auction: SortedAuctionItemType; from?: string }) => {
   const isImage = auction.image_urls && auction.image_urls.length > 0;
 
   const auctionImage = isImage ? auction.image_urls![0] : NotAuctionImage;
@@ -18,10 +18,16 @@ const LatestAuctionCard = ({ auction }: { auction: SortedAuctionItemType }) => {
 
   const badgeVariant = status === 'ongoing' ? 'accent' : 'red';
 
+  const getHref = () => {
+    const baseUrl = `/auctions/${auction.auction_id}`;
+    if (!from) return baseUrl;
+    return `${baseUrl}?from=${from}`;
+  };
+
   return (
     <li className="border-(--color-warm-gray)/30 border-b last:border-b-0">
       <Link
-        href={`/auctions/${auction.auction_id}`}
+        href={getHref()}
         className="hover:bg-(--color-secondary) flex cursor-pointer items-center p-3 transition-colors"
       >
         <div className="relative mr-3 h-20 w-20 flex-shrink-0">

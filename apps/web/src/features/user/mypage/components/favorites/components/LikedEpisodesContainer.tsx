@@ -1,16 +1,22 @@
-import { getServerUser } from 'src/entities/auth/serverAction';
-import { getUserLikesEpisodes } from 'src/entities/user/mypage/episodes/api';
+'use client';
+
+import { useUserState } from 'src/entities/auth/stores/useAuthStore';
+import { useGetUserLikesEpisodes } from 'src/entities/user/mypage/favorites/queries/useUserLikesEpisodes';
 import MyEpisodeListItem from 'src/features/user/mypage/components/episodes/components/MyEpisodeListItem';
 import EmptyState from 'src/shared/ui/EmptyState';
+import ErrorState from 'src/shared/ui/ErrorState';
 import type { EpisodeWithAuction } from 'src/entities/user/mypage/episodes/types';
 
-const LikedEpisodesContainer = async () => {
-  const user = await getServerUser();
-  if (!user) {
-    return <>로그인이 필요합니다.</>;
-  }
-  const userId: string = user!.id;
-  const episodes: EpisodeWithAuction[] = await getUserLikesEpisodes(userId);
+interface LikedEpisodesContainerProps {
+  currentTab?: string;
+}
+
+const LikedEpisodesContainer = ({ currentTab }: LikedEpisodesContainerProps) => {
+  const user = useUserState();
+  const { data: episodes, isPending, isError } = useGetUserLikesEpisodes(user?.id);
+  if (!user) return <div>로딩 중 입니다...!</div>;
+  if (isPending) return <div>로딩 중 입니다...!</div>;
+  if (isError) return <ErrorState />;
 
   if (!episodes || episodes.length === 0) {
     return (
@@ -23,14 +29,11 @@ const LikedEpisodesContainer = async () => {
   }
 
   return (
-    <>
-      <ul>
-        {episodes &&
-          episodes.map((episode) => {
-            return <MyEpisodeListItem key={episode.episode_id} episode={episode} />;
-          })}
-      </ul>
-    </>
+    <ul>
+      {episodes.map((episode: EpisodeWithAuction) => {
+        return <MyEpisodeListItem key={episode.episode_id} episode={episode} currentTab={currentTab} />;
+      })}
+    </ul>
   );
 };
 

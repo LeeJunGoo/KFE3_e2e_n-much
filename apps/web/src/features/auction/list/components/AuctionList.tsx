@@ -11,12 +11,10 @@ import AuctionBaseCardSkeleton from '../../skeleton/card/AuctionBaseCardSkeleton
 import type { AuctionListProps, EpisodeCount } from 'src/entities/auction/types';
 import type { AuctionRow } from 'src/shared/supabase/types';
 
-const AuctionList = ({ order, keyword, auctionCount }: AuctionListProps) => {
+const AuctionList = ({ order, keyword, auctionCount, from }: AuctionListProps) => {
   //TODO - nextjs 캐시로 관리하기 (KMH)
   const { fetchedAuctions, isError, error, isPending, isFetchingNextPage, fetchNextPage, hasNextPage, ref, inView } =
     useAuctionListQuery(order, keyword);
-
-  console.log('list', order, keyword, fetchedAuctions);
 
   useEffect(() => {
     if (inView) {
@@ -63,6 +61,7 @@ const AuctionList = ({ order, keyword, auctionCount }: AuctionListProps) => {
                   endDate={endDate}
                   episodeCount={episodeCount}
                   favoriteCount={favoriteCount}
+                  from={from}
                 />
               );
             })

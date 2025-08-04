@@ -10,8 +10,15 @@ import { type EpisodeRow } from 'src/shared/supabase/types';
 import PageContainer from 'src/shared/ui/PageContainer';
 import DetailPageHeader from 'src/widgets/DetailPageHeader';
 
-const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) => {
+const EpisodePage = async ({
+  params,
+  searchParams
+}: {
+  params: Promise<{ id: string[] }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
   const [auctionId, episodeId] = (await params).id;
+  const resolvedSearchParams = searchParams ? await searchParams : undefined;
   let initialEpisodeInfo: EpisodeRow | null = null;
 
   // NOTE - 경매 상품 및 업체 정보
@@ -37,7 +44,12 @@ const EpisodePage = async ({ params }: { params: Promise<{ id: string[] }> }) =>
       <DetailPageHeader>{initialEpisodeInfo ? '사연 수정하기' : '사연 등록하기'}</DetailPageHeader>
       <PageContainer>
         <AuctionSummaryCard auctionInfo={auctionInfo} />
-        <EpisodesForm auctionId={auctionId!} initialEpisodeInfo={initialEpisodeInfo} userId={user.id}>
+        <EpisodesForm
+          auctionId={auctionId!}
+          initialEpisodeInfo={initialEpisodeInfo}
+          userId={user.id}
+          searchParams={resolvedSearchParams}
+        >
           <div className="bg-(--color-secondary) my-10 rounded-lg p-4">
             <h3 className="text-(--color-accent) mb-4 flex items-center gap-1 text-sm font-medium">
               <FaRegLightbulb />
