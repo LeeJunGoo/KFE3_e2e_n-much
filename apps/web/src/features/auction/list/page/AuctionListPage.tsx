@@ -29,7 +29,13 @@ const AuctionListPage = async ({ order, keyword }: AuctionListPageProps) => {
           </HydrationBoundary>
         </>
       ) : (
-        <EmptyState title={'검색 결과가 없습니다.'} className="min-h-[calc(100vh-4rem)] justify-center pb-16" />
+        <EmptyState
+          title={keyword ? '검색 결과가 없습니다' : '아직 등록된 상품 정보가 없어요.'}
+          description={
+            keyword ? `'${keyword}'에 대한 검색 결과를 찾을 수 없습니다.` : '새로운 경매가 등록되면 알려드릴게요!'
+          }
+          className="mt-24"
+        />
       )}
       <WriteAuctionButton />
       <GoTopButton />
