@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useAuthActions, useUserState } from 'src/entities/auth/stores/useAuthStore';
 import RoleSwitchSkeleton from 'src/features/layout/header/skeleton/RoleSwitchSkeleton';
@@ -20,25 +19,26 @@ interface ButtonProps {
 const RoleSwitch = ({ leftText = '입찰참여자', rightText = '경매진행자', className = '' }: RoleSwitchProps) => {
   const user = useUserState();
   const { updateUserRole } = useAuthActions();
-
   const currentRole = user ? ((user.role || 'buyer') as keyof typeof ROLE_CONFIG) : 'buyer';
   const [value, setValue] = useState(false);
+  const [isRoleLoaded, setIsRoleLoaded] = useState(false);
 
   // 사용자 역할에 따른 토글 상태 동기화
   useEffect(() => {
-    if (!user) return;
+    if (!user || !user.role || !['buyer', 'seller'].includes(user.role)) {
+      setIsRoleLoaded(false);
+      setValue(false);
+      return;
+    }
 
     const isAuctioneer = currentRole === 'seller';
     setValue(isAuctioneer);
-
-    if (isAuctioneer) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
+    setIsRoleLoaded(true);
   }, [currentRole, user]);
 
-  if (!user) return <RoleSwitchSkeleton className={className} />;
+  if (!user || !isRoleLoaded || !user.role || !['buyer', 'seller'].includes(user.role)) {
+    return <RoleSwitchSkeleton className={className} />;
+  }
 
   const handleRoleChange = (isAuctioneer: boolean) => {
     const newRole = isAuctioneer ? 'seller' : 'buyer';

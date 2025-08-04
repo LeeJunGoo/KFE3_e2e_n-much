@@ -11,8 +11,8 @@ const LatestListSection = async ({ from }: { from?: string }) => {
     return (
       <EmptyState
         title="아직 등록된 상품 정보가 없어요."
-        description="새로운 정보가 등록되면 알려드릴게요.!"
-        className="mt-8"
+        description="새로운 정보가 등록되면 알려드릴게요!"
+        className="mt-8 rounded-lg border bg-white py-16 shadow-sm"
       />
     );
   }

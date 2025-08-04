@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useRef } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
@@ -21,7 +20,8 @@ const SearchInput = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (isFocused) {
+    // 데스크탑에서만 포커스 적용 (768px 이상)
+    if (isFocused && window.innerWidth >= 768) {
       inputRef.current?.focus();
     }
   }, [isFocused]);

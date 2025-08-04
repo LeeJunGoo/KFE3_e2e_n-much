@@ -2,9 +2,18 @@
 @import '@repo/ui/styles.css';
 @import '@repo/tailwind-config';
 
+* {
+  color-scheme: light !important;
+}
+
 html {
   scrollbar-width: none;
   scroll-behavior: smooth;
+  color-scheme: light !important;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 html::-webkit-scrollbar {
