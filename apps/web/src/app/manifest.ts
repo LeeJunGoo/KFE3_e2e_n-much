@@ -17,53 +17,53 @@ export default function manifest(): MetadataRoute.Manifest {
     dir: 'ltr',
     icons: [
       {
-        src: '/icons/vid_icon_48x48.webp',
+        src: '/apps/web/public/icons/vid_icon_48x48.webp',
         sizes: '48x48',
         type: 'image/webp'
       },
       {
-        src: '/icons/vid_icon_72x72.webp',
+        src: '/apps/web/public/icons/vid_icon_72x72.webp',
         sizes: '72x72',
         type: 'image/webp'
       },
       {
-        src: '/icons/vid_icon_96x96.webp',
+        src: '/apps/web/public/icons/vid_icon_96x96.webp',
         sizes: '96x96',
         type: 'image/webp'
       },
       {
-        src: '/icons/vid_icon_128x128.webp',
+        src: '/apps/web/public/icons/vid_icon_128x128.webp',
         sizes: '128x128',
         type: 'image/webp'
       },
       {
-        src: '/icons/vid_icon_144x144.webp',
+        src: '/apps/web/public/icons/vid_icon_144x144.webp',
         sizes: '144x144',
         type: 'image/webp'
       },
       {
-        src: '/icons/vid_icon_152x152.webp',
+        src: '/apps/web/public/icons/vid_icon_152x152.webp',
         sizes: '152x152',
         type: 'image/webp'
       },
       {
-        src: '/icons/vid_icon_192x192.webp',
+        src: '/apps/web/public/icons/vid_icon_192x192.webp',
         sizes: '192x192',
         type: 'image/webp',
         purpose: 'any'
       },
       {
-        src: '/icons/vid_icon_256x256.webp',
+        src: '/apps/web/public/icons/vid_icon_256x256.webp',
         sizes: '256x256',
         type: 'image/webp'
       },
       {
-        src: '/icons/vid_icon_384x384.webp',
+        src: '/apps/web/public/icons/vid_icon_384x384.webp',
         sizes: '384x384',
         type: 'image/webp'
       },
       {
-        src: '/icons/vid_icon_512x512.webp',
+        src: '/apps/web/public/icons/vid_icon_512x512.webp',
         sizes: '512x512',
         type: 'image/webp',
         purpose: 'maskable'
@@ -71,9 +71,9 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     screenshots: [
       {
-        src: '/screenshots/main.png',
+        src: '/apps/web/public/screenshots/vid_screenshots_main.webp',
         sizes: '540x720',
-        type: 'image/png'
+        type: 'image/webp'
       }
     ],
     shortcuts: [
@@ -85,6 +85,5 @@ export default function manifest(): MetadataRoute.Manifest {
         icons: [{ src: '/icons/auction.png', sizes: '96x96', type: 'image/png' }]
       }
     ]
-    // related_applications, prefer_related_applications 등도 추가 가능
   };
 }
