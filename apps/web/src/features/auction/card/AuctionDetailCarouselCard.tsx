@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { CarouselItem } from '@repo/ui/components/ui/carousel';
 import Image from 'next/image';
-import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import NotAuctionImage from 'src/assets/images/noAuctionImage.png';
 
 const AuctionDetailCarouselCard = ({ url, index }: { url: string; index: number }) => {
   const [imgSrc, setImgSrc] = useState(url);

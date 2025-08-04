@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import NotAuctionImage from 'src/assets/images/noAuctionImage.png';
 import { type SortedAuctionItemType } from 'src/entities/auction/types';
 import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import BaseBadge from 'src/shared/ui/BaseBadge';
