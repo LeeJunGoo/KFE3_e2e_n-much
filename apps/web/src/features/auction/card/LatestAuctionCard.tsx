@@ -31,14 +31,7 @@ const LatestAuctionCard = ({ auction, from }: { auction: SortedAuctionItemType; 
         className="hover:bg-(--color-secondary) flex cursor-pointer items-center p-3 transition-colors"
       >
         <div className="relative mr-3 h-20 w-20 flex-shrink-0">
-          <Image
-            src={auctionImage!}
-            alt={auction.title}
-            fill
-            sizes="80px"
-            className="rounded-lg object-cover"
-            priority
-          />
+          <Image src={auctionImage!} alt={auction.title} fill sizes="80px" className="rounded-lg object-cover" />
         </div>
 
         <div className="ml-2 flex-1">

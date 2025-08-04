@@ -32,6 +32,7 @@ const AuctionCard = ({ auctionId, imageSrc, title, endDate, favoriteCount, episo
                 alt={`${title} 이미지`}
                 className="object-cover"
                 sizes="(min-width: 768px) 400px, 100vw"
+                priority
               />
             ) : (
               <Image
