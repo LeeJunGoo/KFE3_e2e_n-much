@@ -5,7 +5,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useDeleteAddressInfo } from 'src/entities/addresses/queries/useAddresses';
 import { deleteImageToBucket } from 'src/entities/addresses/supabase';
-import ConfirmDialog from 'src/widgets/ConfirmDialog';
+// import ConfirmDialog from 'src/widgets/ConfirmDialog';
 
 const AddressEditDeleteBtn = ({
   userId,
@@ -56,11 +56,11 @@ const AddressEditDeleteBtn = ({
         >
           수정
         </Button>
-        <ConfirmDialog title="주소 삭제 확인" description="정말로 삭제하시겠습니까?" onConfirm={handleDeleteAddress}>
+        {/* <ConfirmDialog title="주소 삭제 확인" description="정말로 삭제하시겠습니까?" onConfirm={handleDeleteAddress}>
           <Button variant="text" className="text-(--color-text-base) hover:text-(--color-accent) p-0">
             삭제
           </Button>
-        </ConfirmDialog>
+        </ConfirmDialog> */}
       </div>
     </>
   );
