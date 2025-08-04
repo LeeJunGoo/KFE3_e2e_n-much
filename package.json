@@ -4,6 +4,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "https-dev": "turbo run https-dev",
     "lint": "pnpm --filter web run lint",
     "check-types": "turbo run check-types",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

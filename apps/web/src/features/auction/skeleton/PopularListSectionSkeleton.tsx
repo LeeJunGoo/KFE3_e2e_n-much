@@ -4,7 +4,7 @@ import AuctionSectionHeaderSkeleton from 'src/features/auction/skeleton/common/A
 const PopularListSectionSkeleton = () => {
   return (
     <>
-      <AuctionSectionHeaderSkeleton className={'mt-8'} />
+      <AuctionSectionHeaderSkeleton className="mt-8" />
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {Array.from({ length: 4 }).map((_, i) => (
           <AuctionPopularCardSkeleton key={i} />

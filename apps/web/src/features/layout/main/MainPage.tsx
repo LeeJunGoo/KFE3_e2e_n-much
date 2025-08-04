@@ -35,7 +35,7 @@ const MainPage = async () => {
             <EmptyState
               title="인기 경매 물품을 불러오는 중 문제가 발생했어요."
               description="잠시 후 다시 시도해주세요!"
-              className="mt-8"
+              className="bg-(--color-background) mt-8 rounded-lg border py-16 shadow-md"
             />
           }
         >
@@ -48,7 +48,7 @@ const MainPage = async () => {
             <EmptyState
               title="최신 경매 물품을 불러오는 중 문제가 발생했어요."
               description="잠시 후 다시 시도해주세요!"
-              className="mt-8"
+              className="bg-(--color-background) mt-8 rounded-lg border py-16 shadow-md"
             />
           }
         >
