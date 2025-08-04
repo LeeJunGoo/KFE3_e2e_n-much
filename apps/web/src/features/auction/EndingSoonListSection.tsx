@@ -10,9 +10,9 @@ const EndingSoonListSection = async () => {
   if (!endingSoonAuctions || endingSoonAuctions.length === 0) {
     return (
       <EmptyState
-        className="bg-(--color-background) rounded-lg border py-16 shadow-md"
         title="아직 등록된 상품 정보가 없어요."
-        description="새로운 경매가 등록되면 알려드릴게요.!"
+        description="새로운 경매가 등록되면 알려드릴게요!"
+        className="rounded-lg border bg-white py-16 shadow-sm"
       />
     );
   }
