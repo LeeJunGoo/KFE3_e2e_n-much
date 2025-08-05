@@ -2,6 +2,7 @@
   "$schema": "https://turborepo.com/schema.json",
   "globalEnv": ["VAPID_PRIVATE_KEY"],
   "ui": "tui",
+  "globalEnv": ["VAPID_PRIVATE_KEY"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],

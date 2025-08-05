@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import NotAuctionImage from 'src/assets/images/auctionDefault.png';
+import NotAuctionImage from 'src/assets/images/noAuctionImage.png';
 import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import type { SortedAuctionItemType } from 'src/entities/auction/types';
 
@@ -27,7 +27,6 @@ const PopularAuctionCard = ({ auction, from }: { auction: SortedAuctionItemType;
             fill
             sizes="(min-width: 768px) 390px, 100vw"
             className="object-cover"
-            priority
           />
 
           <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/40 to-transparent" />
