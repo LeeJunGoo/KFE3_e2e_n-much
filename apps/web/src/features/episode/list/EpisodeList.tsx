@@ -35,7 +35,7 @@ const EpisodeList = ({
     queryKey: episodesListKeys.item({ auctionId: auctionInfo.auction_id, page }),
     queryFn: () => getEpisodesWithPagination(auctionInfo.auction_id, page),
     placeholderData: keepPreviousData,
-    staleTime: 300000
+    staleTime: 50000
   });
 
   // ANCHOR - 다음 페이지 prefetch
@@ -63,7 +63,7 @@ const EpisodeList = ({
     }
   };
 
-  if (isError) {
+  if (isError || !episodesList || episodesList.length === 0) {
     return <EpisodeEmpty />;
   }
 
@@ -71,7 +71,7 @@ const EpisodeList = ({
     <>
       {/* 사연 목록 */}
       <ul className="space-y-5 divide-y">
-        {episodesList!.map((episode: EpisodeItemProps, index) => (
+        {episodesList.map((episode: EpisodeItemProps, index) => (
           <EpisodeCard key={`${episode.episode_id}${index}`} episode={episode} sellerId={auctionInfo.user_id} />
         ))}
       </ul>

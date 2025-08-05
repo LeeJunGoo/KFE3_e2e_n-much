@@ -18,6 +18,7 @@ const SellerInfoSection = async ({ auctionId }: { auctionId: AuctionRow['auction
         <ClientContainer>
           <BaseAvatar src={auctionInfo.company_image!} alt={auctionInfo.business_name!} size="sm" />
         </ClientContainer>
+
         <div>
           <h3>{auctionInfo.business_name}</h3>
           <div className="text-(--color-warm-gray) text-sm">

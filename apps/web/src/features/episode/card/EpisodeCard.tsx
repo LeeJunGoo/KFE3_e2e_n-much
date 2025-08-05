@@ -46,8 +46,9 @@ const EpisodeCard = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
     );
   }
 
-  const isUser = episode.user_id === user.id;
-  const isSeller = sellerId && user.id;
+  // 경매 물품의 판매자
+  const isSellerUser = sellerId === user.id;
+  // 사연 작성자
   const isEpisodeActions = episode.user_id === user.id;
   const userNickname = episode.users.nick_name ?? user.nick_name;
 
@@ -66,10 +67,11 @@ const EpisodeCard = ({ episode, sellerId }: { episode: EpisodeItemProps; sellerI
           </div>
         </div>
         <div className="flex flex-col items-end justify-center">
-          {/* 입찰하기 버튼  */}
-          {isUser && isSeller && <EpisodeBidModal episode={episode} />}
+          {/* 입찰 모달  */}
+          {(isSellerUser || isEpisodeActions) && <EpisodeBidModal episode={episode} isSeller={isSellerUser} />}
+
           {/* 좋아요 버튼 */}
-          {isEpisodeActions ? null : <EpisodeLikeButton episode={episode} userId={user.id} isSeller={isSeller} />}
+          {isEpisodeActions ? null : <EpisodeLikeButton episode={episode} userId={user.id} isSeller={isSellerUser} />}
         </div>
       </div>
       <div>

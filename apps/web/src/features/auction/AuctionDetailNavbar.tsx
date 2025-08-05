@@ -1,5 +1,6 @@
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
+import { selectUser } from 'src/entities/auth/supabase/client';
 import AuctionFavoriteMarkToggle from 'src/features/auction/AuctionFavoriteMarkToggle';
 import AuctionActionButtons from 'src/features/auction/button/AuctionActionButtons';
 import { type AuctionRow } from 'src/shared/supabase/types';
@@ -13,10 +14,7 @@ interface AuctionDetailNavbarProps {
 
 const AuctionDetailNavbar = async ({ auctionId, searchParams }: AuctionDetailNavbarProps) => {
   const auctionInfo = await getAuctionInfoWithAddress(auctionId);
-  const userInfo = await getServerUser();
-
-  // 현재 유저가 경매 물품의 판매자인지의 여부
-  const isUser = auctionInfo.user_id === userInfo?.id;
+  const user = await getServerUser();
 
   // 쿼리스트링에서 from과 tab 정보 추출
   const from = searchParams?.from as string;
@@ -70,10 +68,8 @@ const AuctionDetailNavbar = async ({ auctionId, searchParams }: AuctionDetailNav
             />
           </div>
           <div>
-            {isUser && <AuctionActionButtons auctionId={auctionInfo.auction_id} />}
-            {!isUser && (
-              <AuctionFavoriteMarkToggle auctionInfo={auctionInfo} auctionId={auctionId} userId={userInfo!.id} />
-            )}
+            <AuctionActionButtons auctionInfo={auctionInfo} auctionId={auctionId} />
+            <AuctionFavoriteMarkToggle auctionInfo={auctionInfo} auctionId={auctionId} userId={user!.id} />
           </div>
         </div>
       </nav>
