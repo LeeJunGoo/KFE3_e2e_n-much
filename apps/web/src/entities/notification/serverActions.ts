@@ -8,7 +8,6 @@ import type { PushSubscriptionProps } from './type';
 export const postSubscribeUser = async (userId: string, newSub: PushSubscriptionProps) => {
   // 1. 현재 사용자의 기존 구독 정보를 가져옴
   const userData = await selectUserSubscription(userId);
-  console.log('🚀 ~ postSubscribeUser ~ userData:', userData);
 
   // 2. 기존 구독 정보가 배열이 아니거나 null이면 빈 배열로 초기화
   const existingSubscriptions = Array.isArray(userData?.subscription) ? userData.subscription : [];
@@ -20,16 +19,13 @@ export const postSubscribeUser = async (userId: string, newSub: PushSubscription
 
   // 4. 중복 구독인지 확인 (endpoint 주소 기준)
   const isDuplicate = validSubscriptions.some((sub) => sub.endpoint === newSub.endpoint);
-  console.log('🚀 ~ postSubscribeUser ~ isDuplicate:', isDuplicate);
 
   if (isDuplicate) return;
 
   // 5. 새 구독 정보를 추가
   const updatedSubscriptions = [...validSubscriptions, newSub];
-  console.log('🚀 ~ postSubscribeUser ~ updatedSubscriptions:', updatedSubscriptions);
 
   const data = await UpdateUserSubscription(userId, updatedSubscriptions);
-  console.log('🚀 ~ postSubscribeUser ~ data:', data);
 
   return data;
 };
@@ -38,7 +34,6 @@ export const postSubscribeUser = async (userId: string, newSub: PushSubscription
 export const deleteUnsubscribeUser = async (userId: string, unSub: PushSubscriptionProps) => {
   // 1. 현재 사용자의 기존 구독 정보를 가져옴
   const userData = await selectUserSubscription(userId);
-  console.log('🚀 ~ deleteUnsubscribeUser ~ userData:', userData);
 
   // 2. 기존 구독 정보가 배열이 아니거나 null이면 빈 배열로 초기화
   const existingSubscriptions = Array.isArray(userData?.subscription) ? userData.subscription : [];
@@ -49,12 +44,8 @@ export const deleteUnsubscribeUser = async (userId: string, unSub: PushSubscript
       sub !== null && typeof sub === 'object' && 'endpoint' in sub && 'keys' in sub && sub.endpoint !== unSub.endpoint
   ) as unknown as PushSubscriptionProps[];
 
-  // 4. 배열에서 삭제할 데이터 필터링
-  console.log('🚀 ~ deleteUnsubscribeUser:', updatedSubscriptions);
-
-  // // 5. 새 구독 정보로 변경
-  const data = await UpdateUserSubscription(userId, updatedSubscriptions);
-  console.log('🚀 ~ deleteUnsubscribeUser ~ data:', data);
+  // 4. 새 구독 정보로 변경
+  await UpdateUserSubscription(userId, updatedSubscriptions);
 
   return { success: true };
 };

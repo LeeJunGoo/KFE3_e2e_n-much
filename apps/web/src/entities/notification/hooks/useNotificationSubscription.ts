@@ -37,14 +37,8 @@ export const useNotificationSubscription = () => {
 
   // 유저의 구독 여부
   const checkCurrentSubscription = async () => {
-    // 이미 구독되어 있는지 확인
-    const registration = await navigator.serviceWorker.ready;
-    const browserSubscription = await registration.pushManager.getSubscription();
-    console.log('🚀 ~ checkCurrentSubscription ~ existingSub:', browserSubscription);
-
     // 권한: 차단일 경우
     if (Notification.permission === 'denied') {
-      console.log('🚀 ~ checkCurrentSubscription ~ denied:');
       const localPushState = JSON.parse(localStorage.getItem(`pushSubscription_${user?.id}`)!);
 
       if (localPushState) {
@@ -57,7 +51,6 @@ export const useNotificationSubscription = () => {
 
     // 권한: 허용
     if (Notification.permission === 'granted') {
-      console.log('🚀 ~ checkCurrentSubscription ~ granted');
       const isSuccess = await subscribe(user!.id);
       setIsSubscribed(isSuccess);
 
@@ -66,8 +59,6 @@ export const useNotificationSubscription = () => {
 
     // 권한: default
     if (Notification.permission === 'default') {
-      console.log('🚀 ~ checkCurrentSubscription ~ default:');
-
       setIsSubscribed(false);
       return;
     }

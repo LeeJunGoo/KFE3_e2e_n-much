@@ -29,14 +29,13 @@ export async function POST(req: NextRequest) {
 
   try {
     const body: WebhookPayload = await req.json();
-    console.log('🚀 ~ POST ~ body:', body);
+
     const { record: currentAuctionInfo, old_record: prevAuctionInfo } = body;
     const auctionId = currentAuctionInfo.auction_id;
     const auctionTitle = currentAuctionInfo.title;
 
     // 상태(status)가 'OPEN' -> 'CLOSED'로 '변경'된 것이 맞는지 확인
     if (currentAuctionInfo.status !== 'CLOSED' || prevAuctionInfo.status === 'CLOSED') {
-      console.log('🚀 POST ~ CLOSED');
       return NextResponse.json({ message: 'Event ignored: Not a new auction completion.' }, { status: 200 });
     }
 
@@ -45,7 +44,6 @@ export async function POST(req: NextRequest) {
     const episodeUserIds: string[] = (episodeUsers ?? [])
       .map((user) => user.user_id)
       .filter((id): id is string => id !== null);
-    console.log('🚀 ~ POST ~ episodeUserIds:', episodeUserIds);
 
     // 2. 알림 보낼 사용자 목록이 없으면 정상 종료
     if (!episodeUserIds || episodeUserIds.length === 0) {
@@ -54,7 +52,6 @@ export async function POST(req: NextRequest) {
 
     // 3. 구독 정보 가져오기
     const subscriptions = await selectUserSubscriptionList(episodeUserIds);
-    console.log('🚀 ~ POST ~ subscriptions:', subscriptions);
 
     // 푸시 알림 내용 생성
     const notificationPayload = JSON.stringify({
@@ -66,7 +63,6 @@ export async function POST(req: NextRequest) {
     for (const user of subscriptions ?? []) {
       // 1. 사용자 한 명의 구독 정보를 가져옵니다.
       const subs = user.subscription as unknown as PushSubscriptionProps[];
-      console.log('🚀 ~ POST ~ subs:', subs);
 
       // 2. 구독 정보가 아예 없으면(null) 건너뜁니다.
       if (!subs) continue;
