@@ -10,6 +10,8 @@ interface SearchInputProps {
   isLoading?: boolean;
 }
 
+const MOBILE_WIDTH = 768;
+
 const SearchInput = ({
   keyword,
   setKeyword,
@@ -21,7 +23,7 @@ const SearchInput = ({
 
   useEffect(() => {
     // 데스크탑에서만 포커스 적용 (768px 이상)
-    if (isFocused && window.innerWidth >= 768) {
+    if (isFocused && window.innerWidth >= MOBILE_WIDTH) {
       inputRef.current?.focus();
     }
   }, [isFocused]);
