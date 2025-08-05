@@ -76,6 +76,7 @@ export default function manifest(): MetadataRoute.Manifest {
         type: 'image/webp'
       }
     ],
+    //아이콘을 길게 눌렀을 때 뜨는 안내문들
     shortcuts: [
       {
         name: '경매 바로가기',
