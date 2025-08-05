@@ -16,7 +16,7 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
 
   return (
     <div
-      className="flex h-60 w-full justify-center rounded-sm border-2 border-dashed bg-white p-2 align-middle"
+      className="flex h-60 w-full cursor-pointer justify-center rounded-sm border-2 border-dashed bg-white p-2 align-middle"
       {...getRootProps()}
     >
       {previewImages.length > 0 ? (
@@ -29,6 +29,7 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
                 className="h-full w-full overflow-hidden object-cover"
                 priority
                 fill
+                sizes="(min-width: 768px) 115px, 216px"
               />
               <Button
                 type="button"
@@ -45,12 +46,15 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
           ))}
         </ul>
       ) : (
-        <div className="mx-auto my-auto flex-col justify-center pb-8 pt-8 align-middle">
-          <FaCloudUploadAlt className="text-(--color-accent) mx-auto mb-4 size-14" />
+        <div className="mx-auto my-auto flex flex-col items-center justify-center pb-8 pt-8">
+          <FaCloudUploadAlt className="text-(--color-accent) mb-4 size-14" />
           <p className="text-md mb-4 text-center">이미지를 끌어다 놓거나</p>
-          <p className="bg-(--color-secondary) text-(--color-primary) rounded-sm p-2 text-center text-sm">
+          <Button
+            variant="base"
+            className="bg-(--color-secondary) text-(--color-primary) rounded-sm text-center text-sm"
+          >
             파일 선택하기
-          </p>
+          </Button>
         </div>
       )}
 

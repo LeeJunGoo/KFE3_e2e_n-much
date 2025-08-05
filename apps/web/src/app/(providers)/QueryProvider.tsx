@@ -1,9 +1,7 @@
 'use client';
 import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
-const SECONDS_TO_MS = 1000;
-const STALE_TIME_SECONDS = 60;
+import { SECONDS_TO_MS, STALE_TIME_SECONDS } from 'src/entities/auction/constants';
 
 const makeQueryClient = () => {
   return new QueryClient({
