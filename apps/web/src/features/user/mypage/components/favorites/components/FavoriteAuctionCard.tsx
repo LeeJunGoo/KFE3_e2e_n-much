@@ -5,7 +5,7 @@ import { setDefaultOptions } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import Link from 'next/link';
-import noAuctionImage from 'src/assets/images/noAuctionImage.png';
+import noAuctionImage from 'src/assets/images/noAuctionImage.webp';
 import AuctionMetaInfo from 'src/features/auction/shared/AuctionMetaInfo';
 import { formatRemainingTime } from 'src/shared/utils/formatRemainingTime';
 import type { AuctionCardProps } from 'src/entities/auction/types';

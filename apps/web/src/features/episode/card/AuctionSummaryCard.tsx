@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import NotAuctionImage from 'src/assets/images/noAuctionImage.png';
+import NotAuctionImage from 'src/assets/images/noAuctionImage.webp';
 import AuctionTimerStatic from 'src/features/auction/timer/AuctionTimerStatic';
 import PageDescription from 'src/shared/ui/PageDescription';
 import PageTitle from 'src/shared/ui/PageTitle';
