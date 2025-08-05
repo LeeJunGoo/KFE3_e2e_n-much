@@ -5,10 +5,14 @@ import { useTimer } from 'src/entities/auction/hooks/useTimer';
 import { type AuctionTimerStatus } from 'src/entities/auction/types';
 import AuctionTimer from 'src/features/auction/shared/AuctionTimer';
 import { type AuctionRow } from 'src/shared/supabase/types';
+import ClosedAuctionOverlay from '../detail/components/ClosedAuctionOverlay';
 
 const AuctionTimerDynamic = ({ endDate }: { endDate: AuctionRow['end_date'] }) => {
   const { days, hours, minutes, seconds } = useTimer({
-    endDate
+    endDate,
+    onCompleted: () => {
+      return <ClosedAuctionOverlay />;
+    }
   });
   let status: AuctionTimerStatus = 'ongoing';
   let formattedTime = `${days}일 ${hours}시간 ${minutes}분 ${seconds}초`;

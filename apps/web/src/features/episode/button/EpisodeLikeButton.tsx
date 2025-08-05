@@ -19,7 +19,7 @@ const EpisodeLikeToggle = ({
 }: {
   episode: EpisodeItemProps;
   userId: string;
-  isSeller: string;
+  isSeller: boolean;
 }) => {
   const episodeId = episode.episode_id;
   const prevLikes = episode.likes;

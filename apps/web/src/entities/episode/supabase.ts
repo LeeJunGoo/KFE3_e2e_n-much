@@ -87,7 +87,8 @@ export const selectEpisodesWithPagination = async (page: number, auctionId: Auct
        id,
         nick_name,
         user_avatar,
-        email
+        email,
+        role
       )
     `
     )

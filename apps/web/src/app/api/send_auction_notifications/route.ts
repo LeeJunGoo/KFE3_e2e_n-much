@@ -17,10 +17,15 @@ export interface WebhookPayload {
 export async function POST(req: NextRequest) {
   // VAPID 키 설정
   webpush.setVapidDetails(
-    'mailto:your-email@example.com',
+    'mailto:jepjepghost@gmail.com',
     process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
     process.env.VAPID_PRIVATE_KEY!
   );
+
+  if (!process.env.VAPID_PRIVATE_KEY) {
+    console.error('❌ VAPID_PRIVATE_KEY is undefined at build time');
+    throw new Error('Missing VAPID_PRIVATE_KEY');
+  }
 
   try {
     const body: WebhookPayload = await req.json();
