@@ -1,7 +1,7 @@
 import { QueryClient, useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { getAddressId, getAuction, getAuctionCardList, patchAuction, postAuction } from 'src/entities/auction/api';
-import { AUCTION_BID_POINT_AMOUNT } from 'src/entities/auction/constants';
+import { AUCTION_BID_POINT_AMOUNT, SECONDS_TO_MS, STALE_TIME_SECONDS } from 'src/entities/auction/constants';
 import { addressIdKeys, auctionFormKeys, auctionListKeys } from 'src/entities/auction/queries/queryKeyFactory';
 import { getAuctionBidPointAmount } from 'src/entities/episode/api';
 import { popToast } from 'src/shared/utils/popToast';
@@ -99,7 +99,7 @@ export const useAuctionListQuery = (order: string, keyword: string | undefined) 
       getAuctionCardList({ order, keyword, pageParam }),
     initialPageParam: 0,
     getNextPageParam: (lastPage: { data: (AuctionRow & EpisodeCount)[]; nextId: number }) => lastPage.nextId,
-    staleTime: 0,
+    staleTime: STALE_TIME_SECONDS * SECONDS_TO_MS,
     enabled: !!order
   });
 

@@ -1,11 +1,12 @@
 {
   "$schema": "https://turborepo.com/schema.json",
+  "globalEnv": ["VAPID_PRIVATE_KEY"],
   "ui": "tui",
   "globalEnv": ["VAPID_PRIVATE_KEY"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*", "env:VAPID_PRIVATE_KEY"],
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
     "lint": {
@@ -20,8 +21,7 @@
     },
     "https-dev": {
       "cache": false,
-      "persistent": true,
-      "inputs": ["env:VAPID_PRIVATE_KEY"]
+      "persistent": true
     },
     "clean": {
       "cache": false

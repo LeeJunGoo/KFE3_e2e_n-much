@@ -49,3 +49,7 @@ export const MAX_UPLOADED_IMAGES = 5; //NOTE - 업로드할 수 있는 최대 �
 export const SHORT_TOAST_DURATION = 2000;
 export const MEDIUM_TOAST_DURATION = 3000;
 export const LONG_TOAST_DURATION = 4000;
+
+//NOTE - auctionList를 저장하는 캐싱 기간
+export const SECONDS_TO_MS = 1000;
+export const STALE_TIME_SECONDS = 5;

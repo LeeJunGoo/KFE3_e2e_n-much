@@ -7,6 +7,7 @@ export const useGetUserLikesEpisodes = (userId?: UserRow['id']) => {
   return useQuery({
     queryKey: episodeQueryKeys.userLikes(userId || ''),
     queryFn: () => getUserLikesEpisodes(userId!),
-    enabled: !!userId
+    enabled: !!userId,
+    staleTime: 0
   });
 };
