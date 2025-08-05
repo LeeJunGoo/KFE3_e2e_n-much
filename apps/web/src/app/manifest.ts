@@ -82,14 +82,14 @@ export default function manifest(): MetadataRoute.Manifest {
         short_name: '경매',
         description: '경매 메인으로 바로 이동',
         url: '/auction',
-        icons: [{ src: '/icons/auction.png', sizes: '96x96', type: 'image/webp' }]
+        icons: [{ src: '/icons/vid_icon_96x96.webp', sizes: '96x96', type: 'image/webp' }]
       },
       {
         name: '내가 쓴 스토리 바로가기',
         short_name: '사연',
         description: '내가 쓴 스토리로 바로 이동',
         url: '/mypage/episodes',
-        icons: [{ src: '/icons/auction.png', sizes: '96x96', type: 'image/webp' }]
+        icons: [{ src: '/icons/vid_icon_96x96.webp', sizes: '96x96', type: 'image/webp' }]
       }
     ]
   };
