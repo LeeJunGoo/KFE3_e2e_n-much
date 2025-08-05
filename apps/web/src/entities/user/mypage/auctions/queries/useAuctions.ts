@@ -9,7 +9,8 @@ export const useGetUserAuctions = (userId?: UserRow['id']) => {
   return useQuery({
     queryKey: auctionQueryKeys.user(userId || ''),
     queryFn: () => getUserAuctions(userId!),
-    enabled: !!userId
+    enabled: !!userId,
+    staleTime: 0
   });
 };
 

@@ -49,8 +49,6 @@ export const useImageUpload = (
       setImageUrlsToDelete((prev) => {
         const imageFullPath: string[] = previewImage.data.split('/');
         const imagePath = bucketFolderName + imageFullPath[imageFullPath.length - 1];
-        console.log('imageDir', imagePath);
-        console.log('imagesToDelete', [...prev, imagePath]);
         return [...prev, imagePath];
       });
     }

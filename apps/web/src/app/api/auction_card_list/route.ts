@@ -10,8 +10,6 @@ export async function GET(request: NextRequest) {
   const keyword = searchParams.get('keyword');
   let res = null;
 
-  console.log('order', order, 'page', page, 'keyword', keyword, typeof keyword);
-
   if (!order || !page) {
     return NextResponse.json({ error: '400: 필수 값이 존재하지 않습니다.' }, { status: 400 });
   }

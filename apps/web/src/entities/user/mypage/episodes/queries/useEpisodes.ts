@@ -7,6 +7,7 @@ export const useGetUserEpisodes = (userId?: UserRow['id']) => {
   return useQuery({
     queryKey: episodeQueryKeys.user(userId || ''),
     queryFn: () => getUserEpisodes(userId!),
-    enabled: !!userId
+    enabled: !!userId,
+    staleTime: 0
   });
 };
