@@ -1,7 +1,6 @@
 import { Card } from '@repo/ui/components/ui/card';
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { selectUser } from 'src/entities/auth/supabase/client';
 import { getHasUserWrittenEpisode } from 'src/entities/episode/api';
 import AuctionTimerDynamic from 'src/features/auction/timer/AuctionTimerDynamic';
 import EpisodeWriteButton from 'src/features/episode/button/EpisodeWriteButton';
@@ -18,13 +17,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
   const auctionStatus = auctionInfo.status === 'OPEN' ? '진행중' : '종료됨';
 
   const userInfo = await getServerUser();
-  const profile = await selectUser(userInfo!.id);
   const isWritten = await getHasUserWrittenEpisode(auctionInfo.auction_id, userInfo!.id);
-
-  // 현재 유저가 경매 물품의 판매자인지의 여부
-  const isUser = auctionInfo.user_id === userInfo?.id;
-  // 현재 유저가 입찰 참  여자(buyer)인지의 여부
-  const isBuyer = profile!.role === 'buyer';
 
   return (
     <Card className="mb-4 p-5">
@@ -43,9 +36,7 @@ const AuctionDetailInfo = async ({ auctionId }: { auctionId: AuctionRow['auction
             <p className="text-xl font-bold">{<PointDisplay amount={auctionInfo.current_point} />}</p>
           </div>
         </div>
-        {!isUser && isBuyer && (
-          <EpisodeWriteButton auctionId={auctionInfo.auction_id} isWritten={isWritten} className="mt-3" />
-        )}
+        <EpisodeWriteButton auctionInfo={auctionInfo} isWritten={isWritten} className="mt-3" />
       </div>
     </Card>
   );

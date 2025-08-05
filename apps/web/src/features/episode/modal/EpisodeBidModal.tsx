@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@repo/ui/components/ui/dialog';
+import { toast } from '@repo/ui/components/ui/sonner';
 import { useRouter } from 'next/navigation';
 import { useAuctionBidPointQuery } from 'src/entities/auction/queries/auction';
 import { useUserState } from 'src/entities/auth/stores/useAuthStore';
@@ -20,10 +21,11 @@ import EmptyState from 'src/shared/ui/EmptyState';
 import { formatNumber } from 'src/shared/utils/formatNumber';
 import type { EpisodeItemProps } from 'src/entities/episode/types';
 
-const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
+const EpisodeBidModal = ({ episode, isSeller }: { episode: EpisodeItemProps; isSeller: boolean }) => {
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const user = useUserState();
+
   const {
     data: userPoint,
     isPending: isUserPending,
@@ -44,6 +46,23 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
 
   const isTotalLoading = isUserPending || isAuctionPending || isBidPending;
   const isTotalError = isUserError || isaActionError || isBidError;
+  const isEpisodeUser = episode.user_id === user?.id;
+  const isUserRole = user?.role;
+
+  // 입찰하기 버튼
+  const handleBidModalToggle = () => {
+    if (isEpisodeUser && isUserRole !== 'buyer') {
+      toast.info('입찰 참여자로 변경해주세요.');
+      return;
+    }
+
+    if (isSeller && isUserRole !== 'seller') {
+      toast.info('경매 판매자로 변경해주세요.');
+      return;
+    }
+
+    setOpen(true);
+  };
 
   if (isTotalLoading && open) {
     return (
@@ -84,15 +103,9 @@ const EpisodeBidModal = ({ episode }: { episode: EpisodeItemProps }) => {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <EpisodeBidButton
-            onClick={() => {
-              setOpen(true);
-            }}
-            variant="active"
-            className="hover:bg-(--color-primary)"
-          />
-        </DialogTrigger>
+        {/* <DialogTrigger asChild> */}
+        <EpisodeBidButton onClick={handleBidModalToggle} variant="active" className="hover:bg-(--color-primary)" />
+        {/* </DialogTrigger> */}
 
         <DialogContent aria-describedby={undefined} className="p-10">
           <div className="flex flex-col items-center gap-4 pt-4">

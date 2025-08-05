@@ -70,14 +70,14 @@ const EpisodeBidModalForm = ({
                 <div className="text-(--color-warm-gray) text-sm">상한가: {formatNumber(maxBid)} P</div>
                 <FormLabel htmlFor={field.name} className="w-fit">
                   <span className="text-(--color-warm-gray)">
-                    입찰 가능한 최대 금액: {formatNumber(possibleTotalBidPoint)}&nbsp;P
+                    입찰 가능한 포인트: {formatNumber(possibleTotalBidPoint)}&nbsp;P
                   </span>
                 </FormLabel>
                 <Input
                   id={field.name}
                   type="text"
                   inputMode="numeric"
-                  placeholder={`${formatNumber(minBid)} P 이상 입찰 금액을 입력하세요`}
+                  placeholder={`${formatNumber(minBid)} P 이상 입찰 포인트을 입력하세요`}
                   className="text-center"
                   {...field}
                   value={field.value ?? ''}
@@ -95,7 +95,7 @@ const EpisodeBidModalForm = ({
                       field.onChange(undefined);
                       form.setError('bidAmount', {
                         type: 'manual',
-                        message: '입찰 금액 또는 숫자만 입력해주세요.'
+                        message: '입찰 포인트 또는 숫자만 입력해주세요.'
                       });
                     }
                   }}
