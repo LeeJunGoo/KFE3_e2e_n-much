@@ -31,8 +31,6 @@ export const middleware = async (request: NextRequest) => {
       const userAddressId = userWithProfile.address_id;
       const userRole = userWithProfile.role;
 
-      console.log('userAddress', userAddressId);
-
       if (!userAddressId) {
         return NextResponse.redirect(new URL('/mypage/addresses/write', request.url));
       }

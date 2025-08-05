@@ -3,14 +3,9 @@
 import React from 'react';
 import { Button } from '@repo/ui/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { useDeleteAddressInfo } from 'src/entities/addresses/queries/useAddresses';
-import { deleteImageToBucket } from 'src/entities/addresses/supabase';
-// import ConfirmDialog from 'src/widgets/ConfirmDialog';
 
 const AddressEditDeleteBtn = ({
-  userId,
-  addressId,
-  imageUrl
+  addressId
 }: {
   userId: string | undefined;
   addressId: string;
@@ -18,27 +13,28 @@ const AddressEditDeleteBtn = ({
 }) => {
   const router = useRouter();
 
-  const deleteAddressMutation = useDeleteAddressInfo();
+  // const deleteAddressMutation = useDeleteAddressInfo();
 
   const handleEditAddress = async () => {
     router.push(`/mypage/addresses/${addressId}`);
   };
 
-  const handleDeleteAddress = async () => {
-    try {
-      const status = await deleteAddressMutation.mutateAsync({ addressId, userId });
-      if (status === 'success') {
-        const ImagePath = imageUrl?.split('company-image/')[1] ?? null;
-        router.push('/mypage');
-        // 주소 삭제 후 스토리지 이미지 삭제
-        await deleteImageToBucket(ImagePath);
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    }
-  };
+  //NOTE - 삭제 로직
+  // const handleDeleteAddress = async () => {
+  //   try {
+  //     const status = await deleteAddressMutation.mutateAsync({ addressId, userId });
+  //     if (status === 'success') {
+  //       const ImagePath = imageUrl?.split('company-image/')[1] ?? null;
+  //       router.push('/mypage');
+  //       // 주소 삭제 후 스토리지 이미지 삭제
+  //       await deleteImageToBucket(ImagePath);
+  //     }
+  //   } catch (error) {
+  //     if (error instanceof Error) {
+  //       console.error(error.message);
+  //     }
+  //   }
+  // };
 
   return (
     <>
