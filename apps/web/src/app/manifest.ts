@@ -3,8 +3,8 @@ import type { MetadataRoute } from 'next';
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Vidding',
-    short_name: 'Vidding',
-    description: '모두 다같이 가치를 증명해 볼까요',
+    short_name: 'VID',
+    description: '당신의 가치를 Vidding!',
     start_url: '/',
     display: 'standalone',
     background_color: '#f4f4f7',
