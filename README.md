@@ -1,6 +1,6 @@
 # Vidding
 
-![목업 커버 이미지](./apps/web/public/readme_images/mockup_cover.png)
+![목업 커버 이미지](./apps/web/public/readme_images/mockup_cover.webp)
 
 ## 배포 정보
 
@@ -65,4 +65,4 @@
 
 **사용자 화면**
 
-![목업 페이지 그룹 이미지](./apps/web/public/readme_images/mockup_pages.png)
+![목업 페이지 그룹 이미지](./apps/web/public/readme_images/mockup_pages.webp)
