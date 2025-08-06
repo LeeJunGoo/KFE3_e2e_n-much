@@ -12,7 +12,7 @@ export const MAX_TITLE_LENGTH = 50;
 export const MAX_DESC_LENGTH = 1000;
 
 //ANCHOR - 페이지네이션: 한 페이지에 보일 에피소드 개수
-export const EPISODES_PER_PAGE = 5;
+export const EPISODES_PER_PAGE = 4;
 
 //ANCHOR - 판매자의 최소 입찰 포인트
 export const SELLER_MIN_POINT = 1;

@@ -56,7 +56,7 @@ const AuctionDetailNavbar = async ({ auctionId, searchParams }: AuctionDetailNav
 
   return (
     <ClientContainer>
-      <nav className="absolute left-0 top-10 z-10 w-full px-5">
+      <nav className="absolute left-0 top-0 z-10 w-full px-5">
         <div className="flex items-center justify-between">
           <div>
             <GoBackButton
