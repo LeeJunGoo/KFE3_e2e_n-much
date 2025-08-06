@@ -45,8 +45,8 @@
 
 ### **기획 및 디자인 설계**
 
-- 기획(피그마/Figma): 경매 흐름, 핵심 로직 정의 및 역할별 기능 플로우 설계
-- 디자인: 테마 중심, 스토리텔링 UI, 직관적 입찰 및 알림 구조, 와이어프레임(Figma)
+- 기획: 경매 플로우에 맞게 핵심 기능 정의 및 기술 선택(기능 정의 명세서, 데이터 모델 명세서, 기술 선택 분석 리포트)
+- 디자인: 와이어프레임, 디자인 토큰, 공통 컴포넌트 설계(Figma)
 
 **프로젝트 기간**
 
@@ -55,10 +55,11 @@
 
 **개발환경**
 
-- Frontend: Next.js, Tailwind CSS, Shadcn/UI, Zustand, Storybook
-- Backend: Supabase
-- 번들링/운영: Turborepo(Monorepo 구조)
-- 코드 관리/협업: GitHub, Prettier, ESLint, TanStack Query
+- Frontend: Next.js, Tailwind CSS, Shadcn/UI, Zustand, TanStack Query, Storybook
+- Backend: Next.js 라우트 핸들러(API)
+- DBMS/BAAS: Supabase (Database, 인증 등)
+- 모노레포/빌드 관리: Turborepo
+- 코드 관리/협업: GitHub, Prettier, ESLint
 - 커뮤니케이션: Discord, Zoom
 - 기획/디자인: Figma
 
