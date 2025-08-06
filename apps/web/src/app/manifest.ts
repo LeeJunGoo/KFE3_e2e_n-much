@@ -50,7 +50,7 @@ export default function manifest(): MetadataRoute.Manifest {
         src: '/icons/vid_icon_192x192.webp',
         sizes: '192x192',
         type: 'image/webp',
-        purpose: 'any'
+        purpose: 'maskable'
       },
       {
         src: '/icons/vid_icon_256x256.webp',

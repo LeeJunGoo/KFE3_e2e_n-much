@@ -9,7 +9,7 @@ const PopularAuctionCard = ({ auction, from }: { auction: SortedAuctionItemType;
 
   const auctionImage = isImage ? auction.image_urls![0] : NotAuctionImage;
   const favoritesCount = auction.favorites?.length || 0;
-  const episodesCount = auction.episodes?.length || 0;
+  const episodesCount = auction.episodes[0]?.count || 0;
 
   const getHref = () => {
     const baseUrl = `/auctions/${auction.auction_id}`;

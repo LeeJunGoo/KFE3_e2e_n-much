@@ -14,7 +14,7 @@ const LatestAuctionCard = ({ auction, from }: { auction: SortedAuctionItemType; 
   const { status, remainTime } = formatRemainingTime(auction.end_date);
 
   const favoritesCount = auction.favorites?.length || 0;
-  const episodesCount = auction.episodes?.length || 0;
+  const episodesCount = auction.episodes[0]?.count || 0;
 
   const badgeVariant = status === 'ongoing' ? 'accent' : 'red';
 

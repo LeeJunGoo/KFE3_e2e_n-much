@@ -1,6 +1,5 @@
 import { getAuctionInfoWithAddress } from 'src/entities/auction/api';
 import { getServerUser } from 'src/entities/auth/serverAction';
-import { selectUser } from 'src/entities/auth/supabase/client';
 import AuctionFavoriteMarkToggle from 'src/features/auction/AuctionFavoriteMarkToggle';
 import AuctionActionButtons from 'src/features/auction/button/AuctionActionButtons';
 import { type AuctionRow } from 'src/shared/supabase/types';
@@ -57,7 +56,7 @@ const AuctionDetailNavbar = async ({ auctionId, searchParams }: AuctionDetailNav
 
   return (
     <ClientContainer>
-      <nav className="absolute left-0 top-5 z-10 w-full px-5">
+      <nav className="absolute left-0 top-10 z-10 w-full px-5">
         <div className="flex items-center justify-between">
           <div>
             <GoBackButton

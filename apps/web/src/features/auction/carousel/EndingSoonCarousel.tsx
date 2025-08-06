@@ -26,7 +26,7 @@ const EndingSoonCarousel = ({
                 imageSrc={auction.image_urls[0]}
                 title={auction.title}
                 endDate={auction.end_date}
-                episodeCount={auction.episodes?.length ?? 0}
+                episodeCount={auction.episodes[0]?.count || 0}
                 favoriteCount={auction.favorites?.length ?? 0}
                 from={from}
               />
