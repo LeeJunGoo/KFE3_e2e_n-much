@@ -50,6 +50,7 @@ const ImageUploader = ({ previewImages, setPreviewImages, setImageUrlsToDelete }
           <FaCloudUploadAlt className="text-(--color-accent) mb-4 size-14" />
           <p className="text-md mb-4 text-center">이미지를 끌어다 놓거나</p>
           <Button
+            type="button"
             variant="base"
             className="bg-(--color-secondary) text-(--color-primary) rounded-sm text-center text-sm"
           >
